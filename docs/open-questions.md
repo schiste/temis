@@ -13,6 +13,8 @@ These are the remaining V1 decisions. Answer with the question IDs when possible
 - Q5: Move the first-party EmDash subscription delivery plugin to V1.5. V1 may include only a placeholder subscribe CTA. See [V1.5 subscription delivery plugin PRD](./prd-v1-5-subscription-plugin.md).
 - Q6: Metrics must stay server/platform-side only. No client-side analytics, tracking cookies, fingerprinting, or third-party reader analytics.
 - Q7: Start with native share where supported, copy link everywhere, and `mailto:` email fallback. No platform-specific share buttons in V1.
+- Q8: Tool announcement articles use the same article template for V1.
+- Q11: Articles support named people plus an optional team/publication byline.
 
 ## Launch-Critical
 
@@ -20,19 +22,15 @@ These are the remaining V1 decisions. Answer with the question IDs when possible
 
 Why it matters: topics drive the homepage navigation, article grouping, and lorem ipsum scaffolding.
 
-Recommended default: choose 5 broad topics first, then split later only after real content proves the need.
+Current starter topics:
 
-Answer needed: topic names plus one-sentence descriptions.
+- News.
+- Initiatives.
+- Essays.
+
+Answer needed: one-sentence descriptions for each starter topic and any additional V1 topics.
 
 ## Content And Editorial
-
-### Q8. Should tool announcement articles use the same visual template as essays?
-
-Why it matters: one template is faster and more coherent; a distinct template may better support tool metadata.
-
-Recommended default: same template for V1, with optional tool-name and tool-URL fields.
-
-Answer needed: same template, distinct template, or same template with a small tool callout.
 
 ### Q9. Should public people records stay separate from CMS user accounts?
 
@@ -49,14 +47,6 @@ Why it matters: this shapes fields, page layout, and editorial workflow.
 Recommended default: portrait, short bio, role/title, links, topic interests, and authored articles.
 
 Answer needed: rank biography, authored articles, external links, topic expertise, affiliation, and portrait.
-
-### Q11. Should articles support publication-owned bylines as well as named people?
-
-Why it matters: early content may be authored by a team, an organization, or one named person.
-
-Recommended default: support named people plus an optional publication-owned byline string.
-
-Answer needed: named people only, publication-owned bylines only, or both.
 
 ### Q12. What editorial quality rules should essays follow?
 
@@ -123,6 +113,14 @@ Why it matters: dense node layouts rarely work unchanged on small screens.
 Recommended default: simplified horizontal/stacked topic explorer on mobile, not a miniaturized desktop layout.
 
 Answer needed: simplified explorer, scrollable canvas, list-first fallback, or decide after prototype.
+
+### Q19A. Should V1 use a custom graph renderer or a graph library?
+
+Why it matters: a custom SVG/HTML renderer is easier to control and make accessible; a library may speed up interaction but can add bundle and accessibility cost.
+
+Recommended default: custom deterministic SVG/HTML renderer first, interactive enhancement second.
+
+Answer needed: custom renderer, lightweight library, or decide after prototype.
 
 ### Q20. What placeholder visual language should be used before final art direction?
 

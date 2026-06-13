@@ -164,6 +164,8 @@ Category relationships should be editorially managed, manually edited, and unlab
 
 V1 graph-based topic navigation is category-driven.
 
+See [graph navigation plugin PRD](./prd-graph-navigation-plugin-v1.md) for the focused plugin/data-structure requirements.
+
 It should behave as:
 
 - A homepage visual anchor.
