@@ -14,3 +14,5 @@ The imported archive only contained an ADR index placeholder, not complete ADR b
 - [ADR-0006: Keep V1 publishing team-managed](0006-team-managed-publishing.md)
 - [ADR-0007: Make public people pages first-class](0007-first-class-public-people.md)
 - [ADR-0008: Prefer open-source and privacy-aware defaults](0008-open-source-privacy-defaults.md)
+- [ADR-0009: Keep V1 operations low-cost](0009-low-cost-v1-operations.md)
+- [ADR-0010: Preserve content portability](0010-content-portability.md)
