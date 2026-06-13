@@ -4,9 +4,16 @@
   "compatibility_date": "2026-04-01",
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
+  "preview_urls": false,
   "vars": {
-    "TEMIS_CMS_SITE_URL": "https://temis-cms.workers.dev",
+    "TEMIS_CMS_SITE_URL": "https://temis-cms.christophe-henner.workers.dev",
   },
+  "kv_namespaces": [
+    {
+      "binding": "SESSION",
+      "id": "f8288078d76d42208421e84276c45c27",
+    },
+  ],
   "d1_databases": [
     {
       "binding": "DB",
