@@ -1,4 +1,4 @@
-# ADR-0011: Use Creative Commons 4.0 For Published Content
+# ADR-0011: Use CC-BY-SA-4.0 For Published Content
 
 Date: 2026-06-13  
 Status: Accepted  
@@ -10,13 +10,13 @@ TEMIS source code is licensed separately from published website content. Content
 
 ## Decision
 
-Published TEMIS website content will use a Creative Commons 4.0 license family.
+Published TEMIS website content will use `CC-BY-SA-4.0`.
 
-The exact Creative Commons 4.0 variant must be confirmed before public launch and written into the public site footer, content metadata, and repository documentation.
+The license must be written into the public site footer, content metadata, and repository documentation before public launch.
 
 ## Consequences
 
 - Source code and published content have separate license decisions.
 - Content reuse rights can be communicated clearly on public pages.
 - The implementation should keep content license metadata configurable.
-- The exact content license remains a launch-critical question until the variant is selected.
+- Public pages should expose the content license in a visible and machine-readable way where practical.

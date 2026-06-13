@@ -230,7 +230,7 @@ V1 implementation expectations:
 - Do not add client-side reader tracking, fingerprinting, or third-party surveillance.
 - Measure V1 with server/platform operational signals only.
 - Make author/person data explicit, editable, and intentionally published rather than inferred from private CMS user data.
-- Publish website content under a Creative Commons 4.0 license family, with the exact variant confirmed before launch.
+- Publish website content under `CC-BY-SA-4.0`.
 - Keep imported source material, generated exports, and local archives out of git unless explicitly approved.
 
 ## Technical Requirements

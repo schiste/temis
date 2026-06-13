@@ -25,7 +25,7 @@ These assumptions guide V1 implementation until they are replaced by PRD updates
 - Articles may reference one or more public people records.
 - Topic relationships are manually edited and unlabeled.
 - Only published records appear in the public static build.
-- Published website content will use a Creative Commons 4.0 license family; the exact variant still needs confirmation.
+- Published website content will use `CC-BY-SA-4.0`.
 
 ## Technical Assumptions
 

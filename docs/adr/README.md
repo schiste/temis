@@ -16,4 +16,4 @@ The imported archive only contained an ADR index placeholder, not complete ADR b
 - [ADR-0008: Prefer open-source and privacy-aware defaults](0008-open-source-privacy-defaults.md)
 - [ADR-0009: Keep V1 operations low-cost](0009-low-cost-v1-operations.md)
 - [ADR-0010: Preserve content portability](0010-content-portability.md)
-- [ADR-0011: Use Creative Commons 4.0 for published content](0011-creative-commons-content.md)
+- [ADR-0011: Use CC-BY-SA-4.0 for published content](0011-creative-commons-content.md)
