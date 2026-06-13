@@ -11,7 +11,7 @@
     {
       "binding": "DB",
       "database_name": "temis-cms-db",
-      "database_id": "TODO_REPLACE_WITH_WRANGLER_D1_CREATE_OUTPUT",
+      "database_id": "84f67492-d40b-4eef-98d3-2083cdc92acc",
     },
   ],
   "r2_buckets": [
