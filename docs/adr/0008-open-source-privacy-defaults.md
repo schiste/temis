@@ -23,4 +23,4 @@ When a proprietary service is selected, document the tradeoff before depending o
 - Service and library choices should consider licensing and data collection early.
 - Passive readers should not be tracked.
 - Subscription and sharing tools must be reviewed for privacy impact before adoption.
-- Content licensing remains a separate decision.
+- Published content licensing is handled separately from source code licensing.

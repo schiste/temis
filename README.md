@@ -45,6 +45,7 @@ TEMIS source code is dual-licensed under `MIT OR Apache-2.0`; see
 [LICENSE](./LICENSE), [LICENSE-MIT](./LICENSE-MIT), and
 [LICENSE-APACHE](./LICENSE-APACHE).
 
-Published website content may use a separate license when that content license
-is decided. Third-party dependencies keep their own licenses; primary notices
-are tracked in [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).
+Published website content will use a Creative Commons 4.0 license family; the
+exact variant must be confirmed before public launch. Third-party dependencies
+keep their own licenses; primary notices are tracked in
+[THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).
