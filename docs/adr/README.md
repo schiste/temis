@@ -18,3 +18,4 @@ The imported archive only contained an ADR index placeholder, not complete ADR b
 - [ADR-0010: Preserve content portability](0010-content-portability.md)
 - [ADR-0011: Use CC-BY-SA-4.0 for published content](0011-creative-commons-content.md)
 - [ADR-0012: Use graph-based topic navigation for V1](0012-graph-navigation-plugin.md)
+- [ADR-0013: Use Aexeo for V1 SEO/GEO evaluation](0013-aexeo-seo-plugin.md)

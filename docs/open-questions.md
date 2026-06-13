@@ -14,7 +14,11 @@ These are the remaining V1 decisions. Answer with the question IDs when possible
 - Q6: Metrics must stay server/platform-side only. No client-side analytics, tracking cookies, fingerprinting, or third-party reader analytics.
 - Q7: Start with native share where supported, copy link everywhere, and `mailto:` email fallback. No platform-specific share buttons in V1.
 - Q8: Tool announcement articles use the same article template for V1.
+- Q9: Public people are first-class editorial records. Some public people may link to CMS users when safe, but public people and CMS users are not the same object by default.
 - Q11: Articles support named people plus an optional team/publication byline.
+- Q16: V1 should support both dark and light themes.
+- Q18: Graph-based topic navigation should be a homepage anchor.
+- Q22: Use `@aeptus/aexeo-emdash` for V1 SEO/GEO evaluation in the EmDash workflow.
 
 ## Launch-Critical
 
@@ -31,14 +35,6 @@ Current starter topics:
 Answer needed: one-sentence descriptions for each starter topic and any additional V1 topics.
 
 ## Content And Editorial
-
-### Q9. Should public people records stay separate from CMS user accounts?
-
-Why it matters: separating them protects private admin data; linking them can reduce duplication later.
-
-Recommended default: keep public people as separate editorial records in V1.
-
-Answer needed: separate records, linkable records, or undecided.
 
 ### Q10. What should author/person pages prioritize?
 
@@ -82,14 +78,6 @@ Answer needed: topic-based, manual, both, or none for launch.
 
 ## Design And UX
 
-### Q16. Should the visual system start light-first, dark-first, or support both?
-
-Why it matters: this affects typography, imagery, contrast, motion, and the first implementation pass.
-
-Recommended default: dark-first editorial/data-like interface if the goal is cool and techy; add light mode later only if needed.
-
-Answer needed: light-first, dark-first, or both.
-
 ### Q17. How much motion should the homepage use?
 
 Why it matters: motion can make the topic navigation feel alive, but it can hurt performance and accessibility.
@@ -97,14 +85,6 @@ Why it matters: motion can make the topic navigation feel alive, but it can hurt
 Recommended default: subtle motion only, with reduced-motion support.
 
 Answer needed: none, subtle, expressive, or decide after prototype.
-
-### Q18. How prominent should topic navigation be on the homepage?
-
-Why it matters: it must signal the network/navigation appetite without hiding the reading journey.
-
-Recommended default: first-viewport anchor, with article discovery visible immediately below.
-
-Answer needed: dominant first-viewport element, balanced with editorial feed, or secondary module.
 
 ### Q19. What is the mobile interaction model for topic navigation?
 
@@ -139,14 +119,6 @@ Why it matters: URLs are hard to change after publication.
 Recommended default: `/articles/{slug}/`, `/topics/{slug}/`, `/people/{slug}/`.
 
 Answer needed: URL patterns for articles, topics, and people.
-
-### Q22. What SEO defaults should be generated for missing metadata?
-
-Why it matters: editors should not need to fill every SEO field before preview works.
-
-Recommended default: title from record title, description from summary, share image from record image or site default.
-
-Answer needed: fallback title, description, and share image rules.
 
 ### Q23. What media sizes and aspect ratios should editors use?
 

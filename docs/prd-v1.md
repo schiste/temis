@@ -105,6 +105,7 @@ Expected fields:
 - Kind.
 - Category/topic assignments.
 - Author/person assignments.
+- Optional team/publication byline.
 - Body.
 - Featured visual.
 - Publication date.
@@ -199,6 +200,8 @@ The interface should feel:
 - Network-aware.
 - Public and accessible.
 
+The visual system should support both dark and light themes.
+
 The site should not feel:
 
 - Like a SaaS landing page.
@@ -250,6 +253,7 @@ V1 implementation expectations:
 - CMS runs on Cloudflare Workers.
 - Content storage uses D1.
 - Media storage uses R2.
+- SEO/GEO editorial evaluation uses `@aeptus/aexeo-emdash` in the EmDash workflow.
 - Images are optimized at build time where practical.
 - Publishing in EmDash triggers a Cloudflare Pages rebuild through a deploy hook.
 - The public build should be compatible with a future public/open-source repository posture.
