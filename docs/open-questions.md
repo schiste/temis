@@ -3,7 +3,7 @@
 Status: Draft  
 Date: 2026-06-13
 
-These are the remaining V1 decisions. Answer with the question IDs when possible, for example: `Q1: CC BY 4.0`, `Q2: temis.org`.
+These are the remaining V1 decisions. Answer with the question IDs when possible, for example: `Q1: CC-BY-4.0`, `Q2: temis.org`.
 
 ## Launch-Critical
 
@@ -11,9 +11,9 @@ These are the remaining V1 decisions. Answer with the question IDs when possible
 
 Why it matters: the exact license must appear in the public footer, content metadata, and repo docs.
 
-Recommended default: `CC BY 4.0` if attribution is enough; `CC BY-SA 4.0` if content reuse should stay share-alike.
+Recommended default: `CC-BY-4.0` if attribution is enough; `CC-BY-SA-4.0` if content reuse should stay share-alike.
 
-Answer needed: exact SPDX-style license name, for example `CC BY 4.0` or `CC BY-SA 4.0`.
+Answer needed: exact SPDX license identifier, for example `CC-BY-4.0` or `CC-BY-SA-4.0`.
 
 ### Q2. What final public name and domain should replace the TEMIS codename, if any?
 
