@@ -230,6 +230,7 @@ V1 implementation expectations:
 - Do not add client-side reader tracking, fingerprinting, or third-party surveillance.
 - Measure V1 with server/platform operational signals only.
 - Make author/person data explicit, editable, and intentionally published rather than inferred from private CMS user data.
+- Publish website content under a Creative Commons 4.0 license family, with the exact variant confirmed before launch.
 - Keep imported source material, generated exports, and local archives out of git unless explicitly approved.
 
 ## Technical Requirements
@@ -285,11 +286,4 @@ Operational metrics:
 
 ## Open Questions Before Final PRD Approval
 
-- What are the first 5-10 V1 categories/topics?
-- What privacy-aware newsletter/subscription provider should the subscribe CTA use?
-- Which server/platform metrics should be reported for V1?
-- Which share surfaces should ship first beyond native share and copy link? TBD.
-- Should CMS users be linkable to public person records, or should public people remain separate editorial content records?
-- What is the minimum real content count required for launch after lorem ipsum scaffolding?
-- What license should govern published content?
-- What domain/name should replace TEMIS if the codename changes before launch?
+See [open questions](./open-questions.md) for the canonical V1 question list.
