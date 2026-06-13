@@ -11,8 +11,8 @@ Content is published in EmDash, exported as a signed snapshot during the Pages b
 
 The V1 product direction is tracked in [docs/vision.md](./docs/vision.md),
 [docs/prd-v1.md](./docs/prd-v1.md),
-[docs/design-system.md](./docs/design-system.md), and
-[docs/creative-brief.md](./docs/creative-brief.md).
+[docs/design-system.md](./docs/design-system.md), and the ADRs in
+[docs/adr](./docs/adr).
 
 ## Local Setup
 

@@ -11,8 +11,6 @@ The V1 design system should support reading first, then discovery. It should mak
 
 The working-group posture is: we are explorers. The interface should therefore make room for curiosity, uncertainty, detours, and return paths while staying calm, legible, and trustworthy.
 
-For designer-facing creative direction, see the [V1 creative brief](./creative-brief.md).
-
 ## Experience Principles
 
 ### 1. Field Notes, Not Marketing
