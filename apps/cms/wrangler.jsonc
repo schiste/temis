@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "temis-cms",
+  "compatibility_date": "2026-04-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "vars": {
+    "TEMIS_CMS_SITE_URL": "https://temis-cms.workers.dev",
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "temis-cms-db",
+      "database_id": "TODO_REPLACE_WITH_WRANGLER_D1_CREATE_OUTPUT",
+    },
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "temis-media",
+    },
+  ],
+}

@@ -1,0 +1,176 @@
+{
+  "version": "1",
+  "meta": {
+    "name": "TEMIS Starter",
+    "description": "Starter content model for a static Astro site managed in EmDash.",
+    "author": "TEMIS"
+  },
+  "settings": {
+    "siteTitle": "TEMIS",
+    "siteTagline": "Static Astro, managed through EmDash."
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "description": "Standalone static pages.",
+      "icon": "file-text",
+      "supports": ["drafts", "revisions", "preview", "seo", "search"],
+      "urlPattern": "/{slug}",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "Summary",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "seo_title",
+          "label": "SEO Title",
+          "type": "string"
+        },
+        {
+          "slug": "seo_description",
+          "label": "SEO Description",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "slug": "posts",
+      "label": "Posts",
+      "labelSingular": "Post",
+      "description": "Published articles.",
+      "icon": "newspaper",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "seo",
+        "search",
+        "scheduling"
+      ],
+      "urlPattern": "/blog/{slug}",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "excerpt",
+          "label": "Excerpt",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "featured_image",
+          "label": "Featured Image",
+          "type": "image"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "seo_title",
+          "label": "SEO Title",
+          "type": "string"
+        },
+        {
+          "slug": "seo_description",
+          "label": "SEO Description",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "seed:page:home",
+        "slug": "home",
+        "status": "published",
+        "data": {
+          "title": "TEMIS",
+          "summary": "A Cloudflare-first static website powered by Astro and EmDash.",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This starter page is managed in EmDash and rendered statically by Astro."
+                }
+              ]
+            }
+          ],
+          "seo_title": "TEMIS",
+          "seo_description": "A static Astro site with EmDash-managed content."
+        }
+      }
+    ],
+    "posts": [
+      {
+        "id": "seed:post:welcome",
+        "slug": "welcome",
+        "status": "published",
+        "data": {
+          "title": "Welcome to TEMIS",
+          "excerpt": "The first published article in the TEMIS starter content model.",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Use this entry to verify the publish-to-static flow, then replace it with PRD-backed content."
+                }
+              ]
+            }
+          ],
+          "seo_title": "Welcome to TEMIS",
+          "seo_description": "Starter content for the TEMIS EmDash and Astro stack."
+        }
+      }
+    ]
+  },
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "type": "custom",
+          "label": "Blog",
+          "url": "/blog/"
+        }
+      ]
+    }
+  ]
+}

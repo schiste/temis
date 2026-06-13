@@ -1,0 +1,57 @@
+---
+import {
+  entryDescription,
+  entrySlug,
+  entryTitle,
+  getPostBySlug,
+  getPosts,
+} from "../../lib/emdash";
+import { portableTextToHtml } from "../../lib/portable-text";
+import "../../styles/global.css";
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    params: { slug: entrySlug(post) },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const resolvedPost = post ?? (await getPostBySlug(Astro.params.slug ?? ""));
+if (!resolvedPost) {
+  return Astro.redirect("/404");
+}
+
+const title = entryTitle(resolvedPost);
+const description = entryDescription(resolvedPost);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} | TEMIS</title>
+    {description && <meta name="description" content={description} />}
+  </head>
+  <body>
+    <main class="shell">
+      <header class="site-header">
+        <a class="brand" href="/">TEMIS</a>
+        <nav class="nav" aria-label="Primary">
+          <a href="/blog/">Blog</a>
+        </nav>
+      </header>
+
+      <article>
+        <p class="meta">Published content</p>
+        <h1>{title}</h1>
+        {description && <p class="lede">{description}</p>}
+        <div
+          class="content"
+          set:html={portableTextToHtml(resolvedPost.content)}
+        />
+      </article>
+    </main>
+  </body>
+</html>

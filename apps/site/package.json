@@ -1,0 +1,23 @@
+{
+  "name": "@temis/site",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "pnpm run snapshot:pull && astro build",
+    "build:offline": "astro build",
+    "preview": "astro preview",
+    "snapshot:pull": "node ./scripts/pull-snapshot.mjs",
+    "type-check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.9",
+    "astro": "^6.2.2",
+    "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}

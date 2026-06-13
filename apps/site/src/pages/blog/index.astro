@@ -1,0 +1,41 @@
+---
+import { entryDescription, entryTitle, getPosts } from "../../lib/emdash";
+import "../../styles/global.css";
+
+const posts = await getPosts();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blog | TEMIS</title>
+    <meta name="description" content="Published TEMIS articles." />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="site-header">
+        <a class="brand" href="/">TEMIS</a>
+        <nav class="nav" aria-label="Primary">
+          <a href="/blog/">Blog</a>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <p class="eyebrow">Blog</p>
+        <h1>Published articles</h1>
+      </section>
+
+      <div class="listing">
+        {
+          posts.map((post) => (
+            <a href={`/blog/${post.slug}/`}>
+              <strong>{entryTitle(post)}</strong>
+              {entryDescription(post) && <span>{entryDescription(post)}</span>}
+            </a>
+          ))
+        }
+      </div>
+    </main>
+  </body>
+</html>

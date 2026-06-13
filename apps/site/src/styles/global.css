@@ -1,0 +1,148 @@
+:root {
+  color-scheme: light;
+  --bg: #faf9f5;
+  --ink: #151515;
+  --muted: #5c625f;
+  --line: #d8d2c7;
+  --accent: #006b5f;
+  --accent-strong: #003d36;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--accent-strong);
+}
+
+.shell {
+  margin: 0 auto;
+  max-width: 960px;
+  padding: 32px 20px 56px;
+}
+
+.site-header {
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+  margin-bottom: 56px;
+  padding-bottom: 18px;
+}
+
+.brand {
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  gap: 16px;
+}
+
+.nav a {
+  color: var(--muted);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.hero {
+  display: grid;
+  gap: 24px;
+  margin-bottom: 64px;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(42px, 8vw, 86px);
+  letter-spacing: 0;
+  line-height: 0.95;
+  margin: 0;
+  max-width: 780px;
+}
+
+h2 {
+  font-size: 26px;
+  line-height: 1.2;
+  margin: 40px 0 12px;
+}
+
+.lede {
+  color: var(--muted);
+  font-size: 20px;
+  margin: 0;
+  max-width: 680px;
+}
+
+.content {
+  font-size: 18px;
+  max-width: 720px;
+}
+
+.listing {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 0;
+  margin: 24px 0 0;
+}
+
+.listing a {
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  display: grid;
+  gap: 6px;
+  padding: 20px 0;
+  text-decoration: none;
+}
+
+.listing strong {
+  font-size: 20px;
+}
+
+.listing span {
+  color: var(--muted);
+}
+
+.meta {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0 0 24px;
+}
+
+@media (max-width: 640px) {
+  .site-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .nav {
+    flex-wrap: wrap;
+  }
+}

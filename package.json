@@ -1,0 +1,33 @@
+{
+  "name": "temis",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TEMIS static site with EmDash-managed content on Cloudflare.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm -r --parallel --if-present dev",
+    "dev:site": "pnpm --filter @temis/site dev",
+    "dev:cms": "pnpm --filter @temis/cms dev",
+    "build": "pnpm --filter @temis/site build",
+    "build:offline": "pnpm --filter @temis/site build:offline",
+    "build:cms": "pnpm --filter @temis/cms build",
+    "seed": "pnpm --filter @temis/cms seed",
+    "type-check": "pnpm -r type-check",
+    "format": "pnpm exec prettier --write \"**/*.{ts,js,mjs,json,jsonc,md,astro,css,yaml}\"",
+    "format:check": "pnpm exec prettier --check \"**/*.{ts,js,mjs,json,jsonc,md,astro,css,yaml}\"",
+    "deploy:cms": "pnpm --filter @temis/cms deploy"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0",
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "prettier": "^3.2.4",
+    "prettier-plugin-astro": "^0.14.1",
+    "typescript": "^5.7.0",
+    "wrangler": "^4.61.1"
+  }
+}

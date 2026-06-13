@@ -1,0 +1,21 @@
+{
+  "codename": "TEMIS",
+  "siteId": "temis",
+  "displayName": "TEMIS",
+  "admin": {
+    "initialEmail": "christophe.henner@gmail.com",
+    "roles": ["admin", "editor"]
+  },
+  "cloudflare": {
+    "pagesProject": "temis-site",
+    "cmsWorker": "temis-cms",
+    "d1Database": "temis-cms-db",
+    "mediaBucket": "temis-media",
+    "deployHookEnvVar": "TEMIS_PAGES_DEPLOY_HOOK_URL"
+  },
+  "urls": {
+    "production": "https://url.com",
+    "productionWww": "https://www.url.com",
+    "preview": "https://preview.url.com"
+  }
+}

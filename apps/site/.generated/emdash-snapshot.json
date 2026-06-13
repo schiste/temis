@@ -1,0 +1,999 @@
+{
+  "tables": {
+    "ec_pages": [
+      {
+        "id": "01KV0V51M4P4Y4ZFYJQDW538DS",
+        "slug": "home",
+        "status": "published",
+        "author_id": null,
+        "primary_byline_id": null,
+        "created_at": "2026-06-13T15:56:03.076Z",
+        "updated_at": "2026-06-13T15:56:03.076Z",
+        "published_at": "2026-06-13T15:56:03.075Z",
+        "scheduled_at": null,
+        "deleted_at": null,
+        "version": 1,
+        "live_revision_id": "01KV0V51M456QY7DMF985P3EFM",
+        "draft_revision_id": null,
+        "locale": "en",
+        "translation_group": "01KV0V51M4P4Y4ZFYJQDW538DS",
+        "title": "TEMIS",
+        "summary": "A Cloudflare-first static website powered by Astro and EmDash.",
+        "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"This starter page is managed in EmDash and rendered statically by Astro.\"}]}]",
+        "seo_title": "TEMIS",
+        "seo_description": "A static Astro site with EmDash-managed content."
+      }
+    ],
+    "ec_posts": [
+      {
+        "id": "01KV0V51M46DXBD27H8TRS8V2Y",
+        "slug": "welcome",
+        "status": "published",
+        "author_id": null,
+        "primary_byline_id": null,
+        "created_at": "2026-06-13T15:56:03.076Z",
+        "updated_at": "2026-06-13T15:56:03.076Z",
+        "published_at": "2026-06-13T15:56:03.076Z",
+        "scheduled_at": null,
+        "deleted_at": null,
+        "version": 1,
+        "live_revision_id": "01KV0V51M456QY7DMF985P3EFN",
+        "draft_revision_id": null,
+        "locale": "en",
+        "translation_group": "01KV0V51M46DXBD27H8TRS8V2Y",
+        "title": "Welcome to TEMIS",
+        "excerpt": "The first published article in the TEMIS starter content model.",
+        "featured_image": null,
+        "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Use this entry to verify the publish-to-static flow, then replace it with PRD-backed content.\"}]}]",
+        "seo_title": "Welcome to TEMIS",
+        "seo_description": "Starter content for the TEMIS EmDash and Astro stack."
+      }
+    ],
+    "_emdash_collections": [
+      {
+        "id": "01KV0V51KV8KPKEVZT62Z38REW",
+        "slug": "pages",
+        "label": "Pages",
+        "label_singular": "Page",
+        "description": "Standalone static pages.",
+        "icon": "file-text",
+        "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\"]",
+        "source": "seed",
+        "created_at": "2026-06-13 15:56:03",
+        "updated_at": "2026-06-13 15:56:03",
+        "search_config": "{\"enabled\":true}",
+        "has_seo": 1,
+        "url_pattern": "/{slug}",
+        "comments_enabled": 0,
+        "comments_moderation": "first_time",
+        "comments_closed_after_days": 90,
+        "comments_auto_approve_users": 1
+      },
+      {
+        "id": "01KV0V51M07GF45TE12KK68ZD0",
+        "slug": "posts",
+        "label": "Posts",
+        "label_singular": "Post",
+        "description": "Published articles.",
+        "icon": "newspaper",
+        "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\",\"scheduling\"]",
+        "source": "seed",
+        "created_at": "2026-06-13 15:56:03",
+        "updated_at": "2026-06-13 15:56:03",
+        "search_config": "{\"enabled\":true}",
+        "has_seo": 1,
+        "url_pattern": "/blog/{slug}",
+        "comments_enabled": 0,
+        "comments_moderation": "first_time",
+        "comments_closed_after_days": 90,
+        "comments_auto_approve_users": 1
+      }
+    ],
+    "_emdash_fields": [
+      {
+        "id": "01KV0V51KX6DMR3V9SNKXX2153",
+        "collection_id": "01KV0V51KV8KPKEVZT62Z38REW",
+        "slug": "title",
+        "label": "Title",
+        "type": "string",
+        "column_type": "TEXT",
+        "required": 1,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 0,
+        "created_at": "2026-06-13 15:56:03",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KV0V51KYY5S33XVC92T8VEJD",
+        "collection_id": "01KV0V51KV8KPKEVZT62Z38REW",
+        "slug": "summary",
+        "label": "Summary",
+        "type": "text",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 1,
+        "created_at": "2026-06-13 15:56:03",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KV0V51KYPEVYJDQCDDPFCXYT",
+        "collection_id": "01KV0V51KV8KPKEVZT62Z38REW",
+        "slug": "content",
+        "label": "Content",
+        "type": "portableText",
+        "column_type": "JSON",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 2,
+        "created_at": "2026-06-13 15:56:03",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KV0V51KZXSEH5MSHC0YKRFAP",
+        "collection_id": "01KV0V51KV8KPKEVZT62Z38REW",
+        "slug": "seo_title",
+        "label": "SEO Title",
+        "type": "string",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 3,
+        "created_at": "2026-06-13 15:56:03",
+        "searchable": 0,
+        "translatable": 1
+      },
+      {
+        "id": "01KV0V51KZF3V0RAHGK9403EDT",
+        "collection_id": "01KV0V51KV8KPKEVZT62Z38REW",
+        "slug": "seo_description",
+        "label": "SEO Description",
+        "type": "text",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 4,
+        "created_at": "2026-06-13 15:56:03",
+        "searchable": 0,
+        "translatable": 1
+      },
+      {
+        "id": "01KV0V51M06CBAN5MZ0PGPC5CP",
+        "collection_id": "01KV0V51M07GF45TE12KK68ZD0",
+        "slug": "title",
+        "label": "Title",
+        "type": "string",
+        "column_type": "TEXT",
+        "required": 1,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 0,
+        "created_at": "2026-06-13 15:56:03",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KV0V51M16NPJXGWJ0AXDTQHR",
+        "collection_id": "01KV0V51M07GF45TE12KK68ZD0",
+        "slug": "excerpt",
+        "label": "Excerpt",
+        "type": "text",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 1,
+        "created_at": "2026-06-13 15:56:03",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KV0V51M24YT1059XGNSSJK2Y",
+        "collection_id": "01KV0V51M07GF45TE12KK68ZD0",
+        "slug": "featured_image",
+        "label": "Featured Image",
+        "type": "image",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 2,
+        "created_at": "2026-06-13 15:56:03",
+        "searchable": 0,
+        "translatable": 1
+      },
+      {
+        "id": "01KV0V51M2H3GJ2M149QJGV3H5",
+        "collection_id": "01KV0V51M07GF45TE12KK68ZD0",
+        "slug": "content",
+        "label": "Content",
+        "type": "portableText",
+        "column_type": "JSON",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 3,
+        "created_at": "2026-06-13 15:56:03",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KV0V51M22QEFYACJBMWRM90Z",
+        "collection_id": "01KV0V51M07GF45TE12KK68ZD0",
+        "slug": "seo_title",
+        "label": "SEO Title",
+        "type": "string",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 4,
+        "created_at": "2026-06-13 15:56:03",
+        "searchable": 0,
+        "translatable": 1
+      },
+      {
+        "id": "01KV0V51M3B72WKWXGSG0ZBRAA",
+        "collection_id": "01KV0V51M07GF45TE12KK68ZD0",
+        "slug": "seo_description",
+        "label": "SEO Description",
+        "type": "text",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 5,
+        "created_at": "2026-06-13 15:56:03",
+        "searchable": 0,
+        "translatable": 1
+      }
+    ],
+    "_emdash_taxonomy_defs": [
+      {
+        "id": "taxdef_category",
+        "name": "category",
+        "label": "Categories",
+        "label_singular": "Category",
+        "hierarchical": 1,
+        "collections": "[\"posts\"]",
+        "created_at": "2026-06-13 15:56:03",
+        "locale": "en",
+        "translation_group": "taxdef_category"
+      },
+      {
+        "id": "taxdef_tag",
+        "name": "tag",
+        "label": "Tags",
+        "label_singular": "Tag",
+        "hierarchical": 0,
+        "collections": "[\"posts\"]",
+        "created_at": "2026-06-13 15:56:03",
+        "locale": "en",
+        "translation_group": "taxdef_tag"
+      }
+    ],
+    "_emdash_menus": [
+      {
+        "id": "01KV0V51M5PE9ZHTTYB39CB0AJ",
+        "name": "primary",
+        "label": "Primary",
+        "created_at": "2026-06-13T15:56:03.077Z",
+        "updated_at": "2026-06-13T15:56:03.077Z",
+        "locale": "en",
+        "translation_group": "01KV0V51M5PE9ZHTTYB39CB0AJ"
+      }
+    ],
+    "_emdash_menu_items": [
+      {
+        "id": "01KV0V51M519J7QPWFGF5W5E4P",
+        "menu_id": "01KV0V51M5PE9ZHTTYB39CB0AJ",
+        "parent_id": null,
+        "sort_order": 0,
+        "type": "custom",
+        "reference_collection": null,
+        "reference_id": null,
+        "custom_url": "/",
+        "label": "Home",
+        "title_attr": null,
+        "target": null,
+        "css_classes": null,
+        "created_at": "2026-06-13T15:56:03.077Z",
+        "locale": "en",
+        "translation_group": "01KV0V51M519J7QPWFGF5W5E4P"
+      },
+      {
+        "id": "01KV0V51M5E334T6VW0J9ZR7BX",
+        "menu_id": "01KV0V51M5PE9ZHTTYB39CB0AJ",
+        "parent_id": null,
+        "sort_order": 1,
+        "type": "custom",
+        "reference_collection": null,
+        "reference_id": null,
+        "custom_url": "/blog/",
+        "label": "Blog",
+        "title_attr": null,
+        "target": null,
+        "css_classes": null,
+        "created_at": "2026-06-13T15:56:03.077Z",
+        "locale": "en",
+        "translation_group": "01KV0V51M5E334T6VW0J9ZR7BX"
+      }
+    ],
+    "_emdash_migrations": [
+      {
+        "name": "001_initial",
+        "timestamp": "2026-06-13T15:56:03.046Z"
+      },
+      {
+        "name": "002_media_status",
+        "timestamp": "2026-06-13T15:56:03.046Z"
+      },
+      {
+        "name": "003_schema_registry",
+        "timestamp": "2026-06-13T15:56:03.047Z"
+      },
+      {
+        "name": "004_plugins",
+        "timestamp": "2026-06-13T15:56:03.047Z"
+      },
+      {
+        "name": "005_menus",
+        "timestamp": "2026-06-13T15:56:03.047Z"
+      },
+      {
+        "name": "006_taxonomy_defs",
+        "timestamp": "2026-06-13T15:56:03.048Z"
+      },
+      {
+        "name": "007_widgets",
+        "timestamp": "2026-06-13T15:56:03.048Z"
+      },
+      {
+        "name": "008_auth",
+        "timestamp": "2026-06-13T15:56:03.049Z"
+      },
+      {
+        "name": "009_user_disabled",
+        "timestamp": "2026-06-13T15:56:03.049Z"
+      },
+      {
+        "name": "011_sections",
+        "timestamp": "2026-06-13T15:56:03.050Z"
+      },
+      {
+        "name": "012_search",
+        "timestamp": "2026-06-13T15:56:03.050Z"
+      },
+      {
+        "name": "013_scheduled_publishing",
+        "timestamp": "2026-06-13T15:56:03.050Z"
+      },
+      {
+        "name": "014_draft_revisions",
+        "timestamp": "2026-06-13T15:56:03.050Z"
+      },
+      {
+        "name": "015_indexes",
+        "timestamp": "2026-06-13T15:56:03.050Z"
+      },
+      {
+        "name": "016_api_tokens",
+        "timestamp": "2026-06-13T15:56:03.051Z"
+      },
+      {
+        "name": "017_authorization_codes",
+        "timestamp": "2026-06-13T15:56:03.051Z"
+      },
+      {
+        "name": "018_seo",
+        "timestamp": "2026-06-13T15:56:03.052Z"
+      },
+      {
+        "name": "019_i18n",
+        "timestamp": "2026-06-13T15:56:03.052Z"
+      },
+      {
+        "name": "020_collection_url_pattern",
+        "timestamp": "2026-06-13T15:56:03.052Z"
+      },
+      {
+        "name": "021_remove_section_categories",
+        "timestamp": "2026-06-13T15:56:03.053Z"
+      },
+      {
+        "name": "022_marketplace_plugin_state",
+        "timestamp": "2026-06-13T15:56:03.053Z"
+      },
+      {
+        "name": "023_plugin_metadata",
+        "timestamp": "2026-06-13T15:56:03.054Z"
+      },
+      {
+        "name": "024_media_placeholders",
+        "timestamp": "2026-06-13T15:56:03.054Z"
+      },
+      {
+        "name": "025_oauth_clients",
+        "timestamp": "2026-06-13T15:56:03.054Z"
+      },
+      {
+        "name": "026_cron_tasks",
+        "timestamp": "2026-06-13T15:56:03.054Z"
+      },
+      {
+        "name": "027_comments",
+        "timestamp": "2026-06-13T15:56:03.055Z"
+      },
+      {
+        "name": "028_drop_author_url",
+        "timestamp": "2026-06-13T15:56:03.056Z"
+      },
+      {
+        "name": "029_redirects",
+        "timestamp": "2026-06-13T15:56:03.056Z"
+      },
+      {
+        "name": "030_widen_scheduled_index",
+        "timestamp": "2026-06-13T15:56:03.056Z"
+      },
+      {
+        "name": "031_bylines",
+        "timestamp": "2026-06-13T15:56:03.057Z"
+      },
+      {
+        "name": "032_rate_limits",
+        "timestamp": "2026-06-13T15:56:03.057Z"
+      },
+      {
+        "name": "033_optimize_content_indexes",
+        "timestamp": "2026-06-13T15:56:03.057Z"
+      },
+      {
+        "name": "034_published_at_index",
+        "timestamp": "2026-06-13T15:56:03.057Z"
+      },
+      {
+        "name": "035_bounded_404_log",
+        "timestamp": "2026-06-13T15:56:03.058Z"
+      },
+      {
+        "name": "036_i18n_menus_and_taxonomies",
+        "timestamp": "2026-06-13T15:56:03.063Z"
+      },
+      {
+        "name": "037_credential_algorithm",
+        "timestamp": "2026-06-13T15:56:03.063Z"
+      },
+      {
+        "name": "038_registry_plugin_state",
+        "timestamp": "2026-06-13T15:56:03.063Z"
+      },
+      {
+        "name": "039_fix_fts5_triggers",
+        "timestamp": "2026-06-13T15:56:03.063Z"
+      },
+      {
+        "name": "040_byline_i18n",
+        "timestamp": "2026-06-13T15:56:03.065Z"
+      },
+      {
+        "name": "041_content_locale_list_index",
+        "timestamp": "2026-06-13T15:56:03.065Z"
+      },
+      {
+        "name": "042_byline_fields",
+        "timestamp": "2026-06-13T15:56:03.066Z"
+      }
+    ],
+    "options": [
+      {
+        "name": "site:siteTitle",
+        "value": "\"TEMIS\""
+      },
+      {
+        "name": "site:siteTagline",
+        "value": "\"Static Astro, managed through EmDash.\""
+      }
+    ],
+    "revisions": [
+      {
+        "id": "01KV0V51M456QY7DMF985P3EFM",
+        "collection": "pages",
+        "entry_id": "01KV0V51M4P4Y4ZFYJQDW538DS",
+        "data": "{\"title\":\"TEMIS\",\"summary\":\"A Cloudflare-first static website powered by Astro and EmDash.\",\"content\":[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"This starter page is managed in EmDash and rendered statically by Astro.\"}]}],\"seo_title\":\"TEMIS\",\"seo_description\":\"A static Astro site with EmDash-managed content.\"}",
+        "author_id": null,
+        "created_at": "2026-06-13 15:56:03"
+      },
+      {
+        "id": "01KV0V51M456QY7DMF985P3EFN",
+        "collection": "posts",
+        "entry_id": "01KV0V51M46DXBD27H8TRS8V2Y",
+        "data": "{\"title\":\"Welcome to TEMIS\",\"excerpt\":\"The first published article in the TEMIS starter content model.\",\"content\":[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Use this entry to verify the publish-to-static flow, then replace it with PRD-backed content.\"}]}],\"seo_title\":\"Welcome to TEMIS\",\"seo_description\":\"Starter content for the TEMIS EmDash and Astro stack.\"}",
+        "author_id": null,
+        "created_at": "2026-06-13 15:56:03"
+      }
+    ]
+  },
+  "schema": {
+    "ec_pages": {
+      "columns": [
+        "id",
+        "slug",
+        "status",
+        "author_id",
+        "primary_byline_id",
+        "created_at",
+        "updated_at",
+        "published_at",
+        "scheduled_at",
+        "deleted_at",
+        "version",
+        "live_revision_id",
+        "draft_revision_id",
+        "locale",
+        "translation_group",
+        "title",
+        "summary",
+        "content",
+        "seo_title",
+        "seo_description"
+      ],
+      "types": {
+        "id": "TEXT",
+        "slug": "TEXT",
+        "status": "TEXT",
+        "author_id": "TEXT",
+        "primary_byline_id": "TEXT",
+        "created_at": "TEXT",
+        "updated_at": "TEXT",
+        "published_at": "TEXT",
+        "scheduled_at": "TEXT",
+        "deleted_at": "TEXT",
+        "version": "INTEGER",
+        "live_revision_id": "TEXT",
+        "draft_revision_id": "TEXT",
+        "locale": "TEXT",
+        "translation_group": "TEXT",
+        "title": "TEXT",
+        "summary": "TEXT",
+        "content": "JSON",
+        "seo_title": "TEXT",
+        "seo_description": "TEXT"
+      }
+    },
+    "ec_posts": {
+      "columns": [
+        "id",
+        "slug",
+        "status",
+        "author_id",
+        "primary_byline_id",
+        "created_at",
+        "updated_at",
+        "published_at",
+        "scheduled_at",
+        "deleted_at",
+        "version",
+        "live_revision_id",
+        "draft_revision_id",
+        "locale",
+        "translation_group",
+        "title",
+        "excerpt",
+        "featured_image",
+        "content",
+        "seo_title",
+        "seo_description"
+      ],
+      "types": {
+        "id": "TEXT",
+        "slug": "TEXT",
+        "status": "TEXT",
+        "author_id": "TEXT",
+        "primary_byline_id": "TEXT",
+        "created_at": "TEXT",
+        "updated_at": "TEXT",
+        "published_at": "TEXT",
+        "scheduled_at": "TEXT",
+        "deleted_at": "TEXT",
+        "version": "INTEGER",
+        "live_revision_id": "TEXT",
+        "draft_revision_id": "TEXT",
+        "locale": "TEXT",
+        "translation_group": "TEXT",
+        "title": "TEXT",
+        "excerpt": "TEXT",
+        "featured_image": "TEXT",
+        "content": "JSON",
+        "seo_title": "TEXT",
+        "seo_description": "TEXT"
+      }
+    },
+    "_emdash_collections": {
+      "columns": [
+        "id",
+        "slug",
+        "label",
+        "label_singular",
+        "description",
+        "icon",
+        "supports",
+        "source",
+        "created_at",
+        "updated_at",
+        "search_config",
+        "has_seo",
+        "url_pattern",
+        "comments_enabled",
+        "comments_moderation",
+        "comments_closed_after_days",
+        "comments_auto_approve_users"
+      ],
+      "types": {
+        "id": "TEXT",
+        "slug": "TEXT",
+        "label": "TEXT",
+        "label_singular": "TEXT",
+        "description": "TEXT",
+        "icon": "TEXT",
+        "supports": "TEXT",
+        "source": "TEXT",
+        "created_at": "TEXT",
+        "updated_at": "TEXT",
+        "search_config": "TEXT",
+        "has_seo": "INTEGER",
+        "url_pattern": "TEXT",
+        "comments_enabled": "INTEGER",
+        "comments_moderation": "TEXT",
+        "comments_closed_after_days": "INTEGER",
+        "comments_auto_approve_users": "INTEGER"
+      }
+    },
+    "_emdash_fields": {
+      "columns": [
+        "id",
+        "collection_id",
+        "slug",
+        "label",
+        "type",
+        "column_type",
+        "required",
+        "unique",
+        "default_value",
+        "validation",
+        "widget",
+        "options",
+        "sort_order",
+        "created_at",
+        "searchable",
+        "translatable"
+      ],
+      "types": {
+        "id": "TEXT",
+        "collection_id": "TEXT",
+        "slug": "TEXT",
+        "label": "TEXT",
+        "type": "TEXT",
+        "column_type": "TEXT",
+        "required": "INTEGER",
+        "unique": "INTEGER",
+        "default_value": "TEXT",
+        "validation": "TEXT",
+        "widget": "TEXT",
+        "options": "TEXT",
+        "sort_order": "INTEGER",
+        "created_at": "TEXT",
+        "searchable": "INTEGER",
+        "translatable": "INTEGER"
+      }
+    },
+    "_emdash_taxonomy_defs": {
+      "columns": [
+        "id",
+        "name",
+        "label",
+        "label_singular",
+        "hierarchical",
+        "collections",
+        "created_at",
+        "locale",
+        "translation_group"
+      ],
+      "types": {
+        "id": "TEXT",
+        "name": "TEXT",
+        "label": "TEXT",
+        "label_singular": "TEXT",
+        "hierarchical": "INTEGER",
+        "collections": "TEXT",
+        "created_at": "TEXT",
+        "locale": "TEXT",
+        "translation_group": "TEXT"
+      }
+    },
+    "_emdash_menus": {
+      "columns": [
+        "id",
+        "name",
+        "label",
+        "created_at",
+        "updated_at",
+        "locale",
+        "translation_group"
+      ],
+      "types": {
+        "id": "TEXT",
+        "name": "TEXT",
+        "label": "TEXT",
+        "created_at": "TEXT",
+        "updated_at": "TEXT",
+        "locale": "TEXT",
+        "translation_group": "TEXT"
+      }
+    },
+    "_emdash_menu_items": {
+      "columns": [
+        "id",
+        "menu_id",
+        "parent_id",
+        "sort_order",
+        "type",
+        "reference_collection",
+        "reference_id",
+        "custom_url",
+        "label",
+        "title_attr",
+        "target",
+        "css_classes",
+        "created_at",
+        "locale",
+        "translation_group"
+      ],
+      "types": {
+        "id": "TEXT",
+        "menu_id": "TEXT",
+        "parent_id": "TEXT",
+        "sort_order": "INTEGER",
+        "type": "TEXT",
+        "reference_collection": "TEXT",
+        "reference_id": "TEXT",
+        "custom_url": "TEXT",
+        "label": "TEXT",
+        "title_attr": "TEXT",
+        "target": "TEXT",
+        "css_classes": "TEXT",
+        "created_at": "TEXT",
+        "locale": "TEXT",
+        "translation_group": "TEXT"
+      }
+    },
+    "_emdash_sections": {
+      "columns": [
+        "id",
+        "slug",
+        "title",
+        "description",
+        "keywords",
+        "content",
+        "preview_media_id",
+        "source",
+        "theme_id",
+        "created_at",
+        "updated_at"
+      ],
+      "types": {
+        "id": "TEXT",
+        "slug": "TEXT",
+        "title": "TEXT",
+        "description": "TEXT",
+        "keywords": "TEXT",
+        "content": "TEXT",
+        "preview_media_id": "TEXT",
+        "source": "TEXT",
+        "theme_id": "TEXT",
+        "created_at": "TEXT",
+        "updated_at": "TEXT"
+      }
+    },
+    "_emdash_widget_areas": {
+      "columns": ["id", "name", "label", "description", "created_at"],
+      "types": {
+        "id": "TEXT",
+        "name": "TEXT",
+        "label": "TEXT",
+        "description": "TEXT",
+        "created_at": "TEXT"
+      }
+    },
+    "_emdash_widgets": {
+      "columns": [
+        "id",
+        "area_id",
+        "sort_order",
+        "type",
+        "title",
+        "content",
+        "menu_name",
+        "component_id",
+        "component_props",
+        "created_at"
+      ],
+      "types": {
+        "id": "TEXT",
+        "area_id": "TEXT",
+        "sort_order": "INTEGER",
+        "type": "TEXT",
+        "title": "TEXT",
+        "content": "TEXT",
+        "menu_name": "TEXT",
+        "component_id": "TEXT",
+        "component_props": "TEXT",
+        "created_at": "TEXT"
+      }
+    },
+    "_emdash_seo": {
+      "columns": [
+        "collection",
+        "content_id",
+        "seo_title",
+        "seo_description",
+        "seo_image",
+        "seo_canonical",
+        "seo_no_index",
+        "created_at",
+        "updated_at"
+      ],
+      "types": {
+        "collection": "TEXT",
+        "content_id": "TEXT",
+        "seo_title": "TEXT",
+        "seo_description": "TEXT",
+        "seo_image": "TEXT",
+        "seo_canonical": "TEXT",
+        "seo_no_index": "INTEGER",
+        "created_at": "TEXT",
+        "updated_at": "TEXT"
+      }
+    },
+    "_emdash_migrations": {
+      "columns": ["name", "timestamp"],
+      "types": {
+        "name": "varchar(255)",
+        "timestamp": "varchar(255)"
+      }
+    },
+    "taxonomies": {
+      "columns": [
+        "id",
+        "name",
+        "slug",
+        "label",
+        "parent_id",
+        "data",
+        "locale",
+        "translation_group"
+      ],
+      "types": {
+        "id": "TEXT",
+        "name": "TEXT",
+        "slug": "TEXT",
+        "label": "TEXT",
+        "parent_id": "TEXT",
+        "data": "TEXT",
+        "locale": "TEXT",
+        "translation_group": "TEXT"
+      }
+    },
+    "content_taxonomies": {
+      "columns": ["collection", "entry_id", "taxonomy_id"],
+      "types": {
+        "collection": "TEXT",
+        "entry_id": "TEXT",
+        "taxonomy_id": "TEXT"
+      }
+    },
+    "media": {
+      "columns": [
+        "id",
+        "filename",
+        "mime_type",
+        "size",
+        "width",
+        "height",
+        "alt",
+        "caption",
+        "storage_key",
+        "content_hash",
+        "created_at",
+        "author_id",
+        "status",
+        "blurhash",
+        "dominant_color"
+      ],
+      "types": {
+        "id": "TEXT",
+        "filename": "TEXT",
+        "mime_type": "TEXT",
+        "size": "INTEGER",
+        "width": "INTEGER",
+        "height": "INTEGER",
+        "alt": "TEXT",
+        "caption": "TEXT",
+        "storage_key": "TEXT",
+        "content_hash": "TEXT",
+        "created_at": "TEXT",
+        "author_id": "TEXT",
+        "status": "TEXT",
+        "blurhash": "TEXT",
+        "dominant_color": "TEXT"
+      }
+    },
+    "options": {
+      "columns": ["name", "value"],
+      "types": {
+        "name": "TEXT",
+        "value": "TEXT"
+      }
+    },
+    "revisions": {
+      "columns": [
+        "id",
+        "collection",
+        "entry_id",
+        "data",
+        "author_id",
+        "created_at"
+      ],
+      "types": {
+        "id": "TEXT",
+        "collection": "TEXT",
+        "entry_id": "TEXT",
+        "data": "TEXT",
+        "author_id": "TEXT",
+        "created_at": "TEXT"
+      }
+    }
+  },
+  "generatedAt": "2026-06-13T16:21:56.608Z"
+}
