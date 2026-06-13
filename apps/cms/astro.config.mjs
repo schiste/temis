@@ -1,9 +1,11 @@
 import { defineConfig, sessionDrivers } from "astro/config";
+import { aexeoPlugin } from "@aeptus/aexeo-emdash";
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import { d1, r2 } from "@emdash-cms/cloudflare";
 import emdash, { local } from "emdash/astro";
 import { sqlite } from "emdash/db";
+import wasm from "vite-plugin-wasm";
 import cloudflareDeployTriggerPlugin from "@temis/emdash-cloudflare-deploy";
 
 const isBuildCommand = process.env.TEMIS_CMS_BUILD === "1";
@@ -37,12 +39,17 @@ export default defineConfig({
   output: "server",
   ...(adapter ? { adapter } : {}),
   ...(devSession ? { session: devSession } : {}),
+  vite: {
+    plugins: [wasm()],
+    optimizeDeps: { exclude: ["@aeptus/aexeo-emdash"] },
+  },
   integrations: [
     react(),
     emdash({
       database,
       storage,
       plugins: [
+        aexeoPlugin({ collections: ["posts", "pages"] }),
         cloudflareDeployTriggerPlugin({
           deployHookEnvVar: "TEMIS_PAGES_DEPLOY_HOOK_URL",
           debounceSeconds: 30,

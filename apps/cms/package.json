@@ -13,6 +13,7 @@
     "type-check": "astro check"
   },
   "dependencies": {
+    "@aeptus/aexeo-emdash": "0.8.17",
     "@astrojs/check": "^0.9.9",
     "@astrojs/cloudflare": "^13.3.1",
     "@astrojs/react": "^5.0.4",
@@ -22,7 +23,8 @@
     "astro": "^6.2.2",
     "emdash": "^0.17.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "vite-plugin-wasm": "^3.6.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260507.1",

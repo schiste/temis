@@ -25,6 +25,9 @@ importers:
 
   apps/cms:
     dependencies:
+      "@aeptus/aexeo-emdash":
+        specifier: 0.8.17
+        version: 0.8.17(emdash@0.17.2)(react@19.2.7)
       "@astrojs/check":
         specifier: ^0.9.9
         version: 0.9.9(prettier-plugin-astro@0.14.1)(prettier@3.8.4)(typescript@5.9.3)
@@ -55,6 +58,9 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.2.7(react@19.2.7)
+      vite-plugin-wasm:
+        specifier: ^3.6.0
+        version: 3.6.0(vite@7.3.5)
     devDependencies:
       "@cloudflare/workers-types":
         specifier: ^4.20260507.1
@@ -93,6 +99,30 @@ importers:
         version: 5.9.3
 
 packages:
+  /@aeptus/aexeo-emdash@0.8.17(emdash@0.17.2)(react@19.2.7):
+    resolution:
+      {
+        integrity: sha512-+FrgW7fWNa2v1VjbDScAhIJJ6ZKsZytEc1jRNtBy8PXEtXBsuDuufK1FNsB/aL/UyBmHlQXkGZHN4upAt1KgVQ==,
+      }
+    peerDependencies:
+      "@emdash-cms/core": "*"
+      "@emdash-cms/plugin-types": "*"
+      emdash: ">=0.7.0"
+      react: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      "@emdash-cms/core":
+        optional: true
+      "@emdash-cms/plugin-types":
+        optional: true
+      emdash:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      emdash: 0.17.2(@astrojs/react@5.0.7)(@atcute/identity@2.0.0)(@floating-ui/dom@1.7.6)(@tiptap/extension-collaboration@3.26.1)(@tiptap/extensions@3.26.1)(@tiptap/pm@3.26.1)(@tiptap/y-tiptap@3.0.5)(@types/react-dom@19.2.3)(@types/react@19.2.17)(astro@6.4.6)(react-dom@19.2.7)(react@19.2.7)(typescript@5.9.3)
+      react: 19.2.7
+    dev: false
+
   /@astrojs/check@0.9.9(prettier-plugin-astro@0.14.1)(prettier@3.8.4)(typescript@5.9.3):
     resolution:
       {
@@ -9090,6 +9120,17 @@ packages:
     dependencies:
       "@types/unist": 3.0.3
       vfile-message: 4.0.3
+    dev: false
+
+  /vite-plugin-wasm@3.6.0(vite@7.3.5):
+    resolution:
+      {
+        integrity: sha512-mL/QPziiIA4RAA6DkaZZzOstdwbW5jO4Vz7Zenj0wieKWBlNvIvX5L5ljum9lcUX0ShNfBgCNLKTjNkRVVqcsw==,
+      }
+    peerDependencies:
+      vite: ^2 || ^3 || ^4 || ^5 || ^6 || ^7 || ^8
+    dependencies:
+      vite: 7.3.5(@types/node@22.19.21)
     dev: false
 
   /vite@7.3.5(@types/node@22.19.21):
