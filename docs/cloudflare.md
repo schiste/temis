@@ -8,6 +8,9 @@ This repo is prepared for Cloudflare-first deployment:
 - R2 stores uploaded media.
 - A Pages Deploy Hook lets EmDash trigger static rebuilds after publish events.
 
+See the [initial platform deployment plan](./platform-initial-deployment-plan.md)
+for the end-to-end V1 bootstrap sequence and smoke tests.
+
 ## Resource Names
 
 Use the TEMIS codename consistently:
