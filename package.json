@@ -16,7 +16,7 @@
     "type-check": "pnpm -r type-check",
     "format": "pnpm exec prettier --write \"**/*.{ts,js,mjs,json,jsonc,md,astro,css,yaml}\"",
     "format:check": "pnpm exec prettier --check \"**/*.{ts,js,mjs,json,jsonc,md,astro,css,yaml}\"",
-    "deploy:cms": "pnpm --filter @temis/cms deploy"
+    "deploy:cms": "pnpm --filter @temis/cms run deploy"
   },
   "engines": {
     "node": ">=22.0.0",
