@@ -1,7 +1,7 @@
 # Third-Party Notices
 
-TEMIS is proprietary application code, but it depends on open source software.
-The primary runtime/build dependencies are:
+TEMIS source code is dual-licensed under `MIT OR Apache-2.0`. It depends on
+open source software. The primary runtime/build dependencies are:
 
 | Package                | Version | License    | Use                                      |
 | ---------------------- | ------: | ---------- | ---------------------------------------- |

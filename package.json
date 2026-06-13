@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "TEMIS static site with EmDash-managed content on Cloudflare.",
-  "license": "UNLICENSED",
+  "license": "MIT OR Apache-2.0",
   "type": "module",
   "scripts": {
     "dev": "pnpm -r --parallel --if-present dev",

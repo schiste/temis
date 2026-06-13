@@ -2,7 +2,7 @@
   "name": "@temis/emdash-cloudflare-deploy",
   "version": "0.1.0",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT OR Apache-2.0",
   "type": "module",
   "exports": {
     ".": "./src/index.ts"

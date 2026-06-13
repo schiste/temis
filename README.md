@@ -41,6 +41,10 @@ See [Cloudflare setup](./docs/cloudflare.md) for the resource creation and deplo
 
 ## Licensing
 
-TEMIS application code is proprietary and marked `UNLICENSED`. Third-party
-dependencies keep their own licenses; the primary Astro, EmDash, Cloudflare, and
-image-processing notices are tracked in [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).
+TEMIS source code is dual-licensed under `MIT OR Apache-2.0`; see
+[LICENSE](./LICENSE), [LICENSE-MIT](./LICENSE-MIT), and
+[LICENSE-APACHE](./LICENSE-APACHE).
+
+Published website content may use a separate license when that content license
+is decided. Third-party dependencies keep their own licenses; primary notices
+are tracked in [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).
