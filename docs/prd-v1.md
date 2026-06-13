@@ -211,7 +211,7 @@ Primary CTAs:
 - Subscribe.
 - Share.
 
-Subscription should start with first-party email capture and may support Wikimedia user talk page delivery as an explicit opt-in channel if approved.
+Subscription should use the first-party EmDash subscription delivery plugin, with email and Wikimedia user talk page delivery as explicit opt-in channels. See [subscription delivery plugin PRD](./prd-subscription-plugin-v1.md).
 
 Sharing should start with native share where supported, copy link everywhere, and `mailto:` email fallback.
 

@@ -10,6 +10,7 @@ These are the remaining V1 decisions. Answer with the question IDs when possible
 - Q1: Published content uses `CC-BY-SA-4.0`.
 - Q2: Keep `TEMIS` as the public name for V1.
 - Q4: No minimum real content count gates platform delivery. Platform V1 should support lorem ipsum/demo content and CMS-managed real content; editorial launch readiness is handled separately.
+- Q5: Use a first-party EmDash subscription delivery plugin with D1 storage, email subscription, and optional Wikimedia user talk page delivery. No listmonk for V1. See [subscription delivery plugin PRD](./prd-subscription-plugin-v1.md).
 - Q6: Metrics must stay server/platform-side only. No client-side analytics, tracking cookies, fingerprinting, or third-party reader analytics.
 - Q7: Start with native share where supported, copy link everywhere, and `mailto:` email fallback. No platform-specific share buttons in V1.
 
@@ -22,21 +23,6 @@ Why it matters: topics drive the homepage navigation, article grouping, and lore
 Recommended default: choose 5 broad topics first, then split later only after real content proves the need.
 
 Answer needed: topic names plus one-sentence descriptions.
-
-### Q5. Which subscription channels should V1 support?
-
-Why it matters: subscribe is a primary CTA, and the provider must not undermine the no-tracking posture.
-
-Recommendation: build first-party subscription capture in the TEMIS CMS Worker, store confirmed subscribers in D1, require explicit opt-in, and support CSV export. This keeps V1 open-source, Cloudflare-native, and no-tracking.
-
-V1 delivery channels:
-
-- Email subscription: first-party capture, double opt-in, explicit unsubscribe.
-- Wikimedia user talk page subscription: possible as an optional opt-in channel on top of email, but it needs separate validation, a bot account or Wikimedia-compatible auth flow, clear edit summaries, throttling, and an unsubscribe path.
-
-Later sending option: use listmonk when TEMIS needs full newsletter campaign management. It is open source and self-hosted, but it requires separate hosting, PostgreSQL, SMTP configuration, backups, upgrades, monitoring, and deliverability work.
-
-Answer needed: approve first-party email capture for V1, approve Wikimedia talk-page delivery as an experimental opt-in channel, and decide whether listmonk should be deferred until campaign sending is needed.
 
 ### Q6. Which server/platform metrics should be reported for V1?
 
