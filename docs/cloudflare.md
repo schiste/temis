@@ -20,6 +20,18 @@ Use the TEMIS codename consistently:
 - D1 database: `temis-cms-db`
 - R2 bucket: `temis-media`
 
+## Current Deployment
+
+Initial Cloudflare resources are live:
+
+- Pages URL: `https://temis-site.pages.dev`
+- CMS Worker URL: `https://temis-cms.christophe-henner.workers.dev`
+- D1 database ID: `84f67492-d40b-4eef-98d3-2083cdc92acc`
+- CMS session KV namespace ID: `f8288078d76d42208421e84276c45c27`
+- Git source: `schiste/temis`, branch `main`
+- Preview branch deployments: disabled
+- Pages deploy hook: created for branch `main`; URL is stored only as the CMS Worker secret `TEMIS_PAGES_DEPLOY_HOOK_URL`
+
 ## Provisioning Sequence
 
 1. Create the D1 database.
