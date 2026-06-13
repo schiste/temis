@@ -12,11 +12,15 @@ TEMIS should be built with a strong open-source and privacy-aware posture from t
 
 V1 implementation should prefer open-source components, privacy-preserving services, and minimal data collection.
 
-When practical, choose copyleft-compatible options. When a non-copyleft-compatible or proprietary service is selected, document the tradeoff before depending on it.
+V1 code should be licensed as `MIT OR Apache-2.0`.
+
+V1 public pages must not use client-side reader tracking, tracking cookies, fingerprinting, or third-party analytics. Metrics should come from server/platform operational signals and explicit user actions.
+
+When a proprietary service is selected, document the tradeoff before depending on it.
 
 ## Consequences
 
 - Service and library choices should consider licensing and data collection early.
-- Passive readers should not be tracked by default.
-- Analytics, subscriptions, and sharing tools must be reviewed for privacy impact before adoption.
-- Licensing decisions for code and content should be explicit before the repository is made public.
+- Passive readers should not be tracked.
+- Subscription and sharing tools must be reviewed for privacy impact before adoption.
+- Content licensing remains a separate decision.

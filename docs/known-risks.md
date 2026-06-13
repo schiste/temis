@@ -10,7 +10,7 @@ Date: 2026-06-13
 - The homepage looking impressive but not making reading obvious enough.
 - Public author pages feeling incomplete if person metadata is thin.
 - Low reader adoption or weak sharing loops after launch.
-- Subscription and analytics choices conflicting with the privacy posture.
+- Subscription choices conflicting with the privacy posture.
 
 ## Editorial Risks
 
@@ -27,7 +27,7 @@ Date: 2026-06-13
 - Media handling may become costly or inconsistent without clear image rules.
 - Cloudflare bindings and environment variables may be easy to misconfigure.
 - Dependency licensing choices may need revision before making the repo public.
-- Privacy-aware analytics may be harder to evaluate late in the build.
+- Server/platform metrics may be less expressive than client-side analytics.
 
 ## Mitigations
 
@@ -36,3 +36,4 @@ Date: 2026-06-13
 - Treat unanswered modeling questions as deferred until usage proves they matter.
 - Verify publish, preview, and rebuild workflows before visual polish.
 - Review service choices for privacy and licensing before public launch.
+- Accept less detailed reader analytics to preserve the no-tracking posture.

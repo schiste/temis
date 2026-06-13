@@ -36,11 +36,13 @@ These assumptions guide V1 implementation until they are replaced by PRD updates
 - R2 stores uploaded media.
 - Publishing should trigger a static rebuild through a deploy hook.
 - The implementation should remain compatible with a future public/open-source repository posture.
+- V1 code is intended to be licensed as `MIT OR Apache-2.0`.
 
 ## Operating Assumptions
 
 - Prefer open-source dependencies and privacy-aware services.
-- Avoid passive reader tracking by default.
+- Do not add client-side reader tracking, tracking cookies, fingerprinting, or third-party analytics.
+- Use server/platform operational signals only for V1 metrics.
 - Keep V1 decisions narrow and reversible.
 - Document unresolved questions instead of blocking implementation on them.
 - Ship a useful V1 quickly, observe real usage, and iterate from evidence.

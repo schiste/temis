@@ -13,20 +13,12 @@ These decisions are explicitly deferred so V1 can ship without over-modeling the
 - Community voting.
 - Curator appointment and removal processes.
 - Conflict-of-interest workflows.
-- Topic hierarchy.
-- Relationship labels.
-- Relationship confidence, weighting, or scoring.
-- Automated grouping.
-- Recommendation systems.
-- Matching workflows.
-- Opportunity discovery workflows.
-- Gap-detection workflows.
 - Public analytics dashboards.
-- Advanced content/entity taxonomies.
-- Cross-site federation behavior.
+- Additional public content/entity taxonomies.
+- Client-side analytics, tracking cookies, fingerprinting, or third-party reader tracking.
 
 ## V1 Decision Rule
 
-For V1, prefer the smallest manual model that supports publishing, reading, topic navigation, author pages, subscribing, and sharing.
+For V1, prefer the smallest manual model that supports publishing, reading, topic navigation, author pages, subscribing, sharing, and server/platform operational reporting.
 
 If a deferred decision becomes necessary for launch, it should be promoted into the PRD and captured in a V1-scoped ADR before implementation.
