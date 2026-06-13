@@ -5,21 +5,22 @@ Date: 2026-06-13
 
 ## Summary
 
-TEMIS V1 is a public, static, EmDash-managed editorial website where readers discover articles, authors, and themes through a cool, tech-forward category graph.
+TEMIS V1 is a public, static, EmDash-managed editorial website where readers discover articles, authors, and themes through cool, tech-forward topic navigation.
 
-V1 is not yet a full ecosystem database. The graph is a navigation and brand layer over content categories, using unlabeled editorial edges between topics. It should make the future network and federation ambition visible without requiring initiative-level entities, public submissions, governance workflows, recommendations, matchmaking, or ecosystem analytics.
+V1 is a focused editorial product. Topic relationships are a navigation and brand layer over content categories, using unlabeled editorial links between topics. V1 should prioritize publishing, reading, author discovery, subscribing, and sharing.
 
-## Long-Term Product Direction
+## V1 Product Direction
 
-TEMIS is a coordination commons helping ideas become initiatives and initiatives become outcomes.
+TEMIS V1 should ship quickly and stay grounded in real content.
 
-The long-term trajectory is:
+The V1 direction is:
 
-1. V1: editorial discovery site with graph-like category navigation and clean author/person pages.
-2. V2: initiative graph and richer entity relationships.
-3. V3: federation, matchmaking, opportunity discovery, and ecosystem analytics.
+1. Editorial discovery site.
+2. Topic relationship navigation.
+3. Clean public person/author pages.
+4. Static public rendering from EmDash-managed content.
 
-V1 must preserve that direction visually and structurally, but it should only ship the editorial surface and the category graph scaffold.
+Future product ideas are intentionally kept outside the tracked V1 PRD until they become launch-relevant.
 
 ## Audience
 
@@ -30,7 +31,7 @@ Primary reader profiles:
 - Funders looking for emerging ideas, tools, and signals.
 - Operators looking for useful context, tooling, and ecosystem patterns.
 - Curious readers discovering the landscape.
-- Future contributors who may later help expand the graph.
+- Potential contributors who may later help expand the publication.
 
 V1 does not need persona-specific onboarding, dashboards, submission flows, or role-based experiences.
 
@@ -40,8 +41,8 @@ Authors, users, and people should be modeled as first-class content items where 
 
 - Publish high-quality essays and articles announcing or contextualizing tools.
 - Give the site a strong editorial/data-like identity.
-- Make category-level relationships explorable through a graph-inspired navigation experience.
-- Establish the content and technical scaffold for a future initiative graph.
+- Make category-level relationships explorable through topic navigation.
+- Establish the content and technical scaffold for fast editorial iteration.
 - Make people/authors visible through clean first-class profile pages.
 - Drive readers to subscribe and share.
 - Keep the site fully static for public traffic.
@@ -54,12 +55,9 @@ Authors, users, and people should be modeled as first-class content items where 
 - User accounts for public readers.
 - Public governance flows.
 - Appeals, conflict-of-interest workflows, or moderation queues.
-- Initiative-level graph data.
-- Organization, community, dataset, event, need, or tool entities as first-class graph nodes.
-- Recommendations.
-- Clustering.
-- Matchmaking.
-- Ecosystem analytics.
+- Additional public entity systems beyond articles, topics, and people.
+- Automated discovery systems.
+- Public analytics dashboards.
 - Personalized feeds.
 - Behavioral tracking or third-party surveillance by default.
 - Multi-persona landing pages.
@@ -68,7 +66,7 @@ Authors, users, and people should be modeled as first-class content items where 
 
 1. A reader lands on the homepage.
 2. The first impression communicates TEMIS as editorial, technical, and network-aware.
-3. The reader sees or interacts with a category graph.
+3. The reader sees or interacts with topic relationship navigation.
 4. The reader selects a category, theme, or visible connection.
 5. The reader lands on a category page or article list.
 6. The reader opens an article, including essays or tool announcements.
@@ -143,11 +141,11 @@ Expected fields:
 - SEO description.
 - Status: draft/published.
 
-Public people pages should list authored articles and may later become connection points for the broader network graph. CMS users and public person records may be related, but they should not be assumed to be the same object unless the implementation explicitly supports that safely.
+Public people pages should list authored articles. CMS users and public person records may be related, but they should not be assumed to be the same object unless the implementation explicitly supports that safely.
 
 ### Category/Topic
 
-Purpose: power the V1 graph navigation and group related editorial content.
+Purpose: power V1 topic navigation and group related editorial content.
 
 Expected fields:
 
@@ -160,27 +158,25 @@ Expected fields:
 - SEO title.
 - SEO description.
 
-Category relationships should be editorially managed in V1. They are not inferred, scored, clustered, labeled, or recommended.
+Category relationships should be editorially managed, manually edited, and unlabeled in V1.
 
-## Graph Navigation
+## Topic Relationship Navigation
 
-The V1 graph is category-driven.
+V1 topic relationship navigation is category-driven.
 
 It should behave as:
 
 - A homepage visual anchor.
 - A navigation model.
-- A signal of future network/federation ambition.
 - A way to move from theme to theme and from theme to content.
 
 It should not behave as:
 
-- A canonical knowledge graph.
-- An initiative database.
-- A recommendation engine.
-- An automatically clustered graph.
+- A database of everything TEMIS may later cover.
+- An automatically generated discovery system.
+- A replacement for clear article and topic pages.
 
-### Graph Requirements
+### Navigation Requirements
 
 - Render category/topic nodes.
 - Show editorially configured unlabeled relationships between categories.
@@ -206,7 +202,7 @@ The site should not feel:
 - Like a generic blog template.
 - Like a full social network.
 
-The homepage should make the graph/federation appetite visible in the first viewport, while still making it obvious that the primary activity is reading.
+The homepage should make topic relationships visible in the first viewport, while still making it obvious that the primary activity is reading.
 
 ## Calls To Action
 
@@ -230,9 +226,9 @@ V1 implementation expectations:
 
 - Prefer open-source components and services.
 - Prefer copyleft-compatible choices when practical and document licensing tradeoffs when not.
-- Avoid tracking cookies by default.
-- Avoid collecting personal data from passive readers unless a chosen subscribe or analytics tool requires it.
-- Use privacy-preserving analytics if analytics are added.
+- Do not use tracking cookies.
+- Do not add client-side reader tracking, fingerprinting, or third-party surveillance.
+- Measure V1 with server/platform operational signals only.
 - Make author/person data explicit, editable, and intentionally published rather than inferred from private CMS user data.
 - Keep imported source material, generated exports, and local archives out of git unless explicitly approved.
 
@@ -249,6 +245,7 @@ V1 implementation expectations:
 - Images are optimized at build time where practical.
 - Publishing in EmDash triggers a Cloudflare Pages rebuild through a deploy hook.
 - The public build should be compatible with a future public/open-source repository posture.
+- Public pages must not require client-side analytics, tracking cookies, or reader fingerprinting.
 
 ## Success Metrics
 
@@ -261,6 +258,8 @@ Primary launch metrics:
 
 Metrics should be collected in a privacy-aware way. V1 should not require cross-site tracking or personalized reader profiles to measure success.
 
+V1 metrics must come from server/platform operational signals and explicit user actions only. No client-side analytics, tracking cookies, or passive reader profiling should be added.
+
 Operational metrics:
 
 - Number of published essays/tool announcements.
@@ -270,12 +269,12 @@ Operational metrics:
 
 ## V1 Acceptance Criteria
 
-- A public homepage introduces TEMIS and exposes graph-like category navigation.
+- A public homepage introduces TEMIS and exposes topic relationship navigation.
 - At least one essay-style article and one tool-announcement article can be published from EmDash and rendered statically.
 - At least one person/author page can be published from EmDash and rendered statically.
 - Articles can link to one or more public person/author pages.
 - Category/topic nodes can be managed in EmDash.
-- Category/topic edges are unlabeled in V1.
+- Category/topic relationships are unlabeled in V1.
 - Category/topic pages list related content.
 - Articles include subscribe and share affordances.
 - Published-only filtering works.
@@ -288,9 +287,9 @@ Operational metrics:
 
 - What are the first 5-10 V1 categories/topics?
 - What privacy-aware newsletter/subscription provider should the subscribe CTA use?
-- What privacy-aware analytics approach, if any, is acceptable for V1?
-- Which share surfaces should ship first beyond native share and copy link?
+- Which server/platform metrics should be reported for V1?
+- Which share surfaces should ship first beyond native share and copy link? TBD.
 - Should CMS users be linkable to public person records, or should public people remain separate editorial content records?
 - What is the minimum real content count required for launch after lorem ipsum scaffolding?
-- What open-source license should govern the codebase, and should content use a separate license?
+- What license should govern published content?
 - What domain/name should replace TEMIS if the codename changes before launch?
