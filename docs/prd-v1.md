@@ -183,7 +183,7 @@ It should not behave as:
 - Let users navigate from a node to category content.
 - Support responsive desktop and mobile experiences.
 - Degrade gracefully if there are few categories at launch.
-- Avoid graph sprawl by allowing editorial priority/visibility controls.
+- Avoid visual clutter by allowing editorial priority/visibility controls.
 
 ## Visual And UX Direction
 
