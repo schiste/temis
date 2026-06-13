@@ -3,25 +3,15 @@
 Status: Draft  
 Date: 2026-06-13
 
-These are the remaining V1 decisions. Answer with the question IDs when possible, for example: `Q1: CC-BY-4.0`, `Q2: temis.org`.
+These are the remaining V1 decisions. Answer with the question IDs when possible, for example: `Q3: topic list`, `Q5: approve first-party capture`.
+
+## Answered
+
+- Q1: Published content uses `CC-BY-SA-4.0`.
+- Q2: Keep `TEMIS` as the public name for V1.
+- Q4: No minimum real content count gates platform delivery. Platform V1 should support lorem ipsum/demo content and CMS-managed real content; editorial launch readiness is handled separately.
 
 ## Launch-Critical
-
-### Q1. Which Creative Commons 4.0 variant should published content use?
-
-Why it matters: the exact license must appear in the public footer, content metadata, and repo docs.
-
-Recommended default: `CC-BY-4.0` if attribution is enough; `CC-BY-SA-4.0` if content reuse should stay share-alike.
-
-Answer needed: exact SPDX license identifier, for example `CC-BY-4.0` or `CC-BY-SA-4.0`.
-
-### Q2. What final public name and domain should replace the TEMIS codename, if any?
-
-Why it matters: naming affects URLs, Cloudflare routes, metadata, share images, and copy.
-
-Recommended default: keep `TEMIS` for V1 until a final name is ready.
-
-Answer needed: public name, primary domain, and whether the `temis-*` Cloudflare resource names should stay as internal codenames.
 
 ### Q3. What are the first 5-10 topics?
 
@@ -31,37 +21,38 @@ Recommended default: choose 5 broad topics first, then split later only after re
 
 Answer needed: topic names plus one-sentence descriptions.
 
-### Q4. What is the minimum real content count for launch?
-
-Why it matters: the homepage, topic pages, author pages, and related-content surfaces need enough real content to feel intentional.
-
-Recommended default: 6-8 articles, at least 3 public people, and at least 5 topics.
-
-Answer needed: minimum article count, minimum person count, and whether launch requires both essay and tool-announcement examples.
-
 ### Q5. Which newsletter or subscription provider should V1 use?
 
 Why it matters: subscribe is a primary CTA, and the provider must not undermine the no-tracking posture.
 
-Recommended default: start with the least invasive provider that supports export, double opt-in, and no client-side tracking.
+Recommendation: build a first-party subscription capture endpoint in the TEMIS CMS Worker, store confirmed subscribers in D1, require double opt-in, and support CSV export. This keeps V1 open-source, Cloudflare-native, and no-tracking.
 
-Answer needed: provider name, whether embeds are allowed, and what data is collected at signup.
+Later sending option: use listmonk when TEMIS needs full newsletter campaign management. It is open source and self-hosted, but it requires separate hosting, PostgreSQL, and SMTP.
+
+Answer needed: approve first-party capture for V1, choose listmonk immediately, or choose another open-source provider.
 
 ### Q6. Which server/platform metrics should be reported for V1?
 
 Why it matters: V1 has no client-side analytics, tracking cookies, fingerprinting, or third-party analytics.
 
-Recommended default: Cloudflare request counts, deploy/build success, publish-to-deploy time, subscriber count, and share-button click counts only if measured without reader tracking.
+Recommendation:
 
-Answer needed: exact metrics to report and where they should be reviewed.
+- Public traffic: aggregate Cloudflare request count, bandwidth, cache status, status-code distribution, and top public paths if available from Cloudflare aggregate logs/API without user profiling.
+- CMS health: Worker request count, success/error counts, invocation status, CPU time, wall time, subrequests, and request duration.
+- Publishing: deploy-hook trigger count, build UUID/status, build success/failure, build duration, and publish-to-deploy time.
+- Content operations: count of published articles, people, and topics from the generated snapshot.
+- Subscription: confirmed subscriber total and new confirmed subscribers.
+- Sharing: no per-reader tracking. Count only explicit first-party share button actions if we choose to implement aggregate counters.
+
+Answer needed: approve this metric set, remove path-level aggregate reporting, and decide whether share-button aggregate counters are acceptable.
 
 ### Q7. Which share surfaces should ship first?
 
 Why it matters: share is a primary CTA, but each surface has privacy and UX tradeoffs.
 
-Recommended default: native share where available, copy link everywhere, and email as the only named fallback.
+Recommendation: ship native share where supported, copy link everywhere, and `mailto:` email as the only named fallback. Do not add platform-specific share buttons in V1.
 
-Answer needed: choose from native share, copy link, email, LinkedIn, Bluesky, X, Mastodon, or none beyond copy link.
+Answer needed: approve native share + copy link + email, or choose another set.
 
 ## Content And Editorial
 
