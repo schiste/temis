@@ -9,6 +9,7 @@ These assumptions guide V1 implementation until they are replaced by PRD updates
 
 - TEMIS is a codename and may change before launch.
 - V1 is a public editorial website for discovery and reading.
+- TEMIS should feel like a public exploration space for the future of open knowledge in a post-AI world.
 - The first audience uses one shared interface.
 - Primary reader profiles include funders, operators, curious readers, and future contributors.
 - First real content will likely be essays and tool announcement articles.

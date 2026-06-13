@@ -9,6 +9,8 @@ TEMIS V1 is a public, static, EmDash-managed editorial website where readers dis
 
 V1 is a focused editorial product. Topic relationships are a graph-based navigation and brand layer over content categories, using unlabeled editorial links between topics. V1 should prioritize publishing, reading, author discovery, graph-based topic exploration, and sharing.
 
+The product direction is grounded in the [TEMIS vision](./vision.md): a public exploration space for people working through the future of open knowledge in a post-AI world.
+
 ## V1 Product Direction
 
 TEMIS V1 should ship quickly and stay grounded in real content.
@@ -192,6 +194,8 @@ It should not behave as:
 
 ## Visual And UX Direction
 
+See [design system direction](./design-system.md) for the V1 design proposal.
+
 The interface should feel:
 
 - Editorial.
@@ -199,6 +203,8 @@ The interface should feel:
 - Technical.
 - Network-aware.
 - Public and accessible.
+- Exploratory.
+- Open to uncertainty without feeling careless.
 
 The visual system should support both dark and light themes.
 
