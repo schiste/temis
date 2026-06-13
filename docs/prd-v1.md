@@ -211,6 +211,10 @@ Primary CTAs:
 - Subscribe.
 - Share.
 
+Subscription should start with first-party email capture and may support Wikimedia user talk page delivery as an explicit opt-in channel if approved.
+
+Sharing should start with native share where supported, copy link everywhere, and `mailto:` email fallback.
+
 Secondary CTAs:
 
 - Explore related content.
@@ -267,6 +271,9 @@ Operational metrics:
 - Number of categories with enough content to feel useful.
 - Static build success rate.
 - Time from publish in EmDash to public deployment.
+- Aggregate public request counts, bandwidth, status codes, and cache behavior from Cloudflare.
+- CMS Worker success/error/invocation, CPU, wall-time, subrequest, and duration metrics.
+- Confirmed subscriber totals and new confirmed subscribers.
 
 ## V1 Acceptance Criteria
 

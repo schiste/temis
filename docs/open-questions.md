@@ -10,6 +10,8 @@ These are the remaining V1 decisions. Answer with the question IDs when possible
 - Q1: Published content uses `CC-BY-SA-4.0`.
 - Q2: Keep `TEMIS` as the public name for V1.
 - Q4: No minimum real content count gates platform delivery. Platform V1 should support lorem ipsum/demo content and CMS-managed real content; editorial launch readiness is handled separately.
+- Q6: Metrics must stay server/platform-side only. No client-side analytics, tracking cookies, fingerprinting, or third-party reader analytics.
+- Q7: Start with native share where supported, copy link everywhere, and `mailto:` email fallback. No platform-specific share buttons in V1.
 
 ## Launch-Critical
 
@@ -21,38 +23,39 @@ Recommended default: choose 5 broad topics first, then split later only after re
 
 Answer needed: topic names plus one-sentence descriptions.
 
-### Q5. Which newsletter or subscription provider should V1 use?
+### Q5. Which subscription channels should V1 support?
 
 Why it matters: subscribe is a primary CTA, and the provider must not undermine the no-tracking posture.
 
-Recommendation: build a first-party subscription capture endpoint in the TEMIS CMS Worker, store confirmed subscribers in D1, require double opt-in, and support CSV export. This keeps V1 open-source, Cloudflare-native, and no-tracking.
+Recommendation: build first-party subscription capture in the TEMIS CMS Worker, store confirmed subscribers in D1, require explicit opt-in, and support CSV export. This keeps V1 open-source, Cloudflare-native, and no-tracking.
 
-Later sending option: use listmonk when TEMIS needs full newsletter campaign management. It is open source and self-hosted, but it requires separate hosting, PostgreSQL, and SMTP.
+V1 delivery channels:
 
-Answer needed: approve first-party capture for V1, choose listmonk immediately, or choose another open-source provider.
+- Email subscription: first-party capture, double opt-in, explicit unsubscribe.
+- Wikimedia user talk page subscription: possible as an optional opt-in channel on top of email, but it needs separate validation, a bot account or Wikimedia-compatible auth flow, clear edit summaries, throttling, and an unsubscribe path.
+
+Later sending option: use listmonk when TEMIS needs full newsletter campaign management. It is open source and self-hosted, but it requires separate hosting, PostgreSQL, SMTP configuration, backups, upgrades, monitoring, and deliverability work.
+
+Answer needed: approve first-party email capture for V1, approve Wikimedia talk-page delivery as an experimental opt-in channel, and decide whether listmonk should be deferred until campaign sending is needed.
 
 ### Q6. Which server/platform metrics should be reported for V1?
 
-Why it matters: V1 has no client-side analytics, tracking cookies, fingerprinting, or third-party analytics.
+Answer: all metrics must stay server/platform-side.
 
-Recommendation:
+Accepted metric set:
 
 - Public traffic: aggregate Cloudflare request count, bandwidth, cache status, status-code distribution, and top public paths if available from Cloudflare aggregate logs/API without user profiling.
 - CMS health: Worker request count, success/error counts, invocation status, CPU time, wall time, subrequests, and request duration.
 - Publishing: deploy-hook trigger count, build UUID/status, build success/failure, build duration, and publish-to-deploy time.
 - Content operations: count of published articles, people, and topics from the generated snapshot.
 - Subscription: confirmed subscriber total and new confirmed subscribers.
-- Sharing: no per-reader tracking. Count only explicit first-party share button actions if we choose to implement aggregate counters.
+- Sharing: no per-reader tracking. Count only explicit first-party share actions if implemented as aggregate server-side counters.
 
-Answer needed: approve this metric set, remove path-level aggregate reporting, and decide whether share-button aggregate counters are acceptable.
+Open detail: confirm whether aggregate top public paths and aggregate share-action counters are acceptable.
 
 ### Q7. Which share surfaces should ship first?
 
-Why it matters: share is a primary CTA, but each surface has privacy and UX tradeoffs.
-
-Recommendation: ship native share where supported, copy link everywhere, and `mailto:` email as the only named fallback. Do not add platform-specific share buttons in V1.
-
-Answer needed: approve native share + copy link + email, or choose another set.
+Answer: ship native share where supported, copy link everywhere, and `mailto:` email as the only named fallback. Do not add platform-specific share buttons in V1.
 
 ## Content And Editorial
 
