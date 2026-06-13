@@ -1,22 +1,22 @@
-# TEMIS V1 Subscription Delivery Plugin PRD
+# TEMIS V1.5 Subscription Delivery Plugin PRD
 
 Status: Draft  
 Date: 2026-06-13
 
 ## Summary
 
-The TEMIS subscription delivery plugin is a first-party EmDash plugin for collecting reader subscriptions and delivering newsletter-style updates through two opt-in channels:
+The TEMIS subscription delivery plugin is a V1.5 first-party EmDash plugin for collecting reader subscriptions and delivering newsletter-style updates through two opt-in channels:
 
 - Email.
 - Wikimedia user talk page messages.
 
-The plugin should stay Cloudflare-native, privacy-aware, open-source, and simple enough for V1. It replaces the need for listmonk in V1.
+The plugin should stay Cloudflare-native, privacy-aware, open-source, and simple enough to follow the V1 content-first website without adding an external newsletter platform.
 
 ## Product Decision
 
-TEMIS V1 will not run listmonk.
+TEMIS V1.5 will not run listmonk.
 
-The V1 subscription stack is:
+The V1.5 subscription stack is:
 
 1. Public subscription capture from the static Astro site.
 2. Subscription storage in D1 through the CMS/Worker surface.
@@ -34,7 +34,7 @@ The V1 subscription stack is:
 - Provide CSV export.
 - Provide safe delivery queues with status, retries, and failure visibility.
 - Keep all metrics server-side and aggregate.
-- Avoid operating a separate newsletter platform for V1.
+- Avoid operating a separate newsletter platform for V1.5.
 
 ## Non-Goals
 
@@ -90,7 +90,7 @@ Behavior:
 - Store unsubscribe token separately from public identifiers.
 - Support CSV export.
 
-Cloudflare Email Service should only be used for transactional messages in V1. Newsletter campaign sending is deferred until a deliberate sending workflow is approved.
+Cloudflare Email Service should only be used for transactional messages in V1.5. Newsletter campaign sending is deferred until a deliberate sending workflow is approved.
 
 ### Wikimedia User Talk Page
 
@@ -122,7 +122,7 @@ Confirmation behavior needs a final implementation decision:
 - Option B: require email confirmation before enabling talk page delivery.
 - Option C: require OAuth/wiki-auth confirmation if added later.
 
-Recommended V1 default: require email confirmation for the subscriber record, then allow talk page delivery only after explicit talk-page opt-in is recorded. This avoids using wiki talk pages for confirmation spam.
+Recommended V1.5 default: require email confirmation for the subscriber record, then allow talk page delivery only after explicit talk-page opt-in is recorded. This avoids using wiki talk pages for confirmation spam.
 
 ## EmDash Admin Requirements
 
@@ -144,7 +144,7 @@ Admin views should not expose secret tokens or raw credentials.
 
 ## Delivery Model
 
-V1 delivery should be queue-based.
+V1.5 delivery should be queue-based.
 
 Delivery job fields:
 
@@ -159,11 +159,11 @@ Delivery job fields:
 - Provider response metadata.
 - Created/updated timestamps.
 
-The first implementation may support manual/admin-triggered delivery only. Automatic delivery from content publish is not required for V1 unless explicitly approved.
+The first implementation may support manual/admin-triggered delivery only. Automatic delivery from content publish is not required for V1.5 unless explicitly approved.
 
 ## Content Model
 
-The plugin does not need a new public content type for V1.
+The plugin does not need a new public content type for V1.5.
 
 It should support sending an update derived from:
 
@@ -171,7 +171,7 @@ It should support sending an update derived from:
 - A manually drafted subject/body in the admin surface.
 - A future newsletter issue content type if later approved.
 
-Recommended V1 default: use published articles as the first sendable objects and generate a simple update message with title, summary, canonical URL, license, and unsubscribe instructions.
+Recommended V1.5 default: use published articles as the first sendable objects and generate a simple update message with title, summary, canonical URL, license, and unsubscribe instructions.
 
 ## Data Model
 
@@ -292,6 +292,7 @@ Do not track:
 - Cloudflare Email Service is available for the project domain and plan.
 - MediaWiki credentials can be stored and used safely from the CMS Worker.
 - The first talk page delivery target will be Wikimedia projects, not arbitrary MediaWiki installs.
+- V1 public pages may expose a simple placeholder subscribe CTA that can be wired to this plugin later.
 
 ## Open Questions
 

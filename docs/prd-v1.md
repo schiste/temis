@@ -7,7 +7,7 @@ Date: 2026-06-13
 
 TEMIS V1 is a public, static, EmDash-managed editorial website where readers discover articles, authors, and themes through cool, tech-forward topic navigation.
 
-V1 is a focused editorial product. Topic relationships are a navigation and brand layer over content categories, using unlabeled editorial links between topics. V1 should prioritize publishing, reading, author discovery, subscribing, and sharing.
+V1 is a focused editorial product. Topic relationships are a graph-based navigation and brand layer over content categories, using unlabeled editorial links between topics. V1 should prioritize publishing, reading, author discovery, graph-based topic exploration, and sharing.
 
 ## V1 Product Direction
 
@@ -16,7 +16,7 @@ TEMIS V1 should ship quickly and stay grounded in real content.
 The V1 direction is:
 
 1. Editorial discovery site.
-2. Topic relationship navigation.
+2. Graph-based topic navigation.
 3. Clean public person/author pages.
 4. Static public rendering from EmDash-managed content.
 
@@ -41,10 +41,10 @@ Authors, users, and people should be modeled as first-class content items where 
 
 - Publish high-quality essays and articles announcing or contextualizing tools.
 - Give the site a strong editorial/data-like identity.
-- Make category-level relationships explorable through topic navigation.
+- Make category-level relationships explorable through graph-based topic navigation.
 - Establish the content and technical scaffold for fast editorial iteration.
 - Make people/authors visible through clean first-class profile pages.
-- Drive readers to subscribe and share.
+- Drive readers to read and share.
 - Keep the site fully static for public traffic.
 - Keep content fully managed through EmDash.
 - Prefer open-source, privacy-aware implementation choices and avoid unnecessary data collection.
@@ -71,7 +71,7 @@ Authors, users, and people should be modeled as first-class content items where 
 5. The reader lands on a category page or article list.
 6. The reader opens an article, including essays or tool announcements.
 7. The reader can inspect the author/person page behind the article.
-8. The reader subscribes or shares.
+8. The reader shares or follows a placeholder subscribe path.
 
 ## Content Scope
 
@@ -160,9 +160,9 @@ Expected fields:
 
 Category relationships should be editorially managed, manually edited, and unlabeled in V1.
 
-## Topic Relationship Navigation
+## Graph-Based Topic Navigation
 
-V1 topic relationship navigation is category-driven.
+V1 graph-based topic navigation is category-driven.
 
 It should behave as:
 
@@ -181,6 +181,8 @@ It should not behave as:
 - Render category/topic nodes.
 - Show editorially configured unlabeled relationships between categories.
 - Let users navigate from a node to category content.
+- Use a graph-shaped data structure that can be rendered by either a static component or an interactive graph plugin.
+- Prefer an interactive graph plugin for the homepage if it can remain accessible, responsive, and build-safe.
 - Support responsive desktop and mobile experiences.
 - Degrade gracefully if there are few categories at launch.
 - Avoid visual clutter by allowing editorial priority/visibility controls.
@@ -208,10 +210,9 @@ The homepage should make topic relationships visible in the first viewport, whil
 
 Primary CTAs:
 
-- Subscribe.
 - Share.
 
-Subscription should use the first-party EmDash subscription delivery plugin, with email and Wikimedia user talk page delivery as explicit opt-in channels. See [subscription delivery plugin PRD](./prd-subscription-plugin-v1.md).
+Subscription delivery is deferred to V1.5. V1 may include a placeholder subscribe CTA only if it does not require the subscription plugin. See [V1.5 subscription delivery plugin PRD](./prd-v1-5-subscription-plugin.md).
 
 Sharing should start with native share where supported, copy link everywhere, and `mailto:` email fallback.
 
@@ -257,7 +258,6 @@ V1 implementation expectations:
 Primary launch metrics:
 
 - Readers.
-- Subscribers.
 - Shares.
 - Qualitative signal: people talking about TEMIS.
 
@@ -273,7 +273,6 @@ Operational metrics:
 - Time from publish in EmDash to public deployment.
 - Aggregate public request counts, bandwidth, status codes, and cache behavior from Cloudflare.
 - CMS Worker success/error/invocation, CPU, wall-time, subrequest, and duration metrics.
-- Confirmed subscriber totals and new confirmed subscribers.
 
 ## V1 Acceptance Criteria
 
@@ -283,8 +282,10 @@ Operational metrics:
 - Articles can link to one or more public person/author pages.
 - Category/topic nodes can be managed in EmDash.
 - Category/topic relationships are unlabeled in V1.
+- A graph-shaped topic navigation data structure exists and can render the homepage navigation.
+- If an interactive graph plugin is used, it degrades to accessible topic links when JavaScript is unavailable or the viewport is constrained.
 - Category/topic pages list related content.
-- Articles include subscribe and share affordances.
+- Articles include share affordances.
 - Published-only filtering works.
 - Draft preview works from the CMS surface.
 - Cloudflare Pages rebuild can be triggered from the CMS publish flow.

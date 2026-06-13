@@ -10,7 +10,7 @@ These are the remaining V1 decisions. Answer with the question IDs when possible
 - Q1: Published content uses `CC-BY-SA-4.0`.
 - Q2: Keep `TEMIS` as the public name for V1.
 - Q4: No minimum real content count gates platform delivery. Platform V1 should support lorem ipsum/demo content and CMS-managed real content; editorial launch readiness is handled separately.
-- Q5: Use a first-party EmDash subscription delivery plugin with D1 storage, email subscription, and optional Wikimedia user talk page delivery. No listmonk for V1. See [subscription delivery plugin PRD](./prd-subscription-plugin-v1.md).
+- Q5: Move the first-party EmDash subscription delivery plugin to V1.5. V1 may include only a placeholder subscribe CTA. See [V1.5 subscription delivery plugin PRD](./prd-v1-5-subscription-plugin.md).
 - Q6: Metrics must stay server/platform-side only. No client-side analytics, tracking cookies, fingerprinting, or third-party reader analytics.
 - Q7: Start with native share where supported, copy link everywhere, and `mailto:` email fallback. No platform-specific share buttons in V1.
 
@@ -23,25 +23,6 @@ Why it matters: topics drive the homepage navigation, article grouping, and lore
 Recommended default: choose 5 broad topics first, then split later only after real content proves the need.
 
 Answer needed: topic names plus one-sentence descriptions.
-
-### Q6. Which server/platform metrics should be reported for V1?
-
-Answer: all metrics must stay server/platform-side.
-
-Accepted metric set:
-
-- Public traffic: aggregate Cloudflare request count, bandwidth, cache status, status-code distribution, and top public paths if available from Cloudflare aggregate logs/API without user profiling.
-- CMS health: Worker request count, success/error counts, invocation status, CPU time, wall time, subrequests, and request duration.
-- Publishing: deploy-hook trigger count, build UUID/status, build success/failure, build duration, and publish-to-deploy time.
-- Content operations: count of published articles, people, and topics from the generated snapshot.
-- Subscription: confirmed subscriber total and new confirmed subscribers.
-- Sharing: no per-reader tracking. Count only explicit first-party share actions if implemented as aggregate server-side counters.
-
-Open detail: confirm whether aggregate top public paths and aggregate share-action counters are acceptable.
-
-### Q7. Which share surfaces should ship first?
-
-Answer: ship native share where supported, copy link everywhere, and `mailto:` email as the only named fallback. Do not add platform-specific share buttons in V1.
 
 ## Content And Editorial
 
