@@ -171,8 +171,8 @@ export function withGraphNavigationLayout(
   const xMax = Math.max(...xValues);
   const yMin = Math.min(...yValues);
   const yMax = Math.max(...yValues);
-  const insetX = Math.max(6, layout.width * 0.08);
-  const insetY = Math.max(6, layout.height * 0.08);
+  const insetX = Math.max(10, layout.width * 0.12);
+  const insetY = Math.max(10, layout.height * 0.12);
   const availableWidth = layout.width - insetX * 2;
   const availableHeight = layout.height - insetY * 2;
   const forceWidth = Math.max(1, xMax - xMin);
