@@ -6,6 +6,7 @@ import {
 } from "@temis/graph-navigation";
 
 import {
+  entryAuthorName,
   entryBylineBio,
   entryBylineHref,
   entryBylineName,
@@ -329,12 +330,26 @@ function attachBylineEdges(
 ) {
   const edges: GraphNavigationEdgeInput[] = [];
   const bylineById = new Map(bylines.map((byline) => [byline.id, byline]));
+  const bylineBySlug = new Map(
+    bylines.map((byline) => [entryBylineSlug(byline), byline]),
+  );
 
   for (const post of posts) {
     const postId = `content:${post.id}`;
     const directByline = bylineById.get(post.primary_byline_id ?? "");
     if (directByline) {
       edges.push(edge(postId, `author:${directByline.id}`, "authored_by", 70));
+      continue;
+    }
+
+    const authorName = entryAuthorName(post);
+    const fallbackByline = authorName
+      ? bylineBySlug.get(slugify(authorName))
+      : null;
+    if (fallbackByline) {
+      edges.push(
+        edge(postId, `author:${fallbackByline.id}`, "authored_by", 70),
+      );
     }
   }
 
