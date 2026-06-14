@@ -221,6 +221,10 @@ Recommended layout uses:
 - The page shell should snap down to the largest fitting grid width and center
   itself. Any viewport remainder belongs in the outer gutters, not inside
   component sizing.
+- Content areas should grow by two grid columns at a time, one on the left and
+  one on the right, so the area remains centered as it scales.
+- Centering applies to the content area itself; individual elements inside the
+  area may keep their template-specific alignment.
 - Component outer boxes should use grid spans. Component internals may use
   spacing tokens for padding and icon offsets.
 - Topic pages: editorial landing pages that feel like entry points into a new

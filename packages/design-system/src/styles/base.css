@@ -33,27 +33,10 @@ body {
     background-position-x: calc(
       (
           100% -
-            min(round(down, 100%, var(--ds-grid-unit)), var(--ds-measure-page))
+            min(round(down, 100%, var(--ds-grid-pair)), var(--ds-measure-page))
         ) /
         2
     );
-  }
-}
-
-@media (min-width: 42rem) {
-  @supports (width: round(down, 100%, 1px)) {
-    body {
-      background-position-x: calc(
-        (
-            100% -
-              min(
-                round(down, 100%, var(--ds-grid-pair)),
-                var(--ds-measure-page)
-              )
-          ) /
-          2
-      );
-    }
   }
 }
 

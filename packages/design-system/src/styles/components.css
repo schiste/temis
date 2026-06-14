@@ -9,18 +9,7 @@
   .ds-page {
     max-width: none;
     padding-inline: 0;
-    width: min(round(down, 100%, var(--ds-grid-unit)), var(--ds-measure-page));
-  }
-}
-
-@media (min-width: 42rem) {
-  @supports (width: round(down, 100%, 1px)) {
-    .ds-page {
-      width: min(
-        round(down, 100%, var(--ds-grid-pair)),
-        var(--ds-measure-page)
-      );
-    }
+    width: min(round(down, 100%, var(--ds-grid-pair)), var(--ds-measure-page));
   }
 }
 
