@@ -21,12 +21,14 @@ const copy = await getSiteTexts({
     "Essays and tool announcements from people exploring open knowledge after AI.",
   homeEssaysCardEyebrow: "Essays",
   homeEssaysCardTitle: "Read the field notes",
+  homeFeaturedEyebrow: "Latest publication",
+  homeFeaturedHeading: "Now reading",
   homeHeroEyebrow: "Public map of a technical commons",
-  homeLatestHeading: "Latest essays",
+  homeLatestHeading: "More to read",
   homeMissingDescription:
     "An exploratory public map for open knowledge work in a post-AI world.",
   homeMissingTitle: "TEMIS",
-  homeNavigationHeading: "Explore",
+  homeNavigationHeading: "Explore the map",
   homePeopleCardDescription:
     "Author pages connect published work to the people and teams behind it.",
   homePeopleCardEyebrow: "People",
@@ -38,22 +40,24 @@ const copy = await getSiteTexts({
 });
 const title = page ? entryTitle(page) : copy.homeMissingTitle;
 const description = page ? entryDescription(page) : copy.homeMissingDescription;
+const [featuredPost, ...remainingPosts] = posts;
+const recentPosts = remainingPosts.slice(0, 3);
 const navigationCards = [
-  {
-    description: copy.homeTopicsCardDescription,
-    eyebrow: copy.homeTopicsCardEyebrow,
-    href: "/topics/",
-    mark: "01",
-    title: copy.homeTopicsCardTitle,
-    variant: "feature",
-  },
   {
     description: copy.homeEssaysCardDescription,
     eyebrow: copy.homeEssaysCardEyebrow,
     href: "/blog/",
-    mark: "02",
+    mark: "01",
     title: copy.homeEssaysCardTitle,
-    variant: "standard",
+    variant: "compact",
+  },
+  {
+    description: copy.homeTopicsCardDescription,
+    eyebrow: copy.homeTopicsCardEyebrow,
+    href: "/topics/",
+    mark: "02",
+    title: copy.homeTopicsCardTitle,
+    variant: "compact",
   },
   {
     description: copy.homePeopleCardDescription,
@@ -61,70 +65,109 @@ const navigationCards = [
     href: "/people/",
     mark: "03",
     title: copy.homePeopleCardTitle,
-    variant: "standard",
+    variant: "compact",
   },
 ] as const;
 ---
 
 <SiteLayout title={title} description={description}>
-  <PageHero
-    eyebrow={copy.homeHeroEyebrow}
-    title={title}
-    description={description}
-  />
+  <div class="ds-homepage">
+    <PageHero
+      eyebrow={copy.homeHeroEyebrow}
+      title={title}
+      description={description}
+    />
 
-  <section class="ds-section" aria-labelledby="home-navigation-heading">
-    <header class="ds-section-header">
-      <h2 class="ds-section-title" id="home-navigation-heading">
-        {copy.homeNavigationHeading}
-      </h2>
-    </header>
-    <div class="ds-card-grid ds-card-grid--home">
-      {
-        navigationCards.map((card) => (
-          <Card
-            description={card.description}
-            eyebrow={card.eyebrow}
-            href={card.href}
-            mark={card.mark}
-            title={card.title}
-            variant={card.variant}
-          />
-        ))
-      }
-    </div>
-  </section>
-
-  {
-    posts.length > 0 && (
-      <section class="ds-section" aria-labelledby="home-latest-heading">
-        <header class="ds-section-header">
-          <h2 class="ds-section-title" id="home-latest-heading">
-            {copy.homeLatestHeading}
-          </h2>
-        </header>
-        <div class="ds-card-grid ds-card-grid--latest">
-          {posts.slice(0, 4).map((post, index) => (
+    {
+      featuredPost && (
+        <section class="ds-section" aria-labelledby="home-featured-heading">
+          <header class="ds-section-header">
+            <h2 class="ds-section-title" id="home-featured-heading">
+              {copy.homeFeaturedHeading}
+            </h2>
+          </header>
+          <div class="ds-card-grid ds-card-grid--content">
             <Card
-              eyebrow={copy.articleCardEyebrow}
-              href={`/blog/${entrySlug(post)}/`}
-              mark={String(index + 1).padStart(2, "0")}
-              meta={entryAuthorName(post) ?? undefined}
-              description={entryDescription(post)}
-              title={entryTitle(post)}
-              variant="standard"
+              eyebrow={copy.homeFeaturedEyebrow}
+              href={`/blog/${entrySlug(featuredPost)}/`}
+              mark="01"
+              meta={entryAuthorName(featuredPost) ?? undefined}
+              description={entryDescription(featuredPost)}
+              title={entryTitle(featuredPost)}
+              variant="feature"
             />
-          ))}
-        </div>
-      </section>
-    )
-  }
+            {recentPosts.slice(0, 1).map((post, index) => (
+              <Card
+                eyebrow={copy.articleCardEyebrow}
+                href={`/blog/${entrySlug(post)}/`}
+                mark={String(index + 2).padStart(2, "0")}
+                meta={entryAuthorName(post) ?? undefined}
+                description={entryDescription(post)}
+                title={entryTitle(post)}
+                variant="standard"
+              />
+            ))}
+          </div>
+        </section>
+      )
+    }
 
-  {
-    page?.content && (
-      <section class="ds-home-note">
-        <article class="ds-prose" set:html={portableTextToHtml(page.content)} />
-      </section>
-    )
-  }
+    {
+      recentPosts.length > 1 && (
+        <section class="ds-section" aria-labelledby="home-latest-heading">
+          <header class="ds-section-header">
+            <h2 class="ds-section-title" id="home-latest-heading">
+              {copy.homeLatestHeading}
+            </h2>
+          </header>
+          <div class="ds-card-grid ds-card-grid--latest">
+            {recentPosts.slice(1).map((post, index) => (
+              <Card
+                eyebrow={copy.articleCardEyebrow}
+                href={`/blog/${entrySlug(post)}/`}
+                mark={String(index + 3).padStart(2, "0")}
+                meta={entryAuthorName(post) ?? undefined}
+                description={entryDescription(post)}
+                title={entryTitle(post)}
+                variant="standard"
+              />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <section class="ds-section" aria-labelledby="home-navigation-heading">
+      <header class="ds-section-header">
+        <h2 class="ds-section-title" id="home-navigation-heading">
+          {copy.homeNavigationHeading}
+        </h2>
+      </header>
+      <div class="ds-card-grid ds-card-grid--routes">
+        {
+          navigationCards.map((card) => (
+            <Card
+              description={card.description}
+              eyebrow={card.eyebrow}
+              href={card.href}
+              mark={card.mark}
+              title={card.title}
+              variant={card.variant}
+            />
+          ))
+        }
+      </div>
+    </section>
+
+    {
+      page?.content && (
+        <section class="ds-home-note">
+          <article
+            class="ds-prose"
+            set:html={portableTextToHtml(page.content)}
+          />
+        </section>
+      )
+    }
+  </div>
 </SiteLayout>
