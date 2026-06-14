@@ -19,7 +19,6 @@
   --ds-grid-pair: 5.25rem;
   --ds-grid-columns-prose: 16;
   --ds-grid-columns-wide: 26;
-  --ds-grid-columns-chrome: 28;
   --ds-grid-columns-page: 42;
 
   --ds-font-serif: "Source Serif 4", "Literata", ui-serif, Georgia, serif;
@@ -46,7 +45,6 @@
   --ds-layout-minor: 38.2%;
   --ds-measure-prose: 42rem;
   --ds-measure-wide: 68.25rem;
-  --ds-measure-chrome: 73.5rem;
   --ds-measure-page: 110.25rem;
 
   --ds-breakpoint-xs: 26.25rem;
@@ -86,9 +84,6 @@
       var(--ds-grid-unit) * var(--ds-grid-columns-prose)
     );
     --ds-measure-wide: calc(var(--ds-grid-unit) * var(--ds-grid-columns-wide));
-    --ds-measure-chrome: calc(
-      var(--ds-grid-unit) * var(--ds-grid-columns-chrome)
-    );
     --ds-measure-page: calc(var(--ds-grid-unit) * var(--ds-grid-columns-page));
   }
 }

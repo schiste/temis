@@ -199,11 +199,9 @@ Use phi relationships for major layout decisions.
   --layout-minor: 38.2%;
   --grid-columns-prose: 16;
   --grid-columns-wide: 26;
-  --grid-columns-chrome: 28;
   --grid-columns-page: 42;
   --measure-prose: calc(var(--grid-unit) * var(--grid-columns-prose));
   --measure-wide: calc(var(--grid-unit) * var(--grid-columns-wide));
-  --measure-chrome: calc(var(--grid-unit) * var(--grid-columns-chrome));
   --measure-page: calc(var(--grid-unit) * var(--grid-columns-page));
 }
 ```
@@ -214,10 +212,11 @@ Recommended layout uses:
   editorial entry points visible above the fold.
 - Article layout: centered editorial reading column, with metadata integrated
   before and around the article rather than persistent dashboard sidebars.
-- Site chrome: header and footer should start on the page grid and span whole
-  grid units unless a template explicitly needs full-page operational density.
+- Site chrome, main content, and footer should share the same snapped page
+  content area. Avoid separate chrome caps that create a second horizontal
+  system.
 - Footer cells on desktop should use whole grid spans. The V1 footer uses
-  `7 + 7 + 7 + 5 + 2` units across a 28-unit chrome measure.
+  grid-span sets that add up to the current content-area column count.
 - The page shell should snap down to the largest fitting grid width and center
   itself. Any viewport remainder belongs in the outer gutters, not inside
   component sizing.
