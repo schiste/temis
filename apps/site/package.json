@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
+    "@temis/design-system": "workspace:*",
     "astro": "^6.2.2",
     "sharp": "^0.34.5"
   },

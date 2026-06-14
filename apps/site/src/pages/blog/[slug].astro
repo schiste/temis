@@ -1,4 +1,7 @@
 ---
+import BaseLayout from "@temis/design-system/components/BaseLayout.astro";
+import MetadataRow from "@temis/design-system/components/MetadataRow.astro";
+import PageHero from "@temis/design-system/components/PageHero.astro";
 import {
   entryDescription,
   entrySlug,
@@ -7,7 +10,6 @@ import {
   getPosts,
 } from "../../lib/emdash";
 import { portableTextToHtml } from "../../lib/portable-text";
-import "../../styles/global.css";
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -27,31 +29,10 @@ const title = entryTitle(resolvedPost);
 const description = entryDescription(resolvedPost);
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} | TEMIS</title>
-    {description && <meta name="description" content={description} />}
-  </head>
-  <body>
-    <main class="shell">
-      <header class="site-header">
-        <a class="brand" href="/">TEMIS</a>
-        <nav class="nav" aria-label="Primary">
-          <a href="/blog/">Blog</a>
-        </nav>
-      </header>
-
-      <article>
-        <p class="meta">Published content</p>
-        <h1>{title}</h1>
-        {description && <p class="lede">{description}</p>}
-        <div
-          class="content"
-          set:html={portableTextToHtml(resolvedPost.content)}
-        />
-      </article>
-    </main>
-  </body>
-</html>
+<BaseLayout title={title} description={description}>
+  <article>
+    <PageHero eyebrow="Article" title={title} description={description} />
+    <MetadataRow items={[{ label: "Status", value: "Published content" }]} />
+    <div class="ds-prose" set:html={portableTextToHtml(resolvedPost.content)} />
+  </article>
+</BaseLayout>

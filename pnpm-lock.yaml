@@ -77,6 +77,9 @@ importers:
       "@astrojs/check":
         specifier: ^0.9.9
         version: 0.9.9(prettier-plugin-astro@0.14.1)(prettier@3.8.4)(typescript@5.9.3)
+      "@temis/design-system":
+        specifier: workspace:*
+        version: link:../../packages/design-system
       astro:
         specifier: ^6.2.2
         version: 6.4.6(@types/node@22.19.21)
@@ -87,6 +90,12 @@ importers:
       typescript:
         specifier: ^5.7.0
         version: 5.9.3
+
+  packages/design-system:
+    dependencies:
+      astro:
+        specifier: ^6.0.0
+        version: 6.4.6(@types/node@22.19.21)
 
   packages/emdash-cloudflare-deploy:
     dependencies:

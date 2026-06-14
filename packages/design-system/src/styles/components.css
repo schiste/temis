@@ -18,10 +18,11 @@
 
 .ds-brand {
   color: var(--ds-color-text);
-  display: inline-grid;
+  display: inline-flex;
   font-family: var(--ds-font-mono);
   font-size: var(--ds-font-size-body-lg);
   font-weight: 700;
+  gap: var(--ds-space-phi-00);
   letter-spacing: 0;
   line-height: 1;
   text-decoration: none;

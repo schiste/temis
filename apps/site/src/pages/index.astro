@@ -1,12 +1,15 @@
 ---
+import ArticleCard from "@temis/design-system/components/ArticleCard.astro";
+import BaseLayout from "@temis/design-system/components/BaseLayout.astro";
+import PageHero from "@temis/design-system/components/PageHero.astro";
 import {
   entryDescription,
+  entrySlug,
   entryTitle,
   getHomePage,
   getPosts,
 } from "../lib/emdash";
 import { portableTextToHtml } from "../lib/portable-text";
-import "../styles/global.css";
 
 const page = await getHomePage();
 const posts = await getPosts();
@@ -16,54 +19,33 @@ const description = page
   : "A static Astro site powered by EmDash content and Cloudflare.";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    {description && <meta name="description" content={description} />}
-  </head>
-  <body>
-    <main class="shell">
-      <header class="site-header">
-        <a class="brand" href="/">TEMIS</a>
-        <nav class="nav" aria-label="Primary">
-          <a href="/blog/">Blog</a>
-        </nav>
-      </header>
+<BaseLayout title={title} description={description}>
+  <PageHero
+    eyebrow="Public map of a technical commons"
+    title={title}
+    description={description}
+  />
 
-      <section class="hero">
-        <p class="eyebrow">Static by default</p>
-        <h1>{title}</h1>
-        {description && <p class="lede">{description}</p>}
+  {
+    page?.content && (
+      <article class="ds-prose" set:html={portableTextToHtml(page.content)} />
+    )
+  }
+
+  {
+    posts.length > 0 && (
+      <section class="ds-flow">
+        <p class="ds-eyebrow">Latest</p>
+        <div class="ds-listing">
+          {posts.slice(0, 4).map((post) => (
+            <ArticleCard
+              href={`/blog/${entrySlug(post)}/`}
+              title={entryTitle(post)}
+              description={entryDescription(post)}
+            />
+          ))}
+        </div>
       </section>
-
-      {
-        page?.content && (
-          <article
-            class="content"
-            set:html={portableTextToHtml(page.content)}
-          />
-        )
-      }
-
-      {
-        posts.length > 0 && (
-          <section>
-            <h2>Latest</h2>
-            <div class="listing">
-              {posts.slice(0, 4).map((post) => (
-                <a href={`/blog/${post.slug}/`}>
-                  <strong>{entryTitle(post)}</strong>
-                  {entryDescription(post) && (
-                    <span>{entryDescription(post)}</span>
-                  )}
-                </a>
-              ))}
-            </div>
-          </section>
-        )
-      }
-    </main>
-  </body>
-</html>
+    )
+  }
+</BaseLayout>
