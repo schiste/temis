@@ -303,7 +303,9 @@ Source Serif 4 or Literata keeps article reading serious and editorial.
 
 ## Color
 
-Theme selection should follow the user's system preference by default.
+Theme selection should default to light mode. Readers may explicitly switch to
+dark mode from the site chrome; the preference can be stored locally in the
+browser, but must not require cookies, tracking, or a server-side profile.
 
 The palette should feel calm, luminous, and slightly futuristic. It should not
 lean into generic AI blue-purple gradients as the primary identity, but there is

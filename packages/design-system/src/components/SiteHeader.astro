@@ -67,30 +67,102 @@ function isCurrent(item: NavItem) {
     }
   </nav>
 
-  {
-    actions.length > 0 && (
-      <nav class="ds-header-actions" aria-label={utilitiesNavLabel}>
-        {actions.map((action) => (
-          <a
-            class="ds-header-action"
-            href={action.href}
-            aria-label={action.label}
-          >
-            {action.icon === "search" ? (
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M5 5h9v9H5z" />
-                <path d="m14 14 5 5" />
-              </svg>
-            ) : (
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 3 21 12 12 21 3 12z" />
-                <path d="M12 7v10" />
-                <path d="M7 12h10" />
-              </svg>
-            )}
-          </a>
-        ))}
-      </nav>
-    )
-  }
+  <div class="ds-header-actions" role="group" aria-label={utilitiesNavLabel}>
+    {
+      actions.map((action) => (
+        <a
+          class="ds-header-action"
+          href={action.href}
+          aria-label={action.label}
+        >
+          {action.icon === "search" ? (
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 5h9v9H5z" />
+              <path d="m14 14 5 5" />
+            </svg>
+          ) : (
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3 21 12 12 21 3 12z" />
+              <path d="M12 7v10" />
+              <path d="M7 12h10" />
+            </svg>
+          )}
+        </a>
+      ))
+    }
+    <button
+      class="ds-header-action ds-theme-toggle"
+      type="button"
+      aria-label="Switch to dark theme"
+      aria-pressed="false"
+      data-theme-toggle
+      data-theme-state="light"
+    >
+      <svg
+        class="ds-theme-toggle__icon ds-theme-toggle__icon--dark"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M16 3a7 7 0 1 0 5 12 9 9 0 0 1-5-12Z"></path>
+      </svg>
+      <svg
+        class="ds-theme-toggle__icon ds-theme-toggle__icon--light"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v3"></path>
+        <path d="M12 19v3"></path>
+        <path d="M2 12h3"></path>
+        <path d="M19 12h3"></path>
+      </svg>
+    </button>
+  </div>
 </header>
+
+<script is:inline>
+  (() => {
+    const storageKey = "temis-theme";
+    const root = document.documentElement;
+    const toggles = Array.from(
+      document.querySelectorAll("[data-theme-toggle]"),
+    );
+
+    const currentTheme = () =>
+      root.dataset.theme === "dark" ? "dark" : "light";
+
+    const updateToggleState = (theme) => {
+      const nextTheme = theme === "dark" ? "light" : "dark";
+
+      for (const toggle of toggles) {
+        toggle.dataset.themeState = theme;
+        toggle.setAttribute(
+          "aria-pressed",
+          theme === "dark" ? "true" : "false",
+        );
+        toggle.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
+      }
+    };
+
+    const setTheme = (theme) => {
+      root.dataset.theme = theme;
+      root.style.colorScheme = theme;
+
+      try {
+        localStorage.setItem(storageKey, theme);
+      } catch {
+        /* Preference persistence is optional. */
+      }
+
+      updateToggleState(theme);
+    };
+
+    updateToggleState(currentTheme());
+
+    for (const toggle of toggles) {
+      toggle.addEventListener("click", () => {
+        setTheme(currentTheme() === "dark" ? "light" : "dark");
+      });
+    }
+  })();
+</script>

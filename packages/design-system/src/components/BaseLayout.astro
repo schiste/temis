@@ -22,12 +22,29 @@ const pageTitle = title === "TEMIS" ? title : `${title} | TEMIS`;
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     {description && <meta name="description" content={description} />}
+    <script is:inline>
+      (() => {
+        const storageKey = "temis-theme";
+        const root = document.documentElement;
+        let theme = "light";
+
+        try {
+          theme =
+            localStorage.getItem(storageKey) === "dark" ? "dark" : "light";
+        } catch {
+          theme = "light";
+        }
+
+        root.dataset.theme = theme;
+        root.style.colorScheme = theme;
+      })();
+    </script>
   </head>
   <body>
     <div id="top" class="ds-page">

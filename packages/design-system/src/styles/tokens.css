@@ -1,5 +1,5 @@
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 
   --ds-ratio-phi: 1.618;
   --ds-size-base-px: 16px;
@@ -93,20 +93,20 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --ds-color-canvas: #11130f;
-    --ds-color-surface: #171a15;
-    --ds-color-panel: #20241d;
-    --ds-color-text: #f3f0e7;
-    --ds-color-text-muted: #aaa89f;
-    --ds-color-line: #373a32;
-    --ds-color-line-strong: #74786c;
-    --ds-color-accent: #75d6c5;
-    --ds-color-accent-contrast: #081613;
-    --ds-color-topic-a: #75d6c5;
-    --ds-color-topic-b: #f1c46f;
-    --ds-color-topic-c: #9fb8ff;
-    --ds-color-focus: #d4ff5f;
-  }
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  --ds-color-canvas: #11130f;
+  --ds-color-surface: #171a15;
+  --ds-color-panel: #20241d;
+  --ds-color-text: #f3f0e7;
+  --ds-color-text-muted: #aaa89f;
+  --ds-color-line: #373a32;
+  --ds-color-line-strong: #74786c;
+  --ds-color-accent: #75d6c5;
+  --ds-color-accent-contrast: #081613;
+  --ds-color-topic-a: #75d6c5;
+  --ds-color-topic-b: #f1c46f;
+  --ds-color-topic-c: #9fb8ff;
+  --ds-color-focus: #d4ff5f;
 }
