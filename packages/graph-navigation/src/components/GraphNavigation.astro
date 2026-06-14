@@ -32,6 +32,32 @@ const edges = laidOutGraph.edges
     targetNode: nodesById.get(edge.target),
   }))
   .filter((edge) => edge.sourceNode && edge.targetNode);
+const relatedNodesById = new Map<string, typeof laidOutGraph.nodes>();
+
+for (const edge of edges) {
+  if (!edge.sourceNode || !edge.targetNode) continue;
+
+  relatedNodesById.set(edge.source, [
+    ...(relatedNodesById.get(edge.source) ?? []),
+    edge.targetNode,
+  ]);
+  relatedNodesById.set(edge.target, [
+    ...(relatedNodesById.get(edge.target) ?? []),
+    edge.sourceNode,
+  ]);
+}
+
+const initialDetailNodeId =
+  laidOutGraph.currentNodeId && nodesById.has(laidOutGraph.currentNodeId)
+    ? laidOutGraph.currentNodeId
+    : laidOutGraph.nodes[0]?.id;
+const detailPanels = laidOutGraph.nodes.map((node) => ({
+  node,
+  relatedNodes: [...(relatedNodesById.get(node.id) ?? [])].sort((a, b) => {
+    if (a.priority !== b.priority) return b.priority - a.priority;
+    return a.label.localeCompare(b.label);
+  }),
+}));
 ---
 
 <nav class="temis-graph-nav" aria-label={label}>
@@ -82,6 +108,50 @@ const edges = laidOutGraph.edges
       ))
     }
   </div>
+
+  <section
+    class="temis-graph-nav__details"
+    aria-label="Selected graph node"
+    aria-live="polite"
+  >
+    {
+      detailPanels.map(({ node, relatedNodes }) => (
+        <article
+          class="temis-graph-nav__detail"
+          data-detail-node-id={node.id}
+          hidden={node.id !== initialDetailNodeId}
+        >
+          <div class="temis-graph-nav__detail-main">
+            <p class="temis-graph-nav__detail-type">
+              {nodeTypeLabels[node.type]}
+            </p>
+            <h3>{node.label}</h3>
+            {node.description && <p>{node.description}</p>}
+          </div>
+
+          <div class="temis-graph-nav__detail-actions">
+            <a href={node.href} aria-label={`Open ${node.label}`}>
+              Open
+            </a>
+          </div>
+
+          {relatedNodes.length > 0 && (
+            <div class="temis-graph-nav__detail-related">
+              <p>Related</p>
+              <ul>
+                {relatedNodes.map((relatedNode) => (
+                  <li>
+                    <a href={relatedNode.href}>{relatedNode.label}</a>
+                    <span>{nodeTypeLabels[relatedNode.type]}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </article>
+      ))
+    }
+  </section>
 
   <ul class="temis-graph-nav__fallback">
     {
@@ -251,6 +321,110 @@ const edges = laidOutGraph.edges
     transform: scale(1.006);
   }
 
+  .temis-graph-nav__details {
+    border-block-start: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line-strong, currentColor);
+  }
+
+  .temis-graph-nav__detail {
+    border-block-end: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line, currentColor);
+    display: grid;
+    gap: var(--ds-space-phi-2, 1rem);
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding-block: var(--ds-space-phi-2, 1rem);
+  }
+
+  .temis-graph-nav__detail[hidden] {
+    display: none;
+  }
+
+  .temis-graph-nav__detail-main {
+    display: grid;
+    gap: var(--ds-space-phi-00, 0.25rem);
+  }
+
+  .temis-graph-nav__detail-type,
+  .temis-graph-nav__detail-related > p {
+    color: var(--ds-color-text-muted, currentColor);
+    font-family: var(--ds-font-mono, ui-monospace);
+    font-size: var(--ds-font-size-micro, 0.625rem);
+    line-height: 1;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .temis-graph-nav__detail h3 {
+    font-size: var(--ds-font-size-step-1, 1.625rem);
+    line-height: var(--ds-line-height-tight, 1.1);
+    margin: 0;
+  }
+
+  .temis-graph-nav__detail-main > p:not(.temis-graph-nav__detail-type) {
+    color: var(--ds-color-text-muted, currentColor);
+    font-size: var(--ds-font-size-body, 1rem);
+    margin: 0;
+    max-width: calc(var(--ds-grid-unit, 2.625rem) * 16);
+  }
+
+  .temis-graph-nav__detail-actions a {
+    align-items: center;
+    border: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line-strong, currentColor);
+    color: var(--ds-color-text, currentColor);
+    display: inline-flex;
+    font-family: var(--ds-font-mono, ui-monospace);
+    font-size: var(--ds-font-size-meta, 0.75rem);
+    font-weight: 700;
+    min-height: var(--ds-grid-unit, 2.625rem);
+    padding-inline: var(--ds-space-phi-1, 0.625rem);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .temis-graph-nav__detail-actions a:hover,
+  .temis-graph-nav__detail-actions a:focus-visible {
+    background: var(--ds-color-text, currentColor);
+    color: var(--ds-color-surface, Canvas);
+  }
+
+  .temis-graph-nav__detail-related {
+    display: grid;
+    gap: var(--ds-space-phi-1, 0.625rem);
+    grid-column: 1 / -1;
+  }
+
+  .temis-graph-nav__detail-related ul {
+    display: grid;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .temis-graph-nav__detail-related li {
+    align-items: baseline;
+    border-block-start: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line, currentColor);
+    display: grid;
+    gap: var(--ds-space-phi-1, 0.625rem);
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding-block: var(--ds-space-phi-1, 0.625rem);
+  }
+
+  .temis-graph-nav__detail-related a {
+    font-family: var(--ds-font-mono, ui-monospace);
+    font-size: var(--ds-font-size-meta, 0.75rem);
+    text-transform: uppercase;
+  }
+
+  .temis-graph-nav__detail-related span {
+    color: var(--ds-color-text-muted, currentColor);
+    font-family: var(--ds-font-mono, ui-monospace);
+    font-size: var(--ds-font-size-micro, 0.625rem);
+    text-transform: uppercase;
+  }
+
   .temis-graph-nav__fallback {
     border-block-start: var(--ds-stroke-hairline, 1px) solid
       var(--ds-color-line, currentColor);
@@ -302,6 +476,14 @@ const edges = laidOutGraph.edges
     .temis-graph-nav__node {
       max-width: calc(var(--ds-grid-unit, 2.625rem) * 4);
     }
+
+    .temis-graph-nav__detail {
+      grid-template-columns: 1fr;
+    }
+
+    .temis-graph-nav__detail-actions {
+      justify-self: start;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -319,6 +501,9 @@ const edges = laidOutGraph.edges
     const nodes = [...graph.querySelectorAll<HTMLElement>("[data-node-id]")];
     const edges = [
       ...graph.querySelectorAll<SVGLineElement>("[data-edge-source]"),
+    ];
+    const detailPanels = [
+      ...graph.querySelectorAll<HTMLElement>("[data-detail-node-id]"),
     ];
     const neighbors = new Map<string, Set<string>>();
     let lockedNodeId: string | null = null;
@@ -343,9 +528,16 @@ const edges = laidOutGraph.edges
       for (const edge of edges) edge.removeAttribute("data-graph-state");
     };
 
+    const showDetailPanel = (nodeId: string) => {
+      for (const panel of detailPanels) {
+        panel.hidden = panel.dataset.detailNodeId !== nodeId;
+      }
+    };
+
     const activateNode = (nodeId: string) => {
       const relatedNodes = neighbors.get(nodeId) ?? new Set();
       graph.dataset.graphActive = nodeId;
+      showDetailPanel(nodeId);
 
       for (const node of nodes) {
         const currentNodeId = node.dataset.nodeId;
