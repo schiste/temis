@@ -14,11 +14,13 @@ import {
   getPosts,
   getSiteTexts,
 } from "../../lib/emdash";
-import { portableTextToHtml } from "../../lib/portable-text";
 
 const page = await getPageBySlug("blog");
 const posts = await getPosts();
 const copy = await getSiteTexts({
+  blogArchiveCountLabel: "field notes",
+  blogArchiveOrderLabel: "Latest first",
+  blogArchiveScopeLabel: "Published archive",
   blogHeroEyebrow: "Articles",
   blogListFallbackAuthor: "Team publication",
   blogListAuthorHeading: "Author",
@@ -32,45 +34,50 @@ const copy = await getSiteTexts({
 });
 const title = page ? entryTitle(page) : copy.blogMissingTitle;
 const description = page ? entryDescription(page) : copy.blogMissingDescription;
+const postCountLabel = `${posts.length.toString().padStart(2, "0")} ${
+  posts.length === 1 ? "field note" : copy.blogArchiveCountLabel
+}`;
 ---
 
 <SiteLayout title={title} description={description}>
-  <PageHero
-    eyebrow={copy.blogHeroEyebrow}
-    ledeSize="small"
-    title={title}
-    description={description}
-  />
+  <div class="ds-archive-page">
+    <PageHero
+      eyebrow={copy.blogHeroEyebrow}
+      ledeSize="small"
+      title={title}
+      description={description}
+    />
 
-  {
-    page?.content && (
-      <article class="ds-prose" set:html={portableTextToHtml(page.content)} />
-    )
-  }
-
-  <section class="ds-field-notes" aria-label={title}>
-    <div class="ds-field-notes__header" aria-hidden="true">
-      <span>{copy.blogListIndexHeading}</span>
-      <span>{copy.blogListTitleHeading}</span>
-      <span>{copy.blogListDateHeading}</span>
-      <span>{copy.blogListAuthorHeading}</span>
-      <span>{copy.blogListTaxonomyHeading}</span>
+    <div class="ds-archive-toolbar" aria-label={copy.blogArchiveScopeLabel}>
+      <span>{postCountLabel}</span>
+      <span>{copy.blogArchiveOrderLabel}</span>
+      <span>{copy.blogArchiveScopeLabel}</span>
     </div>
-    {
-      posts.map((post, index) => (
-        <FieldNoteRow
-          authorHref={entryAuthorHref(post) ?? undefined}
-          authorName={entryAuthorName(post) ?? undefined}
-          contentType={copy.blogListType}
-          description={entryDescription(post)}
-          fallbackAuthorName={copy.blogListFallbackAuthor}
-          href={`/blog/${entrySlug(post)}/`}
-          index={(index + 1).toString().padStart(2, "0")}
-          publishedDate={entryPublishedDateLabel(post)}
-          publishedDateTime={entryPublishedDateTime(post) ?? undefined}
-          title={entryTitle(post)}
-        />
-      ))
-    }
-  </section>
+
+    <section class="ds-field-notes" aria-label={title}>
+      <div class="ds-field-notes__header" aria-hidden="true">
+        <span>{copy.blogListIndexHeading}</span>
+        <span>{copy.blogListTitleHeading}</span>
+        <span>{copy.blogListDateHeading}</span>
+        <span>{copy.blogListAuthorHeading}</span>
+        <span>{copy.blogListTaxonomyHeading}</span>
+      </div>
+      {
+        posts.map((post, index) => (
+          <FieldNoteRow
+            authorHref={entryAuthorHref(post) ?? undefined}
+            authorName={entryAuthorName(post) ?? undefined}
+            contentType={copy.blogListType}
+            description={entryDescription(post)}
+            fallbackAuthorName={copy.blogListFallbackAuthor}
+            href={`/blog/${entrySlug(post)}/`}
+            index={(index + 1).toString().padStart(2, "0")}
+            publishedDate={entryPublishedDateLabel(post)}
+            publishedDateTime={entryPublishedDateTime(post) ?? undefined}
+            title={entryTitle(post)}
+          />
+        ))
+      }
+    </section>
+  </div>
 </SiteLayout>

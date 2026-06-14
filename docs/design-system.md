@@ -436,6 +436,8 @@ Rules:
   metadata on wider screens.
 - Preserve real links for both article title and author/person page.
 - Stack metadata under the title on narrow screens instead of shrinking text.
+- Use a compact archive toolbar when an index needs count, ordering, or scope
+  metadata; keep it ruled, hard-edged, and aligned to `--ds-grid-unit`.
 
 ## Graph Navigation
 
