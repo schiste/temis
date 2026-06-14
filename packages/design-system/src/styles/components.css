@@ -439,6 +439,10 @@
   }
 
   .ds-site-footer {
+    --ds-footer-primary-span: 7;
+    --ds-footer-site-span: 5;
+    --ds-footer-top-span: 2;
+
     grid-template-columns: repeat(auto-fill, minmax(var(--ds-grid-unit), 1fr));
   }
 
@@ -453,96 +457,68 @@
 
   .ds-footer-cell--open {
     border-inline-start: 0;
-    grid-column: span 7;
+    grid-column: span var(--ds-footer-primary-span);
   }
 
   .ds-footer-cell--license,
   .ds-footer-cell--commons {
-    grid-column: span 7;
+    grid-column: span var(--ds-footer-primary-span);
   }
 
   .ds-footer-cell--temis {
-    grid-column: span 5;
+    grid-column: span var(--ds-footer-site-span);
   }
 
   .ds-footer-top {
-    grid-column: span 2;
+    grid-column: span var(--ds-footer-top-span);
   }
 }
 
 @container ds-page (min-width: 78.75rem) {
-  .ds-footer-cell--temis {
-    grid-column: span 5;
-  }
-
-  .ds-footer-top {
-    grid-column: span 4;
+  .ds-site-footer {
+    --ds-footer-top-span: 4;
   }
 }
 
 @container ds-page (min-width: 84rem) {
-  .ds-footer-cell--open,
-  .ds-footer-cell--license,
-  .ds-footer-cell--commons {
-    grid-column: span 8;
-  }
-
-  .ds-footer-cell--temis {
-    grid-column: span 5;
+  .ds-site-footer {
+    --ds-footer-primary-span: 8;
+    --ds-footer-top-span: 3;
   }
 }
 
 @container ds-page (min-width: 89.25rem) {
-  .ds-footer-cell--temis {
-    grid-column: span 7;
+  .ds-site-footer {
+    --ds-footer-site-span: 6;
+    --ds-footer-top-span: 4;
   }
 }
 
 @container ds-page (min-width: 94.5rem) {
-  .ds-footer-cell--open,
-  .ds-footer-cell--license,
-  .ds-footer-cell--commons {
-    grid-column: span 9;
-  }
-
-  .ds-footer-cell--temis {
-    grid-column: span 6;
+  .ds-site-footer {
+    --ds-footer-primary-span: 9;
+    --ds-footer-top-span: 3;
   }
 }
 
 @container ds-page (min-width: 99.75rem) {
-  .ds-footer-cell--temis {
-    grid-column: span 7;
-  }
-
-  .ds-footer-top {
-    grid-column: span 4;
+  .ds-site-footer {
+    --ds-footer-site-span: 7;
+    --ds-footer-top-span: 4;
   }
 }
 
 @container ds-page (min-width: 105rem) {
-  .ds-footer-cell--open,
-  .ds-footer-cell--license,
-  .ds-footer-cell--commons {
-    grid-column: span 10;
-  }
-
-  .ds-footer-cell--temis {
-    grid-column: span 7;
-  }
-
-  .ds-footer-top {
-    grid-column: span 3;
+  .ds-site-footer {
+    --ds-footer-primary-span: 10;
+    --ds-footer-top-span: 3;
   }
 }
 
 @container ds-page (min-width: 110.25rem) {
-  .ds-footer-cell--temis {
-    grid-column: span 8;
-  }
-
-  .ds-footer-top {
-    grid-column: span 4;
+  .ds-site-footer {
+    --ds-footer-site-span: 8;
+    --ds-footer-top-span: 4;
   }
 }
 
