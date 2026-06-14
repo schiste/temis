@@ -188,6 +188,10 @@
   max-width: var(--ds-measure-prose);
 }
 
+.ds-lede--small {
+  font-size: var(--ds-font-size-body);
+}
+
 .ds-prose {
   font-family: var(--ds-font-serif);
   font-size: var(--ds-font-size-body-lg);
