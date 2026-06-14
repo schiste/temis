@@ -5,9 +5,9 @@ Date: 2026-06-13
 
 ## Summary
 
-TEMIS V1 is a public, static, EmDash-managed editorial website where readers discover articles, authors, and themes through cool, tech-forward topic navigation.
+TEMIS V1 is a public, static, EmDash-managed editorial website where readers discover articles, authors, tools, and themes through cool, tech-forward graph navigation.
 
-V1 is a focused editorial product. Topic relationships are a graph-based navigation and brand layer over content categories, using unlabeled editorial links between topics. V1 should prioritize publishing, reading, author discovery, graph-based topic exploration, and sharing.
+V1 is a focused editorial product. Content relationships are a graph-based navigation and brand layer over articles, topics, tags, authors, and tools. V1 should prioritize publishing, reading, author discovery, graph-based exploration, and sharing.
 
 The product direction is grounded in the [TEMIS vision](./vision.md): a public exploration space for people working through the future of open knowledge in a post-AI world.
 
@@ -18,7 +18,7 @@ TEMIS V1 should ship quickly and stay grounded in real content.
 The V1 direction is:
 
 1. Editorial discovery site.
-2. Graph-based topic navigation.
+2. Graph-based content navigation.
 3. Clean public person/author pages.
 4. Static public rendering from EmDash-managed content.
 
@@ -42,8 +42,9 @@ Authors, users, and people should be modeled as first-class content items where 
 ## Goals
 
 - Publish high-quality essays and articles announcing or contextualizing tools.
+- Model tools as first-class graphable records without requiring a top-level tools menu.
 - Give the site a strong editorial/data-like identity.
-- Make category-level relationships explorable through graph-based topic navigation.
+- Make content relationships explorable through graph-based navigation.
 - Establish the content and technical scaffold for fast editorial iteration.
 - Make people/authors visible through clean first-class profile pages.
 - Drive readers to read and share.
@@ -80,8 +81,10 @@ Authors, users, and people should be modeled as first-class content items where 
 V1 content types:
 
 - Article.
+- Tool.
 - Person/author.
 - Category/topic.
+- Tag.
 - Site settings.
 - Navigation/menu settings.
 
@@ -124,6 +127,33 @@ Tool announcement fields, when the article kind is `tool_announcement`:
 
 Tool announcements remain articles in V1. They may have visual treatment differences later, but they should use the same content model and reading flow as essays unless a concrete editorial need appears.
 
+Tool announcement articles may link to a first-class tool record so the graph can connect the article, tool, authors, topics, and tags.
+
+### Tool
+
+Purpose: represent tools as durable graphable objects that can be connected to articles, people, topics, and tags without forcing a public tools index in V1.
+
+Expected fields:
+
+- Name.
+- Slug.
+- Short summary.
+- Longer description.
+- Tool URL.
+- Repository URL.
+- Documentation URL.
+- Related article assignments.
+- Related person/author assignments.
+- Related category/topic assignments.
+- Related tag assignments.
+- Optional status or maturity.
+- Optional featured visual.
+- SEO title.
+- SEO description.
+- Status: draft/published.
+
+Tools should be publishable and graph-visible when ready. V1 does not require a top-level `Tools` menu item, but each visible tool node must have an appropriate destination. If a dedicated tool page is not designed yet, the node may link to the best related article.
+
 ### Person/Author
 
 Purpose: represent public authors, contributors, and relevant people as durable first-class content items with clean public pages.
@@ -148,7 +178,7 @@ Public people pages should list authored articles. CMS users and public person r
 
 ### Category/Topic
 
-Purpose: power V1 topic navigation and group related editorial content.
+Purpose: power V1 graph navigation and group related editorial content.
 
 Expected fields:
 
@@ -163,9 +193,26 @@ Expected fields:
 
 Category relationships should be editorially managed, manually edited, and unlabeled in V1.
 
-## Graph-Based Topic Navigation
+### Tag
 
-V1 graph-based topic navigation is category-driven.
+Purpose: provide lighter-weight graph and filtering vocabulary without turning every tag into a main category.
+
+Expected fields:
+
+- Name.
+- Slug.
+- Short description.
+- Optional color/accent.
+- Related category/topic assignments.
+- SEO title.
+- SEO description.
+- Status: draft/published.
+
+Tags should be graphable and reusable across articles, tools, and people. They should not automatically become top-level navigation.
+
+## Graph-Based Content Navigation
+
+V1 graph-based content navigation is editorially managed and content-driven.
 
 See [graph navigation plugin PRD](./prd-graph-navigation-plugin-v1.md) for the focused plugin/data-structure requirements.
 
@@ -173,7 +220,7 @@ It should behave as:
 
 - A homepage visual anchor.
 - A navigation model.
-- A way to move from theme to theme and from theme to content.
+- A way to move between themes, content, authors, tags, and tools.
 
 It should not behave as:
 
@@ -183,14 +230,15 @@ It should not behave as:
 
 ### Navigation Requirements
 
-- Render category/topic nodes.
-- Show editorially configured unlabeled relationships between categories.
-- Let users navigate from a node to category content.
+- Render typed nodes for articles/content, category/topics, tags, authors, and tools.
+- Show editorially configured relationships as visually unlabeled edges.
+- Let users navigate from a node to the appropriate public destination.
 - Use a graph-shaped data structure that can be rendered by either a static component or an interactive graph plugin.
 - Prefer an interactive graph plugin for the homepage if it can remain accessible, responsive, and build-safe.
 - Support responsive desktop and mobile experiences.
 - Degrade gracefully if there are few categories at launch.
 - Avoid visual clutter by allowing editorial priority/visibility controls.
+- Keep tools graphable without adding a top-level tools menu item in V1.
 
 ## Visual And UX Direction
 
@@ -215,7 +263,7 @@ The site should not feel:
 - Like a generic blog template.
 - Like a full social network.
 
-The homepage should make topic relationships visible in the first viewport, while still making it obvious that the primary activity is reading.
+The homepage should make content relationships visible in the first viewport, while still making it obvious that the primary activity is reading.
 
 ## Calls To Action
 
@@ -288,14 +336,15 @@ Operational metrics:
 
 ## V1 Acceptance Criteria
 
-- A public homepage introduces TEMIS and exposes topic relationship navigation.
+- A public homepage introduces TEMIS and exposes content relationship navigation.
 - At least one essay-style article and one tool-announcement article can be published from EmDash and rendered statically.
 - At least one person/author page can be published from EmDash and rendered statically.
 - Articles can link to one or more public person/author pages.
 - Category/topic nodes can be managed in EmDash.
-- Category/topic relationships are unlabeled in V1.
-- A graph-shaped topic navigation data structure exists and can render the homepage navigation.
-- If an interactive graph plugin is used, it degrades to accessible topic links when JavaScript is unavailable or the viewport is constrained.
+- Graph edges are visually unlabeled in V1.
+- A graph-shaped content navigation data structure exists and can render homepage and topic-page navigation.
+- Tools can be created as first-class graphable records and connected to articles, topics, tags, and people.
+- If an interactive graph plugin is used, it degrades to accessible links when JavaScript is unavailable or the viewport is constrained.
 - Category/topic pages list related content.
 - Articles include share affordances.
 - Published-only filtering works.

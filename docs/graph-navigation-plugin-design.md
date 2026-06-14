@@ -6,15 +6,15 @@ Scope: V1
 
 ## Purpose
 
-The graph navigation plugin gives TEMIS a reusable topic graph interface that
+The graph navigation plugin gives TEMIS a reusable content graph interface that
 can appear on the homepage, the topic index, and eventually any page that has a
-current topic context.
+current content, topic, tag, author, or tool context.
 
 The plugin is navigation, not analytics and not an ontology engine.
 
 ## V1 Principles
 
-- Topic-only graph nodes.
+- Typed graph nodes for content, topics, tags, authors, and tools.
 - Unlabeled graph edges.
 - Static build output first.
 - Accessible HTML links are the real navigation surface.
@@ -38,7 +38,7 @@ It owns:
 It does not own:
 
 - EmDash schema creation.
-- Editorial topic decisions.
+- Editorial relationship decisions.
 - Search.
 - Recommendation logic.
 - Tracking or measurement.
@@ -64,6 +64,7 @@ interface GraphNavigationSnapshot {
 ```ts
 interface GraphNavigationNode {
   id: string;
+  type: "content" | "topic" | "tag" | "author" | "tool";
   label: string;
   slug: string;
   href: string;
@@ -82,13 +83,21 @@ interface GraphNavigationNode {
 ```ts
 interface GraphNavigationEdge {
   id?: string;
+  type?:
+    | "authored_by"
+    | "tagged_with"
+    | "in_topic"
+    | "related"
+    | "mentions_tool"
+    | "documents_tool";
   source: string;
   target: string;
   priority?: number;
 }
 ```
 
-Edges are undirected and unlabeled in V1.
+Edges are undirected in the V1 renderer. They may carry internal types for data
+quality, but those types are not rendered as visible edge labels.
 
 ## Rendering Model
 
@@ -98,6 +107,7 @@ The initial renderer uses:
 - Absolutely positioned HTML anchors for nodes.
 - A visible fallback list under the graph.
 - CSS variables from the TEMIS design system.
+- Node-type styling hooks for content, topics, tags, authors, and tools.
 
 This makes the graph:
 
@@ -118,7 +128,10 @@ V1 page graph behavior:
 - Edges are filtered to visible nodes.
 - If no current node exists, render the global graph.
 
-This supports future page-level graph modules without duplicating topic data.
+This supports page-level graph modules without duplicating content relationship
+data. For example, an article graph can show its authors, topics, tags, and
+mentioned tools; a tool graph can show related articles, people, topics, and
+tags even if tools are not linked from the main menu.
 
 ## Mobile
 
@@ -127,14 +140,16 @@ Mobile must not shrink a dense desktop graph until it becomes unreadable.
 V1 behavior:
 
 - Keep the graph visual compact.
-- Keep the fallback topic list visible and usable.
+- Keep the fallback graph link list visible and usable.
 - Let the layout wrap naturally through hard-edged cells.
 - Prefer clarity over force-directed graph fidelity.
 
 ## Open Questions
 
-- Should the homepage graph use all visible topics or a curated subset?
-- Should topic pages show only direct neighbors or also second-degree neighbors?
+- Should the homepage graph use all visible nodes or a curated subset?
+- Should pages show only direct neighbors or also second-degree neighbors?
 - Should editors control layout hints in EmDash V1, or should layout remain fully
-  deterministic until topic count grows?
+  deterministic until the graph grows?
 - Should article pages infer a current topic from the primary topic assignment?
+- Should tool pages exist in V1, or should tool nodes link to their best related
+  article until the tool surface is designed?
