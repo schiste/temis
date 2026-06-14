@@ -225,8 +225,13 @@ Recommended layout uses:
 - The page shell should snap down to the largest fitting grid width and center
   itself. Any viewport remainder belongs in the outer gutters, not inside
   component sizing.
+- The visible background column system belongs to the snapped content area,
+  not the viewport body. Paint the column grid from the page shell origin so
+  the first visible column starts exactly where header, main, and footer start.
 - The content area starts from a target percentage of the viewport. V1 uses
   `92vw`, rounded down to the nearest pair of grid columns.
+- Pixels left over after snapping are outside the grid. They should be split
+  evenly into left and right gutters and remain plain canvas.
 - Content areas should grow by two grid columns at a time, one on the left and
   one on the right, so the area remains centered as it scales.
 - Centering applies to the content area itself; individual elements inside the

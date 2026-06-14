@@ -14,24 +14,10 @@ html {
 }
 
 body {
-  background:
-    linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--ds-color-line) 38%, transparent)
-        var(--ds-stroke-hairline),
-      transparent var(--ds-stroke-hairline)
-    ),
-    var(--ds-color-canvas);
-  background-size: var(--ds-grid-unit) var(--ds-grid-unit);
+  background: var(--ds-color-canvas);
   color: var(--ds-color-text);
   margin: 0;
   min-height: 100svh;
-}
-
-@supports (width: round(down, 100%, 1px)) {
-  body {
-    background-position-x: calc((100% - var(--ds-content-area-width)) / 2);
-  }
 }
 
 body::selection {

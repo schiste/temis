@@ -1,4 +1,14 @@
 .ds-page {
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--ds-color-line) 38%, transparent)
+        var(--ds-stroke-hairline),
+      transparent var(--ds-stroke-hairline)
+    ),
+    transparent;
+  background-position: 0 0;
+  background-size: var(--ds-grid-unit) var(--ds-grid-unit);
   container-name: ds-page;
   container-type: inline-size;
   margin-inline: auto;
