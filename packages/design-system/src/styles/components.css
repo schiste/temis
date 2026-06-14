@@ -26,17 +26,15 @@
 }
 
 .ds-site-header {
-  align-items: center;
+  align-items: stretch;
   background: color-mix(in srgb, var(--ds-color-surface) 96%, transparent);
   border-block-end: var(--ds-stroke-hairline) solid var(--ds-color-line-strong);
   display: grid;
-  gap: var(--ds-space-phi-3);
-  grid-template-columns: minmax(0, 1fr) auto minmax(var(--ds-space-phi-5), auto);
-  justify-content: space-between;
+  gap: 0;
+  grid-template-columns: repeat(auto-fill, minmax(var(--ds-grid-unit), 1fr));
   margin-block-end: var(--ds-space-phi-5);
   min-height: var(--ds-space-phi-5);
-  padding: var(--ds-space-phi-2) var(--ds-space-phi-00) var(--ds-space-phi-2)
-    var(--ds-space-phi-00);
+  padding: 0;
   width: 100%;
 }
 
@@ -45,41 +43,51 @@
 }
 
 .ds-site-header__identity {
-  align-items: center;
-  display: flex;
+  align-items: stretch;
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(auto-fill, minmax(var(--ds-grid-unit), 1fr));
   min-width: 0;
 }
 
 .ds-brand {
+  align-items: center;
   color: var(--ds-color-text);
   display: inline-flex;
   font-family: var(--ds-font-mono);
   font-size: var(--ds-font-size-title-sm);
   font-weight: 700;
+  grid-column: span 3;
   letter-spacing: 0;
   line-height: 1;
-  padding-inline-end: var(--ds-space-phi-3);
+  min-height: var(--ds-space-phi-5);
+  padding-inline: var(--ds-space-phi-00) var(--ds-space-phi-3);
   text-decoration: none;
   text-transform: uppercase;
+  width: 100%;
 }
 
 .ds-site-kicker {
+  align-items: center;
   border-inline-start: var(--ds-stroke-hairline) solid var(--ds-color-line);
   color: var(--ds-color-text-muted);
+  display: flex;
   font-family: var(--ds-font-mono);
   font-size: var(--ds-font-size-caption);
+  grid-column: span 8;
   line-height: 1.2;
   margin: 0;
-  max-width: calc(var(--ds-grid-unit) * 10);
+  max-width: none;
   padding-inline-start: var(--ds-space-phi-3);
   text-transform: uppercase;
 }
 
 .ds-nav {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
+  align-items: stretch;
+  display: grid;
   gap: 0;
+  grid-column: 1 / span 16;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .ds-nav a {
@@ -88,9 +96,10 @@
   display: inline-flex;
   font-family: var(--ds-font-mono);
   font-size: var(--ds-font-size-meta);
+  justify-content: center;
   line-height: 1;
-  min-height: var(--ds-icon-md);
-  padding: var(--ds-space-phi-0) var(--ds-space-phi-3);
+  min-height: var(--ds-space-phi-5);
+  padding: var(--ds-space-phi-0) var(--ds-space-phi-1);
   text-decoration: none;
   text-transform: uppercase;
 }
@@ -106,20 +115,22 @@
 }
 
 .ds-header-actions {
-  align-items: center;
-  display: flex;
-  gap: var(--ds-space-phi-1);
-  justify-content: end;
+  align-items: stretch;
+  display: grid;
+  gap: 0;
+  grid-column: span 4;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .ds-header-action {
   align-items: center;
   color: var(--ds-color-text);
   display: inline-flex;
-  height: var(--ds-icon-md);
+  height: 100%;
   justify-content: center;
+  min-height: var(--ds-space-phi-5);
   text-decoration: none;
-  width: var(--ds-icon-md);
+  width: 100%;
 }
 
 .ds-header-action:hover {
@@ -413,6 +424,19 @@
 }
 
 @container ds-page (min-width: 73.5rem) {
+  .ds-site-header__identity {
+    grid-column: 1 / span 12;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  .ds-nav {
+    grid-column: -15 / span 12;
+  }
+
+  .ds-header-actions {
+    grid-column: -3 / -1;
+  }
+
   .ds-site-footer {
     grid-template-columns: repeat(auto-fill, minmax(var(--ds-grid-unit), 1fr));
   }
@@ -534,12 +558,11 @@
 
   .ds-site-header__identity {
     align-items: flex-start;
-    flex-direction: column;
-    gap: var(--ds-space-phi-1);
+    gap: 0;
   }
 
   .ds-brand {
-    padding-inline-end: 0;
+    padding-inline: 0;
   }
 
   .ds-site-kicker {
@@ -548,6 +571,7 @@
   }
 
   .ds-nav {
+    grid-column: 1 / -1;
     width: 100%;
   }
 
@@ -558,7 +582,8 @@
   }
 
   .ds-header-actions {
-    justify-content: start;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .ds-site-footer {

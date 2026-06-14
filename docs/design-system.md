@@ -220,6 +220,9 @@ Recommended layout uses:
 - Site chrome, main content, and footer should share the same snapped page
   content area. Avoid separate chrome caps that create a second horizontal
   system.
+- Header regions should also use whole-column spans. Brand, kicker, navigation,
+  and action controls may use internal token padding, but their visible regions
+  and dividers should start and end on content-area grid lines.
 - Footer cells on desktop should use whole grid spans. The V1 footer uses
   grid-span sets that add up to the current content-area column count.
 - The page shell should snap down to the largest fitting grid width and center
