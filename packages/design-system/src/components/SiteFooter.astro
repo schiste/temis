@@ -3,10 +3,61 @@ export interface Props {
   licenseLabel?: string;
 }
 
-const { licenseLabel = "Content: CC BY-SA 4.0" } = Astro.props;
+const { licenseLabel = "CC BY-SA 4.0" } = Astro.props;
+const licenseAriaLabel = `${licenseLabel} license`;
 ---
 
-<footer class="ds-site-footer">
-  <span>{licenseLabel}</span>
-  <span>Open, static, privacy-aware publishing for the TEMIS commons.</span>
+<footer class="ds-site-footer" aria-label="Site footer">
+  <section class="ds-footer-cell ds-footer-cell--open">
+    <div>
+      <p class="ds-footer-heading">Open by default</p>
+      <p>No tracking. No profiling. Just public knowledge.</p>
+    </div>
+    <span class="ds-footer-open-mark" aria-hidden="true">+</span>
+  </section>
+
+  <section class="ds-footer-cell ds-footer-cell--license">
+    <div>
+      <p class="ds-footer-heading">License</p>
+      <p>
+        Content on TEMIS is licensed under <a
+          href="https://creativecommons.org/licenses/by-sa/4.0/"
+          rel="license">{licenseLabel}</a
+        > unless otherwise noted.
+      </p>
+    </div>
+    <a
+      class="ds-footer-license-mark"
+      href="https://creativecommons.org/licenses/by-sa/4.0/"
+      rel="license"
+      aria-label={licenseAriaLabel}>CC</a
+    >
+  </section>
+
+  <section class="ds-footer-cell ds-footer-cell--commons">
+    <div>
+      <p class="ds-footer-heading">Built for the commons</p>
+      <p>TEMIS is a public resource. Contribute, share, improve.</p>
+    </div>
+    <svg
+      class="ds-footer-corners"
+      viewBox="0 0 26 26"
+      role="img"
+      aria-label="Commons frame mark"
+    >
+      <path d="M2 8V2h6M18 2h6v6M24 18v6h-6M8 24H2v-6"></path>
+    </svg>
+  </section>
+
+  <section class="ds-footer-cell">
+    <p class="ds-footer-heading">TEMIS</p>
+    <p>A working group exploring the future of open knowledge.</p>
+  </section>
+
+  <a class="ds-footer-top" href="#top" aria-label="Back to top">
+    <svg viewBox="0 0 18 18" aria-hidden="true">
+      <path d="M9 15V3M4 8l5-5 5 5"></path>
+    </svg>
+    <span>Top</span>
+  </a>
 </footer>
