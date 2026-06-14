@@ -91,6 +91,7 @@
 }
 
 .ds-nav a {
+  align-items: center;
   border-inline-start: var(--ds-stroke-hairline) solid var(--ds-color-line);
   color: var(--ds-color-text);
   display: inline-flex;
