@@ -1,0 +1,25 @@
+---
+export interface MetadataItem {
+  label?: string;
+  value: string;
+}
+
+export interface Props {
+  items: MetadataItem[];
+}
+
+const { items } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <dl class="ds-meta-row">
+      {items.map((item) => (
+        <div>
+          {item.label && <dt class="ds-visually-hidden">{item.label}</dt>}
+          <dd>{item.value}</dd>
+        </div>
+      ))}
+    </dl>
+  )
+}

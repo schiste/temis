@@ -1,0 +1,28 @@
+---
+export interface NavItem {
+  href: string;
+  label: string;
+}
+
+export interface Props {
+  navItems?: NavItem[];
+}
+
+const { navItems = [{ href: "/blog/", label: "Articles" }] } = Astro.props;
+---
+
+<header class="ds-site-header">
+  <a class="ds-brand" href="/" aria-label="TEMIS home">TEMIS</a>
+  <nav class="ds-nav" aria-label="Primary">
+    {
+      navItems.map((item) => (
+        <a
+          href={item.href}
+          aria-current={Astro.url.pathname === item.href ? "page" : undefined}
+        >
+          {item.label}
+        </a>
+      ))
+    }
+  </nav>
+</header>

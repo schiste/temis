@@ -1,0 +1,21 @@
+{
+  "name": "@temis/design-system",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT OR Apache-2.0",
+  "type": "module",
+  "description": "Astro-first TEMIS design system foundations and shared public-site components.",
+  "exports": {
+    "./styles.css": "./src/styles/index.css",
+    "./components/ArticleCard.astro": "./src/components/ArticleCard.astro",
+    "./components/BaseLayout.astro": "./src/components/BaseLayout.astro",
+    "./components/MetadataRow.astro": "./src/components/MetadataRow.astro",
+    "./components/PageHero.astro": "./src/components/PageHero.astro",
+    "./components/SiteFooter.astro": "./src/components/SiteFooter.astro",
+    "./components/SiteHeader.astro": "./src/components/SiteHeader.astro",
+    "./components/TopicLabel.astro": "./src/components/TopicLabel.astro"
+  },
+  "peerDependencies": {
+    "astro": "^6.0.0"
+  }
+}

@@ -1,0 +1,15 @@
+---
+export interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+}
+
+const { description, eyebrow, title } = Astro.props;
+---
+
+<section class="ds-page-hero">
+  {eyebrow && <p class="ds-eyebrow">{eyebrow}</p>}
+  <h1 class="ds-page-title">{title}</h1>
+  {description && <p class="ds-lede">{description}</p>}
+</section>

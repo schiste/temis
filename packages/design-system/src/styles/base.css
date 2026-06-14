@@ -1,0 +1,86 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--ds-color-canvas);
+  color: var(--ds-color-text);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-size-base-px);
+  line-height: var(--ds-line-body);
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--ds-color-line) 38%, transparent) 1px,
+      transparent 1px
+    ),
+    var(--ds-color-canvas);
+  background-size: var(--ds-space-phi-4) var(--ds-space-phi-4);
+  color: var(--ds-color-text);
+  margin: 0;
+  min-height: 100svh;
+}
+
+body::selection {
+  background: var(--ds-color-accent);
+  color: var(--ds-color-accent-contrast);
+}
+
+a {
+  color: var(--ds-color-accent);
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--ds-color-accent) 55%,
+    transparent
+  );
+  text-decoration-thickness: var(--ds-stroke-hairline);
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  color: var(--ds-color-text);
+}
+
+:focus-visible {
+  outline: var(--ds-stroke-strong) solid var(--ds-color-focus);
+  outline-offset: var(--ds-space-phi-00);
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  border-radius: var(--ds-radius-none);
+}
+
+button,
+input,
+select,
+textarea {
+  border-radius: var(--ds-radius-none);
+  font: inherit;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-block: 0;
+}
+
+h1,
+h2,
+h3 {
+  line-height: var(--ds-line-heading);
+}

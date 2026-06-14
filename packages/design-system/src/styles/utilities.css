@@ -1,0 +1,36 @@
+.ds-flow > * + * {
+  margin-block-start: var(--ds-space-phi-3);
+}
+
+.ds-cluster {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-phi-1);
+}
+
+.ds-split {
+  display: grid;
+  gap: var(--ds-space-phi-4);
+  grid-template-columns:
+    minmax(0, var(--ds-layout-major))
+    minmax(16rem, var(--ds-layout-minor));
+}
+
+.ds-visually-hidden {
+  clip: rect(0 0 0 0);
+  border: 0;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+@media (max-width: 68rem) {
+  .ds-split {
+    grid-template-columns: 1fr;
+  }
+}
