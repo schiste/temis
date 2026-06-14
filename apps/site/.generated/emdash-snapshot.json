@@ -992,6 +992,10 @@
       {
         "name": "site:authorArticlesHeading",
         "value": "\"Published articles\""
+      },
+      {
+        "name": "site:authorBio:lodewijk-gelauff",
+        "value": "\"Lodewijk Gelauff writes about Wikimedia decision-making, consensus building, and democratic innovation for open knowledge communities. His TEMIS work currently focuses on wiki-polis, a prototype for more accessible Wikimedia consultation.\""
       }
     ],
     "revisions": [
@@ -1399,5 +1403,5 @@
       }
     }
   },
-  "generatedAt": "2026-06-14T12:32:35.487Z"
+  "generatedAt": "2026-06-14T12:41:54.226Z"
 }
