@@ -1,15 +1,22 @@
 ---
-import BaseLayout from "@temis/design-system/components/BaseLayout.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
+import SiteLayout from "../../components/SiteLayout.astro";
+import { entryDescription, entryTitle, getPageBySlug } from "../../lib/emdash";
+import { portableTextToHtml } from "../../lib/portable-text";
+
+const page = await getPageBySlug("people");
+const title = page ? entryTitle(page) : "People";
+const description = page
+  ? entryDescription(page)
+  : "Public people and author pages will provide context, trust, and authored work without becoming social profiles.";
 ---
 
-<BaseLayout
-  title="People"
-  description="Public TEMIS people pages are being shaped."
->
-  <PageHero
-    eyebrow="People"
-    title="People"
-    description="Public people and author pages will provide context, trust, and authored work without becoming social profiles."
-  />
-</BaseLayout>
+<SiteLayout title={title} description={description}>
+  <PageHero eyebrow="People" title={title} description={description} />
+
+  {
+    page?.content && (
+      <article class="ds-prose" set:html={portableTextToHtml(page.content)} />
+    )
+  }
+</SiteLayout>

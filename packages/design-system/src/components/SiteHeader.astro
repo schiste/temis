@@ -13,6 +13,7 @@ export interface HeaderAction {
 
 export interface Props {
   actions?: HeaderAction[];
+  brandLabel?: string;
   navItems?: NavItem[];
   tagline?: string;
 }
@@ -22,6 +23,7 @@ const {
     { href: "/search/", icon: "search", label: "Search" },
     { href: "/topics/", icon: "network", label: "Topic network" },
   ],
+  brandLabel = "TEMIS",
   navItems = [
     { href: "/blog/", label: "Essays", activePrefix: "/blog/" },
     { href: "/topics/", label: "Topics", activePrefix: "/topics/" },
@@ -42,7 +44,9 @@ function isCurrent(item: NavItem) {
 
 <header class="ds-site-header">
   <div class="ds-site-header__identity">
-    <a class="ds-brand" href="/" aria-label="TEMIS home">TEMIS</a>
+    <a class="ds-brand" href="/" aria-label={`${brandLabel} home`}
+      >{brandLabel}</a
+    >
     <p class="ds-site-kicker">{tagline}</p>
   </div>
 

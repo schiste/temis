@@ -5,11 +5,19 @@ import SiteHeader from "./SiteHeader.astro";
 
 export interface Props {
   description?: string;
+  footer?: Record<string, unknown>;
+  header?: Record<string, unknown>;
   lang?: string;
   title: string;
 }
 
-const { description, lang = "en", title } = Astro.props;
+const {
+  description,
+  footer = {},
+  header = {},
+  lang = "en",
+  title,
+} = Astro.props;
 const pageTitle = title === "TEMIS" ? title : `${title} | TEMIS`;
 ---
 
@@ -23,11 +31,11 @@ const pageTitle = title === "TEMIS" ? title : `${title} | TEMIS`;
   </head>
   <body>
     <div id="top" class="ds-page">
-      <SiteHeader />
+      <SiteHeader {...header} />
       <main>
         <slot />
       </main>
-      <SiteFooter />
+      <SiteFooter {...footer} />
     </div>
   </body>
 </html>

@@ -1,15 +1,22 @@
 ---
-import BaseLayout from "@temis/design-system/components/BaseLayout.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
+import SiteLayout from "../../components/SiteLayout.astro";
+import { entryDescription, entryTitle, getPageBySlug } from "../../lib/emdash";
+import { portableTextToHtml } from "../../lib/portable-text";
+
+const page = await getPageBySlug("topics");
+const title = page ? entryTitle(page) : "Topic map";
+const description = page
+  ? entryDescription(page)
+  : "The TEMIS topic graph will make essays, tools, and people easier to explore as the V1 content model comes online.";
 ---
 
-<BaseLayout
-  title="Topics"
-  description="TEMIS topic navigation is being shaped."
->
-  <PageHero
-    eyebrow="Topics"
-    title="Topic map"
-    description="The TEMIS topic graph will make essays, tools, and people easier to explore as the V1 content model comes online."
-  />
-</BaseLayout>
+<SiteLayout title={title} description={description}>
+  <PageHero eyebrow="Topics" title={title} description={description} />
+
+  {
+    page?.content && (
+      <article class="ds-prose" set:html={portableTextToHtml(page.content)} />
+    )
+  }
+</SiteLayout>

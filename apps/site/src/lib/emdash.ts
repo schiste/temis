@@ -34,6 +34,29 @@ export interface PostEntry extends SnapshotRow {
   title: string;
 }
 
+interface MenuRow extends SnapshotRow {
+  id: string;
+  label?: string;
+  name?: string;
+}
+
+interface MenuItemRow extends SnapshotRow {
+  custom_url?: string | null;
+  label?: string | null;
+  menu_id?: string;
+  parent_id?: string | null;
+  reference_collection?: string | null;
+  reference_id?: string | null;
+  sort_order?: number | null;
+  type?: string | null;
+}
+
+export interface SiteNavItem {
+  activePrefix?: string;
+  href: string;
+  label: string;
+}
+
 const defaultSnapshotPath = path.resolve(
   process.cwd(),
   ".generated/emdash-snapshot.json",
@@ -67,6 +90,13 @@ function collectionTable(collection: string) {
   return `ec_${collection}`;
 }
 
+function systemRows<T extends SnapshotRow>(
+  snapshot: SnapshotData,
+  table: string,
+) {
+  return (snapshot.tables[table] ?? []) as T[];
+}
+
 function parseJsonFields<T extends SnapshotRow>(row: T): T {
   const parsed = { ...row };
 
@@ -94,6 +124,17 @@ function publicSlug(row: SnapshotRow) {
   return typeof row.slug === "string" ? row.slug.replace(/^\/+|\/+$/g, "") : "";
 }
 
+function normalizeHref(href: string) {
+  if (!href.trim()) return "";
+  if (href === "/") return href;
+  const prefixed = href.startsWith("/") ? href : `/${href}`;
+  return prefixed.endsWith("/") ? prefixed : `${prefixed}/`;
+}
+
+function activePrefixFor(href: string) {
+  return href === "/" ? undefined : href;
+}
+
 function byNewest(a: SnapshotRow, b: SnapshotRow) {
   const bDate = String(b.published_at ?? b.updated_at ?? b.created_at ?? "");
   const aDate = String(a.published_at ?? a.updated_at ?? a.created_at ?? "");
@@ -116,6 +157,19 @@ export async function getPages() {
       return slug.length > 0 && slug !== "home" && slug !== "index";
     })
     .sort((a, b) => publicSlug(a).localeCompare(publicSlug(b)));
+}
+
+const explicitRoutePageSlugs = new Set([
+  "about",
+  "blog",
+  "people",
+  "search",
+  "topics",
+]);
+
+export async function getCatchAllPages() {
+  const pages = await getPages();
+  return pages.filter((page) => !explicitRoutePageSlugs.has(publicSlug(page)));
 }
 
 export async function getHomePage() {
@@ -144,6 +198,113 @@ export async function getPostBySlug(slug: string) {
   return posts.find((post) => publicSlug(post) === normalized) ?? null;
 }
 
+function referencedHref(
+  collection: string | null | undefined,
+  row: SnapshotRow,
+) {
+  const slug = publicSlug(row);
+  if (!slug || slug === "home" || slug === "index") return "/";
+  if (collection === "posts") return `/blog/${slug}/`;
+  return `/${slug}/`;
+}
+
+function referencedTitle(row: SnapshotRow) {
+  return String(row.title ?? row.name ?? row.slug ?? "Untitled");
+}
+
+async function resolveMenuItem(
+  item: MenuItemRow,
+  snapshot: SnapshotData,
+): Promise<SiteNavItem | null> {
+  if (item.type === "custom") {
+    const href = normalizeHref(String(item.custom_url ?? ""));
+    if (!href) return null;
+    return {
+      activePrefix: activePrefixFor(href),
+      href,
+      label: String(item.label ?? href),
+    };
+  }
+
+  const collection = item.reference_collection;
+  const referenceId = item.reference_id;
+  if (!collection || !referenceId) return null;
+
+  const reference = systemRows<SnapshotRow>(
+    snapshot,
+    collectionTable(collection),
+  ).find((row) => row.id === referenceId);
+
+  if (!reference || !isPublished(reference)) return null;
+
+  const href = referencedHref(collection, reference);
+  return {
+    activePrefix: activePrefixFor(href),
+    href,
+    label: String(item.label ?? referencedTitle(reference)),
+  };
+}
+
+const defaultPrimaryNavItems: SiteNavItem[] = [
+  { href: "/blog/", label: "Essays", activePrefix: "/blog/" },
+  { href: "/topics/", label: "Topics", activePrefix: "/topics/" },
+  { href: "/people/", label: "People", activePrefix: "/people/" },
+  { href: "/about/", label: "About", activePrefix: "/about/" },
+];
+
+export async function getPrimaryNavItems(menuName = "primary") {
+  const snapshot = await readSnapshot();
+  const menu = systemRows<MenuRow>(snapshot, "_emdash_menus").find(
+    (row) => row.name === menuName,
+  );
+
+  if (!menu) return defaultPrimaryNavItems;
+
+  const menuItems = systemRows<MenuItemRow>(snapshot, "_emdash_menu_items")
+    .filter((item) => item.menu_id === menu.id && !item.parent_id)
+    .sort((a, b) => Number(a.sort_order ?? 0) - Number(b.sort_order ?? 0));
+
+  const resolved = (
+    await Promise.all(menuItems.map((item) => resolveMenuItem(item, snapshot)))
+  ).filter((item): item is SiteNavItem => Boolean(item));
+
+  return resolved.length >= defaultPrimaryNavItems.length
+    ? resolved.slice(0, defaultPrimaryNavItems.length)
+    : defaultPrimaryNavItems;
+}
+
+export async function getSiteChrome() {
+  const [homePage, aboutPage, navItems] = await Promise.all([
+    getHomePage(),
+    getPageBySlug("about"),
+    getPrimaryNavItems(),
+  ]);
+
+  const brandLabel = homePage ? entryTitle(homePage) : "TEMIS";
+  const homeSummary = homePage ? entrySummary(homePage) : "";
+  const aboutSummary = aboutPage ? entrySummary(aboutPage) : "";
+
+  return {
+    footer: {
+      commonsHeading: aboutPage
+        ? entryTitle(aboutPage)
+        : "Built for the commons",
+      commonsText:
+        aboutSummary ||
+        "TEMIS is a public resource. Contribute, share, improve.",
+      siteHeading: brandLabel,
+      siteText:
+        homeSummary ||
+        "A working group exploring the future of open knowledge.",
+    },
+    header: {
+      brandLabel,
+      navItems,
+      tagline: homeSummary || "Exploring open knowledge in a post-AI world",
+    },
+  };
+}
+
 export function entrySlug(row: SnapshotRow) {
   return publicSlug(row);
 }
@@ -156,4 +317,8 @@ export function entryTitle(row: SnapshotRow) {
 
 export function entryDescription(row: SnapshotRow) {
   return String(row.seo_description ?? row.excerpt ?? row.summary ?? "");
+}
+
+export function entrySummary(row: SnapshotRow) {
+  return String(row.summary ?? row.excerpt ?? "");
 }

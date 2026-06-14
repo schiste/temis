@@ -1,0 +1,23 @@
+---
+import BaseLayout from "@temis/design-system/components/BaseLayout.astro";
+import { getSiteChrome } from "../lib/emdash";
+
+export interface Props {
+  description?: string;
+  lang?: string;
+  title: string;
+}
+
+const chrome = await getSiteChrome();
+const { description, lang, title } = Astro.props;
+---
+
+<BaseLayout
+  description={description}
+  footer={chrome.footer}
+  header={chrome.header}
+  lang={lang}
+  title={title}
+>
+  <slot />
+</BaseLayout>

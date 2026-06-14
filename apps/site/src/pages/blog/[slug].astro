@@ -1,7 +1,7 @@
 ---
-import BaseLayout from "@temis/design-system/components/BaseLayout.astro";
 import MetadataRow from "@temis/design-system/components/MetadataRow.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
+import SiteLayout from "../../components/SiteLayout.astro";
 import {
   entryDescription,
   entrySlug,
@@ -29,10 +29,10 @@ const title = entryTitle(resolvedPost);
 const description = entryDescription(resolvedPost);
 ---
 
-<BaseLayout title={title} description={description}>
+<SiteLayout title={title} description={description}>
   <article>
     <PageHero eyebrow="Article" title={title} description={description} />
     <MetadataRow items={[{ label: "Status", value: "Published content" }]} />
     <div class="ds-prose" set:html={portableTextToHtml(resolvedPost.content)} />
   </article>
-</BaseLayout>
+</SiteLayout>

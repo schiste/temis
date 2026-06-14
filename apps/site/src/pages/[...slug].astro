@@ -1,17 +1,17 @@
 ---
-import BaseLayout from "@temis/design-system/components/BaseLayout.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
+import SiteLayout from "../components/SiteLayout.astro";
 import {
   entryDescription,
   entrySlug,
   entryTitle,
+  getCatchAllPages,
   getPageBySlug,
-  getPages,
 } from "../lib/emdash";
 import { portableTextToHtml } from "../lib/portable-text";
 
 export async function getStaticPaths() {
-  const pages = await getPages();
+  const pages = await getCatchAllPages();
   return pages.map((page) => ({
     params: { slug: entrySlug(page) },
     props: { page },
@@ -28,11 +28,11 @@ const title = entryTitle(resolvedPage);
 const description = entryDescription(resolvedPage);
 ---
 
-<BaseLayout title={title} description={description}>
+<SiteLayout title={title} description={description}>
   <PageHero eyebrow="Page" title={title} description={description} />
 
   <article
     class="ds-prose"
     set:html={portableTextToHtml(resolvedPage.content)}
   />
-</BaseLayout>
+</SiteLayout>

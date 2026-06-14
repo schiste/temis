@@ -1,17 +1,31 @@
 ---
 export interface Props {
+  commonsHeading?: string;
+  commonsText?: string;
   licenseLabel?: string;
+  openHeading?: string;
+  openText?: string;
+  siteHeading?: string;
+  siteText?: string;
 }
 
-const { licenseLabel = "CC BY-SA 4.0" } = Astro.props;
+const {
+  commonsHeading = "Built for the commons",
+  commonsText = "TEMIS is a public resource. Contribute, share, improve.",
+  licenseLabel = "CC BY-SA 4.0",
+  openHeading = "Open by default",
+  openText = "No tracking. No profiling. Just public knowledge.",
+  siteHeading = "TEMIS",
+  siteText = "A working group exploring the future of open knowledge.",
+} = Astro.props;
 const licenseAriaLabel = `${licenseLabel} license`;
 ---
 
 <footer class="ds-site-footer" aria-label="Site footer">
   <section class="ds-footer-cell ds-footer-cell--open">
     <div>
-      <p class="ds-footer-heading">Open by default</p>
-      <p>No tracking. No profiling. Just public knowledge.</p>
+      <p class="ds-footer-heading">{openHeading}</p>
+      <p>{openText}</p>
     </div>
     <span class="ds-footer-open-mark" aria-hidden="true">+</span>
   </section>
@@ -36,8 +50,8 @@ const licenseAriaLabel = `${licenseLabel} license`;
 
   <section class="ds-footer-cell ds-footer-cell--commons">
     <div>
-      <p class="ds-footer-heading">Built for the commons</p>
-      <p>TEMIS is a public resource. Contribute, share, improve.</p>
+      <p class="ds-footer-heading">{commonsHeading}</p>
+      <p>{commonsText}</p>
     </div>
     <svg
       class="ds-footer-corners"
@@ -50,8 +64,8 @@ const licenseAriaLabel = `${licenseLabel} license`;
   </section>
 
   <section class="ds-footer-cell ds-footer-cell--temis">
-    <p class="ds-footer-heading">TEMIS</p>
-    <p>A working group exploring the future of open knowledge.</p>
+    <p class="ds-footer-heading">{siteHeading}</p>
+    <p>{siteText}</p>
   </section>
 
   <a class="ds-footer-top" href="#top" aria-label="Back to top">

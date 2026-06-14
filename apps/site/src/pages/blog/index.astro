@@ -1,7 +1,7 @@
 ---
 import ArticleCard from "@temis/design-system/components/ArticleCard.astro";
-import BaseLayout from "@temis/design-system/components/BaseLayout.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
+import SiteLayout from "../../components/SiteLayout.astro";
 import {
   entryDescription,
   entrySlug,
@@ -12,7 +12,7 @@ import {
 const posts = await getPosts();
 ---
 
-<BaseLayout title="Articles" description="Published TEMIS articles.">
+<SiteLayout title="Articles" description="Published TEMIS articles.">
   <PageHero eyebrow="Articles" title="Published articles" />
 
   <div class="ds-listing">
@@ -26,4 +26,4 @@ const posts = await getPosts();
       ))
     }
   </div>
-</BaseLayout>
+</SiteLayout>

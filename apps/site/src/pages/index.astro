@@ -1,7 +1,7 @@
 ---
 import ArticleCard from "@temis/design-system/components/ArticleCard.astro";
-import BaseLayout from "@temis/design-system/components/BaseLayout.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
+import SiteLayout from "../components/SiteLayout.astro";
 import {
   entryDescription,
   entrySlug,
@@ -19,7 +19,7 @@ const description = page
   : "A static Astro site powered by EmDash content and Cloudflare.";
 ---
 
-<BaseLayout title={title} description={description}>
+<SiteLayout title={title} description={description}>
   <PageHero
     eyebrow="Public map of a technical commons"
     title={title}
@@ -48,4 +48,4 @@ const description = page
       </section>
     )
   }
-</BaseLayout>
+</SiteLayout>
