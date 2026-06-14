@@ -648,18 +648,19 @@ visuals before custom artwork exists.
 
 ### Homepage
 
-The homepage should be graph-dominant while still showing articles above the
-fold.
+The homepage should be content-dominant while keeping the graph/navigation
+appetite visible as the next exploration layer.
 
 Required:
 
-- Strong topic graph presence.
-- Editorial entry points visible immediately.
+- Latest or featured publication visible immediately after the hero.
+- Recent reading path above graph/navigation cards when content exists.
+- Topic graph presence as a visible secondary route.
 - Clear path into articles.
 - Hard-edged layout.
 - No marketing hero card.
-- Homepage cards should make the V1 model explicit: topic navigation, essays,
-  and people/authorship.
+- Homepage cards should make the V1 model explicit: essays first, then topic
+  navigation and people/authorship.
 
 ### Article Page
 
