@@ -184,18 +184,7 @@
         "data": {
           "title": "TEMIS",
           "summary": "An exploratory public map for open knowledge work in a post-AI world.",
-          "content": [
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "TEMIS starts as a content-first map: essays, tools, topics, and people connected through a static public site managed in EmDash."
-                }
-              ]
-            }
-          ],
+          "content": [],
           "seo_title": "TEMIS",
           "seo_description": "An exploratory public map for open knowledge work in a post-AI world."
         }

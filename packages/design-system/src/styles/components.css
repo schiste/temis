@@ -308,16 +308,6 @@
   text-transform: uppercase;
 }
 
-.ds-home-note {
-  border-block: var(--ds-stroke-hairline) solid var(--ds-color-line);
-  margin-block: var(--ds-space-phi-4);
-  padding-block: var(--ds-space-phi-3);
-}
-
-.ds-home-note .ds-prose {
-  margin: 0;
-}
-
 .ds-homepage .ds-page-hero {
   margin-block-end: var(--ds-space-phi-4);
 }
