@@ -423,6 +423,20 @@ Card system:
 - Interactive states use background planes, accent rules, and rectangular focus
   outlines.
 
+### Field Note Lists
+
+Field note lists are the preferred pattern for dense editorial archives such as
+the essays index.
+
+Rules:
+
+- Use the shared `FieldNoteRow` primitive.
+- Present rows as a ruled list with thin borders above and below.
+- Keep title, published date, author, and content type/tags aligned as table-like
+  metadata on wider screens.
+- Preserve real links for both article title and author/person page.
+- Stack metadata under the title on narrow screens instead of shrinking text.
+
 ## Graph Navigation
 
 The V1 graph is a strong visual and navigation signature.
@@ -584,7 +598,8 @@ Rules:
 - No rounded thumbnails.
 - No nested cards.
 - On homepage and grid-based surfaces, article summaries should use the shared
-  `Card` primitive. Dense list views may use a simpler article-list component.
+  `Card` primitive. Dense editorial archives should use the shared
+  `FieldNoteRow` primitive.
 
 ### Person Summary
 

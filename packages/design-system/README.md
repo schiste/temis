@@ -27,3 +27,7 @@ import BaseLayout from "@temis/design-system/components/BaseLayout.astro";
 
 `BaseLayout` imports the shared stylesheet, so public pages should not import a
 second global site stylesheet unless there is a documented reason.
+
+Use `Card` for homepage and promotional grids. Use `FieldNoteRow` for dense
+editorial archives where title, published date, author, and type/tags need to
+read like a ruled field-notes table.

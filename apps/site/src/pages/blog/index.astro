@@ -1,10 +1,13 @@
 ---
-import ArticleCard from "@temis/design-system/components/ArticleCard.astro";
+import FieldNoteRow from "@temis/design-system/components/FieldNoteRow.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
 import SiteLayout from "../../components/SiteLayout.astro";
 import {
+  entryAuthorHref,
   entryAuthorName,
   entryDescription,
+  entryPublishedDateLabel,
+  entryPublishedDateTime,
   entrySlug,
   entryTitle,
   getPageBySlug,
@@ -16,8 +19,14 @@ import { portableTextToHtml } from "../../lib/portable-text";
 const page = await getPageBySlug("blog");
 const posts = await getPosts();
 const copy = await getSiteTexts({
-  articleCardEyebrow: "Article",
   blogHeroEyebrow: "Articles",
+  blogListFallbackAuthor: "Team publication",
+  blogListAuthorHeading: "Author",
+  blogListDateHeading: "Published",
+  blogListIndexHeading: "No.",
+  blogListTaxonomyHeading: "Type / tags",
+  blogListTitleHeading: "Title",
+  blogListType: "Essay",
   blogMissingDescription: "Published TEMIS articles.",
   blogMissingTitle: "Published articles",
 });
@@ -38,17 +47,29 @@ const description = page ? entryDescription(page) : copy.blogMissingDescription;
     )
   }
 
-  <div class="ds-listing">
+  <section class="ds-field-notes" aria-label={title}>
+    <div class="ds-field-notes__header" aria-hidden="true">
+      <span>{copy.blogListIndexHeading}</span>
+      <span>{copy.blogListTitleHeading}</span>
+      <span>{copy.blogListDateHeading}</span>
+      <span>{copy.blogListAuthorHeading}</span>
+      <span>{copy.blogListTaxonomyHeading}</span>
+    </div>
     {
-      posts.map((post) => (
-        <ArticleCard
-          eyebrow={copy.articleCardEyebrow}
-          href={`/blog/${entrySlug(post)}/`}
-          title={entryTitle(post)}
-          meta={entryAuthorName(post) ?? undefined}
+      posts.map((post, index) => (
+        <FieldNoteRow
+          authorHref={entryAuthorHref(post) ?? undefined}
+          authorName={entryAuthorName(post) ?? undefined}
+          contentType={copy.blogListType}
           description={entryDescription(post)}
+          fallbackAuthorName={copy.blogListFallbackAuthor}
+          href={`/blog/${entrySlug(post)}/`}
+          index={(index + 1).toString().padStart(2, "0")}
+          publishedDate={entryPublishedDateLabel(post)}
+          publishedDateTime={entryPublishedDateTime(post) ?? undefined}
+          title={entryTitle(post)}
         />
       ))
     }
-  </div>
+  </section>
 </SiteLayout>

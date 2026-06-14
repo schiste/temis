@@ -1,0 +1,71 @@
+---
+export interface Props {
+  authorHref?: string;
+  authorName?: string;
+  contentType?: string;
+  description?: string;
+  fallbackAuthorName?: string;
+  href: string;
+  index?: string;
+  publishedDate?: string;
+  publishedDateTime?: string;
+  tags?: string[];
+  title: string;
+}
+
+const {
+  authorHref,
+  authorName,
+  contentType,
+  description,
+  fallbackAuthorName = "Team publication",
+  href,
+  index,
+  publishedDate = "Undated",
+  publishedDateTime,
+  tags = [],
+  title,
+} = Astro.props;
+const taxonomy = [contentType, ...tags].filter((item): item is string =>
+  Boolean(item && item.trim()),
+);
+---
+
+<article class="ds-field-note">
+  {
+    index && (
+      <span class="ds-field-note__index" aria-hidden="true">
+        {index}
+      </span>
+    )
+  }
+  <h2 class="ds-field-note__title">
+    <a href={href}>{title}</a>
+  </h2>
+  <time class="ds-field-note__date" datetime={publishedDateTime}>
+    {publishedDate}
+  </time>
+  <div class="ds-field-note__author">
+    {
+      authorName ? (
+        authorHref ? (
+          <a href={authorHref}>{authorName}</a>
+        ) : (
+          <span>{authorName}</span>
+        )
+      ) : (
+        <span>{fallbackAuthorName}</span>
+      )
+    }
+  </div>
+  {
+    taxonomy.length > 0 && (
+      <ul class="ds-field-note__taxonomy" aria-label="Content type and tags">
+        {taxonomy.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    )
+  }
+  {description && <p class="ds-field-note__description">{description}</p>}
+</article>

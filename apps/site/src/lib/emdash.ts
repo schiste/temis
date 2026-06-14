@@ -520,6 +520,29 @@ export function entryDescription(row: SnapshotRow) {
   return String(row.seo_description ?? row.excerpt ?? row.summary ?? "");
 }
 
+export function entryPublishedDateTime(row: SnapshotRow) {
+  const value = row.published_at ?? row.updated_at ?? row.created_at;
+  if (!value) return null;
+
+  const rawValue = String(value);
+  return rawValue.includes("T") ? rawValue : `${rawValue.replace(" ", "T")}Z`;
+}
+
+export function entryPublishedDateLabel(row: SnapshotRow) {
+  const value = entryPublishedDateTime(row);
+  if (!value) return "Undated";
+
+  const date = new Date(value);
+  if (Number.isNaN(date.valueOf())) return value.slice(0, 10);
+
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "short",
+    timeZone: "UTC",
+    year: "numeric",
+  }).format(date);
+}
+
 export function entryBylineSlug(row: BylineEntry) {
   return publicSlug(row) || slugify(entryBylineName(row));
 }
