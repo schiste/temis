@@ -1,6 +1,8 @@
 ---
+import GraphNavigation from "@temis/graph-navigation/components/GraphNavigation.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
 import SiteLayout from "../../components/SiteLayout.astro";
+import { getContentGraphSnapshot } from "../../lib/content-graph";
 import {
   entryDescription,
   entryTitle,
@@ -10,7 +12,10 @@ import {
 import { portableTextToHtml } from "../../lib/portable-text";
 
 const page = await getPageBySlug("topics");
+const graph = await getContentGraphSnapshot();
 const copy = await getSiteTexts({
+  topicsGraphHeading: "Content graph",
+  topicsGraphLabel: "TEMIS content graph navigation",
   topicsHeroEyebrow: "Topics",
   topicsMissingDescription:
     "The TEMIS topic graph will make essays, tools, and people easier to explore as the V1 content model comes online.",
@@ -34,4 +39,18 @@ const description = page
       <article class="ds-prose" set:html={portableTextToHtml(page.content)} />
     )
   }
+
+  <section class="topics-graph" aria-label={copy.topicsGraphLabel}>
+    <GraphNavigation
+      graph={graph}
+      heading={copy.topicsGraphHeading}
+      label={copy.topicsGraphLabel}
+    />
+  </section>
 </SiteLayout>
+
+<style>
+  .topics-graph {
+    margin-block-start: var(--ds-space-phi-4);
+  }
+</style>

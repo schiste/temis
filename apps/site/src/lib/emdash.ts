@@ -201,6 +201,13 @@ export async function getCollection<T extends SnapshotRow>(
   return rows.filter(isPublished).map((row) => parseJsonFields(row) as T);
 }
 
+export async function getSnapshotTable<T extends SnapshotRow>(
+  table: string,
+): Promise<T[]> {
+  const snapshot = await readSnapshot();
+  return systemRows<T>(snapshot, table).map((row) => parseJsonFields(row) as T);
+}
+
 export async function getPages() {
   const pages = await getCollection<PageEntry>("pages");
   return pages

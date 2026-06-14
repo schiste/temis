@@ -80,6 +80,9 @@ importers:
       "@temis/design-system":
         specifier: workspace:*
         version: link:../../packages/design-system
+      "@temis/graph-navigation":
+        specifier: workspace:*
+        version: link:../../packages/graph-navigation
       astro:
         specifier: ^6.2.2
         version: 6.4.6(@types/node@22.19.21)
