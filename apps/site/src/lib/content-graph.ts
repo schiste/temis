@@ -2,16 +2,21 @@ import {
   createGraphNavigationSnapshot,
   type GraphNavigationEdgeInput,
   type GraphNavigationNodeInput,
+  type GraphNavigationNodeMetaInput,
   type GraphNavigationSnapshot,
 } from "@temis/graph-navigation";
 
 import {
+  entryAuthorHref,
   entryAuthorName,
   entryBylineBio,
   entryBylineHref,
   entryBylineName,
   entryBylineSlug,
   entryDescription,
+  entryExternalUrl,
+  entryPublishedDateLabel,
+  entryPublishedDateTime,
   entrySlug,
   entrySummary,
   entryTitle,
@@ -147,12 +152,51 @@ function entryPriority(row: SnapshotRow, fallback: number) {
   return typeof row.graph_priority === "number" ? row.graph_priority : fallback;
 }
 
+function graphMeta(
+  label: string,
+  value: string | null | undefined,
+  options: { datetime?: string | null; href?: string | null } = {},
+): GraphNavigationNodeMetaInput | null {
+  const cleanValue = cleanText(value);
+  if (!cleanValue) return null;
+
+  return {
+    ...(options.datetime ? { datetime: options.datetime } : {}),
+    ...(options.href ? { href: options.href } : {}),
+    label,
+    value: cleanValue,
+  };
+}
+
+function isGraphMetaItem(
+  item: GraphNavigationNodeMetaInput | null,
+): item is GraphNavigationNodeMetaInput {
+  return Boolean(item);
+}
+
+function postMeta(post: PostEntry) {
+  const publishedDateTime = entryPublishedDateTime(post);
+
+  return [
+    graphMeta("Author", entryAuthorName(post), {
+      href: entryAuthorHref(post),
+    }),
+    publishedDateTime
+      ? graphMeta("Published", entryPublishedDateLabel(post), {
+          datetime: publishedDateTime,
+        })
+      : null,
+    graphMeta("Content type", "Essay"),
+  ].filter(isGraphMetaItem);
+}
+
 function postNode(post: PostEntry): GraphNavigationNodeInput {
   return {
     description: entryDescription(post),
     href: `/blog/${entrySlug(post)}/`,
     id: `content:${post.id}`,
     label: entryTitle(post),
+    meta: postMeta(post),
     priority: entryPriority(post, 50),
     slug: entrySlug(post),
     type: "content",
@@ -166,6 +210,16 @@ function toolNode(tool: ToolEntry): GraphNavigationNodeInput {
     href: `/tools/${entrySlug(tool)}/`,
     id: `tool:${tool.id}`,
     label: entryTitle(tool),
+    meta: [
+      graphMeta("Content type", "Tool"),
+      graphMeta("Maturity", cleanText(tool.maturity)),
+      graphMeta("Repository", entryExternalUrl(tool.repository_url), {
+        href: entryExternalUrl(tool.repository_url),
+      }),
+      graphMeta("Website", entryExternalUrl(tool.tool_url), {
+        href: entryExternalUrl(tool.tool_url),
+      }),
+    ].filter(isGraphMetaItem),
     priority: entryPriority(tool, 55),
     slug: entrySlug(tool),
     type: "tool",
@@ -173,12 +227,24 @@ function toolNode(tool: ToolEntry): GraphNavigationNodeInput {
   };
 }
 
-function authorNode(byline: BylineEntry): GraphNavigationNodeInput {
+function authorNode(
+  byline: BylineEntry,
+  publicationCount = 0,
+): GraphNavigationNodeInput {
   return {
     description: entryBylineBio(byline),
     href: entryBylineHref(byline),
     id: `author:${byline.id ?? entryBylineSlug(byline)}`,
     label: entryBylineName(byline),
+    meta:
+      publicationCount > 0
+        ? [
+            graphMeta(
+              "Published items",
+              `${publicationCount} ${publicationCount === 1 ? "publication" : "publications"}`,
+            ),
+          ].filter(isGraphMetaItem)
+        : [],
     priority: entryPriority(byline, 45),
     slug: entryBylineSlug(byline),
     type: "author",
@@ -416,6 +482,26 @@ function attachToolEdges(tools: ToolEntry[], posts: PostEntry[]) {
   return edges;
 }
 
+function authorPublicationCounts(posts: PostEntry[], bylines: BylineEntry[]) {
+  const counts = new Map<string, number>();
+  const bylineById = new Map(bylines.map((byline) => [byline.id, byline]));
+  const bylineBySlug = new Map(
+    bylines.map((byline) => [entryBylineSlug(byline), byline]),
+  );
+
+  for (const post of posts) {
+    const directByline = bylineById.get(post.primary_byline_id ?? "");
+    const fallbackByline = entryAuthorName(post)
+      ? bylineBySlug.get(slugify(entryAuthorName(post) ?? ""))
+      : null;
+    const byline = directByline ?? fallbackByline;
+    if (!byline?.id) continue;
+    counts.set(byline.id, (counts.get(byline.id) ?? 0) + 1);
+  }
+
+  return counts;
+}
+
 export async function getContentGraphSnapshot(): Promise<GraphNavigationSnapshot> {
   const [posts, tools, bylines, contentBylines, terms, assignments] =
     await Promise.all([
@@ -427,10 +513,16 @@ export async function getContentGraphSnapshot(): Promise<GraphNavigationSnapshot
       getContentTaxonomies(),
     ]);
 
+  const publicationCounts = authorPublicationCounts(posts, bylines);
   const nodes: GraphNavigationNodeInput[] = [
     ...posts.map(postNode),
     ...tools.map(toolNode),
-    ...bylines.map(authorNode),
+    ...bylines.map((byline) =>
+      authorNode(
+        byline,
+        byline.id ? (publicationCounts.get(byline.id) ?? 0) : 0,
+      ),
+    ),
     ...terms.map(taxonomyNode),
   ];
   const entries = new Map<string, GraphableEntry[]>([

@@ -16,12 +16,20 @@ export type GraphNavigationEdgeType =
   | "mentions_tool"
   | "documents_tool";
 
+export interface GraphNavigationNodeMetaInput {
+  datetime?: string | null;
+  href?: string | null;
+  label?: string | null;
+  value?: string | null;
+}
+
 export interface GraphNavigationNodeInput {
   accent?: string | null;
   description?: string | null;
   href?: string | null;
   id: string;
   label?: string | null;
+  meta?: GraphNavigationNodeMetaInput[] | null;
   priority?: number | null;
   shortDescription?: string | null;
   slug?: string | null;
@@ -30,6 +38,13 @@ export interface GraphNavigationNodeInput {
   visible?: boolean | number | null;
   x?: number | null;
   y?: number | null;
+}
+
+export interface GraphNavigationNodeMeta {
+  datetime?: string;
+  href?: string;
+  label: string;
+  value: string;
 }
 
 export interface GraphNavigationEdgeInput {
@@ -47,6 +62,7 @@ export interface GraphNavigationNode {
   href: string;
   id: string;
   label: string;
+  meta: GraphNavigationNodeMeta[];
   priority: number;
   slug: string;
   type: GraphNavigationNodeType;

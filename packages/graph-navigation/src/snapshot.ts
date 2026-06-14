@@ -5,6 +5,8 @@ import {
   type GraphNavigationEdgeType,
   type GraphNavigationNode,
   type GraphNavigationNodeInput,
+  type GraphNavigationNodeMeta,
+  type GraphNavigationNodeMetaInput,
   type GraphNavigationNodeType,
   type GraphNavigationSnapshot,
   type GraphNavigationSnapshotInput,
@@ -80,6 +82,33 @@ function normalizeCoordinate(value: number | null | undefined) {
   return Math.min(100, Math.max(0, value));
 }
 
+function normalizeMetaItem(
+  item: GraphNavigationNodeMetaInput,
+): GraphNavigationNodeMeta | null {
+  const label = cleanText(item.label);
+  const value = cleanText(item.value);
+  if (!label || !value) return null;
+
+  return {
+    ...(cleanText(item.datetime)
+      ? { datetime: cleanText(item.datetime)! }
+      : {}),
+    ...(cleanText(item.href) ? { href: cleanText(item.href)! } : {}),
+    label,
+    value,
+  };
+}
+
+function normalizeMetaItems(
+  items: GraphNavigationNodeMetaInput[] | null | undefined,
+) {
+  if (!items) return [];
+
+  return items
+    .map(normalizeMetaItem)
+    .filter((item): item is GraphNavigationNodeMeta => Boolean(item));
+}
+
 function normalizeNodeType(
   value: GraphNavigationNodeType | null | undefined,
 ): GraphNavigationNodeType {
@@ -120,6 +149,7 @@ function normalizeNode(
     href: normalizeHref(node.href, slug),
     id: node.id,
     label,
+    meta: normalizeMetaItems(node.meta),
     priority: typeof node.priority === "number" ? node.priority : 0,
     slug,
     type: normalizeNodeType(node.type),

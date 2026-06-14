@@ -10,6 +10,8 @@ export {
   type GraphNavigationLayoutOptions,
   type GraphNavigationNode,
   type GraphNavigationNodeInput,
+  type GraphNavigationNodeMeta,
+  type GraphNavigationNodeMetaInput,
   type GraphNavigationNodeType,
   type GraphNavigationScope,
   type GraphNavigationSnapshot,
