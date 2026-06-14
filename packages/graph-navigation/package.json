@@ -1,0 +1,21 @@
+{
+  "name": "@temis/graph-navigation",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT OR Apache-2.0",
+  "type": "module",
+  "description": "Static-first topic graph navigation plugin for TEMIS.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./components/GraphNavigation.astro": "./src/components/GraphNavigation.astro"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "astro": "^6.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}
