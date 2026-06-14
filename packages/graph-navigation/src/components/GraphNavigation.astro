@@ -1,6 +1,7 @@
 ---
 import { withGraphNavigationLayout } from "../layout";
 import type {
+  GraphNavigationNode,
   GraphNavigationNodeType,
   GraphNavigationSnapshot,
 } from "../types";
@@ -24,15 +25,113 @@ const nodeTypeLabels: Record<GraphNavigationNodeType, string> = {
   topic: "Topic",
 };
 const laidOutGraph = withGraphNavigationLayout(graph);
-const nodesById = new Map(laidOutGraph.nodes.map((node) => [node.id, node]));
-const edges = laidOutGraph.edges
-  .map((edge) => ({
-    ...edge,
-    sourceNode: nodesById.get(edge.source),
-    targetNode: nodesById.get(edge.target),
-  }))
-  .filter((edge) => edge.sourceNode && edge.targetNode);
-const relatedNodesById = new Map<string, typeof laidOutGraph.nodes>();
+type VisualGraphNode = GraphNavigationNode & {
+  idleDelay: number;
+  idleDuration: number;
+  idleX: number;
+  idleY: number;
+  visualX: number;
+  visualY: number;
+};
+type VisualGraphEdge = (typeof laidOutGraph.edges)[number] & {
+  path: string;
+  sourceNode: VisualGraphNode;
+  targetNode: VisualGraphNode;
+};
+
+function hashText(value: string) {
+  let hash = 2166136261;
+
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+
+  return hash >>> 0;
+}
+
+function round(value: number) {
+  return Math.round(value * 100) / 100;
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function seededUnit(id: string, salt: string) {
+  return hashText(`${id}:${salt}`) / 0xffffffff;
+}
+
+function seededSignedUnit(id: string, salt: string) {
+  return seededUnit(id, salt) * 2 - 1;
+}
+
+function toVisualNode(node: GraphNavigationNode): VisualGraphNode {
+  const baseX = node.x ?? 50;
+  const baseY = node.y ?? 50;
+  const visualX = round(
+    clamp(baseX + seededSignedUnit(node.id, "constellation-x") * 2.35, 8, 92),
+  );
+  const visualY = round(
+    clamp(baseY + seededSignedUnit(node.id, "constellation-y") * 2.1, 8, 92),
+  );
+
+  return {
+    ...node,
+    idleDelay: -Math.round(seededUnit(node.id, "idle-delay") * 9000),
+    idleDuration:
+      8800 + Math.round(seededUnit(node.id, "idle-duration") * 4200),
+    idleX: round(seededSignedUnit(node.id, "idle-x") * 0.12),
+    idleY: round(seededSignedUnit(node.id, "idle-y") * 0.12),
+    visualX,
+    visualY,
+  };
+}
+
+function edgePath(
+  edgeId: string,
+  sourceNode: VisualGraphNode,
+  targetNode: VisualGraphNode,
+) {
+  const x1 = sourceNode.visualX;
+  const y1 = sourceNode.visualY;
+  const x2 = targetNode.visualX;
+  const y2 = targetNode.visualY;
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const distance = Math.hypot(dx, dy) || 1;
+  const normalX = -dy / distance;
+  const normalY = dx / distance;
+  const direction = seededSignedUnit(edgeId, "curve-side") >= 0 ? 1 : -1;
+  const bend =
+    Math.min(5.2, Math.max(1.8, distance * 0.08)) *
+    direction *
+    (0.78 + seededUnit(edgeId, "curve-weight") * 0.44);
+  const controlX = round((x1 + x2) / 2 + normalX * bend);
+  const controlY = round((y1 + y2) / 2 + normalY * bend);
+
+  return `M ${round(x1)} ${round(y1)} Q ${controlX} ${controlY} ${round(
+    x2,
+  )} ${round(y2)}`;
+}
+
+const visualNodes = laidOutGraph.nodes.map(toVisualNode);
+const nodesById = new Map(visualNodes.map((node) => [node.id, node]));
+const edges: VisualGraphEdge[] = laidOutGraph.edges
+  .map((edge): VisualGraphEdge | null => {
+    const sourceNode = nodesById.get(edge.source);
+    const targetNode = nodesById.get(edge.target);
+    if (!sourceNode || !targetNode) return null;
+
+    return {
+      ...edge,
+      path: edgePath(edge.id, sourceNode, targetNode),
+      sourceNode,
+      targetNode,
+    };
+  })
+  .filter((edge): edge is VisualGraphEdge => edge !== null);
+const relatedNodesById = new Map<string, typeof visualNodes>();
 
 for (const edge of edges) {
   if (!edge.sourceNode || !edge.targetNode) continue;
@@ -50,8 +149,8 @@ for (const edge of edges) {
 const initialDetailNodeId =
   laidOutGraph.currentNodeId && nodesById.has(laidOutGraph.currentNodeId)
     ? laidOutGraph.currentNodeId
-    : laidOutGraph.nodes[0]?.id;
-const detailPanels = laidOutGraph.nodes.map((node) => ({
+    : visualNodes[0]?.id;
+const detailPanels = visualNodes.map((node) => ({
   node,
   relatedNodes: [...(relatedNodesById.get(node.id) ?? [])].sort((a, b) => {
     if (a.priority !== b.priority) return b.priority - a.priority;
@@ -75,20 +174,17 @@ const detailPanels = laidOutGraph.nodes.map((node) => ({
     >
       {
         edges.map((edge) => (
-          <line
+          <path
+            d={edge.path}
             data-edge-source={edge.source}
             data-edge-target={edge.target}
-            x1={edge.sourceNode?.x}
-            y1={edge.sourceNode?.y}
-            x2={edge.targetNode?.x}
-            y2={edge.targetNode?.y}
           />
         ))
       }
     </svg>
 
     {
-      laidOutGraph.nodes.map((node) => (
+      visualNodes.map((node) => (
         <a
           class:list={[
             "temis-graph-nav__node",
@@ -101,7 +197,7 @@ const detailPanels = laidOutGraph.nodes.map((node) => ({
           data-node-type={node.type}
           href={node.href}
           id={`graph-node-${node.slug}`}
-          style={`--node-x:${node.x};--node-y:${node.y};${node.accent ? `--node-accent:${node.accent};` : ""}`}
+          style={`--node-x:${node.visualX};--node-y:${node.visualY};--node-idle-x:${node.idleX}rem;--node-idle-y:${node.idleY}rem;--node-idle-duration:${node.idleDuration}ms;--node-idle-delay:${node.idleDelay}ms;${node.accent ? `--node-accent:${node.accent};` : ""}`}
         >
           <span>{node.label}</span>
         </a>
@@ -155,7 +251,7 @@ const detailPanels = laidOutGraph.nodes.map((node) => ({
 
   <ul class="temis-graph-nav__fallback">
     {
-      laidOutGraph.nodes.map((node) => (
+      visualNodes.map((node) => (
         <li>
           <div class="temis-graph-nav__fallback-head">
             <a href={node.href}>{node.label}</a>
@@ -223,8 +319,10 @@ const detailPanels = laidOutGraph.nodes.map((node) => ({
     width: 100%;
   }
 
-  .temis-graph-nav__edges line {
+  .temis-graph-nav__edges path {
+    fill: none;
     stroke: var(--ds-color-line-strong, currentColor);
+    stroke-linecap: square;
     stroke-width: 0.28;
     opacity: 0.72;
     transform-box: fill-box;
@@ -262,6 +360,11 @@ const detailPanels = laidOutGraph.nodes.map((node) => ({
       opacity 160ms ease,
       transform 160ms ease;
     transform: translate(-50%, -50%);
+  }
+
+  .temis-graph-nav__node span {
+    display: inline-block;
+    transition: transform 160ms ease;
   }
 
   .temis-graph-nav__node--content {
@@ -309,13 +412,13 @@ const detailPanels = laidOutGraph.nodes.map((node) => ({
     opacity: 1;
   }
 
-  .temis-graph-nav[data-graph-active] .temis-graph-nav__edges line {
+  .temis-graph-nav[data-graph-active] .temis-graph-nav__edges path {
     opacity: 0.08;
   }
 
   .temis-graph-nav[data-graph-active]
     .temis-graph-nav__edges
-    line[data-graph-state="related"] {
+    path[data-graph-state="related"] {
     opacity: 0.92;
     stroke-width: 0.52;
     transform: scale(1.006);
@@ -487,9 +590,35 @@ const detailPanels = laidOutGraph.nodes.map((node) => ({
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .temis-graph-nav__edges line,
-    .temis-graph-nav__node {
+    .temis-graph-nav__edges path,
+    .temis-graph-nav__node,
+    .temis-graph-nav__node span {
       transition: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .temis-graph-nav__node span {
+      animation: temis-graph-node-idle var(--node-idle-duration, 9800ms)
+        ease-in-out infinite;
+      animation-delay: var(--node-idle-delay, 0ms);
+    }
+
+    .temis-graph-nav[data-graph-active] .temis-graph-nav__node span,
+    .temis-graph-nav:focus-within .temis-graph-nav__node span {
+      animation-play-state: paused;
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes temis-graph-node-idle {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+
+    50% {
+      transform: translate(var(--node-idle-x, 0rem), var(--node-idle-y, 0rem));
     }
   }
 </style>
@@ -500,7 +629,7 @@ const detailPanels = laidOutGraph.nodes.map((node) => ({
   for (const graph of graphs) {
     const nodes = [...graph.querySelectorAll<HTMLElement>("[data-node-id]")];
     const edges = [
-      ...graph.querySelectorAll<SVGLineElement>("[data-edge-source]"),
+      ...graph.querySelectorAll<SVGPathElement>("[data-edge-source]"),
     ];
     const detailPanels = [
       ...graph.querySelectorAll<HTMLElement>("[data-detail-node-id]"),
