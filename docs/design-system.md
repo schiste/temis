@@ -223,6 +223,14 @@ Recommended layout uses:
 - Header regions should also use whole-column spans. Brand, kicker, navigation,
   and action controls may use internal token padding, but their visible regions
   and dividers should start and end on content-area grid lines.
+- Responsive headers should preserve the same grid origin while changing
+  composition. On small screens, brand and utility actions may share the first
+  row, navigation should move to a compact second row, and the supporting
+  kicker may be hidden to protect the reading viewport.
+- Responsive component breakpoints should usually follow the snapped content
+  area through container queries, not raw viewport width. The content area is
+  `92vw` rounded down to grid pairs, so viewport and content thresholds do not
+  always change at the same pixel.
 - Footer cells on desktop should use whole grid spans. The V1 footer uses
   grid-span sets that add up to the current content-area column count.
 - The page shell should snap down to the largest fitting grid width and center
