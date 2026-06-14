@@ -412,6 +412,17 @@ Rules:
 - Avoid soft shadows as the main separation tool.
 - Prefer borders, hard planes, and spatial rhythm.
 
+Card system:
+
+- Use the shared `Card` primitive for homepage, topic, person, and index cards.
+- Card grids use `--ds-grid-unit` tracks with no gap so borders align to the
+  page column system.
+- Card widths must be expressed as whole column spans, preferably even spans.
+- Default content order is mark, eyebrow, title, metadata, description.
+- Feature cards may use larger serif titles; compact cards keep metadata dense.
+- Interactive states use background planes, accent rules, and rectangular focus
+  outlines.
+
 ## Graph Navigation
 
 The V1 graph is a strong visual and navigation signature.
@@ -572,6 +583,8 @@ Rules:
 - Optional featured visual.
 - No rounded thumbnails.
 - No nested cards.
+- On homepage and grid-based surfaces, article summaries should use the shared
+  `Card` primitive. Dense list views may use a simpler article-list component.
 
 ### Person Summary
 
@@ -645,6 +658,8 @@ Required:
 - Clear path into articles.
 - Hard-edged layout.
 - No marketing hero card.
+- Homepage cards should make the V1 model explicit: topic navigation, essays,
+  and people/authorship.
 
 ### Article Page
 
