@@ -50,6 +50,8 @@ const edges = laidOutGraph.edges
       {
         edges.map((edge) => (
           <line
+            data-edge-source={edge.source}
+            data-edge-target={edge.target}
             x1={edge.sourceNode?.x}
             y1={edge.sourceNode?.y}
             x2={edge.targetNode?.x}
@@ -69,6 +71,7 @@ const edges = laidOutGraph.edges
               "temis-graph-nav__node--current",
           ]}
           aria-label={`${node.label} (${nodeTypeLabels[node.type]})`}
+          data-node-id={node.id}
           data-node-type={node.type}
           href={node.href}
           id={`graph-node-${node.slug}`}
@@ -153,6 +156,13 @@ const edges = laidOutGraph.edges
   .temis-graph-nav__edges line {
     stroke: var(--ds-color-line-strong, currentColor);
     stroke-width: 0.28;
+    opacity: 0.72;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition:
+      opacity 160ms ease,
+      stroke-width 160ms ease,
+      transform 160ms ease;
     vector-effect: non-scaling-stroke;
   }
 
@@ -175,6 +185,12 @@ const edges = laidOutGraph.edges
     position: absolute;
     text-decoration: none;
     text-transform: uppercase;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      color 160ms ease,
+      opacity 160ms ease,
+      transform 160ms ease;
     transform: translate(-50%, -50%);
   }
 
@@ -200,9 +216,39 @@ const edges = laidOutGraph.edges
 
   .temis-graph-nav__node:hover,
   .temis-graph-nav__node:focus-visible,
+  .temis-graph-nav__node[data-graph-state="active"],
   .temis-graph-nav__node--current {
     background: var(--node-accent);
     color: var(--ds-color-accent-contrast, Canvas);
+  }
+
+  .temis-graph-nav__node[data-graph-state="neighbor"] {
+    border-color: var(--node-accent);
+    color: var(--node-accent);
+    opacity: 1;
+  }
+
+  .temis-graph-nav[data-graph-active] .temis-graph-nav__node {
+    opacity: 0.22;
+  }
+
+  .temis-graph-nav[data-graph-active]
+    .temis-graph-nav__node[data-graph-state="active"],
+  .temis-graph-nav[data-graph-active]
+    .temis-graph-nav__node[data-graph-state="neighbor"] {
+    opacity: 1;
+  }
+
+  .temis-graph-nav[data-graph-active] .temis-graph-nav__edges line {
+    opacity: 0.08;
+  }
+
+  .temis-graph-nav[data-graph-active]
+    .temis-graph-nav__edges
+    line[data-graph-state="related"] {
+    opacity: 0.92;
+    stroke-width: 0.52;
+    transform: scale(1.006);
   }
 
   .temis-graph-nav__fallback {
@@ -257,4 +303,123 @@ const edges = laidOutGraph.edges
       max-width: calc(var(--ds-grid-unit, 2.625rem) * 4);
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .temis-graph-nav__edges line,
+    .temis-graph-nav__node {
+      transition: none;
+    }
+  }
 </style>
+
+<script>
+  const graphs = document.querySelectorAll<HTMLElement>(".temis-graph-nav");
+
+  for (const graph of graphs) {
+    const nodes = [...graph.querySelectorAll<HTMLElement>("[data-node-id]")];
+    const edges = [
+      ...graph.querySelectorAll<SVGLineElement>("[data-edge-source]"),
+    ];
+    const neighbors = new Map<string, Set<string>>();
+    let lockedNodeId: string | null = null;
+
+    for (const node of nodes) {
+      const nodeId = node.dataset.nodeId;
+      if (!nodeId) continue;
+      neighbors.set(nodeId, new Set());
+    }
+
+    for (const edge of edges) {
+      const source = edge.dataset.edgeSource;
+      const target = edge.dataset.edgeTarget;
+      if (!source || !target) continue;
+      neighbors.get(source)?.add(target);
+      neighbors.get(target)?.add(source);
+    }
+
+    const clearGraphState = () => {
+      graph.removeAttribute("data-graph-active");
+      for (const node of nodes) node.removeAttribute("data-graph-state");
+      for (const edge of edges) edge.removeAttribute("data-graph-state");
+    };
+
+    const activateNode = (nodeId: string) => {
+      const relatedNodes = neighbors.get(nodeId) ?? new Set();
+      graph.dataset.graphActive = nodeId;
+
+      for (const node of nodes) {
+        const currentNodeId = node.dataset.nodeId;
+        if (currentNodeId === nodeId) {
+          node.dataset.graphState = "active";
+        } else if (currentNodeId && relatedNodes.has(currentNodeId)) {
+          node.dataset.graphState = "neighbor";
+        } else {
+          node.removeAttribute("data-graph-state");
+        }
+      }
+
+      for (const edge of edges) {
+        const source = edge.dataset.edgeSource;
+        const target = edge.dataset.edgeTarget;
+        if (source === nodeId || target === nodeId) {
+          edge.dataset.graphState = "related";
+        } else {
+          edge.removeAttribute("data-graph-state");
+        }
+      }
+    };
+
+    const unlock = () => {
+      lockedNodeId = null;
+      graph.removeAttribute("data-graph-locked");
+      clearGraphState();
+    };
+
+    for (const node of nodes) {
+      node.addEventListener("pointerenter", () => {
+        if (lockedNodeId) return;
+        const nodeId = node.dataset.nodeId;
+        if (nodeId) activateNode(nodeId);
+      });
+
+      node.addEventListener("pointerleave", () => {
+        if (!lockedNodeId) clearGraphState();
+      });
+
+      node.addEventListener("focus", () => {
+        if (lockedNodeId) return;
+        const nodeId = node.dataset.nodeId;
+        if (nodeId) activateNode(nodeId);
+      });
+
+      node.addEventListener("blur", () => {
+        if (!lockedNodeId) clearGraphState();
+      });
+
+      node.addEventListener("click", (event) => {
+        const nodeId = node.dataset.nodeId;
+        const isTouchLike = matchMedia(
+          "(hover: none), (pointer: coarse)",
+        ).matches;
+        if (!nodeId || !isTouchLike) return;
+
+        if (lockedNodeId !== nodeId) {
+          event.preventDefault();
+          lockedNodeId = nodeId;
+          graph.dataset.graphLocked = nodeId;
+          activateNode(nodeId);
+        }
+      });
+    }
+
+    graph.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      unlock();
+    });
+
+    document.addEventListener("pointerdown", (event) => {
+      if (!lockedNodeId || graph.contains(event.target as Node)) return;
+      unlock();
+    });
+  }
+</script>
