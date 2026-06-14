@@ -1,5 +1,5 @@
 ---
-import ArticleCard from "@temis/design-system/components/ArticleCard.astro";
+import Card from "@temis/design-system/components/Card.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
 import SiteLayout from "../components/SiteLayout.astro";
 import {
@@ -17,14 +17,53 @@ const page = await getHomePage();
 const posts = await getPosts();
 const copy = await getSiteTexts({
   articleCardEyebrow: "Article",
+  homeEssaysCardDescription:
+    "Essays and tool announcements from people exploring open knowledge after AI.",
+  homeEssaysCardEyebrow: "Essays",
+  homeEssaysCardTitle: "Read the field notes",
   homeHeroEyebrow: "Public map of a technical commons",
-  homeLatestHeading: "Latest",
+  homeLatestHeading: "Latest essays",
   homeMissingDescription:
-    "A static Astro site powered by EmDash content and Cloudflare.",
+    "An exploratory public map for open knowledge work in a post-AI world.",
   homeMissingTitle: "TEMIS",
+  homeNavigationHeading: "Explore",
+  homePeopleCardDescription:
+    "Author pages connect published work to the people and teams behind it.",
+  homePeopleCardEyebrow: "People",
+  homePeopleCardTitle: "Find the authors",
+  homeTopicsCardDescription:
+    "Follow topic routes across essays, tools, and people as the map takes shape.",
+  homeTopicsCardEyebrow: "Topic graph",
+  homeTopicsCardTitle: "Navigate the commons",
 });
 const title = page ? entryTitle(page) : copy.homeMissingTitle;
 const description = page ? entryDescription(page) : copy.homeMissingDescription;
+const navigationCards = [
+  {
+    description: copy.homeTopicsCardDescription,
+    eyebrow: copy.homeTopicsCardEyebrow,
+    href: "/topics/",
+    mark: "01",
+    title: copy.homeTopicsCardTitle,
+    variant: "feature",
+  },
+  {
+    description: copy.homeEssaysCardDescription,
+    eyebrow: copy.homeEssaysCardEyebrow,
+    href: "/blog/",
+    mark: "02",
+    title: copy.homeEssaysCardTitle,
+    variant: "standard",
+  },
+  {
+    description: copy.homePeopleCardDescription,
+    eyebrow: copy.homePeopleCardEyebrow,
+    href: "/people/",
+    mark: "03",
+    title: copy.homePeopleCardTitle,
+    variant: "standard",
+  },
+] as const;
 ---
 
 <SiteLayout title={title} description={description}>
@@ -34,27 +73,57 @@ const description = page ? entryDescription(page) : copy.homeMissingDescription;
     description={description}
   />
 
+  <section class="ds-section" aria-labelledby="home-navigation-heading">
+    <header class="ds-section-header">
+      <h2 class="ds-section-title" id="home-navigation-heading">
+        {copy.homeNavigationHeading}
+      </h2>
+    </header>
+    <div class="ds-card-grid ds-card-grid--home">
+      {
+        navigationCards.map((card) => (
+          <Card
+            description={card.description}
+            eyebrow={card.eyebrow}
+            href={card.href}
+            mark={card.mark}
+            title={card.title}
+            variant={card.variant}
+          />
+        ))
+      }
+    </div>
+  </section>
+
   {
-    page?.content && (
-      <article class="ds-prose" set:html={portableTextToHtml(page.content)} />
+    posts.length > 0 && (
+      <section class="ds-section" aria-labelledby="home-latest-heading">
+        <header class="ds-section-header">
+          <h2 class="ds-section-title" id="home-latest-heading">
+            {copy.homeLatestHeading}
+          </h2>
+        </header>
+        <div class="ds-card-grid ds-card-grid--latest">
+          {posts.slice(0, 4).map((post, index) => (
+            <Card
+              eyebrow={copy.articleCardEyebrow}
+              href={`/blog/${entrySlug(post)}/`}
+              mark={String(index + 1).padStart(2, "0")}
+              meta={entryAuthorName(post) ?? undefined}
+              description={entryDescription(post)}
+              title={entryTitle(post)}
+              variant="standard"
+            />
+          ))}
+        </div>
+      </section>
     )
   }
 
   {
-    posts.length > 0 && (
-      <section class="ds-flow">
-        <p class="ds-eyebrow">{copy.homeLatestHeading}</p>
-        <div class="ds-listing">
-          {posts.slice(0, 4).map((post) => (
-            <ArticleCard
-              eyebrow={copy.articleCardEyebrow}
-              href={`/blog/${entrySlug(post)}/`}
-              title={entryTitle(post)}
-              meta={entryAuthorName(post) ?? undefined}
-              description={entryDescription(post)}
-            />
-          ))}
-        </div>
+    page?.content && (
+      <section class="ds-home-note">
+        <article class="ds-prose" set:html={portableTextToHtml(page.content)} />
       </section>
     )
   }

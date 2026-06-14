@@ -16,10 +16,20 @@
     "headerNetworkLabel": "Topic network",
     "headerUtilitiesNavLabel": "Utilities",
     "articleCardEyebrow": "Article",
+    "homeEssaysCardDescription": "Essays and tool announcements from people exploring open knowledge after AI.",
+    "homeEssaysCardEyebrow": "Essays",
+    "homeEssaysCardTitle": "Read the field notes",
     "homeHeroEyebrow": "Public map of a technical commons",
-    "homeLatestHeading": "Latest",
+    "homeLatestHeading": "Latest essays",
     "homeMissingTitle": "TEMIS",
-    "homeMissingDescription": "A static Astro site powered by EmDash content and Cloudflare.",
+    "homeMissingDescription": "An exploratory public map for open knowledge work in a post-AI world.",
+    "homeNavigationHeading": "Explore",
+    "homePeopleCardDescription": "Author pages connect published work to the people and teams behind it.",
+    "homePeopleCardEyebrow": "People",
+    "homePeopleCardTitle": "Find the authors",
+    "homeTopicsCardDescription": "Follow topic routes across essays, tools, and people as the map takes shape.",
+    "homeTopicsCardEyebrow": "Topic graph",
+    "homeTopicsCardTitle": "Navigate the commons",
     "blogHeroEyebrow": "Articles",
     "blogMissingTitle": "Published articles",
     "blogMissingDescription": "Published TEMIS articles.",
@@ -171,7 +181,7 @@
         "status": "published",
         "data": {
           "title": "TEMIS",
-          "summary": "Exploring open knowledge in a post-AI world.",
+          "summary": "An exploratory public map for open knowledge work in a post-AI world.",
           "content": [
             {
               "_type": "block",
@@ -179,13 +189,13 @@
               "children": [
                 {
                   "_type": "span",
-                  "text": "This starter page is managed in EmDash and rendered statically by Astro."
+                  "text": "TEMIS starts as a content-first map: essays, tools, topics, and people connected through a static public site managed in EmDash."
                 }
               ]
             }
           ],
           "seo_title": "TEMIS",
-          "seo_description": "A static Astro site with EmDash-managed content."
+          "seo_description": "An exploratory public map for open knowledge work in a post-AI world."
         }
       },
       {
