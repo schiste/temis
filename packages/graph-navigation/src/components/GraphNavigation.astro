@@ -71,6 +71,7 @@ const edges = laidOutGraph.edges
           aria-label={`${node.label} (${nodeTypeLabels[node.type]})`}
           data-node-type={node.type}
           href={node.href}
+          id={`graph-node-${node.slug}`}
           style={`--node-x:${node.x};--node-y:${node.y};${node.accent ? `--node-accent:${node.accent};` : ""}`}
         >
           <span>{node.label}</span>

@@ -53,8 +53,22 @@ function slugify(value: string) {
 function normalizeHref(href: string | null | undefined, slug: string) {
   const cleanHref = cleanText(href);
   if (cleanHref) {
+    if (/^[a-z][a-z0-9+.-]*:/i.test(cleanHref) || cleanHref.startsWith("//")) {
+      return cleanHref;
+    }
     if (cleanHref === "/") return cleanHref;
     const prefixed = cleanHref.startsWith("/") ? cleanHref : `/${cleanHref}`;
+    const suffixStart = [prefixed.indexOf("?"), prefixed.indexOf("#")]
+      .filter((index) => index >= 0)
+      .sort((a, b) => a - b)[0];
+
+    if (suffixStart !== undefined) {
+      const base = prefixed.slice(0, suffixStart);
+      const suffix = prefixed.slice(suffixStart);
+      const normalizedBase = base.endsWith("/") ? base : `${base}/`;
+      return `${normalizedBase}${suffix}`;
+    }
+
     return prefixed.endsWith("/") ? prefixed : `${prefixed}/`;
   }
 
@@ -140,22 +154,37 @@ function byPriorityThenId(a: GraphNavigationEdge, b: GraphNavigationEdge) {
   return a.id.localeCompare(b.id);
 }
 
+function dedupeById<T extends { id: string }>(items: T[]) {
+  const byId = new Map<string, T>();
+
+  for (const item of items) {
+    if (byId.has(item.id)) continue;
+    byId.set(item.id, item);
+  }
+
+  return [...byId.values()];
+}
+
 export function createGraphNavigationSnapshot(
   input: GraphNavigationSnapshotInput,
 ): GraphNavigationSnapshot {
-  const nodes = input.nodes
-    .map(normalizeNode)
-    .filter((node): node is GraphNavigationNode => Boolean(node))
-    .sort(byPriorityThenLabel);
+  const nodes = dedupeById(
+    input.nodes
+      .map(normalizeNode)
+      .filter((node): node is GraphNavigationNode => Boolean(node))
+      .sort(byPriorityThenLabel),
+  );
   const nodeIds = new Set(nodes.map((node) => node.id));
-  const edges = (input.edges ?? [])
-    .map(normalizeEdge)
-    .filter((edge): edge is GraphNavigationEdge => {
-      return Boolean(
-        edge && nodeIds.has(edge.source) && nodeIds.has(edge.target),
-      );
-    })
-    .sort(byPriorityThenId);
+  const edges = dedupeById(
+    (input.edges ?? [])
+      .map(normalizeEdge)
+      .filter((edge): edge is GraphNavigationEdge => {
+        return Boolean(
+          edge && nodeIds.has(edge.source) && nodeIds.has(edge.target),
+        );
+      })
+      .sort(byPriorityThenId),
+  );
 
   return {
     ...(input.currentNodeId ? { currentNodeId: input.currentNodeId } : {}),
