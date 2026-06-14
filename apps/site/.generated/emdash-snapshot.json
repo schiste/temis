@@ -718,17 +718,17 @@
       {
         "id": "seed:post:innovating-with-wikimedia-decision-making",
         "slug": "innovating-with-wikimedia-decision-making",
-        "status": "draft",
+        "status": "published",
         "author_id": null,
         "primary_byline_id": "seed:byline:lodewijk-gelauff",
         "created_at": "2026-06-14T12:09:06.398Z",
-        "updated_at": "2026-06-14T12:09:06.398Z",
-        "published_at": null,
+        "updated_at": "2026-06-14 12:18:24",
+        "published_at": "2026-06-14 12:18:24",
         "scheduled_at": null,
         "deleted_at": null,
         "version": 1,
-        "live_revision_id": null,
-        "draft_revision_id": "seed:revision:post:innovating-with-wikimedia-decision-making",
+        "live_revision_id": "seed:revision:post:innovating-with-wikimedia-decision-making",
+        "draft_revision_id": null,
         "locale": "en",
         "translation_group": "seed:post:innovating-with-wikimedia-decision-making",
         "title": "Innovating with Wikimedia decision making",
@@ -1387,5 +1387,5 @@
       }
     }
   },
-  "generatedAt": "2026-06-14T12:12:49.268Z"
+  "generatedAt": "2026-06-14T12:20:05.280Z"
 }
