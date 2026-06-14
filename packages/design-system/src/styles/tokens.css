@@ -15,6 +15,12 @@
   --ds-space-phi-4: 2.625rem;
   --ds-space-phi-5: 4.25rem;
   --ds-space-phi-6: 6.875rem;
+  --ds-grid-unit: var(--ds-space-phi-4);
+  --ds-grid-pair: 5.25rem;
+  --ds-grid-columns-prose: 16;
+  --ds-grid-columns-wide: 26;
+  --ds-grid-columns-chrome: 28;
+  --ds-grid-columns-page: 42;
 
   --ds-font-serif: "Source Serif 4", "Literata", ui-serif, Georgia, serif;
   --ds-font-sans:
@@ -39,13 +45,14 @@
   --ds-layout-major: 61.8%;
   --ds-layout-minor: 38.2%;
   --ds-measure-prose: 42rem;
-  --ds-measure-wide: 68rem;
-  --ds-measure-page: 110rem;
+  --ds-measure-wide: 68.25rem;
+  --ds-measure-chrome: 73.5rem;
+  --ds-measure-page: 110.25rem;
 
-  --ds-breakpoint-xs: 26rem;
+  --ds-breakpoint-xs: 26.25rem;
   --ds-breakpoint-sm: 42rem;
-  --ds-breakpoint-md: 68rem;
-  --ds-breakpoint-lg: 110rem;
+  --ds-breakpoint-md: 68.25rem;
+  --ds-breakpoint-lg: 110.25rem;
 
   --ds-radius-none: 0;
   --ds-stroke-hairline: 1px;
@@ -70,6 +77,20 @@
   --ds-color-topic-b: #7a4d00;
   --ds-color-topic-c: #334f8f;
   --ds-color-focus: #111fdf;
+}
+
+@supports (width: calc(1px * 1)) {
+  :root {
+    --ds-grid-pair: calc(var(--ds-grid-unit) * 2);
+    --ds-measure-prose: calc(
+      var(--ds-grid-unit) * var(--ds-grid-columns-prose)
+    );
+    --ds-measure-wide: calc(var(--ds-grid-unit) * var(--ds-grid-columns-wide));
+    --ds-measure-chrome: calc(
+      var(--ds-grid-unit) * var(--ds-grid-columns-chrome)
+    );
+    --ds-measure-page: calc(var(--ds-grid-unit) * var(--ds-grid-columns-page));
+  }
 }
 
 @media (prefers-color-scheme: dark) {

@@ -148,6 +148,8 @@ Spacing uses rounded phi steps around the `16px` base.
   --space-phi-4: 2.625rem; /* 42px */
   --space-phi-5: 4.25rem; /* 68px */
   --space-phi-6: 6.875rem; /* 110px */
+  --grid-unit: var(--space-phi-4);
+  --grid-pair: calc(var(--grid-unit) * 2);
 }
 ```
 
@@ -195,9 +197,14 @@ Use phi relationships for major layout decisions.
 :root {
   --layout-major: 61.8%;
   --layout-minor: 38.2%;
-  --measure-prose: 42rem;
-  --measure-wide: 68rem;
-  --measure-page: 110rem;
+  --grid-columns-prose: 16;
+  --grid-columns-wide: 26;
+  --grid-columns-chrome: 28;
+  --grid-columns-page: 42;
+  --measure-prose: calc(var(--grid-unit) * var(--grid-columns-prose));
+  --measure-wide: calc(var(--grid-unit) * var(--grid-columns-wide));
+  --measure-chrome: calc(var(--grid-unit) * var(--grid-columns-chrome));
+  --measure-page: calc(var(--grid-unit) * var(--grid-columns-page));
 }
 ```
 
@@ -207,6 +214,15 @@ Recommended layout uses:
   editorial entry points visible above the fold.
 - Article layout: centered editorial reading column, with metadata integrated
   before and around the article rather than persistent dashboard sidebars.
+- Site chrome: header and footer should start on the page grid and span whole
+  grid units unless a template explicitly needs full-page operational density.
+- Footer cells on desktop should use whole grid spans. The V1 footer uses
+  `7 + 7 + 7 + 5 + 2` units across a 28-unit chrome measure.
+- The page shell should snap down to the largest fitting grid width and center
+  itself. Any viewport remainder belongs in the outer gutters, not inside
+  component sizing.
+- Component outer boxes should use grid spans. Component internals may use
+  spacing tokens for padding and icon offsets.
 - Topic pages: editorial landing pages that feel like entry points into a new
   world of content.
 - Person pages: biography and trust context first, authored work second.

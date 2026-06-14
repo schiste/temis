@@ -1,9 +1,27 @@
 .ds-page {
   margin-inline: auto;
   max-width: var(--ds-measure-page);
-  padding: var(--ds-space-phi-3)
-    clamp(var(--ds-space-phi-2), 4vw, var(--ds-space-phi-4))
-    var(--ds-space-phi-5);
+  padding-block: var(--ds-space-phi-3) var(--ds-space-phi-5);
+  padding-inline: clamp(var(--ds-space-phi-2), 4vw, var(--ds-grid-unit));
+}
+
+@supports (width: round(down, 100%, 1px)) {
+  .ds-page {
+    max-width: none;
+    padding-inline: 0;
+    width: min(round(down, 100%, var(--ds-grid-unit)), var(--ds-measure-page));
+  }
+}
+
+@media (min-width: 42rem) {
+  @supports (width: round(down, 100%, 1px)) {
+    .ds-page {
+      width: min(
+        round(down, 100%, var(--ds-grid-pair)),
+        var(--ds-measure-page)
+      );
+    }
+  }
 }
 
 .ds-site-header {
@@ -12,15 +30,21 @@
   border-block-end: var(--ds-stroke-hairline) solid var(--ds-color-line-strong);
   display: grid;
   gap: var(--ds-space-phi-3);
-  grid-template-columns: minmax(22rem, 1fr) auto minmax(
-      var(--ds-space-phi-5),
-      auto
-    );
+  grid-template-columns: minmax(0, 1fr) auto minmax(var(--ds-space-phi-5), auto);
   justify-content: space-between;
   margin-block-end: var(--ds-space-phi-5);
+  margin-inline: auto;
+  max-inline-size: var(--ds-measure-chrome);
   min-height: var(--ds-space-phi-5);
   padding: var(--ds-space-phi-2) var(--ds-space-phi-00) var(--ds-space-phi-2)
     var(--ds-space-phi-00);
+  width: 100%;
+}
+
+.ds-page > main {
+  margin-inline: auto;
+  max-inline-size: var(--ds-measure-chrome);
+  width: 100%;
 }
 
 .ds-site-header__identity {
@@ -49,7 +73,7 @@
   font-size: var(--ds-font-size-caption);
   line-height: 1.2;
   margin: 0;
-  max-width: 28rem;
+  max-width: calc(var(--ds-grid-unit) * 10);
   padding-inline-start: var(--ds-space-phi-3);
   text-transform: uppercase;
 }
@@ -116,7 +140,7 @@
   stroke: currentColor;
   stroke-linecap: square;
   stroke-linejoin: miter;
-  stroke-width: 1.75;
+  stroke-width: var(--ds-stroke-map);
 }
 
 .ds-page-hero {
@@ -139,11 +163,7 @@
 .ds-page-title {
   color: var(--ds-color-text);
   font-family: var(--ds-font-serif);
-  font-size: clamp(
-    var(--ds-font-size-title-md),
-    8vw,
-    var(--ds-font-size-title-lg)
-  );
+  font-size: var(--ds-font-size-title-md);
   font-weight: 680;
   letter-spacing: 0;
   line-height: var(--ds-line-tight);
@@ -259,11 +279,12 @@
   font-family: var(--ds-font-mono);
   font-size: var(--ds-font-size-meta);
   gap: 0;
-  grid-template-columns:
-    minmax(17rem, 1.25fr) minmax(18rem, 1.25fr) minmax(17rem, 1.2fr)
-    minmax(13rem, 1fr) var(--ds-space-phi-5);
+  grid-template-columns: repeat(28, minmax(0, 1fr));
   margin-block-start: var(--ds-space-phi-5);
+  margin-inline: auto;
+  max-inline-size: var(--ds-measure-chrome);
   min-height: var(--ds-space-phi-6);
+  width: 100%;
 }
 
 .ds-footer-cell,
@@ -285,11 +306,12 @@
 
 .ds-footer-cell p:not(.ds-footer-heading) {
   line-height: 1.42;
-  max-width: 27rem;
+  max-width: calc(var(--ds-grid-unit) * 6);
 }
 
 .ds-footer-cell--open {
   align-items: center;
+  grid-column: span 7;
   grid-template-columns: minmax(0, 1fr) auto;
 }
 
@@ -304,7 +326,16 @@
 .ds-footer-cell--license,
 .ds-footer-cell--commons {
   align-items: center;
+  grid-column: span 7;
   grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.ds-footer-cell--temis {
+  grid-column: span 5;
+}
+
+.ds-footer-top {
+  grid-column: span 2;
 }
 
 .ds-footer-license-mark {
@@ -348,7 +379,7 @@
   stroke: currentColor;
   stroke-linecap: square;
   stroke-linejoin: miter;
-  stroke-width: 1.5;
+  stroke-width: var(--ds-stroke-map);
 }
 
 .ds-footer-top {
@@ -374,9 +405,23 @@
   line-height: 1;
 }
 
-@media (max-width: 68rem) {
+@media (min-width: 68.25rem) {
+  .ds-page-title {
+    font-size: var(--ds-font-size-title-lg);
+  }
+}
+
+@media (max-width: 68.25rem) {
   .ds-site-footer {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ds-footer-cell--open,
+  .ds-footer-cell--license,
+  .ds-footer-cell--commons,
+  .ds-footer-cell--temis,
+  .ds-footer-top {
+    grid-column: auto;
   }
 
   .ds-footer-top {
