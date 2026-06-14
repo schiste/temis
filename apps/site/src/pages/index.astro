@@ -3,6 +3,7 @@ import ArticleCard from "@temis/design-system/components/ArticleCard.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
 import SiteLayout from "../components/SiteLayout.astro";
 import {
+  entryAuthorName,
   entryDescription,
   entrySlug,
   entryTitle,
@@ -49,6 +50,7 @@ const description = page ? entryDescription(page) : copy.homeMissingDescription;
               eyebrow={copy.articleCardEyebrow}
               href={`/blog/${entrySlug(post)}/`}
               title={entryTitle(post)}
+              meta={entryAuthorName(post) ?? undefined}
               description={entryDescription(post)}
             />
           ))}

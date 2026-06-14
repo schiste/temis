@@ -23,6 +23,7 @@
     "blogHeroEyebrow": "Articles",
     "blogMissingTitle": "Published articles",
     "blogMissingDescription": "Published TEMIS articles.",
+    "postAuthorLabel": "Author",
     "postHeroEyebrow": "Article",
     "postStatusLabel": "Status",
     "postStatusValue": "Published content",
@@ -127,6 +128,12 @@
           "slug": "excerpt",
           "label": "Excerpt",
           "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "author_name",
+          "label": "Author name",
+          "type": "string",
           "searchable": true
         },
         {

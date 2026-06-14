@@ -3,6 +3,7 @@ import MetadataRow from "@temis/design-system/components/MetadataRow.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
 import SiteLayout from "../../components/SiteLayout.astro";
 import {
+  entryAuthorName,
   entryDescription,
   entrySlug,
   entryTitle,
@@ -29,10 +30,16 @@ if (!resolvedPost) {
 const title = entryTitle(resolvedPost);
 const description = entryDescription(resolvedPost);
 const copy = await getSiteTexts({
+  postAuthorLabel: "Author",
   postHeroEyebrow: "Article",
   postStatusLabel: "Status",
   postStatusValue: "Published content",
 });
+const authorName = entryAuthorName(resolvedPost);
+const metadataItems = [
+  authorName ? { label: copy.postAuthorLabel, value: authorName } : null,
+  { label: copy.postStatusLabel, value: copy.postStatusValue },
+].filter((item): item is { label: string; value: string } => Boolean(item));
 ---
 
 <SiteLayout title={title} description={description}>
@@ -42,9 +49,7 @@ const copy = await getSiteTexts({
       title={title}
       description={description}
     />
-    <MetadataRow
-      items={[{ label: copy.postStatusLabel, value: copy.postStatusValue }]}
-    />
+    <MetadataRow items={metadataItems} />
     <div class="ds-prose" set:html={portableTextToHtml(resolvedPost.content)} />
   </article>
 </SiteLayout>

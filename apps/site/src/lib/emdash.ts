@@ -32,6 +32,7 @@ export interface PageEntry extends SnapshotRow {
 }
 
 export interface PostEntry extends SnapshotRow {
+  author_name?: string;
   content?: unknown;
   excerpt?: string;
   seo_description?: string;
@@ -438,6 +439,11 @@ export function entryTitle(row: SnapshotRow) {
 
 export function entryDescription(row: SnapshotRow) {
   return String(row.seo_description ?? row.excerpt ?? row.summary ?? "");
+}
+
+export function entryAuthorName(row: PostEntry) {
+  const authorName = row.author_name?.trim();
+  return authorName && authorName.length > 0 ? authorName : null;
 }
 
 export function entrySummary(row: SnapshotRow) {

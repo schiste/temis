@@ -26,6 +26,7 @@ export interface Post {
   status: string;
   title: string;
   excerpt?: string;
+  author_name?: string;
   featured_image?: {
     id: string;
     src?: string;
