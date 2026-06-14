@@ -1,28 +1,85 @@
 ---
 export interface NavItem {
+  activePrefix?: string;
   href: string;
   label: string;
 }
 
-export interface Props {
-  navItems?: NavItem[];
+export interface HeaderAction {
+  href: string;
+  icon: "network" | "search";
+  label: string;
 }
 
-const { navItems = [{ href: "/blog/", label: "Articles" }] } = Astro.props;
+export interface Props {
+  actions?: HeaderAction[];
+  navItems?: NavItem[];
+  tagline?: string;
+}
+
+const {
+  actions = [
+    { href: "/search/", icon: "search", label: "Search" },
+    { href: "/topics/", icon: "network", label: "Topic network" },
+  ],
+  navItems = [
+    { href: "/blog/", label: "Essays", activePrefix: "/blog/" },
+    { href: "/topics/", label: "Topics", activePrefix: "/topics/" },
+    { href: "/people/", label: "People", activePrefix: "/people/" },
+    { href: "/about/", label: "About" },
+  ],
+  tagline = "Exploring open knowledge in a post-AI world",
+} = Astro.props;
+
+function isCurrent(item: NavItem) {
+  const pathname = Astro.url.pathname;
+  return (
+    pathname === item.href ||
+    (item.activePrefix ? pathname.startsWith(item.activePrefix) : false)
+  );
+}
 ---
 
 <header class="ds-site-header">
-  <a class="ds-brand" href="/" aria-label="TEMIS home">TEMIS</a>
+  <div class="ds-site-header__identity">
+    <a class="ds-brand" href="/" aria-label="TEMIS home">TEMIS</a>
+    <p class="ds-site-kicker">{tagline}</p>
+  </div>
+
   <nav class="ds-nav" aria-label="Primary">
     {
       navItems.map((item) => (
-        <a
-          href={item.href}
-          aria-current={Astro.url.pathname === item.href ? "page" : undefined}
-        >
+        <a href={item.href} aria-current={isCurrent(item) ? "page" : undefined}>
           {item.label}
         </a>
       ))
     }
   </nav>
+
+  {
+    actions.length > 0 && (
+      <nav class="ds-header-actions" aria-label="Utilities">
+        {actions.map((action) => (
+          <a
+            class="ds-header-action"
+            href={action.href}
+            aria-label={action.label}
+          >
+            {action.icon === "search" ? (
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 5h9v9H5z" />
+                <path d="m14 14 5 5" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3 21 12 12 21 3 12z" />
+                <path d="M12 7v10" />
+                <path d="M7 12h10" />
+              </svg>
+            )}
+          </a>
+        ))}
+      </nav>
+    )
+  }
 </header>
