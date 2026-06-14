@@ -44,11 +44,13 @@ function assertJsonResponse(response) {
 }
 
 const snapshotUrl = new URL(resolveSnapshotUrl());
+snapshotUrl.searchParams.set("_", String(Date.now()));
 const source = env("EMDASH_PREVIEW_SOURCE") ?? "temis-static-build";
 const secret = env("EMDASH_PREVIEW_SECRET") ?? env("PREVIEW_SECRET");
 
 const headers = {
   Accept: "application/json",
+  "Cache-Control": "no-cache",
 };
 
 if (secret) {
