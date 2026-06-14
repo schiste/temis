@@ -97,6 +97,16 @@ importers:
         specifier: ^6.0.0
         version: 6.4.6(@types/node@22.19.21)
 
+  packages/graph-navigation:
+    dependencies:
+      astro:
+        specifier: ^6.0.0
+        version: 6.4.6(@types/node@22.19.21)
+    devDependencies:
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+
   packages/emdash-cloudflare-deploy:
     dependencies:
       emdash:
