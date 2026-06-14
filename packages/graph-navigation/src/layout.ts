@@ -99,16 +99,11 @@ function createForceLayoutNode(
 
 function scalePosition(
   value: number,
-  inputMin: number,
-  inputMax: number,
-  outputMin: number,
-  outputMax: number,
+  inputCenter: number,
+  outputCenter: number,
+  scale: number,
 ) {
-  if (inputMin === inputMax) return (outputMin + outputMax) / 2;
-  return (
-    outputMin +
-    ((value - inputMin) / (inputMax - inputMin)) * (outputMax - outputMin)
-  );
+  return outputCenter + (value - inputCenter) * scale;
 }
 
 export function withGraphNavigationLayout(
@@ -178,6 +173,17 @@ export function withGraphNavigationLayout(
   const yMax = Math.max(...yValues);
   const insetX = Math.max(6, layout.width * 0.08);
   const insetY = Math.max(6, layout.height * 0.08);
+  const availableWidth = layout.width - insetX * 2;
+  const availableHeight = layout.height - insetY * 2;
+  const forceWidth = Math.max(1, xMax - xMin);
+  const forceHeight = Math.max(1, yMax - yMin);
+  const fitScale = Math.min(
+    1,
+    availableWidth / forceWidth,
+    availableHeight / forceHeight,
+  );
+  const forceCenterX = (xMin + xMax) / 2;
+  const forceCenterY = (yMin + yMax) / 2;
   const positionsById = new Map(
     simulationNodes.map((node) => {
       if (node.sourceNode.x !== undefined && node.sourceNode.y !== undefined) {
@@ -194,19 +200,25 @@ export function withGraphNavigationLayout(
         node.id,
         {
           x: round(
-            scalePosition(
-              node.x ?? layout.centerX,
-              xMin,
-              xMax,
+            clamp(
+              scalePosition(
+                node.x ?? layout.centerX,
+                forceCenterX,
+                layout.centerX,
+                fitScale,
+              ),
               insetX,
               layout.width - insetX,
             ),
           ),
           y: round(
-            scalePosition(
-              node.y ?? layout.centerY,
-              yMin,
-              yMax,
+            clamp(
+              scalePosition(
+                node.y ?? layout.centerY,
+                forceCenterY,
+                layout.centerY,
+                fitScale,
+              ),
               insetY,
               layout.height - insetY,
             ),
