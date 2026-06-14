@@ -86,6 +86,10 @@ export interface GraphNavigationLayoutOptions {
   radiusX?: number;
   radiusY?: number;
   width?: number;
+  forceChargeStrength?: number;
+  forceCollisionRadius?: number;
+  forceIterations?: number;
+  forceLinkDistance?: number;
 }
 
 export interface GraphNavigationFocusOptions {

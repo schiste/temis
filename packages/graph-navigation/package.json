@@ -16,6 +16,10 @@
     "astro": "^6.0.0"
   },
   "devDependencies": {
+    "@types/d3-force": "^3.0.10",
     "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "d3-force": "^3.0.0"
   }
 }
