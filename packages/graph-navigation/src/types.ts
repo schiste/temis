@@ -2,6 +2,19 @@ export const graphNavigationVersion = "temis.graph-navigation.v1" as const;
 
 export type GraphNavigationVersion = typeof graphNavigationVersion;
 export type GraphNavigationScope = "global" | "page";
+export type GraphNavigationNodeType =
+  | "content"
+  | "topic"
+  | "tag"
+  | "author"
+  | "tool";
+export type GraphNavigationEdgeType =
+  | "authored_by"
+  | "tagged_with"
+  | "in_topic"
+  | "related"
+  | "mentions_tool"
+  | "documents_tool";
 
 export interface GraphNavigationNodeInput {
   accent?: string | null;
@@ -13,6 +26,7 @@ export interface GraphNavigationNodeInput {
   shortDescription?: string | null;
   slug?: string | null;
   title?: string | null;
+  type?: GraphNavigationNodeType | null;
   visible?: boolean | number | null;
   x?: number | null;
   y?: number | null;
@@ -23,6 +37,7 @@ export interface GraphNavigationEdgeInput {
   priority?: number | null;
   source: string;
   target: string;
+  type?: GraphNavigationEdgeType | null;
   visible?: boolean | number | null;
 }
 
@@ -34,6 +49,7 @@ export interface GraphNavigationNode {
   label: string;
   priority: number;
   slug: string;
+  type: GraphNavigationNodeType;
   x?: number;
   y?: number;
 }
@@ -43,6 +59,7 @@ export interface GraphNavigationEdge {
   priority: number;
   source: string;
   target: string;
+  type: GraphNavigationEdgeType;
 }
 
 export interface GraphNavigationSnapshot {

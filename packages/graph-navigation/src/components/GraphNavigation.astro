@@ -1,6 +1,9 @@
 ---
 import { withGraphNavigationLayout } from "../layout";
-import type { GraphNavigationSnapshot } from "../types";
+import type {
+  GraphNavigationNodeType,
+  GraphNavigationSnapshot,
+} from "../types";
 
 export interface Props {
   graph: GraphNavigationSnapshot;
@@ -10,9 +13,16 @@ export interface Props {
 
 const {
   graph,
-  heading = "Topic graph",
-  label = "Topic graph navigation",
+  heading = "Content graph",
+  label = "Content graph navigation",
 } = Astro.props;
+const nodeTypeLabels: Record<GraphNavigationNodeType, string> = {
+  author: "Author",
+  content: "Content",
+  tag: "Tag",
+  tool: "Tool",
+  topic: "Topic",
+};
 const laidOutGraph = withGraphNavigationLayout(graph);
 const nodesById = new Map(laidOutGraph.nodes.map((node) => [node.id, node]));
 const edges = laidOutGraph.edges
@@ -54,9 +64,12 @@ const edges = laidOutGraph.edges
         <a
           class:list={[
             "temis-graph-nav__node",
+            `temis-graph-nav__node--${node.type}`,
             node.id === laidOutGraph.currentNodeId &&
               "temis-graph-nav__node--current",
           ]}
+          aria-label={`${node.label} (${nodeTypeLabels[node.type]})`}
+          data-node-type={node.type}
           href={node.href}
           style={`--node-x:${node.x};--node-y:${node.y};${node.accent ? `--node-accent:${node.accent};` : ""}`}
         >
@@ -70,8 +83,15 @@ const edges = laidOutGraph.edges
     {
       laidOutGraph.nodes.map((node) => (
         <li>
-          <a href={node.href}>{node.label}</a>
-          {node.description && <span>{node.description}</span>}
+          <div class="temis-graph-nav__fallback-head">
+            <a href={node.href}>{node.label}</a>
+            <span>{nodeTypeLabels[node.type]}</span>
+          </div>
+          {node.description && (
+            <span class="temis-graph-nav__fallback-description">
+              {node.description}
+            </span>
+          )}
         </li>
       ))
     }
@@ -157,6 +177,26 @@ const edges = laidOutGraph.edges
     transform: translate(-50%, -50%);
   }
 
+  .temis-graph-nav__node--content {
+    --node-accent: var(--ds-color-link, var(--ds-color-accent, currentColor));
+  }
+
+  .temis-graph-nav__node--topic {
+    --node-accent: var(--ds-color-accent, currentColor);
+  }
+
+  .temis-graph-nav__node--tag {
+    --node-accent: var(--ds-color-text-muted, currentColor);
+  }
+
+  .temis-graph-nav__node--author {
+    --node-accent: var(--ds-color-line-strong, currentColor);
+  }
+
+  .temis-graph-nav__node--tool {
+    --node-accent: var(--ds-color-focus, var(--ds-color-accent, currentColor));
+  }
+
   .temis-graph-nav__node:hover,
   .temis-graph-nav__node:focus-visible,
   .temis-graph-nav__node--current {
@@ -182,13 +222,27 @@ const edges = laidOutGraph.edges
     padding-block: var(--ds-space-phi-1, 0.625rem);
   }
 
+  .temis-graph-nav__fallback-head {
+    align-items: baseline;
+    display: flex;
+    gap: var(--ds-space-phi-1, 0.625rem);
+    justify-content: space-between;
+  }
+
   .temis-graph-nav__fallback a {
     font-family: var(--ds-font-mono, ui-monospace);
     font-size: var(--ds-font-size-meta, 0.75rem);
     text-transform: uppercase;
   }
 
-  .temis-graph-nav__fallback span {
+  .temis-graph-nav__fallback-head span {
+    color: var(--ds-color-text-muted, currentColor);
+    font-family: var(--ds-font-mono, ui-monospace);
+    font-size: var(--ds-font-size-micro, 0.625rem);
+    text-transform: uppercase;
+  }
+
+  .temis-graph-nav__fallback-description {
     color: var(--ds-color-text-muted, currentColor);
     font-size: var(--ds-font-size-body, 1rem);
   }

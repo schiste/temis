@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT OR Apache-2.0",
   "type": "module",
-  "description": "Static-first topic graph navigation plugin for TEMIS.",
+  "description": "Static-first content graph navigation plugin for TEMIS.",
   "exports": {
     ".": "./src/index.ts",
     "./components/GraphNavigation.astro": "./src/components/GraphNavigation.astro"

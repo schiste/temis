@@ -1,6 +1,6 @@
 # @temis/graph-navigation
 
-Static-first topic graph navigation plugin for TEMIS.
+Static-first content graph navigation plugin for TEMIS.
 
 The package owns:
 
@@ -11,8 +11,8 @@ The package owns:
 - A static Astro renderer with accessible HTML links.
 
 The plugin intentionally does not own EmDash schema setup. EmDash should provide
-published topic data; this package turns topic data into a stable navigation
-snapshot and renderer input.
+published graph data; this package turns content, topic, tag, author, and tool
+records into a stable navigation snapshot and renderer input.
 
 ## V1 Shape
 
@@ -36,3 +36,6 @@ const graph = withGraphNavigationLayout(snapshot);
 
 <GraphNavigation graph={graph} />
 ```
+
+V1 nodes are typed as `content`, `topic`, `tag`, `author`, or `tool`. Tool nodes
+can be included in the graph without adding a top-level public tools menu.

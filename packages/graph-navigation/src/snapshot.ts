@@ -2,11 +2,30 @@ import {
   graphNavigationVersion,
   type GraphNavigationEdge,
   type GraphNavigationEdgeInput,
+  type GraphNavigationEdgeType,
   type GraphNavigationNode,
   type GraphNavigationNodeInput,
+  type GraphNavigationNodeType,
   type GraphNavigationSnapshot,
   type GraphNavigationSnapshotInput,
 } from "./types";
+
+const nodeTypes = new Set<GraphNavigationNodeType>([
+  "content",
+  "topic",
+  "tag",
+  "author",
+  "tool",
+]);
+
+const edgeTypes = new Set<GraphNavigationEdgeType>([
+  "authored_by",
+  "tagged_with",
+  "in_topic",
+  "related",
+  "mentions_tool",
+  "documents_tool",
+]);
 
 function isVisible(value: GraphNavigationNodeInput | GraphNavigationEdgeInput) {
   return (
@@ -47,6 +66,18 @@ function normalizeCoordinate(value: number | null | undefined) {
   return Math.min(100, Math.max(0, value));
 }
 
+function normalizeNodeType(
+  value: GraphNavigationNodeType | null | undefined,
+): GraphNavigationNodeType {
+  return value && nodeTypes.has(value) ? value : "topic";
+}
+
+function normalizeEdgeType(
+  value: GraphNavigationEdgeType | null | undefined,
+): GraphNavigationEdgeType {
+  return value && edgeTypes.has(value) ? value : "related";
+}
+
 function normalizeNode(
   node: GraphNavigationNodeInput,
 ): GraphNavigationNode | null {
@@ -77,6 +108,7 @@ function normalizeNode(
     label,
     priority: typeof node.priority === "number" ? node.priority : 0,
     slug,
+    type: normalizeNodeType(node.type),
   };
 }
 
@@ -94,6 +126,7 @@ function normalizeEdge(
     priority: typeof edge.priority === "number" ? edge.priority : 0,
     source: edge.source,
     target: edge.target,
+    type: normalizeEdgeType(edge.type),
   };
 }
 
