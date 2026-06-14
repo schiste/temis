@@ -8,20 +8,27 @@ import {
   entryTitle,
   getHomePage,
   getPosts,
+  getSiteTexts,
 } from "../lib/emdash";
 import { portableTextToHtml } from "../lib/portable-text";
 
 const page = await getHomePage();
 const posts = await getPosts();
-const title = page ? entryTitle(page) : "TEMIS";
-const description = page
-  ? entryDescription(page)
-  : "A static Astro site powered by EmDash content and Cloudflare.";
+const copy = await getSiteTexts({
+  articleCardEyebrow: "Article",
+  homeHeroEyebrow: "Public map of a technical commons",
+  homeLatestHeading: "Latest",
+  homeMissingDescription:
+    "A static Astro site powered by EmDash content and Cloudflare.",
+  homeMissingTitle: "TEMIS",
+});
+const title = page ? entryTitle(page) : copy.homeMissingTitle;
+const description = page ? entryDescription(page) : copy.homeMissingDescription;
 ---
 
 <SiteLayout title={title} description={description}>
   <PageHero
-    eyebrow="Public map of a technical commons"
+    eyebrow={copy.homeHeroEyebrow}
     title={title}
     description={description}
   />
@@ -35,10 +42,11 @@ const description = page
   {
     posts.length > 0 && (
       <section class="ds-flow">
-        <p class="ds-eyebrow">Latest</p>
+        <p class="ds-eyebrow">{copy.homeLatestHeading}</p>
         <div class="ds-listing">
           {posts.slice(0, 4).map((post) => (
             <ArticleCard
+              eyebrow={copy.articleCardEyebrow}
               href={`/blog/${entrySlug(post)}/`}
               title={entryTitle(post)}
               description={entryDescription(post)}

@@ -8,6 +8,7 @@ import {
   entryTitle,
   getPostBySlug,
   getPosts,
+  getSiteTexts,
 } from "../../lib/emdash";
 import { portableTextToHtml } from "../../lib/portable-text";
 
@@ -27,12 +28,23 @@ if (!resolvedPost) {
 
 const title = entryTitle(resolvedPost);
 const description = entryDescription(resolvedPost);
+const copy = await getSiteTexts({
+  postHeroEyebrow: "Article",
+  postStatusLabel: "Status",
+  postStatusValue: "Published content",
+});
 ---
 
 <SiteLayout title={title} description={description}>
   <article>
-    <PageHero eyebrow="Article" title={title} description={description} />
-    <MetadataRow items={[{ label: "Status", value: "Published content" }]} />
+    <PageHero
+      eyebrow={copy.postHeroEyebrow}
+      title={title}
+      description={description}
+    />
+    <MetadataRow
+      items={[{ label: copy.postStatusLabel, value: copy.postStatusValue }]}
+    />
     <div class="ds-prose" set:html={portableTextToHtml(resolvedPost.content)} />
   </article>
 </SiteLayout>

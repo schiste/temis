@@ -1,12 +1,19 @@
 ---
 import PageHero from "@temis/design-system/components/PageHero.astro";
 import SiteLayout from "../components/SiteLayout.astro";
+import { getSiteTexts } from "../lib/emdash";
+
+const copy = await getSiteTexts({
+  notFoundDescription: "The page is not part of the published static snapshot.",
+  notFoundEyebrow: "404",
+  notFoundTitle: "Not found",
+});
 ---
 
-<SiteLayout title="Not found">
+<SiteLayout title={copy.notFoundTitle} description={copy.notFoundDescription}>
   <PageHero
-    eyebrow="404"
-    title="Not found"
-    description="The page is not part of the published static snapshot."
+    eyebrow={copy.notFoundEyebrow}
+    title={copy.notFoundTitle}
+    description={copy.notFoundDescription}
   />
 </SiteLayout>

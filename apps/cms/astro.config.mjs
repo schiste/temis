@@ -25,6 +25,15 @@ const adapter = isBuildCommand
     })
   : undefined;
 
+const productionPlugins = isBuildCommand
+  ? [
+      cloudflareDeployTriggerPlugin({
+        deployHookEnvVar: "TEMIS_PAGES_DEPLOY_HOOK_URL",
+        debounceSeconds: 30,
+      }),
+    ]
+  : [];
+
 const devSession = !isBuildCommand
   ? {
       driver: sessionDrivers.fsLite({ base: "./.astro/session" }),
@@ -50,10 +59,7 @@ export default defineConfig({
       storage,
       plugins: [
         aexeoPlugin({ collections: ["posts", "pages"] }),
-        cloudflareDeployTriggerPlugin({
-          deployHookEnvVar: "TEMIS_PAGES_DEPLOY_HOOK_URL",
-          debounceSeconds: 30,
-        }),
+        ...productionPlugins,
       ],
     }),
   ],

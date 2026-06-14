@@ -7,6 +7,7 @@ import {
   entryTitle,
   getCatchAllPages,
   getPageBySlug,
+  getSiteTexts,
 } from "../lib/emdash";
 import { portableTextToHtml } from "../lib/portable-text";
 
@@ -26,10 +27,17 @@ if (!resolvedPage) {
 
 const title = entryTitle(resolvedPage);
 const description = entryDescription(resolvedPage);
+const copy = await getSiteTexts({
+  pageHeroEyebrow: "Page",
+});
 ---
 
 <SiteLayout title={title} description={description}>
-  <PageHero eyebrow="Page" title={title} description={description} />
+  <PageHero
+    eyebrow={copy.pageHeroEyebrow}
+    title={title}
+    description={description}
+  />
 
   <article
     class="ds-prose"

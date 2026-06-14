@@ -6,11 +6,11 @@ export interface Props {
   title: string;
 }
 
-const { description, eyebrow = "Article", href, title } = Astro.props;
+const { description, eyebrow, href, title } = Astro.props;
 ---
 
 <a class="ds-article-card" href={href}>
-  <span class="ds-article-card__eyebrow">{eyebrow}</span>
+  {eyebrow && <span class="ds-article-card__eyebrow">{eyebrow}</span>}
   <strong class="ds-article-card__title">{title}</strong>
   {
     description && (

@@ -190,6 +190,18 @@ export async function getSiteOptions(): Promise<SiteOptions> {
   return options;
 }
 
+export async function getSiteTexts<T extends Record<string, string>>(
+  defaults: T,
+): Promise<T> {
+  const options = await getSiteOptions();
+  return Object.fromEntries(
+    Object.entries(defaults).map(([key, fallback]) => [
+      key,
+      optionValue(options, key, fallback),
+    ]),
+  ) as T;
+}
+
 function optionValue(options: SiteOptions, key: string, fallback: string) {
   const value = options[key]?.trim();
   return value && value.length > 0 ? value : fallback;
@@ -338,6 +350,11 @@ export async function getSiteChrome() {
         "footerCommonsHeading",
         aboutPage ? entryTitle(aboutPage) : "Built for the commons",
       ),
+      commonsMarkAriaLabel: optionValue(
+        options,
+        "footerCommonsMarkAriaLabel",
+        "Commons frame mark",
+      ),
       commonsText: optionValue(
         options,
         "footerCommonsText",
@@ -352,6 +369,7 @@ export async function getSiteChrome() {
       ),
       licenseHeading: optionValue(options, "footerLicenseHeading", "License"),
       licenseLabel: optionValue(options, "footerLicenseLabel", "CC BY-SA 4.0"),
+      licenseMarkLabel: optionValue(options, "footerLicenseMarkLabel", "CC"),
       licensePrefix: optionValue(
         options,
         "footerLicensePrefix",

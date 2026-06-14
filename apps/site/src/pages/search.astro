@@ -1,12 +1,37 @@
 ---
 import PageHero from "@temis/design-system/components/PageHero.astro";
 import SiteLayout from "../components/SiteLayout.astro";
+import {
+  entryDescription,
+  entryTitle,
+  getPageBySlug,
+  getSiteTexts,
+} from "../lib/emdash";
+import { portableTextToHtml } from "../lib/portable-text";
+
+const page = await getPageBySlug("search");
+const copy = await getSiteTexts({
+  searchHeroEyebrow: "Search",
+  searchMissingDescription:
+    "Search will arrive after the V1 content structure is stable. For now, browse the published essays.",
+  searchMissingTitle: "Search is being mapped",
+});
+const title = page ? entryTitle(page) : copy.searchMissingTitle;
+const description = page
+  ? entryDescription(page)
+  : copy.searchMissingDescription;
 ---
 
-<SiteLayout title="Search" description="TEMIS search is not available yet.">
+<SiteLayout title={title} description={description}>
   <PageHero
-    eyebrow="Search"
-    title="Search is being mapped"
-    description="Search will arrive after the V1 content structure is stable. For now, browse the published essays."
+    eyebrow={copy.searchHeroEyebrow}
+    title={title}
+    description={description}
   />
+
+  {
+    page?.content && (
+      <article class="ds-prose" set:html={portableTextToHtml(page.content)} />
+    )
+  }
 </SiteLayout>

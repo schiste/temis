@@ -6,19 +6,42 @@ import {
   entryDescription,
   entrySlug,
   entryTitle,
+  getPageBySlug,
   getPosts,
+  getSiteTexts,
 } from "../../lib/emdash";
+import { portableTextToHtml } from "../../lib/portable-text";
 
+const page = await getPageBySlug("blog");
 const posts = await getPosts();
+const copy = await getSiteTexts({
+  articleCardEyebrow: "Article",
+  blogHeroEyebrow: "Articles",
+  blogMissingDescription: "Published TEMIS articles.",
+  blogMissingTitle: "Published articles",
+});
+const title = page ? entryTitle(page) : copy.blogMissingTitle;
+const description = page ? entryDescription(page) : copy.blogMissingDescription;
 ---
 
-<SiteLayout title="Articles" description="Published TEMIS articles.">
-  <PageHero eyebrow="Articles" title="Published articles" />
+<SiteLayout title={title} description={description}>
+  <PageHero
+    eyebrow={copy.blogHeroEyebrow}
+    title={title}
+    description={description}
+  />
+
+  {
+    page?.content && (
+      <article class="ds-prose" set:html={portableTextToHtml(page.content)} />
+    )
+  }
 
   <div class="ds-listing">
     {
       posts.map((post) => (
         <ArticleCard
+          eyebrow={copy.articleCardEyebrow}
           href={`/blog/${entrySlug(post)}/`}
           title={entryTitle(post)}
           description={entryDescription(post)}

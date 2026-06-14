@@ -1,18 +1,33 @@
 ---
 import PageHero from "@temis/design-system/components/PageHero.astro";
 import SiteLayout from "../../components/SiteLayout.astro";
-import { entryDescription, entryTitle, getPageBySlug } from "../../lib/emdash";
+import {
+  entryDescription,
+  entryTitle,
+  getPageBySlug,
+  getSiteTexts,
+} from "../../lib/emdash";
 import { portableTextToHtml } from "../../lib/portable-text";
 
 const page = await getPageBySlug("people");
-const title = page ? entryTitle(page) : "People";
+const copy = await getSiteTexts({
+  peopleHeroEyebrow: "People",
+  peopleMissingDescription:
+    "Public people and author pages will provide context, trust, and authored work without becoming social profiles.",
+  peopleMissingTitle: "People",
+});
+const title = page ? entryTitle(page) : copy.peopleMissingTitle;
 const description = page
   ? entryDescription(page)
-  : "Public people and author pages will provide context, trust, and authored work without becoming social profiles.";
+  : copy.peopleMissingDescription;
 ---
 
 <SiteLayout title={title} description={description}>
-  <PageHero eyebrow="People" title={title} description={description} />
+  <PageHero
+    eyebrow={copy.peopleHeroEyebrow}
+    title={title}
+    description={description}
+  />
 
   {
     page?.content && (

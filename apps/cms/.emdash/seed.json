@@ -15,15 +15,44 @@
     "headerNetworkHref": "/topics/",
     "headerNetworkLabel": "Topic network",
     "headerUtilitiesNavLabel": "Utilities",
+    "articleCardEyebrow": "Article",
+    "homeHeroEyebrow": "Public map of a technical commons",
+    "homeLatestHeading": "Latest",
+    "homeMissingTitle": "TEMIS",
+    "homeMissingDescription": "A static Astro site powered by EmDash content and Cloudflare.",
+    "blogHeroEyebrow": "Articles",
+    "blogMissingTitle": "Published articles",
+    "blogMissingDescription": "Published TEMIS articles.",
+    "postHeroEyebrow": "Article",
+    "postStatusLabel": "Status",
+    "postStatusValue": "Published content",
+    "aboutHeroEyebrow": "About",
+    "aboutMissingTitle": "About",
+    "aboutMissingDescription": "TEMIS is a public map of a technical commons.",
+    "topicsHeroEyebrow": "Topics",
+    "topicsMissingTitle": "Topic map",
+    "topicsMissingDescription": "The TEMIS topic graph will make essays, tools, and people easier to explore as the V1 content model comes online.",
+    "peopleHeroEyebrow": "People",
+    "peopleMissingTitle": "People",
+    "peopleMissingDescription": "Public people and author pages will provide context, trust, and authored work without becoming social profiles.",
+    "searchHeroEyebrow": "Search",
+    "searchMissingTitle": "Search is being mapped",
+    "searchMissingDescription": "Search will arrive after the V1 content structure is stable. For now, browse the published essays.",
+    "pageHeroEyebrow": "Page",
+    "notFoundEyebrow": "404",
+    "notFoundTitle": "Not found",
+    "notFoundDescription": "The page is not part of the published static snapshot.",
     "footerAriaLabel": "Site footer",
     "footerOpenHeading": "Open by default",
     "footerOpenText": "No tracking. No profiling. Just public knowledge.",
     "footerLicenseHeading": "License",
     "footerLicensePrefix": "Content on TEMIS is licensed under",
     "footerLicenseLabel": "CC BY-SA 4.0",
+    "footerLicenseMarkLabel": "CC",
     "footerLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
     "footerLicenseAriaLabel": "CC BY-SA 4.0 license",
     "footerCommonsHeading": "Built for the commons",
+    "footerCommonsMarkAriaLabel": "Commons frame mark",
     "footerCommonsText": "TEMIS is a public resource. Contribute, share, improve.",
     "footerSiteHeading": "TEMIS",
     "footerSiteText": "A working group exploring the future of open knowledge.",
@@ -147,6 +176,52 @@
           ],
           "seo_title": "TEMIS",
           "seo_description": "A static Astro site with EmDash-managed content."
+        }
+      },
+      {
+        "id": "seed:page:blog",
+        "slug": "blog",
+        "status": "published",
+        "data": {
+          "title": "Published articles",
+          "summary": "Essays, updates, and tool announcements from TEMIS.",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Read essays and updates as the TEMIS content graph takes shape."
+                }
+              ]
+            }
+          ],
+          "seo_title": "Published articles",
+          "seo_description": "Published TEMIS essays, updates, and tool announcements."
+        }
+      },
+      {
+        "id": "seed:page:search",
+        "slug": "search",
+        "status": "published",
+        "data": {
+          "title": "Search is being mapped",
+          "summary": "Search will arrive after the V1 content structure is stable.",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "For now, browse the published essays and topic map while the search experience is designed around real content."
+                }
+              ]
+            }
+          ],
+          "seo_title": "Search",
+          "seo_description": "Search will arrive after the V1 TEMIS content structure is stable."
         }
       },
       {

@@ -50,6 +50,26 @@ This mirrors production content through the published EmDash snapshot. It does
 not give the local static site direct D1 access, which matches the production
 static-site architecture.
 
+To mirror the CMS database locally without giving local development write access
+to production D1, export production D1 into the local SQLite database:
+
+```sh
+pnpm cms:sync:production-replica
+pnpm dev:cms
+```
+
+Or bring both local surfaces up from production content:
+
+```sh
+export EMDASH_PREVIEW_SECRET=replace-with-the-real-secret
+pnpm dev:production-replica
+```
+
+The replica command uses `wrangler d1 export --remote` as a read-only production
+operation, then imports the SQL into `apps/cms/data.db`. Existing local
+`data.db` is backed up before replacement. Normal local CMS development still
+writes only to SQLite, and local dev does not enable the Pages deploy hook.
+
 For the production static build, set `EMDASH_BASE_URL` and `EMDASH_PREVIEW_SECRET`, then run:
 
 ```sh

@@ -24,6 +24,50 @@
         "seo_description": "A static Astro site with EmDash-managed content."
       },
       {
+        "id": "seed:page:blog",
+        "slug": "blog",
+        "status": "published",
+        "author_id": null,
+        "primary_byline_id": null,
+        "created_at": "2026-06-13T15:56:03.076Z",
+        "updated_at": "2026-06-13T15:56:03.076Z",
+        "published_at": "2026-06-13T15:56:03.075Z",
+        "scheduled_at": null,
+        "deleted_at": null,
+        "version": 1,
+        "live_revision_id": null,
+        "draft_revision_id": null,
+        "locale": "en",
+        "translation_group": "seed:page:blog",
+        "title": "Published articles",
+        "summary": "Essays, updates, and tool announcements from TEMIS.",
+        "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Read essays and updates as the TEMIS content graph takes shape.\"}]}]",
+        "seo_title": "Published articles",
+        "seo_description": "Published TEMIS essays, updates, and tool announcements."
+      },
+      {
+        "id": "seed:page:search",
+        "slug": "search",
+        "status": "published",
+        "author_id": null,
+        "primary_byline_id": null,
+        "created_at": "2026-06-13T15:56:03.076Z",
+        "updated_at": "2026-06-13T15:56:03.076Z",
+        "published_at": "2026-06-13T15:56:03.075Z",
+        "scheduled_at": null,
+        "deleted_at": null,
+        "version": 1,
+        "live_revision_id": null,
+        "draft_revision_id": null,
+        "locale": "en",
+        "translation_group": "seed:page:search",
+        "title": "Search is being mapped",
+        "summary": "Search will arrive after the V1 content structure is stable.",
+        "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"For now, browse the published essays and topic map while the search experience is designed around real content.\"}]}]",
+        "seo_title": "Search",
+        "seo_description": "Search will arrive after the V1 TEMIS content structure is stable."
+      },
+      {
         "id": "seed:page:topics",
         "slug": "topics",
         "status": "published",
@@ -664,6 +708,114 @@
         "value": "\"Utilities\""
       },
       {
+        "name": "site:articleCardEyebrow",
+        "value": "\"Article\""
+      },
+      {
+        "name": "site:homeHeroEyebrow",
+        "value": "\"Public map of a technical commons\""
+      },
+      {
+        "name": "site:homeLatestHeading",
+        "value": "\"Latest\""
+      },
+      {
+        "name": "site:homeMissingTitle",
+        "value": "\"TEMIS\""
+      },
+      {
+        "name": "site:homeMissingDescription",
+        "value": "\"A static Astro site powered by EmDash content and Cloudflare.\""
+      },
+      {
+        "name": "site:blogHeroEyebrow",
+        "value": "\"Articles\""
+      },
+      {
+        "name": "site:blogMissingTitle",
+        "value": "\"Published articles\""
+      },
+      {
+        "name": "site:blogMissingDescription",
+        "value": "\"Published TEMIS articles.\""
+      },
+      {
+        "name": "site:postHeroEyebrow",
+        "value": "\"Article\""
+      },
+      {
+        "name": "site:postStatusLabel",
+        "value": "\"Status\""
+      },
+      {
+        "name": "site:postStatusValue",
+        "value": "\"Published content\""
+      },
+      {
+        "name": "site:aboutHeroEyebrow",
+        "value": "\"About\""
+      },
+      {
+        "name": "site:aboutMissingTitle",
+        "value": "\"About\""
+      },
+      {
+        "name": "site:aboutMissingDescription",
+        "value": "\"TEMIS is a public map of a technical commons.\""
+      },
+      {
+        "name": "site:topicsHeroEyebrow",
+        "value": "\"Topics\""
+      },
+      {
+        "name": "site:topicsMissingTitle",
+        "value": "\"Topic map\""
+      },
+      {
+        "name": "site:topicsMissingDescription",
+        "value": "\"The TEMIS topic graph will make essays, tools, and people easier to explore as the V1 content model comes online.\""
+      },
+      {
+        "name": "site:peopleHeroEyebrow",
+        "value": "\"People\""
+      },
+      {
+        "name": "site:peopleMissingTitle",
+        "value": "\"People\""
+      },
+      {
+        "name": "site:peopleMissingDescription",
+        "value": "\"Public people and author pages will provide context, trust, and authored work without becoming social profiles.\""
+      },
+      {
+        "name": "site:searchHeroEyebrow",
+        "value": "\"Search\""
+      },
+      {
+        "name": "site:searchMissingTitle",
+        "value": "\"Search is being mapped\""
+      },
+      {
+        "name": "site:searchMissingDescription",
+        "value": "\"Search will arrive after the V1 content structure is stable. For now, browse the published essays.\""
+      },
+      {
+        "name": "site:pageHeroEyebrow",
+        "value": "\"Page\""
+      },
+      {
+        "name": "site:notFoundEyebrow",
+        "value": "\"404\""
+      },
+      {
+        "name": "site:notFoundTitle",
+        "value": "\"Not found\""
+      },
+      {
+        "name": "site:notFoundDescription",
+        "value": "\"The page is not part of the published static snapshot.\""
+      },
+      {
         "name": "site:footerAriaLabel",
         "value": "\"Site footer\""
       },
@@ -688,6 +840,10 @@
         "value": "\"CC BY-SA 4.0\""
       },
       {
+        "name": "site:footerLicenseMarkLabel",
+        "value": "\"CC\""
+      },
+      {
         "name": "site:footerLicenseUrl",
         "value": "\"https://creativecommons.org/licenses/by-sa/4.0/\""
       },
@@ -698,6 +854,10 @@
       {
         "name": "site:footerCommonsHeading",
         "value": "\"Built for the commons\""
+      },
+      {
+        "name": "site:footerCommonsMarkAriaLabel",
+        "value": "\"Commons frame mark\""
       },
       {
         "name": "site:footerCommonsText",

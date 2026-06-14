@@ -1,11 +1,13 @@
 ---
 export interface Props {
   commonsHeading?: string;
+  commonsMarkAriaLabel?: string;
   commonsText?: string;
   footerAriaLabel?: string;
   licenseAriaLabel?: string;
   licenseHeading?: string;
   licenseLabel?: string;
+  licenseMarkLabel?: string;
   licensePrefix?: string;
   licenseUrl?: string;
   openHeading?: string;
@@ -18,11 +20,13 @@ export interface Props {
 
 const {
   commonsHeading = "Built for the commons",
+  commonsMarkAriaLabel = "Commons frame mark",
   commonsText = "TEMIS is a public resource. Contribute, share, improve.",
   footerAriaLabel = "Site footer",
   licenseAriaLabel,
   licenseHeading = "License",
   licenseLabel = "CC BY-SA 4.0",
+  licenseMarkLabel = "CC",
   licensePrefix = "Content on TEMIS is licensed under",
   licenseUrl = "https://creativecommons.org/licenses/by-sa/4.0/",
   openHeading = "Open by default",
@@ -56,7 +60,7 @@ const resolvedLicenseAriaLabel = licenseAriaLabel ?? `${licenseLabel} license`;
       class="ds-footer-license-mark"
       href={licenseUrl}
       rel="license"
-      aria-label={resolvedLicenseAriaLabel}>CC</a
+      aria-label={resolvedLicenseAriaLabel}>{licenseMarkLabel}</a
     >
   </section>
 
@@ -69,7 +73,7 @@ const resolvedLicenseAriaLabel = licenseAriaLabel ?? `${licenseLabel} license`;
       class="ds-footer-corners"
       viewBox="0 0 26 26"
       role="img"
-      aria-label="Commons frame mark"
+      aria-label={commonsMarkAriaLabel}
     >
       <path d="M2 8V2h6M18 2h6v6M24 18v6h-6M8 24H2v-6"></path>
     </svg>

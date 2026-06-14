@@ -1,18 +1,32 @@
 ---
 import PageHero from "@temis/design-system/components/PageHero.astro";
 import SiteLayout from "../components/SiteLayout.astro";
-import { entryDescription, entryTitle, getPageBySlug } from "../lib/emdash";
+import {
+  entryDescription,
+  entryTitle,
+  getPageBySlug,
+  getSiteTexts,
+} from "../lib/emdash";
 import { portableTextToHtml } from "../lib/portable-text";
 
 const page = await getPageBySlug("about");
-const title = page ? entryTitle(page) : "About";
+const copy = await getSiteTexts({
+  aboutHeroEyebrow: "About",
+  aboutMissingDescription: "TEMIS is a public map of a technical commons.",
+  aboutMissingTitle: "About",
+});
+const title = page ? entryTitle(page) : copy.aboutMissingTitle;
 const description = page
   ? entryDescription(page)
-  : "TEMIS is a public map of a technical commons.";
+  : copy.aboutMissingDescription;
 ---
 
 <SiteLayout title={title} description={description}>
-  <PageHero eyebrow="About" title={title} description={description} />
+  <PageHero
+    eyebrow={copy.aboutHeroEyebrow}
+    title={title}
+    description={description}
+  />
 
   {
     page?.content && (
