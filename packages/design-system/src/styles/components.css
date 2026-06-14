@@ -11,7 +11,7 @@
   .ds-page {
     max-width: none;
     padding-inline: 0;
-    width: min(round(down, 100%, var(--ds-grid-pair)), var(--ds-measure-page));
+    width: var(--ds-content-area-width);
   }
 }
 
@@ -436,9 +436,12 @@
 }
 
 @container ds-page (min-width: 78.75rem) {
-  .ds-footer-cell--temis,
+  .ds-footer-cell--temis {
+    grid-column: span 5;
+  }
+
   .ds-footer-top {
-    grid-column: span 3;
+    grid-column: span 4;
   }
 }
 

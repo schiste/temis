@@ -200,6 +200,11 @@ Use phi relationships for major layout decisions.
   --grid-columns-prose: 16;
   --grid-columns-wide: 26;
   --grid-columns-page: 42;
+  --content-target-width: 92vw;
+  --content-area-width: min(
+    round(down, var(--content-target-width), var(--grid-pair)),
+    var(--measure-page)
+  );
   --measure-prose: calc(var(--grid-unit) * var(--grid-columns-prose));
   --measure-wide: calc(var(--grid-unit) * var(--grid-columns-wide));
   --measure-page: calc(var(--grid-unit) * var(--grid-columns-page));
@@ -220,6 +225,8 @@ Recommended layout uses:
 - The page shell should snap down to the largest fitting grid width and center
   itself. Any viewport remainder belongs in the outer gutters, not inside
   component sizing.
+- The content area starts from a target percentage of the viewport. V1 uses
+  `92vw`, rounded down to the nearest pair of grid columns.
 - Content areas should grow by two grid columns at a time, one on the left and
   one on the right, so the area remains centered as it scales.
 - Centering applies to the content area itself; individual elements inside the
