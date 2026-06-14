@@ -1,9 +1,14 @@
 ---
+import ArticleCard from "@temis/design-system/components/ArticleCard.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
 import SiteLayout from "../../components/SiteLayout.astro";
 import {
+  entryBylineBio,
+  entryBylineHref,
+  entryBylineName,
   entryDescription,
   entryTitle,
+  getBylines,
   getPageBySlug,
   getSiteTexts,
 } from "../../lib/emdash";
@@ -11,11 +16,13 @@ import { portableTextToHtml } from "../../lib/portable-text";
 
 const page = await getPageBySlug("people");
 const copy = await getSiteTexts({
+  peopleCardEyebrow: "Author",
   peopleHeroEyebrow: "People",
   peopleMissingDescription:
     "Public people and author pages will provide context, trust, and authored work without becoming social profiles.",
   peopleMissingTitle: "People",
 });
+const bylines = await getBylines();
 const title = page ? entryTitle(page) : copy.peopleMissingTitle;
 const description = page
   ? entryDescription(page)
@@ -32,6 +39,21 @@ const description = page
   {
     page?.content && (
       <article class="ds-prose" set:html={portableTextToHtml(page.content)} />
+    )
+  }
+
+  {
+    bylines.length > 0 && (
+      <div class="ds-listing">
+        {bylines.map((byline) => (
+          <ArticleCard
+            eyebrow={copy.peopleCardEyebrow}
+            href={entryBylineHref(byline)}
+            title={entryBylineName(byline)}
+            description={entryBylineBio(byline)}
+          />
+        ))}
+      </div>
     )
   }
 </SiteLayout>

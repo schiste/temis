@@ -23,6 +23,13 @@ interface OptionRow extends SnapshotRow {
   value?: unknown;
 }
 
+export interface BylineEntry extends SnapshotRow {
+  bio?: string | null;
+  display_name: string;
+  slug: string;
+  website_url?: string | null;
+}
+
 export interface PageEntry extends SnapshotRow {
   content?: unknown;
   seo_description?: string;
@@ -35,6 +42,7 @@ export interface PostEntry extends SnapshotRow {
   author_name?: string;
   content?: unknown;
   excerpt?: string;
+  primary_byline_id?: string | null;
   seo_description?: string;
   seo_title?: string;
   title: string;
@@ -150,6 +158,15 @@ function normalizeHref(href: string) {
   return prefixed.endsWith("/") ? prefixed : `${prefixed}/`;
 }
 
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 function activePrefixFor(href: string) {
   return href === "/" ? undefined : href;
 }
@@ -203,6 +220,21 @@ export async function getSiteTexts<T extends Record<string, string>>(
   ) as T;
 }
 
+export async function getBylines() {
+  const snapshot = await readSnapshot();
+  return systemRows<BylineEntry>(snapshot, "_emdash_bylines").sort((a, b) =>
+    entryBylineName(a).localeCompare(entryBylineName(b)),
+  );
+}
+
+export async function getBylineBySlug(slug: string) {
+  const normalized = slug.replace(/^\/+|\/+$/g, "");
+  const bylines = await getBylines();
+  return (
+    bylines.find((byline) => entryBylineSlug(byline) === normalized) ?? null
+  );
+}
+
 function optionValue(options: SiteOptions, key: string, fallback: string) {
   const value = options[key]?.trim();
   return value && value.length > 0 ? value : fallback;
@@ -245,6 +277,16 @@ export async function getPostBySlug(slug: string) {
   const normalized = slug.replace(/^\/+|\/+$/g, "");
   const posts = await getPosts();
   return posts.find((post) => publicSlug(post) === normalized) ?? null;
+}
+
+export async function getPostsByAuthorSlug(slug: string) {
+  const byline = await getBylineBySlug(slug);
+  const posts = await getPosts();
+  return posts.filter((post) => {
+    if (byline && post.primary_byline_id === byline.id) return true;
+    const authorName = entryAuthorName(post);
+    return authorName ? slugify(authorName) === slug : false;
+  });
 }
 
 function referencedHref(
@@ -441,9 +483,31 @@ export function entryDescription(row: SnapshotRow) {
   return String(row.seo_description ?? row.excerpt ?? row.summary ?? "");
 }
 
+export function entryBylineSlug(row: BylineEntry) {
+  return publicSlug(row) || slugify(entryBylineName(row));
+}
+
+export function entryBylineName(row: BylineEntry) {
+  return String(row.display_name ?? row.name ?? row.slug ?? "Unnamed author");
+}
+
+export function entryBylineBio(row: BylineEntry) {
+  const bio = row.bio?.trim();
+  return bio && bio.length > 0 ? bio : "";
+}
+
+export function entryBylineHref(row: BylineEntry) {
+  return `/people/${entryBylineSlug(row)}/`;
+}
+
 export function entryAuthorName(row: PostEntry) {
   const authorName = row.author_name?.trim();
   return authorName && authorName.length > 0 ? authorName : null;
+}
+
+export function entryAuthorHref(row: PostEntry) {
+  const authorName = entryAuthorName(row);
+  return authorName ? `/people/${slugify(authorName)}/` : null;
 }
 
 export function entrySummary(row: SnapshotRow) {

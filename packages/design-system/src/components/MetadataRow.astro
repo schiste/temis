@@ -1,5 +1,6 @@
 ---
 export interface MetadataItem {
+  href?: string;
   label?: string;
   value: string;
 }
@@ -17,7 +18,9 @@ const { items } = Astro.props;
       {items.map((item) => (
         <div>
           {item.label && <dt class="ds-visually-hidden">{item.label}</dt>}
-          <dd>{item.value}</dd>
+          <dd>
+            {item.href ? <a href={item.href}>{item.value}</a> : item.value}
+          </dd>
         </div>
       ))}
     </dl>

@@ -1,0 +1,72 @@
+---
+import ArticleCard from "@temis/design-system/components/ArticleCard.astro";
+import PageHero from "@temis/design-system/components/PageHero.astro";
+import SiteLayout from "../../components/SiteLayout.astro";
+import {
+  entryBylineBio,
+  entryBylineName,
+  entryBylineSlug,
+  entryDescription,
+  entrySlug,
+  entryTitle,
+  getBylineBySlug,
+  getBylines,
+  getPostsByAuthorSlug,
+  getSiteTexts,
+} from "../../lib/emdash";
+
+export async function getStaticPaths() {
+  const bylines = await getBylines();
+  return bylines.map((byline) => ({
+    params: { slug: entryBylineSlug(byline) },
+    props: { byline },
+  }));
+}
+
+const { byline } = Astro.props;
+const resolvedByline =
+  byline ?? (await getBylineBySlug(Astro.params.slug ?? ""));
+if (!resolvedByline) {
+  return Astro.redirect("/404");
+}
+
+const posts = await getPostsByAuthorSlug(entryBylineSlug(resolvedByline));
+const copy = await getSiteTexts({
+  articleCardEyebrow: "Article",
+  authorArticlesHeading: "Published articles",
+  authorHeroEyebrow: "Author",
+});
+const name = entryBylineName(resolvedByline);
+const bio = entryBylineBio(resolvedByline);
+const description =
+  bio ||
+  (posts[0]
+    ? `${name} is the author of ${entryTitle(posts[0])}.`
+    : `${name} is a TEMIS author.`);
+---
+
+<SiteLayout title={name} description={description}>
+  <PageHero
+    eyebrow={copy.authorHeroEyebrow}
+    title={name}
+    description={description}
+  />
+
+  {
+    posts.length > 0 && (
+      <section class="ds-flow">
+        <p class="ds-eyebrow">{copy.authorArticlesHeading}</p>
+        <div class="ds-listing">
+          {posts.map((post) => (
+            <ArticleCard
+              eyebrow={copy.articleCardEyebrow}
+              href={`/blog/${entrySlug(post)}/`}
+              title={entryTitle(post)}
+              description={entryDescription(post)}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
+</SiteLayout>

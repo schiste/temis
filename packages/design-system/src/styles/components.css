@@ -256,6 +256,12 @@
   margin: 0;
 }
 
+.ds-meta-row a {
+  color: var(--ds-color-accent);
+  text-decoration-thickness: var(--ds-stroke-hairline);
+  text-underline-offset: var(--ds-space-phi-00);
+}
+
 .ds-topic-label {
   border: var(--ds-stroke-hairline) solid var(--ds-color-line-strong);
   color: var(--ds-color-text);

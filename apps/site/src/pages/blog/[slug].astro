@@ -3,6 +3,7 @@ import MetadataRow from "@temis/design-system/components/MetadataRow.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
 import SiteLayout from "../../components/SiteLayout.astro";
 import {
+  entryAuthorHref,
   entryAuthorName,
   entryDescription,
   entrySlug,
@@ -36,10 +37,19 @@ const copy = await getSiteTexts({
   postStatusValue: "Published content",
 });
 const authorName = entryAuthorName(resolvedPost);
+const authorHref = entryAuthorHref(resolvedPost);
 const metadataItems = [
-  authorName ? { label: copy.postAuthorLabel, value: authorName } : null,
+  authorName
+    ? {
+        href: authorHref ?? undefined,
+        label: copy.postAuthorLabel,
+        value: authorName,
+      }
+    : null,
   { label: copy.postStatusLabel, value: copy.postStatusValue },
-].filter((item): item is { label: string; value: string } => Boolean(item));
+].filter((item): item is { href?: string; label: string; value: string } =>
+  Boolean(item),
+);
 ---
 
 <SiteLayout title={title} description={description}>
