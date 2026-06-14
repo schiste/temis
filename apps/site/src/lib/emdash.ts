@@ -221,8 +221,37 @@ export async function getSiteTexts<T extends Record<string, string>>(
 }
 
 export async function getBylines() {
-  const snapshot = await readSnapshot();
-  return systemRows<BylineEntry>(snapshot, "_emdash_bylines").sort((a, b) =>
+  const [options, posts, snapshot] = await Promise.all([
+    getSiteOptions(),
+    getPosts(),
+    readSnapshot(),
+  ]);
+  const bylines = new Map<string, BylineEntry>();
+
+  for (const row of systemRows<BylineEntry>(snapshot, "_emdash_bylines")) {
+    const slug = entryBylineSlug(row);
+    bylines.set(slug, withAuthorBioOption(row, options));
+  }
+
+  for (const post of posts) {
+    const authorName = entryAuthorName(post);
+    if (!authorName) continue;
+    const slug = slugify(authorName);
+    if (bylines.has(slug)) continue;
+    bylines.set(
+      slug,
+      withAuthorBioOption(
+        {
+          display_name: authorName,
+          id: `author:${slug}`,
+          slug,
+        },
+        options,
+      ),
+    );
+  }
+
+  return [...bylines.values()].sort((a, b) =>
     entryBylineName(a).localeCompare(entryBylineName(b)),
   );
 }
@@ -238,6 +267,14 @@ export async function getBylineBySlug(slug: string) {
 function optionValue(options: SiteOptions, key: string, fallback: string) {
   const value = options[key]?.trim();
   return value && value.length > 0 ? value : fallback;
+}
+
+function withAuthorBioOption(row: BylineEntry, options: SiteOptions) {
+  const slug = entryBylineSlug(row);
+  return {
+    ...row,
+    bio: optionValue(options, `authorBio:${slug}`, row.bio ?? ""),
+  };
 }
 
 const explicitRoutePageSlugs = new Set([
