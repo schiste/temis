@@ -18,6 +18,11 @@ interface SnapshotData {
   tables: Record<string, SnapshotRow[]>;
 }
 
+interface OptionRow extends SnapshotRow {
+  name?: string;
+  value?: unknown;
+}
+
 export interface PageEntry extends SnapshotRow {
   content?: unknown;
   seo_description?: string;
@@ -56,6 +61,8 @@ export interface SiteNavItem {
   href: string;
   label: string;
 }
+
+type SiteOptions = Record<string, string>;
 
 const defaultSnapshotPath = path.resolve(
   process.cwd(),
@@ -115,6 +122,17 @@ function parseJsonFields<T extends SnapshotRow>(row: T): T {
   return parsed;
 }
 
+function parseOptionValue(value: unknown) {
+  if (typeof value !== "string") return value == null ? "" : String(value);
+
+  try {
+    const parsed = JSON.parse(value);
+    return parsed == null ? "" : String(parsed);
+  } catch {
+    return value;
+  }
+}
+
 function isPublished(row: SnapshotRow) {
   if (row.status !== "published") return false;
   return row.deleted_at === null || row.deleted_at === undefined;
@@ -157,6 +175,24 @@ export async function getPages() {
       return slug.length > 0 && slug !== "home" && slug !== "index";
     })
     .sort((a, b) => publicSlug(a).localeCompare(publicSlug(b)));
+}
+
+export async function getSiteOptions(): Promise<SiteOptions> {
+  const snapshot = await readSnapshot();
+  const options: SiteOptions = {};
+
+  for (const row of systemRows<OptionRow>(snapshot, "options")) {
+    if (!row.name) continue;
+    const key = row.name.replace(/^site:/, "");
+    options[key] = parseOptionValue(row.value);
+  }
+
+  return options;
+}
+
+function optionValue(options: SiteOptions, key: string, fallback: string) {
+  const value = options[key]?.trim();
+  return value && value.length > 0 ? value : fallback;
 }
 
 const explicitRoutePageSlugs = new Set([
@@ -274,33 +310,100 @@ export async function getPrimaryNavItems(menuName = "primary") {
 }
 
 export async function getSiteChrome() {
-  const [homePage, aboutPage, navItems] = await Promise.all([
+  const [homePage, aboutPage, navItems, options] = await Promise.all([
     getHomePage(),
     getPageBySlug("about"),
     getPrimaryNavItems(),
+    getSiteOptions(),
   ]);
 
-  const brandLabel = homePage ? entryTitle(homePage) : "TEMIS";
-  const homeSummary = homePage ? entrySummary(homePage) : "";
+  const brandLabel = optionValue(
+    options,
+    "siteTitle",
+    homePage ? entryTitle(homePage) : "TEMIS",
+  );
+  const tagline = optionValue(
+    options,
+    "siteTagline",
+    homePage
+      ? entrySummary(homePage)
+      : "Exploring open knowledge in a post-AI world",
+  );
   const aboutSummary = aboutPage ? entrySummary(aboutPage) : "";
 
   return {
     footer: {
-      commonsHeading: aboutPage
-        ? entryTitle(aboutPage)
-        : "Built for the commons",
-      commonsText:
+      commonsHeading: optionValue(
+        options,
+        "footerCommonsHeading",
+        aboutPage ? entryTitle(aboutPage) : "Built for the commons",
+      ),
+      commonsText: optionValue(
+        options,
+        "footerCommonsText",
         aboutSummary ||
-        "TEMIS is a public resource. Contribute, share, improve.",
-      siteHeading: brandLabel,
-      siteText:
-        homeSummary ||
-        "A working group exploring the future of open knowledge.",
+          "TEMIS is a public resource. Contribute, share, improve.",
+      ),
+      footerAriaLabel: optionValue(options, "footerAriaLabel", "Site footer"),
+      licenseAriaLabel: optionValue(
+        options,
+        "footerLicenseAriaLabel",
+        `${optionValue(options, "footerLicenseLabel", "CC BY-SA 4.0")} license`,
+      ),
+      licenseHeading: optionValue(options, "footerLicenseHeading", "License"),
+      licenseLabel: optionValue(options, "footerLicenseLabel", "CC BY-SA 4.0"),
+      licensePrefix: optionValue(
+        options,
+        "footerLicensePrefix",
+        "Content on TEMIS is licensed under",
+      ),
+      licenseUrl: optionValue(
+        options,
+        "footerLicenseUrl",
+        "https://creativecommons.org/licenses/by-sa/4.0/",
+      ),
+      openHeading: optionValue(options, "footerOpenHeading", "Open by default"),
+      openText: optionValue(
+        options,
+        "footerOpenText",
+        "No tracking. No profiling. Just public knowledge.",
+      ),
+      siteHeading: optionValue(options, "footerSiteHeading", brandLabel),
+      siteText: optionValue(
+        options,
+        "footerSiteText",
+        tagline || "A working group exploring the future of open knowledge.",
+      ),
+      topAriaLabel: optionValue(options, "footerTopAriaLabel", "Back to top"),
+      topLabel: optionValue(options, "footerTopLabel", "Top"),
     },
     header: {
+      actions: [
+        {
+          href: optionValue(options, "headerSearchHref", "/search/"),
+          icon: "search",
+          label: optionValue(options, "headerSearchLabel", "Search"),
+        },
+        {
+          href: optionValue(options, "headerNetworkHref", "/topics/"),
+          icon: "network",
+          label: optionValue(options, "headerNetworkLabel", "Topic network"),
+        },
+      ],
+      brandAriaLabel: optionValue(
+        options,
+        "headerBrandAriaLabel",
+        `${brandLabel} home`,
+      ),
       brandLabel,
       navItems,
-      tagline: homeSummary || "Exploring open knowledge in a post-AI world",
+      primaryNavLabel: optionValue(options, "headerPrimaryNavLabel", "Primary"),
+      tagline,
+      utilitiesNavLabel: optionValue(
+        options,
+        "headerUtilitiesNavLabel",
+        "Utilities",
+      ),
     },
   };
 }

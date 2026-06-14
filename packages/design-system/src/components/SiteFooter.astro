@@ -2,26 +2,40 @@
 export interface Props {
   commonsHeading?: string;
   commonsText?: string;
+  footerAriaLabel?: string;
+  licenseAriaLabel?: string;
+  licenseHeading?: string;
   licenseLabel?: string;
+  licensePrefix?: string;
+  licenseUrl?: string;
   openHeading?: string;
   openText?: string;
   siteHeading?: string;
   siteText?: string;
+  topAriaLabel?: string;
+  topLabel?: string;
 }
 
 const {
   commonsHeading = "Built for the commons",
   commonsText = "TEMIS is a public resource. Contribute, share, improve.",
+  footerAriaLabel = "Site footer",
+  licenseAriaLabel,
+  licenseHeading = "License",
   licenseLabel = "CC BY-SA 4.0",
+  licensePrefix = "Content on TEMIS is licensed under",
+  licenseUrl = "https://creativecommons.org/licenses/by-sa/4.0/",
   openHeading = "Open by default",
   openText = "No tracking. No profiling. Just public knowledge.",
   siteHeading = "TEMIS",
   siteText = "A working group exploring the future of open knowledge.",
+  topAriaLabel = "Back to top",
+  topLabel = "Top",
 } = Astro.props;
-const licenseAriaLabel = `${licenseLabel} license`;
+const resolvedLicenseAriaLabel = licenseAriaLabel ?? `${licenseLabel} license`;
 ---
 
-<footer class="ds-site-footer" aria-label="Site footer">
+<footer class="ds-site-footer" aria-label={footerAriaLabel}>
   <section class="ds-footer-cell ds-footer-cell--open">
     <div>
       <p class="ds-footer-heading">{openHeading}</p>
@@ -32,19 +46,17 @@ const licenseAriaLabel = `${licenseLabel} license`;
 
   <section class="ds-footer-cell ds-footer-cell--license">
     <div>
-      <p class="ds-footer-heading">License</p>
+      <p class="ds-footer-heading">{licenseHeading}</p>
       <p>
-        Content on TEMIS is licensed under <a
-          href="https://creativecommons.org/licenses/by-sa/4.0/"
-          rel="license">{licenseLabel}</a
-        >.
+        {licensePrefix}
+        <a href={licenseUrl} rel="license">{licenseLabel}</a>.
       </p>
     </div>
     <a
       class="ds-footer-license-mark"
-      href="https://creativecommons.org/licenses/by-sa/4.0/"
+      href={licenseUrl}
       rel="license"
-      aria-label={licenseAriaLabel}>CC</a
+      aria-label={resolvedLicenseAriaLabel}>CC</a
     >
   </section>
 
@@ -68,10 +80,10 @@ const licenseAriaLabel = `${licenseLabel} license`;
     <p>{siteText}</p>
   </section>
 
-  <a class="ds-footer-top" href="#top" aria-label="Back to top">
+  <a class="ds-footer-top" href="#top" aria-label={topAriaLabel}>
     <svg viewBox="0 0 18 18" aria-hidden="true">
       <path d="M9 15V3M4 8l5-5 5 5"></path>
     </svg>
-    <span>Top</span>
+    <span>{topLabel}</span>
   </a>
 </footer>

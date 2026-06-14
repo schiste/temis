@@ -12,6 +12,8 @@
     "build": "pnpm --filter @temis/site build",
     "build:offline": "pnpm --filter @temis/site build:offline",
     "build:cms": "pnpm --filter @temis/cms build",
+    "snapshot:pull:production": "pnpm --filter @temis/site snapshot:pull:production",
+    "dev:site:production-content": "pnpm snapshot:pull:production && pnpm dev:site",
     "seed": "pnpm --filter @temis/cms seed",
     "type-check": "pnpm -r type-check",
     "format": "pnpm exec prettier --write \"**/*.{ts,js,mjs,json,jsonc,md,astro,css,yaml}\"",

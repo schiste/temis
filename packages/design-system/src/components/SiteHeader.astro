@@ -13,9 +13,12 @@ export interface HeaderAction {
 
 export interface Props {
   actions?: HeaderAction[];
+  brandAriaLabel?: string;
   brandLabel?: string;
   navItems?: NavItem[];
+  primaryNavLabel?: string;
   tagline?: string;
+  utilitiesNavLabel?: string;
 }
 
 const {
@@ -23,6 +26,7 @@ const {
     { href: "/search/", icon: "search", label: "Search" },
     { href: "/topics/", icon: "network", label: "Topic network" },
   ],
+  brandAriaLabel,
   brandLabel = "TEMIS",
   navItems = [
     { href: "/blog/", label: "Essays", activePrefix: "/blog/" },
@@ -30,8 +34,11 @@ const {
     { href: "/people/", label: "People", activePrefix: "/people/" },
     { href: "/about/", label: "About" },
   ],
+  primaryNavLabel = "Primary",
   tagline = "Exploring open knowledge in a post-AI world",
+  utilitiesNavLabel = "Utilities",
 } = Astro.props;
+const resolvedBrandAriaLabel = brandAriaLabel ?? `${brandLabel} home`;
 
 function isCurrent(item: NavItem) {
   const pathname = Astro.url.pathname;
@@ -44,13 +51,13 @@ function isCurrent(item: NavItem) {
 
 <header class="ds-site-header">
   <div class="ds-site-header__identity">
-    <a class="ds-brand" href="/" aria-label={`${brandLabel} home`}
+    <a class="ds-brand" href="/" aria-label={resolvedBrandAriaLabel}
       >{brandLabel}</a
     >
     <p class="ds-site-kicker">{tagline}</p>
   </div>
 
-  <nav class="ds-nav" aria-label="Primary">
+  <nav class="ds-nav" aria-label={primaryNavLabel}>
     {
       navItems.map((item) => (
         <a href={item.href} aria-current={isCurrent(item) ? "page" : undefined}>
@@ -62,7 +69,7 @@ function isCurrent(item: NavItem) {
 
   {
     actions.length > 0 && (
-      <nav class="ds-header-actions" aria-label="Utilities">
+      <nav class="ds-header-actions" aria-label={utilitiesNavLabel}>
         {actions.map((action) => (
           <a
             class="ds-header-action"

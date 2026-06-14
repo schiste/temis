@@ -7,7 +7,28 @@
   },
   "settings": {
     "siteTitle": "TEMIS",
-    "siteTagline": "Exploring open knowledge in a post-AI world."
+    "siteTagline": "Exploring open knowledge in a post-AI world.",
+    "headerBrandAriaLabel": "TEMIS home",
+    "headerPrimaryNavLabel": "Primary",
+    "headerSearchHref": "/search/",
+    "headerSearchLabel": "Search",
+    "headerNetworkHref": "/topics/",
+    "headerNetworkLabel": "Topic network",
+    "headerUtilitiesNavLabel": "Utilities",
+    "footerAriaLabel": "Site footer",
+    "footerOpenHeading": "Open by default",
+    "footerOpenText": "No tracking. No profiling. Just public knowledge.",
+    "footerLicenseHeading": "License",
+    "footerLicensePrefix": "Content on TEMIS is licensed under",
+    "footerLicenseLabel": "CC BY-SA 4.0",
+    "footerLicenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "footerLicenseAriaLabel": "CC BY-SA 4.0 license",
+    "footerCommonsHeading": "Built for the commons",
+    "footerCommonsText": "TEMIS is a public resource. Contribute, share, improve.",
+    "footerSiteHeading": "TEMIS",
+    "footerSiteText": "A working group exploring the future of open knowledge.",
+    "footerTopAriaLabel": "Back to top",
+    "footerTopLabel": "Top"
   },
   "collections": [
     {

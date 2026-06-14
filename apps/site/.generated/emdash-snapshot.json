@@ -633,7 +633,91 @@
       },
       {
         "name": "site:siteTagline",
-        "value": "\"Static Astro, managed through EmDash.\""
+        "value": "\"Exploring open knowledge in a post-AI world.\""
+      },
+      {
+        "name": "site:headerBrandAriaLabel",
+        "value": "\"TEMIS home\""
+      },
+      {
+        "name": "site:headerPrimaryNavLabel",
+        "value": "\"Primary\""
+      },
+      {
+        "name": "site:headerSearchHref",
+        "value": "\"/search/\""
+      },
+      {
+        "name": "site:headerSearchLabel",
+        "value": "\"Search\""
+      },
+      {
+        "name": "site:headerNetworkHref",
+        "value": "\"/topics/\""
+      },
+      {
+        "name": "site:headerNetworkLabel",
+        "value": "\"Topic network\""
+      },
+      {
+        "name": "site:headerUtilitiesNavLabel",
+        "value": "\"Utilities\""
+      },
+      {
+        "name": "site:footerAriaLabel",
+        "value": "\"Site footer\""
+      },
+      {
+        "name": "site:footerOpenHeading",
+        "value": "\"Open by default\""
+      },
+      {
+        "name": "site:footerOpenText",
+        "value": "\"No tracking. No profiling. Just public knowledge.\""
+      },
+      {
+        "name": "site:footerLicenseHeading",
+        "value": "\"License\""
+      },
+      {
+        "name": "site:footerLicensePrefix",
+        "value": "\"Content on TEMIS is licensed under\""
+      },
+      {
+        "name": "site:footerLicenseLabel",
+        "value": "\"CC BY-SA 4.0\""
+      },
+      {
+        "name": "site:footerLicenseUrl",
+        "value": "\"https://creativecommons.org/licenses/by-sa/4.0/\""
+      },
+      {
+        "name": "site:footerLicenseAriaLabel",
+        "value": "\"CC BY-SA 4.0 license\""
+      },
+      {
+        "name": "site:footerCommonsHeading",
+        "value": "\"Built for the commons\""
+      },
+      {
+        "name": "site:footerCommonsText",
+        "value": "\"TEMIS is a public resource. Contribute, share, improve.\""
+      },
+      {
+        "name": "site:footerSiteHeading",
+        "value": "\"TEMIS\""
+      },
+      {
+        "name": "site:footerSiteText",
+        "value": "\"A working group exploring the future of open knowledge.\""
+      },
+      {
+        "name": "site:footerTopAriaLabel",
+        "value": "\"Back to top\""
+      },
+      {
+        "name": "site:footerTopLabel",
+        "value": "\"Top\""
       }
     ],
     "revisions": [

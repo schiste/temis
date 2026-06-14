@@ -29,6 +29,27 @@ For a purely offline static build using the committed starter snapshot:
 pnpm build:offline
 ```
 
+To mirror the current published production content locally, set the same
+`EMDASH_PREVIEW_SECRET` used by the CMS snapshot endpoint, then pull the
+production snapshot before starting the static site:
+
+```sh
+export EMDASH_PREVIEW_SECRET=replace-with-the-real-secret
+pnpm snapshot:pull:production
+pnpm dev:site
+```
+
+Or run the combined helper:
+
+```sh
+export EMDASH_PREVIEW_SECRET=replace-with-the-real-secret
+pnpm dev:site:production-content
+```
+
+This mirrors production content through the published EmDash snapshot. It does
+not give the local static site direct D1 access, which matches the production
+static-site architecture.
+
 For the production static build, set `EMDASH_BASE_URL` and `EMDASH_PREVIEW_SECRET`, then run:
 
 ```sh

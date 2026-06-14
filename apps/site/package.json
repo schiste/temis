@@ -10,6 +10,7 @@
     "build:offline": "astro build",
     "preview": "astro preview",
     "snapshot:pull": "node ./scripts/pull-snapshot.mjs",
+    "snapshot:pull:production": "EMDASH_BASE_URL=${EMDASH_BASE_URL:-https://temis-cms.christophe-henner.workers.dev} EMDASH_PREVIEW_SOURCE=${EMDASH_PREVIEW_SOURCE:-temis-local-production-mirror} node ./scripts/pull-snapshot.mjs",
     "type-check": "astro check"
   },
   "dependencies": {
