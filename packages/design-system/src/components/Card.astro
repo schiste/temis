@@ -1,0 +1,54 @@
+---
+export interface Props {
+  description?: string;
+  eyebrow?: string;
+  href?: string;
+  mark?: string;
+  meta?: string;
+  title: string;
+  variant?: "compact" | "feature" | "signal" | "standard";
+}
+
+const {
+  description,
+  eyebrow,
+  href,
+  mark,
+  meta,
+  title,
+  variant = "standard",
+} = Astro.props;
+const className = `ds-card ds-card--${variant}${href ? " ds-card--interactive" : ""}`;
+---
+
+{
+  href ? (
+    <a class={className} href={href}>
+      {mark && (
+        <span aria-hidden="true" class="ds-card__mark">
+          {mark}
+        </span>
+      )}
+      <span class="ds-card__body">
+        {eyebrow && <span class="ds-card__eyebrow">{eyebrow}</span>}
+        <strong class="ds-card__title">{title}</strong>
+        {meta && <span class="ds-card__meta">{meta}</span>}
+        {description && <span class="ds-card__description">{description}</span>}
+      </span>
+    </a>
+  ) : (
+    <article class={className}>
+      {mark && (
+        <span aria-hidden="true" class="ds-card__mark">
+          {mark}
+        </span>
+      )}
+      <div class="ds-card__body">
+        {eyebrow && <span class="ds-card__eyebrow">{eyebrow}</span>}
+        <strong class="ds-card__title">{title}</strong>
+        {meta && <span class="ds-card__meta">{meta}</span>}
+        {description && <span class="ds-card__description">{description}</span>}
+      </div>
+    </article>
+  )
+}

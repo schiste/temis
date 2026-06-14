@@ -9,6 +9,7 @@
     "./styles.css": "./src/styles/index.css",
     "./components/ArticleCard.astro": "./src/components/ArticleCard.astro",
     "./components/BaseLayout.astro": "./src/components/BaseLayout.astro",
+    "./components/Card.astro": "./src/components/Card.astro",
     "./components/MetadataRow.astro": "./src/components/MetadataRow.astro",
     "./components/PageHero.astro": "./src/components/PageHero.astro",
     "./components/SiteFooter.astro": "./src/components/SiteFooter.astro",
