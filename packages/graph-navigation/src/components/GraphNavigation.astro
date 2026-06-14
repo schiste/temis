@@ -157,6 +157,7 @@ const detailPanels = visualNodes.map((node) => ({
     return a.label.localeCompare(b.label);
   }),
 }));
+const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${laidOutGraph.generatedAt}`)}`;
 ---
 
 <nav class="temis-graph-nav" aria-label={label}>
@@ -193,6 +194,8 @@ const detailPanels = visualNodes.map((node) => ({
               "temis-graph-nav__node--current",
           ]}
           aria-label={`${node.label} (${nodeTypeLabels[node.type]})`}
+          aria-controls={detailRegionId}
+          aria-expanded={node.id === initialDetailNodeId ? "true" : "false"}
           data-node-id={node.id}
           data-node-type={node.type}
           href={node.href}
@@ -209,6 +212,7 @@ const detailPanels = visualNodes.map((node) => ({
     class="temis-graph-nav__details"
     aria-label="Selected graph node"
     aria-live="polite"
+    id={detailRegionId}
   >
     {
       detailPanels.map(({ node, relatedNodes }) => (
@@ -223,6 +227,24 @@ const detailPanels = visualNodes.map((node) => ({
             </p>
             <h3>{node.label}</h3>
             {node.description && <p>{node.description}</p>}
+            {node.meta.length > 0 && (
+              <dl class="temis-graph-nav__detail-meta">
+                {node.meta.map((item) => (
+                  <div>
+                    <dt>{item.label}</dt>
+                    <dd>
+                      {item.href ? (
+                        <a href={item.href}>{item.value}</a>
+                      ) : item.datetime ? (
+                        <time datetime={item.datetime}>{item.value}</time>
+                      ) : (
+                        item.value
+                      )}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            )}
           </div>
 
           <div class="temis-graph-nav__detail-actions">
@@ -270,6 +292,11 @@ const detailPanels = visualNodes.map((node) => ({
 
 <style>
   .temis-graph-nav {
+    --temis-graph-link-active: color-mix(
+      in srgb,
+      #00a66a 88%,
+      var(--ds-color-text, currentColor) 12%
+    );
     border-block: var(--ds-stroke-hairline, 1px) solid
       var(--ds-color-line-strong, currentColor);
     color: var(--ds-color-text, currentColor);
@@ -323,8 +350,8 @@ const detailPanels = visualNodes.map((node) => ({
     fill: none;
     stroke: var(--ds-color-line-strong, currentColor);
     stroke-linecap: square;
-    stroke-width: 0.28;
-    opacity: 0.72;
+    stroke-width: 0.44;
+    opacity: 0.82;
     transform-box: fill-box;
     transform-origin: center;
     transition:
@@ -419,14 +446,25 @@ const detailPanels = visualNodes.map((node) => ({
   .temis-graph-nav[data-graph-active]
     .temis-graph-nav__edges
     path[data-graph-state="related"] {
-    opacity: 0.92;
-    stroke-width: 0.52;
+    opacity: 0.98;
+    stroke: var(--temis-graph-link-active);
+    stroke-width: 0.74;
     transform: scale(1.006);
   }
 
   .temis-graph-nav__details {
     border-block-start: var(--ds-stroke-hairline, 1px) solid
       var(--ds-color-line-strong, currentColor);
+    scroll-margin-block-start: var(--ds-space-phi-3, 1.625rem);
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .temis-graph-nav[data-graph-locked] .temis-graph-nav__details {
+    border-block-start-color: var(--temis-graph-link-active);
+    box-shadow: inset 0 var(--ds-stroke-hairline, 1px) 0
+      var(--temis-graph-link-active);
   }
 
   .temis-graph-nav__detail {
@@ -468,6 +506,51 @@ const detailPanels = visualNodes.map((node) => ({
     font-size: var(--ds-font-size-body, 1rem);
     margin: 0;
     max-width: calc(var(--ds-grid-unit, 2.625rem) * 16);
+  }
+
+  .temis-graph-nav__detail-meta {
+    border-block-start: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line, currentColor);
+    display: grid;
+    gap: 0;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(calc(var(--ds-grid-unit, 2.625rem) * 4), 1fr)
+    );
+    margin: var(--ds-space-phi-1, 0.625rem) 0 0;
+  }
+
+  .temis-graph-nav__detail-meta div {
+    border-block-end: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line, currentColor);
+    display: grid;
+    gap: var(--ds-space-phi-00, 0.25rem);
+    padding-block: var(--ds-space-phi-1, 0.625rem);
+  }
+
+  .temis-graph-nav__detail-meta dt,
+  .temis-graph-nav__detail-meta dd {
+    margin: 0;
+  }
+
+  .temis-graph-nav__detail-meta dt {
+    color: var(--ds-color-text-muted, currentColor);
+    font-family: var(--ds-font-mono, ui-monospace);
+    font-size: var(--ds-font-size-micro, 0.625rem);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .temis-graph-nav__detail-meta dd {
+    font-family: var(--ds-font-mono, ui-monospace);
+    font-size: var(--ds-font-size-meta, 0.75rem);
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .temis-graph-nav__detail-meta a {
+    color: var(--temis-graph-link-active);
   }
 
   .temis-graph-nav__detail-actions a {
@@ -516,6 +599,7 @@ const detailPanels = visualNodes.map((node) => ({
   }
 
   .temis-graph-nav__detail-related a {
+    color: var(--temis-graph-link-active);
     font-family: var(--ds-font-mono, ui-monospace);
     font-size: var(--ds-font-size-meta, 0.75rem);
     text-transform: uppercase;
@@ -637,6 +721,15 @@ const detailPanels = visualNodes.map((node) => ({
     const neighbors = new Map<string, Set<string>>();
     let lockedNodeId: string | null = null;
 
+    const setExpandedNode = (nodeId: string | null) => {
+      for (const node of nodes) {
+        node.setAttribute(
+          "aria-expanded",
+          node.dataset.nodeId === nodeId ? "true" : "false",
+        );
+      }
+    };
+
     for (const node of nodes) {
       const nodeId = node.dataset.nodeId;
       if (!nodeId) continue;
@@ -653,6 +746,7 @@ const detailPanels = visualNodes.map((node) => ({
 
     const clearGraphState = () => {
       graph.removeAttribute("data-graph-active");
+      setExpandedNode(null);
       for (const node of nodes) node.removeAttribute("data-graph-state");
       for (const edge of edges) edge.removeAttribute("data-graph-state");
     };
@@ -666,6 +760,7 @@ const detailPanels = visualNodes.map((node) => ({
     const activateNode = (nodeId: string) => {
       const relatedNodes = neighbors.get(nodeId) ?? new Set();
       graph.dataset.graphActive = nodeId;
+      setExpandedNode(nodeId);
       showDetailPanel(nodeId);
 
       for (const node of nodes) {
@@ -696,6 +791,12 @@ const detailPanels = visualNodes.map((node) => ({
       clearGraphState();
     };
 
+    const lockNode = (nodeId: string) => {
+      lockedNodeId = nodeId;
+      graph.dataset.graphLocked = nodeId;
+      activateNode(nodeId);
+    };
+
     for (const node of nodes) {
       node.addEventListener("pointerenter", () => {
         if (lockedNodeId) return;
@@ -719,17 +820,21 @@ const detailPanels = visualNodes.map((node) => ({
 
       node.addEventListener("click", (event) => {
         const nodeId = node.dataset.nodeId;
-        const isTouchLike = matchMedia(
-          "(hover: none), (pointer: coarse)",
-        ).matches;
-        if (!nodeId || !isTouchLike) return;
+        if (!nodeId) return;
 
-        if (lockedNodeId !== nodeId) {
-          event.preventDefault();
-          lockedNodeId = nodeId;
-          graph.dataset.graphLocked = nodeId;
-          activateNode(nodeId);
+        if (
+          event.defaultPrevented ||
+          event.button !== 0 ||
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey
+        ) {
+          return;
         }
+
+        event.preventDefault();
+        lockNode(nodeId);
       });
     }
 
