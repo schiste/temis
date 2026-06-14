@@ -9,6 +9,8 @@ TEMIS V1 needs a graph-based topic navigation system that makes the site feel ed
 
 The graph navigation plugin should render EmDash-managed topic relationships as an accessible homepage navigation experience. It is not a knowledge graph, recommendation system, or broad entity model.
 
+Implementation design lives in [graph navigation plugin design](./graph-navigation-plugin-design.md). The initial workspace package is `@temis/graph-navigation`.
+
 ## Product Decision
 
 V1 will include a graph-shaped topic navigation data structure.
