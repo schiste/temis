@@ -20,11 +20,12 @@ These assumptions guide V1 implementation until they are replaced by PRD updates
 ## Content Assumptions
 
 - Articles are the atomic unit of editorial content in V1.
-- Tool announcements are articles, not separate public entities.
+- Tool announcements are articles, and tools are also first-class graphable records.
 - Topics are first-class editorial records.
+- Tags are graphable editorial metadata.
 - Public people are first-class editorial records.
-- Articles may reference one or more public people records.
-- Topic relationships are manually edited and unlabeled.
+- Articles may reference one or more public people and tool records.
+- Graph relationships are manually edited or derived from explicit fields, and rendered as visually unlabeled edges.
 - Only published records appear in the public static build.
 - Published website content will use `CC-BY-SA-4.0`.
 

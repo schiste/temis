@@ -48,6 +48,22 @@ export interface PostEntry extends SnapshotRow {
   title: string;
 }
 
+export interface ToolEntry extends SnapshotRow {
+  description?: unknown;
+  documentation_url?: string | null;
+  featured_image?: unknown;
+  graph_priority?: number | null;
+  graph_visible?: boolean | number | null;
+  maturity?: string | null;
+  related_articles?: unknown;
+  repository_url?: string | null;
+  seo_description?: string;
+  seo_title?: string;
+  summary?: string;
+  title: string;
+  tool_url?: string | null;
+}
+
 interface MenuRow extends SnapshotRow {
   id: string;
   label?: string;
@@ -316,6 +332,17 @@ export async function getPostBySlug(slug: string) {
   return posts.find((post) => publicSlug(post) === normalized) ?? null;
 }
 
+export async function getTools() {
+  const tools = await getCollection<ToolEntry>("tools");
+  return tools.sort((a, b) => entryTitle(a).localeCompare(entryTitle(b)));
+}
+
+export async function getToolBySlug(slug: string) {
+  const normalized = slug.replace(/^\/+|\/+$/g, "");
+  const tools = await getTools();
+  return tools.find((tool) => publicSlug(tool) === normalized) ?? null;
+}
+
 export async function getPostsByAuthorSlug(slug: string) {
   const byline = await getBylineBySlug(slug);
   const posts = await getPosts();
@@ -333,6 +360,7 @@ function referencedHref(
   const slug = publicSlug(row);
   if (!slug || slug === "home" || slug === "index") return "/";
   if (collection === "posts") return `/blog/${slug}/`;
+  if (collection === "tools") return `/tools/${slug}/`;
   return `/${slug}/`;
 }
 
@@ -572,4 +600,16 @@ export function entryAuthorHref(row: PostEntry) {
 
 export function entrySummary(row: SnapshotRow) {
   return String(row.summary ?? row.excerpt ?? "");
+}
+
+export function entryExternalUrl(value: string | null | undefined) {
+  const trimmed = value?.trim();
+  if (!trimmed) return null;
+
+  try {
+    const url = new URL(trimmed);
+    return ["http:", "https:"].includes(url.protocol) ? trimmed : null;
+  } catch {
+    return null;
+  }
 }

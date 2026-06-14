@@ -1,0 +1,89 @@
+---
+import MetadataRow from "@temis/design-system/components/MetadataRow.astro";
+import PageHero from "@temis/design-system/components/PageHero.astro";
+import SiteLayout from "../../components/SiteLayout.astro";
+import {
+  entryDescription,
+  entryExternalUrl,
+  entrySlug,
+  entryTitle,
+  getSiteTexts,
+  getToolBySlug,
+  getTools,
+} from "../../lib/emdash";
+import { portableTextToHtml } from "../../lib/portable-text";
+
+export async function getStaticPaths() {
+  const tools = await getTools();
+  return tools.map((tool) => ({
+    params: { slug: entrySlug(tool) },
+    props: { tool },
+  }));
+}
+
+const { tool } = Astro.props;
+const resolvedTool = tool ?? (await getToolBySlug(Astro.params.slug ?? ""));
+if (!resolvedTool) {
+  return Astro.redirect("/404");
+}
+
+const title = entryTitle(resolvedTool);
+const description = entryDescription(resolvedTool);
+const copy = await getSiteTexts({
+  toolDocumentationLabel: "Documentation",
+  toolHeroEyebrow: "Tool",
+  toolMaturityLabel: "Maturity",
+  toolRepositoryLabel: "Repository",
+  toolWebsiteLabel: "Website",
+});
+const toolUrl = entryExternalUrl(resolvedTool.tool_url);
+const repositoryUrl = entryExternalUrl(resolvedTool.repository_url);
+const documentationUrl = entryExternalUrl(resolvedTool.documentation_url);
+const maturity = resolvedTool.maturity?.trim();
+const metadataItems = [
+  toolUrl
+    ? {
+        href: toolUrl,
+        label: copy.toolWebsiteLabel,
+        value: copy.toolWebsiteLabel,
+      }
+    : null,
+  repositoryUrl
+    ? {
+        href: repositoryUrl,
+        label: copy.toolRepositoryLabel,
+        value: copy.toolRepositoryLabel,
+      }
+    : null,
+  documentationUrl
+    ? {
+        href: documentationUrl,
+        label: copy.toolDocumentationLabel,
+        value: copy.toolDocumentationLabel,
+      }
+    : null,
+  maturity
+    ? {
+        label: copy.toolMaturityLabel,
+        value: maturity,
+      }
+    : null,
+].filter((item): item is { href?: string; label: string; value: string } =>
+  Boolean(item),
+);
+---
+
+<SiteLayout title={title} description={description}>
+  <article>
+    <PageHero
+      eyebrow={copy.toolHeroEyebrow}
+      title={title}
+      description={description}
+    />
+    <MetadataRow items={metadataItems} />
+    <div
+      class="ds-prose"
+      set:html={portableTextToHtml(resolvedTool.description)}
+    />
+  </article>
+</SiteLayout>

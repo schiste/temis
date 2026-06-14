@@ -58,7 +58,7 @@ export default defineConfig({
       database,
       storage,
       plugins: [
-        aexeoPlugin({ collections: ["posts", "pages"] }),
+        aexeoPlugin({ collections: ["posts", "pages", "tools"] }),
         ...productionPlugins,
       ],
     }),

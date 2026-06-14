@@ -58,7 +58,7 @@ Authors, users, and people should be modeled as first-class content items where 
 - User accounts for public readers.
 - Public governance flows.
 - Appeals, conflict-of-interest workflows, or moderation queues.
-- Additional public entity systems beyond articles, topics, and people.
+- Additional public entity systems beyond articles, tools, topics, tags, and people.
 - Automated discovery systems.
 - Public analytics dashboards.
 - Personalized feeds.

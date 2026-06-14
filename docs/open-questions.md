@@ -17,7 +17,7 @@ These are the remaining V1 decisions. Answer with the question IDs when possible
 - Q9: Public people are first-class editorial records. Some public people may link to CMS users when safe, but public people and CMS users are not the same object by default.
 - Q11: Articles support named people plus an optional team/publication byline.
 - Q16: V1 should support both dark and light themes.
-- Q18: Graph-based topic navigation should be a homepage anchor.
+- Q18: Graph-based content navigation should be a homepage anchor.
 - Q22: Use `@aeptus/aexeo-emdash` for V1 SEO/GEO evaluation in the EmDash workflow.
 
 ## Launch-Critical
@@ -80,13 +80,13 @@ Answer needed: topic-based, manual, both, or none for launch.
 
 ### Q17. How much motion should the homepage use?
 
-Why it matters: motion can make the topic navigation feel alive, but it can hurt performance and accessibility.
+Why it matters: motion can make graph navigation feel alive, but it can hurt performance and accessibility.
 
 Recommended default: subtle motion only, with reduced-motion support.
 
 Answer needed: none, subtle, expressive, or decide after prototype.
 
-### Q19. What is the mobile interaction model for topic navigation?
+### Q19. What is the mobile interaction model for graph navigation?
 
 Why it matters: dense node layouts rarely work unchanged on small screens.
 

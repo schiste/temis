@@ -19,6 +19,6 @@ These decisions are explicitly deferred so V1 can ship without over-modeling the
 
 ## V1 Decision Rule
 
-For V1, prefer the smallest manual model that supports publishing, reading, topic navigation, author pages, subscribing, sharing, and server/platform operational reporting.
+For V1, prefer the smallest manual model that supports publishing, reading, graph navigation, author pages, subscribing, sharing, and server/platform operational reporting.
 
 If a deferred decision becomes necessary for launch, it should be promoted into the PRD and captured in a V1-scoped ADR before implementation.

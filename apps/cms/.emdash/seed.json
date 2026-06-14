@@ -2,7 +2,7 @@
   "version": "1",
   "meta": {
     "name": "TEMIS Starter",
-    "description": "Starter content model for a static Astro site managed in EmDash.",
+    "description": "Starter content model for a static Astro site managed in EmDash, including first-class graphable tools.",
     "author": "TEMIS"
   },
   "settings": {
@@ -39,6 +39,11 @@
     "postHeroEyebrow": "Article",
     "postStatusLabel": "Status",
     "postStatusValue": "Published content",
+    "toolHeroEyebrow": "Tool",
+    "toolWebsiteLabel": "Website",
+    "toolRepositoryLabel": "Repository",
+    "toolDocumentationLabel": "Documentation",
+    "toolMaturityLabel": "Maturity",
     "aboutHeroEyebrow": "About",
     "aboutMissingTitle": "About",
     "aboutMissingDescription": "TEMIS is a public map of a technical commons.",
@@ -173,6 +178,110 @@
           "type": "text"
         }
       ]
+    },
+    {
+      "slug": "tools",
+      "label": "Tools",
+      "labelSingular": "Tool",
+      "description": "First-class tools that connect articles, topics, tags, and people in the TEMIS graph.",
+      "icon": "wrench",
+      "supports": ["drafts", "revisions", "preview", "seo", "search"],
+      "urlPattern": "/tools/{slug}",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "Summary",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "description",
+          "label": "Description",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "tool_url",
+          "label": "Tool URL",
+          "type": "url"
+        },
+        {
+          "slug": "repository_url",
+          "label": "Repository URL",
+          "type": "url"
+        },
+        {
+          "slug": "documentation_url",
+          "label": "Documentation URL",
+          "type": "url"
+        },
+        {
+          "slug": "maturity",
+          "label": "Maturity",
+          "type": "select",
+          "validation": {
+            "options": ["prototype", "active", "stable", "archived"]
+          }
+        },
+        {
+          "slug": "featured_image",
+          "label": "Featured Image",
+          "type": "image"
+        },
+        {
+          "slug": "related_articles",
+          "label": "Related Articles",
+          "type": "reference",
+          "options": {
+            "collection": "posts",
+            "allowMultiple": true
+          }
+        },
+        {
+          "slug": "graph_visible",
+          "label": "Visible in Graph",
+          "type": "boolean",
+          "defaultValue": true
+        },
+        {
+          "slug": "graph_priority",
+          "label": "Graph Priority",
+          "type": "number"
+        },
+        {
+          "slug": "seo_title",
+          "label": "SEO Title",
+          "type": "string"
+        },
+        {
+          "slug": "seo_description",
+          "label": "SEO Description",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "taxonomies": [
+    {
+      "name": "category",
+      "label": "Categories",
+      "labelSingular": "Category",
+      "hierarchical": true,
+      "collections": ["posts", "tools"]
+    },
+    {
+      "name": "tag",
+      "label": "Tags",
+      "labelSingular": "Tag",
+      "hierarchical": false,
+      "collections": ["posts", "tools"]
     }
   ],
   "content": {
