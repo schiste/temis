@@ -267,12 +267,17 @@
 }
 
 .ds-content-main,
-.ds-content-graph {
+.ds-content-rail {
   min-width: 0;
 }
 
-.ds-content-graph {
+.ds-content-rail {
   align-self: start;
+}
+
+.ds-content-rail__inner {
+  display: grid;
+  gap: var(--ds-space-phi-2);
 }
 
 .ds-meta-row {
@@ -648,9 +653,29 @@
     grid-column: 1 / span 16;
   }
 
-  .ds-content-graph {
-    grid-column: 1 / -1;
-    margin-block-start: var(--ds-space-phi-4);
+  .ds-content-rail {
+    grid-column: 19 / span 10;
+    position: sticky;
+    top: var(--ds-space-phi-3);
+  }
+
+  .ds-content-rail .temis-graph-nav__map {
+    aspect-ratio: 1 / 1;
+    min-height: calc(var(--ds-grid-unit) * 8);
+  }
+
+  .ds-content-rail .temis-graph-nav__node {
+    font-size: var(--ds-font-size-caption);
+    max-width: calc(var(--ds-grid-unit) * 4);
+    padding: var(--ds-space-phi-00) var(--ds-space-phi-0);
+  }
+
+  .ds-content-rail .temis-graph-nav__detail {
+    grid-template-columns: 1fr;
+  }
+
+  .ds-content-rail .temis-graph-nav__detail-actions {
+    justify-self: start;
   }
 
   .ds-tool-hero__identity {
@@ -676,6 +701,10 @@
 @container ds-page (min-width: 110.25rem) {
   .ds-content-main {
     grid-column: 1 / span 26;
+  }
+
+  .ds-content-rail {
+    grid-column: 29 / span 12;
   }
 
   .ds-tool-hero__identity {

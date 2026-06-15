@@ -26,6 +26,14 @@ if (html.includes("temis-graph-nav__index")) {
   fail("Expected full graph navigation without compact index labels.");
 }
 
+if (!html.includes("ds-content-rail")) {
+  fail("Expected graph navigation in the content sidebar.");
+}
+
+if (html.includes("ds-content-graph")) {
+  fail("Expected sidebar graph navigation, found full-width graph section.");
+}
+
 if (!html.includes("temis-graph-nav__node-label")) {
   fail("Expected visible full graph node labels.");
 }
