@@ -347,6 +347,13 @@ function contentTaxonomyTermId(row: ContentTaxonomyEntry) {
   return cleanText(row.term_id) || cleanText(row.taxonomy_id);
 }
 
+function bylineSlugFromId(value: string | null | undefined) {
+  const cleanValue = cleanText(value);
+  if (!cleanValue) return "";
+
+  return cleanValue.split(":").filter(Boolean).at(-1) ?? "";
+}
+
 function edge(
   source: string,
   target: string,
@@ -431,10 +438,14 @@ function attachBylineEdges(
   const bylineBySlug = new Map(
     bylines.map((byline) => [entryBylineSlug(byline), byline]),
   );
+  const resolveByline = (value: string | null | undefined) => {
+    const id = cleanText(value);
+    return bylineById.get(id) ?? bylineBySlug.get(bylineSlugFromId(id));
+  };
 
   for (const post of posts) {
     const postId = `content:${post.id}`;
-    const directByline = bylineById.get(post.primary_byline_id ?? "");
+    const directByline = resolveByline(post.primary_byline_id);
     if (directByline) {
       edges.push(edge(postId, `author:${directByline.id}`, "authored_by", 70));
       continue;
@@ -453,7 +464,7 @@ function attachBylineEdges(
 
   for (const tool of tools) {
     const toolId = `tool:${tool.id}`;
-    const directByline = bylineById.get(tool.primary_byline_id ?? "");
+    const directByline = resolveByline(tool.primary_byline_id);
     if (directByline) {
       edges.push(edge(toolId, `author:${directByline.id}`, "authored_by", 70));
     }
@@ -463,13 +474,11 @@ function attachBylineEdges(
     const collection = contentTaxonomyCollection(row);
     if (collection !== "posts" && collection !== "tools") continue;
     const contentId = contentTaxonomyContentId(row);
-    const bylineId = cleanText(row.byline_id);
-    if (!contentId || !bylineId || !bylineById.has(bylineId)) continue;
+    const byline = resolveByline(row.byline_id);
+    if (!contentId || !byline?.id) continue;
     const nodeId =
       collection === "tools" ? `tool:${contentId}` : `content:${contentId}`;
-    edges.push(
-      edge(nodeId, `author:${bylineId}`, "authored_by", 70),
-    );
+    edges.push(edge(nodeId, `author:${byline.id}`, "authored_by", 70));
   }
 
   return edges;
@@ -536,6 +545,10 @@ function authorPublicationCounts(
   const bylineBySlug = new Map(
     bylines.map((byline) => [entryBylineSlug(byline), byline]),
   );
+  const resolveBylineId = (value: string | null | undefined) => {
+    const id = cleanText(value);
+    return bylineById.get(id)?.id ?? bylineBySlug.get(bylineSlugFromId(id))?.id;
+  };
 
   const addCount = (bylineId: string | undefined, itemId: string) => {
     if (!bylineId || !bylineById.has(bylineId)) return;
@@ -544,23 +557,22 @@ function authorPublicationCounts(
   };
 
   for (const post of posts) {
-    const directByline = bylineById.get(post.primary_byline_id ?? "");
+    const directBylineId = resolveBylineId(post.primary_byline_id);
     const fallbackByline = entryAuthorName(post)
       ? bylineBySlug.get(slugify(entryAuthorName(post) ?? ""))
       : null;
-    const byline = directByline ?? fallbackByline;
-    addCount(byline?.id, `content:${post.id}`);
+    addCount(directBylineId ?? fallbackByline?.id, `content:${post.id}`);
   }
 
   for (const tool of tools) {
-    addCount(tool.primary_byline_id ?? undefined, `tool:${tool.id}`);
+    addCount(resolveBylineId(tool.primary_byline_id), `tool:${tool.id}`);
   }
 
   for (const row of contentBylines) {
     const collection = contentTaxonomyCollection(row);
     if (collection !== "posts" && collection !== "tools") continue;
     const contentId = contentTaxonomyContentId(row);
-    const bylineId = cleanText(row.byline_id);
+    const bylineId = resolveBylineId(row.byline_id);
     if (!contentId || !bylineId) continue;
     addCount(
       bylineId,
