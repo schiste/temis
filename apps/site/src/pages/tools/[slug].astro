@@ -1,6 +1,4 @@
 ---
-import MetadataRow from "@temis/design-system/components/MetadataRow.astro";
-import PageHero from "@temis/design-system/components/PageHero.astro";
 import ContentGraphRail from "../../components/ContentGraphRail.astro";
 import SiteLayout from "../../components/SiteLayout.astro";
 import {
@@ -35,17 +33,26 @@ if (!resolvedTool) {
 const title = entryTitle(resolvedTool);
 const description = entryDescription(resolvedTool);
 const copy = await getSiteTexts({
+  toolActivityHeading: "Repository activity",
+  toolDefaultBranchLabel: "Default branch",
   toolDocumentationLabel: "Documentation",
   toolEditorialConfidenceLabel: "Editorial confidence",
+  toolForksLabel: "Forks",
   toolGraphHeading: "Navigation graph",
   toolGraphLabel: "Graph navigation from this tool",
-  toolHeroEyebrow: "Tool",
+  toolHeroEyebrow: "Tool dossier",
   toolLanguageLabel: "Language",
   toolLastCommitLabel: "Last commit",
   toolLicenseLabel: "License",
+  toolMaintenanceLabel: "Maintenance",
+  toolOpenIssuesLabel: "Open issues",
   toolOpenPrivacyHeading: "Open-source and privacy",
+  toolOpenToolLabel: "Open tool",
+  toolOverviewHeading: "Overview",
   toolPrivacyLabel: "Privacy note",
   toolRepositoryLabel: "Repository",
+  toolSignalHeading: "Signals",
+  toolStarsLabel: "Stars",
   toolTechnicalMaturityLabel: "Technical maturity",
   toolWebsiteLabel: "Website",
 });
@@ -72,32 +79,191 @@ const lastCommitLabel =
         year: "numeric",
       }).format(lastCommitDate)
     : lastCommitDateTime?.slice(0, 10);
-const metadataItems = [
+
+function hostLabel(value: string | null | undefined) {
+  if (!value) return "";
+
+  try {
+    return new URL(value).hostname.replace(/^www\./, "");
+  } catch {
+    return value;
+  }
+}
+
+function numberLabel(value: number | null | undefined) {
+  return typeof value === "number"
+    ? new Intl.NumberFormat("en-US").format(value)
+    : "";
+}
+
+function maintenanceSignal(date: Date | null, label: string | undefined) {
+  if (!date || Number.isNaN(date.valueOf())) {
+    return {
+      detail: "No public commit signal",
+      tone: "unknown",
+      value: "Unknown",
+    };
+  }
+
+  const days = Math.max(
+    0,
+    Math.floor((Date.now() - date.getTime()) / 86_400_000),
+  );
+  if (days <= 30) {
+    return {
+      detail: label ? `Last commit ${label}` : "Recent commit",
+      tone: "active",
+      value: "Active",
+    };
+  }
+  if (days <= 180) {
+    return {
+      detail: label ? `Last commit ${label}` : "Recent commit",
+      tone: "recent",
+      value: "Recent",
+    };
+  }
+  if (days <= 365) {
+    return {
+      detail: label ? `Last commit ${label}` : "Older commit",
+      tone: "quiet",
+      value: "Quiet",
+    };
+  }
+
+  return {
+    detail: label ? `Last commit ${label}` : "Older commit",
+    tone: "dormant",
+    value: "Dormant",
+  };
+}
+
+const maintenance = maintenanceSignal(lastCommitDate, lastCommitLabel);
+type HeroSignal = {
+  detail?: string;
+  label: string;
+  tone?: string;
+  value: string;
+};
+
+const primaryActions = [
   toolUrl
     ? {
+        detail: hostLabel(toolUrl),
         href: toolUrl,
-        label: copy.toolWebsiteLabel,
-        value: copy.toolWebsiteLabel,
+        label: copy.toolOpenToolLabel,
+        variant: "primary",
       }
     : null,
   repositoryUrl
     ? {
+        detail: github?.fullName ?? hostLabel(repositoryUrl),
         href: repositoryUrl,
         label: copy.toolRepositoryLabel,
-        value: copy.toolRepositoryLabel,
+        variant: "secondary",
       }
     : null,
   documentationUrl
     ? {
+        detail: hostLabel(documentationUrl),
         href: documentationUrl,
         label: copy.toolDocumentationLabel,
-        value: copy.toolDocumentationLabel,
+        variant: "secondary",
       }
     : null,
+].filter(
+  (
+    item,
+  ): item is {
+    detail: string;
+    href: string;
+    label: string;
+    variant: "primary" | "secondary";
+  } => Boolean(item),
+);
+const heroSignals: HeroSignal[] = [
+  {
+    detail: maintenance.detail,
+    label: copy.toolMaintenanceLabel,
+    tone: maintenance.tone,
+    value: maintenance.value,
+  },
+  ...(github?.primaryLanguage
+    ? [
+        {
+          label: copy.toolLanguageLabel,
+          value: github.primaryLanguage,
+        },
+      ]
+    : []),
+  ...(license
+    ? [
+        {
+          label: copy.toolLicenseLabel,
+          value: license,
+        },
+      ]
+    : []),
+];
+const activityItems = [
+  github?.fullName
+    ? {
+        href: repositoryUrl ?? github.repositoryUrl,
+        label: copy.toolRepositoryLabel,
+        value: github.fullName,
+      }
+    : null,
+  lastCommitLabel
+    ? {
+        href: github?.lastCommitUrl,
+        label: copy.toolLastCommitLabel,
+        value: lastCommitLabel,
+      }
+    : null,
+  github?.defaultBranch
+    ? {
+        label: copy.toolDefaultBranchLabel,
+        value: github.defaultBranch,
+      }
+    : null,
+  github?.primaryLanguage
+    ? {
+        label: copy.toolLanguageLabel,
+        value: github.primaryLanguage,
+      }
+    : null,
+  numberLabel(github?.stars)
+    ? {
+        label: copy.toolStarsLabel,
+        value: numberLabel(github?.stars),
+      }
+    : null,
+  numberLabel(github?.forks)
+    ? {
+        label: copy.toolForksLabel,
+        value: numberLabel(github?.forks),
+      }
+    : null,
+  numberLabel(github?.openIssues)
+    ? {
+        label: copy.toolOpenIssuesLabel,
+        value: numberLabel(github?.openIssues),
+      }
+    : null,
+].filter((item): item is { href?: string; label: string; value: string } =>
+  Boolean(item),
+);
+const trustItems = [
   license
     ? {
         label: copy.toolLicenseLabel,
         value: license,
+      }
+    : null,
+  privacyNote
+    ? {
+        label: copy.toolPrivacyLabel,
+        value: privacyNote,
       }
     : null,
   technicalMaturity
@@ -112,53 +278,89 @@ const metadataItems = [
         value: editorialConfidence,
       }
     : null,
-  github?.primaryLanguage
-    ? {
-        label: copy.toolLanguageLabel,
-        value: github.primaryLanguage,
-      }
-    : null,
-  lastCommitLabel
-    ? {
-        href: github?.lastCommitUrl,
-        label: copy.toolLastCommitLabel,
-        value: lastCommitLabel,
-      }
-    : null,
-].filter((item): item is { href?: string; label: string; value: string } =>
-  Boolean(item),
-);
-const openPrivacyItems = [
-  license
-    ? {
-        label: copy.toolLicenseLabel,
-        value: license,
-      }
-    : null,
-  privacyNote
-    ? {
-        label: copy.toolPrivacyLabel,
-        value: privacyNote,
-      }
-    : null,
 ].filter((item): item is { label: string; value: string } => Boolean(item));
 ---
 
 <SiteLayout title={title} description={description}>
   <div class="ds-content-page">
-    <article class="ds-content-main ds-tool-record">
-      <PageHero
-        eyebrow={copy.toolHeroEyebrow}
-        title={title}
-        description={description}
-      />
-      <MetadataRow items={metadataItems} />
+    <article class="ds-content-main ds-tool-record ds-tool-record--dossier">
+      <header class="ds-tool-hero">
+        <div class="ds-tool-hero__identity">
+          <p class="ds-eyebrow">{copy.toolHeroEyebrow}</p>
+          <h1 class="ds-tool-title">{title}</h1>
+          <p class="ds-tool-summary">{description}</p>
+        </div>
+
+        <aside
+          class="ds-tool-hero__signals"
+          aria-label={copy.toolSignalHeading}
+        >
+          <p>{copy.toolSignalHeading}</p>
+          <dl>
+            {
+              heroSignals.map((item) => (
+                <div data-tone={item.tone}>
+                  <dt>{item.label}</dt>
+                  <dd>{item.value}</dd>
+                  {item.detail && <p>{item.detail}</p>}
+                </div>
+              ))
+            }
+          </dl>
+        </aside>
+
+        {
+          primaryActions.length > 0 && (
+            <nav class="ds-tool-actions" aria-label="Tool links">
+              {primaryActions.map((action) => (
+                <a
+                  class:list={[
+                    "ds-tool-action",
+                    action.variant === "primary" && "ds-tool-action--primary",
+                  ]}
+                  href={action.href}
+                >
+                  <span>{action.label}</span>
+                  <strong>{action.detail}</strong>
+                </a>
+              ))}
+            </nav>
+          )
+        }
+      </header>
+
       {
-        openPrivacyItems.length > 0 && (
-          <section class="ds-tool-record__panel">
-            <h2>{copy.toolOpenPrivacyHeading}</h2>
-            <dl>
-              {openPrivacyItems.map((item) => (
+        activityItems.length > 0 && (
+          <section class="ds-tool-section">
+            <div class="ds-tool-section__header">
+              <h2>{copy.toolActivityHeading}</h2>
+            </div>
+            <dl class="ds-tool-signal-grid">
+              {activityItems.map((item) => (
+                <div>
+                  <dt>{item.label}</dt>
+                  <dd>
+                    {item.href ? (
+                      <a href={item.href}>{item.value}</a>
+                    ) : (
+                      item.value
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        )
+      }
+
+      {
+        trustItems.length > 0 && (
+          <section class="ds-tool-section">
+            <div class="ds-tool-section__header">
+              <h2>{copy.toolOpenPrivacyHeading}</h2>
+            </div>
+            <dl class="ds-tool-definition-list">
+              {trustItems.map((item) => (
                 <div>
                   <dt>{item.label}</dt>
                   <dd>{item.value}</dd>
@@ -168,10 +370,16 @@ const openPrivacyItems = [
           </section>
         )
       }
-      <div
-        class="ds-prose"
-        set:html={portableTextToHtml(resolvedTool.description)}
-      />
+
+      <section class="ds-tool-section ds-tool-section--overview">
+        <div class="ds-tool-section__header">
+          <h2>{copy.toolOverviewHeading}</h2>
+        </div>
+        <div
+          class="ds-prose ds-tool-prose"
+          set:html={portableTextToHtml(resolvedTool.description)}
+        />
+      </section>
     </article>
     <ContentGraphRail
       graph={graph}
