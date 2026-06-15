@@ -19,6 +19,7 @@ These are the remaining V1 decisions. Answer with the question IDs when possible
 - Q16: V1 should support both dark and light themes.
 - Q18: Graph-based content navigation should be a homepage anchor.
 - Q22: Use `@aeptus/aexeo-emdash` for V1 SEO/GEO evaluation in the EmDash workflow.
+- Q23: Published tools have public pages; `graph_visible` controls graph appearance only. Public tool records require license and privacy notes, track technical maturity and editorial confidence separately, and can link to public people with roles.
 
 ## Launch-Critical
 

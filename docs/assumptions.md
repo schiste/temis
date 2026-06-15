@@ -21,6 +21,9 @@ These assumptions guide V1 implementation until they are replaced by PRD updates
 
 - Articles are the atomic unit of editorial content in V1.
 - Tool announcements are articles, and tools are also first-class graphable records.
+- Published tools have public pages even when they are not shown in the graph.
+- Public tool records require license and privacy notes.
+- Tools track technical maturity separately from editorial confidence.
 - Topics are first-class editorial records.
 - Tags are graphable editorial metadata.
 - Public people are first-class editorial records.

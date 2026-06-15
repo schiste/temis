@@ -142,17 +142,26 @@ Expected fields:
 - Tool URL.
 - Repository URL.
 - Documentation URL.
+- License.
+- Privacy note.
+- Technical maturity.
+- Editorial confidence.
 - Related article assignments.
-- Related person/author assignments.
+- Related person/author assignments with roles.
 - Related category/topic assignments.
 - Related tag assignments.
-- Optional status or maturity.
 - Optional featured visual.
 - SEO title.
 - SEO description.
 - Status: draft/published.
 
-Tools should be publishable and graph-visible when ready. V1 does not require a top-level `Tools` menu item, but each visible tool node must have an appropriate destination. If a dedicated tool page is not designed yet, the node may link to the best related article.
+Published tools should have public pages. `graph_visible` controls graph appearance only; it does not control whether a published tool page exists.
+
+License and privacy note are required for public tool records. Technical maturity and editorial confidence are tracked separately: technical maturity describes the tool's development state, while editorial confidence describes TEMIS's confidence in the record as a useful public reference.
+
+V1 does not require a top-level `Tools` menu item, but each visible tool node must link to its public tool page.
+
+See [TEMIS V1 tool model](./tool-model-v1.md) for the detailed field and page contract.
 
 ### Person/Author
 

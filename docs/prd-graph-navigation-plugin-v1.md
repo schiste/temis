@@ -68,6 +68,8 @@ Expected fields:
 
 Tool nodes are first-class in the graph data model, but V1 does not require a top-level tools menu item.
 
+Published tool records have public pages. Graph visibility controls whether a tool appears in graph navigation, not whether its public page exists.
+
 ### Graph Edge
 
 Expected fields:
