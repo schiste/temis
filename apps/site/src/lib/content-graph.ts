@@ -30,6 +30,7 @@ import {
   type SnapshotRow,
   type ToolEntry,
 } from "./emdash";
+import { relatedPeopleReferences, relatedRecordIds } from "./relations";
 
 interface ContentBylineEntry extends SnapshotRow {
   byline_id?: string | null;
@@ -378,42 +379,8 @@ function edge(
   };
 }
 
-function relatedArticleIds(value: unknown) {
-  if (!Array.isArray(value)) return [];
-
-  return value
-    .map((item) => {
-      if (typeof item === "string") return item;
-      if (!item || typeof item !== "object") return "";
-      const record = item as Record<string, unknown>;
-      return cleanText(record.id) || cleanText(record.reference_id);
-    })
-    .filter(Boolean);
-}
-
 function relatedPeopleNames(value: unknown) {
-  if (typeof value === "string") {
-    return value
-      .split(/[\n,;]/)
-      .map((item) => item.split(":")[0]?.trim() ?? "")
-      .filter(Boolean);
-  }
-
-  if (!Array.isArray(value)) return [];
-
-  return value
-    .map((item) => {
-      if (typeof item === "string") return item;
-      if (!item || typeof item !== "object") return "";
-      const record = item as Record<string, unknown>;
-      return (
-        cleanText(record.display_name) ||
-        cleanText(record.name) ||
-        cleanText(record.title) ||
-        cleanText(record.slug)
-      );
-    })
-    .filter(Boolean);
+  return relatedPeopleReferences(value).map((person) => person.label);
 }
 
 async function getTaxonomyTerms() {
@@ -566,7 +533,7 @@ function attachToolEdges(tools: ToolEntry[], posts: PostEntry[]) {
   const postIds = new Set(posts.map((post) => post.id));
 
   for (const tool of tools) {
-    for (const postId of relatedArticleIds(tool.related_articles)) {
+    for (const postId of relatedRecordIds(tool.related_articles)) {
       if (!postIds.has(postId)) continue;
       edges.push(
         edge(`tool:${tool.id}`, `content:${postId}`, "documents_tool", 50),
@@ -630,7 +597,9 @@ function authorPublicationCounts(
     );
   }
 
-  return new Map([...counts].map(([bylineId, items]) => [bylineId, items.size]));
+  return new Map(
+    [...counts].map(([bylineId, items]) => [bylineId, items.size]),
+  );
 }
 
 export async function getContentGraphSnapshot(): Promise<GraphNavigationSnapshot> {

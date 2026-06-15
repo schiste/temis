@@ -19,6 +19,7 @@ const {
   label = "Content graph navigation",
   variant = "default",
 } = Astro.props;
+const showNodeMeta = variant !== "compact";
 const nodeTypeLabels: Record<GraphNavigationNodeType, string> = {
   author: "Author",
   content: "Content",
@@ -235,7 +236,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
             </p>
             <h3>{node.label}</h3>
             {node.description && <p>{node.description}</p>}
-            {node.meta.length > 0 && (
+            {showNodeMeta && node.meta.length > 0 && (
               <dl class="temis-graph-nav__detail-meta">
                 {node.meta.map((item) => (
                   <div>
@@ -671,13 +672,32 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
   .temis-graph-nav--compact .temis-graph-nav__map {
     aspect-ratio: 1 / 1;
     min-height: calc(var(--ds-grid-unit, 2.625rem) * 6);
+    overflow: hidden;
   }
 
   .temis-graph-nav--compact .temis-graph-nav__node {
-    font-size: var(--ds-font-size-caption, 0.625rem);
-    max-width: calc(var(--ds-grid-unit, 2.625rem) * 3);
-    min-height: var(--ds-space-phi-4, 2.625rem);
-    padding: var(--ds-space-phi-00, 0.25rem);
+    block-size: var(--ds-space-phi-2, 1rem);
+    inline-size: var(--ds-space-phi-2, 1rem);
+    justify-content: center;
+    max-width: none;
+    min-height: 0;
+    padding: 0;
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__node--current,
+  .temis-graph-nav--compact .temis-graph-nav__node[data-graph-state="active"] {
+    block-size: var(--ds-space-phi-3, 1.625rem);
+    inline-size: var(--ds-space-phi-3, 1.625rem);
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__node span {
+    block-size: 1px;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    inline-size: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
   }
 
   .temis-graph-nav--compact .temis-graph-nav__detail {
@@ -697,17 +717,28 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     font-size: var(--ds-font-size-body, 1rem);
   }
 
-  .temis-graph-nav--compact .temis-graph-nav__detail-meta {
-    grid-template-columns: 1fr;
-  }
-
   .temis-graph-nav--compact .temis-graph-nav__detail-actions {
     justify-self: start;
   }
 
+  .temis-graph-nav--compact .temis-graph-nav__detail-related ul {
+    max-block-size: calc(var(--ds-grid-unit, 2.625rem) * 3);
+    overflow: auto;
+  }
+
   .temis-graph-nav--compact .temis-graph-nav__detail-related li {
     align-items: start;
+    gap: var(--ds-space-phi-00, 0.25rem);
     grid-template-columns: 1fr;
+    padding-block: var(--ds-space-phi-0, 0.375rem);
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__detail-related a {
+    line-height: 1.2;
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__detail-related span {
+    line-height: 1;
   }
 
   .temis-graph-nav--compact .temis-graph-nav__fallback {

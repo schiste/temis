@@ -7,14 +7,20 @@ import {
 } from "../../lib/content-graph";
 import {
   entryDescription,
+  entryBylineHref,
+  entryBylineName,
+  entryBylineSlug,
   entryExternalUrl,
   entrySlug,
   entryTitle,
+  getBylines,
+  getPosts,
   getSiteTexts,
   getToolBySlug,
   getTools,
 } from "../../lib/emdash";
 import { portableTextToHtml } from "../../lib/portable-text";
+import { relatedPeopleReferences, relatedRecordIds } from "../../lib/relations";
 
 export async function getStaticPaths() {
   const tools = await getTools();
@@ -34,6 +40,7 @@ const title = entryTitle(resolvedTool);
 const description = entryDescription(resolvedTool);
 const copy = await getSiteTexts({
   toolActivityHeading: "Repository activity",
+  toolConnectedHeading: "Connected reading",
   toolDefaultBranchLabel: "Default branch",
   toolDocumentationLabel: "Documentation",
   toolEditorialConfidenceLabel: "Editorial confidence",
@@ -41,6 +48,7 @@ const copy = await getSiteTexts({
   toolGraphHeading: "Navigation graph",
   toolGraphLabel: "Graph navigation from this tool",
   toolHeroEyebrow: "Tool dossier",
+  toolImportantLinksHeading: "Important links",
   toolLanguageLabel: "Language",
   toolLastCommitLabel: "Last commit",
   toolLicenseLabel: "License",
@@ -49,9 +57,9 @@ const copy = await getSiteTexts({
   toolOpenPrivacyHeading: "Open-source and privacy",
   toolOpenToolLabel: "Open tool",
   toolOverviewHeading: "Overview",
+  toolPeopleHeading: "People",
   toolPrivacyLabel: "Privacy note",
   toolRepositoryLabel: "Repository",
-  toolSignalHeading: "Signals",
   toolStarsLabel: "Stars",
   toolTechnicalMaturityLabel: "Technical maturity",
   toolWebsiteLabel: "Website",
@@ -59,6 +67,7 @@ const copy = await getSiteTexts({
 const graph = await getFocusedContentGraphSnapshot(
   toolGraphNodeId(resolvedTool),
 );
+const [posts, bylines] = await Promise.all([getPosts(), getBylines()]);
 const toolUrl = entryExternalUrl(resolvedTool.tool_url);
 const repositoryUrl = entryExternalUrl(resolvedTool.repository_url);
 const documentationUrl = entryExternalUrl(resolvedTool.documentation_url);
@@ -139,14 +148,14 @@ function maintenanceSignal(date: Date | null, label: string | undefined) {
 }
 
 const maintenance = maintenanceSignal(lastCommitDate, lastCommitLabel);
-type HeroSignal = {
+type ToolSignalItem = {
   detail?: string;
+  href?: string;
   label: string;
   tone?: string;
   value: string;
 };
-
-const primaryActions = [
+const importantLinks = [
   toolUrl
     ? {
         detail: hostLabel(toolUrl),
@@ -181,31 +190,13 @@ const primaryActions = [
     variant: "primary" | "secondary";
   } => Boolean(item),
 );
-const heroSignals: HeroSignal[] = [
+const activityItemCandidates: (ToolSignalItem | null)[] = [
   {
     detail: maintenance.detail,
     label: copy.toolMaintenanceLabel,
     tone: maintenance.tone,
     value: maintenance.value,
   },
-  ...(github?.primaryLanguage
-    ? [
-        {
-          label: copy.toolLanguageLabel,
-          value: github.primaryLanguage,
-        },
-      ]
-    : []),
-  ...(license
-    ? [
-        {
-          label: copy.toolLicenseLabel,
-          value: license,
-        },
-      ]
-    : []),
-];
-const activityItems = [
   github?.fullName
     ? {
         href: repositoryUrl ?? github.repositoryUrl,
@@ -250,8 +241,9 @@ const activityItems = [
         value: numberLabel(github?.openIssues),
       }
     : null,
-].filter((item): item is { href?: string; label: string; value: string } =>
-  Boolean(item),
+];
+const activityItems = activityItemCandidates.filter(
+  (item): item is ToolSignalItem => Boolean(item),
 );
 const trustItems = [
   license
@@ -279,6 +271,51 @@ const trustItems = [
       }
     : null,
 ].filter((item): item is { label: string; value: string } => Boolean(item));
+const relatedPostIds = new Set(relatedRecordIds(resolvedTool.related_articles));
+const relatedPosts = posts
+  .filter((post) => post.id && relatedPostIds.has(post.id))
+  .map((post) => ({
+    description: entryDescription(post),
+    href: `/blog/${entrySlug(post)}/`,
+    label: entryTitle(post),
+  }));
+const bylineById = new Map(bylines.map((byline) => [byline.id, byline]));
+const bylineBySlug = new Map(
+  bylines.map((byline) => [entryBylineSlug(byline), byline]),
+);
+const personReferences = relatedPeopleReferences(resolvedTool.related_people);
+const peopleByKey = new Map<
+  string,
+  { detail?: string; href?: string; label: string }
+>();
+const primaryByline = resolvedTool.primary_byline_id
+  ? bylineById.get(resolvedTool.primary_byline_id)
+  : null;
+
+if (primaryByline) {
+  peopleByKey.set(entryBylineSlug(primaryByline), {
+    detail: "Primary maintainer",
+    href: entryBylineHref(primaryByline),
+    label: entryBylineName(primaryByline),
+  });
+}
+
+for (const person of personReferences) {
+  const slug = person.label
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  const byline = bylineBySlug.get(slug);
+  peopleByKey.set(slug || person.label, {
+    detail: person.detail,
+    href: byline ? entryBylineHref(byline) : undefined,
+    label: byline ? entryBylineName(byline) : person.label,
+  });
+}
+
+const peopleLinks = [...peopleByKey.values()];
 ---
 
 <SiteLayout title={title} description={description}>
@@ -290,29 +327,26 @@ const trustItems = [
           <h1 class="ds-tool-title">{title}</h1>
           <p class="ds-tool-summary">{description}</p>
         </div>
+      </header>
 
-        <aside
-          class="ds-tool-hero__signals"
-          aria-label={copy.toolSignalHeading}
-        >
-          <p>{copy.toolSignalHeading}</p>
-          <dl>
-            {
-              heroSignals.map((item) => (
-                <div data-tone={item.tone}>
-                  <dt>{item.label}</dt>
-                  <dd>{item.value}</dd>
-                  {item.detail && <p>{item.detail}</p>}
-                </div>
-              ))
-            }
-          </dl>
-        </aside>
+      <section class="ds-tool-section ds-tool-section--overview">
+        <div class="ds-tool-section__header">
+          <h2>{copy.toolOverviewHeading}</h2>
+        </div>
+        <div
+          class="ds-prose ds-tool-prose"
+          set:html={portableTextToHtml(resolvedTool.description)}
+        />
+      </section>
 
-        {
-          primaryActions.length > 0 && (
+      {
+        importantLinks.length > 0 && (
+          <section class="ds-tool-section">
+            <div class="ds-tool-section__header">
+              <h2>{copy.toolImportantLinksHeading}</h2>
+            </div>
             <nav class="ds-tool-actions" aria-label="Tool links">
-              {primaryActions.map((action) => (
+              {importantLinks.map((action) => (
                 <a
                   class:list={[
                     "ds-tool-action",
@@ -325,9 +359,9 @@ const trustItems = [
                 </a>
               ))}
             </nav>
-          )
-        }
-      </header>
+          </section>
+        )
+      }
 
       {
         activityItems.length > 0 && (
@@ -337,7 +371,7 @@ const trustItems = [
             </div>
             <dl class="ds-tool-signal-grid">
               {activityItems.map((item) => (
-                <div>
+                <div data-tone={item.tone}>
                   <dt>{item.label}</dt>
                   <dd>
                     {item.href ? (
@@ -346,6 +380,7 @@ const trustItems = [
                       item.value
                     )}
                   </dd>
+                  {item.detail && <p>{item.detail}</p>}
                 </div>
               ))}
             </dl>
@@ -371,15 +406,51 @@ const trustItems = [
         )
       }
 
-      <section class="ds-tool-section ds-tool-section--overview">
-        <div class="ds-tool-section__header">
-          <h2>{copy.toolOverviewHeading}</h2>
-        </div>
-        <div
-          class="ds-prose ds-tool-prose"
-          set:html={portableTextToHtml(resolvedTool.description)}
-        />
-      </section>
+      {
+        relatedPosts.length > 0 && (
+          <section class="ds-tool-section">
+            <div class="ds-tool-section__header">
+              <h2>{copy.toolConnectedHeading}</h2>
+            </div>
+            <div class="ds-tool-link-list">
+              {relatedPosts.map((post) => (
+                <a class="ds-tool-link-card" href={post.href}>
+                  <span>Field note</span>
+                  <strong>{post.label}</strong>
+                  {post.description && <em>{post.description}</em>}
+                </a>
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      {
+        peopleLinks.length > 0 && (
+          <section class="ds-tool-section">
+            <div class="ds-tool-section__header">
+              <h2>{copy.toolPeopleHeading}</h2>
+            </div>
+            <div class="ds-tool-link-list ds-tool-link-list--people">
+              {peopleLinks.map((person) =>
+                person.href ? (
+                  <a class="ds-tool-link-card" href={person.href}>
+                    <span>Person</span>
+                    <strong>{person.label}</strong>
+                    {person.detail && <em>{person.detail}</em>}
+                  </a>
+                ) : (
+                  <div class="ds-tool-link-card">
+                    <span>Person</span>
+                    <strong>{person.label}</strong>
+                    {person.detail && <em>{person.detail}</em>}
+                  </div>
+                ),
+              )}
+            </div>
+          </section>
+        )
+      }
     </article>
     <ContentGraphRail
       graph={graph}
