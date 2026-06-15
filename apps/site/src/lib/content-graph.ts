@@ -382,6 +382,31 @@ function relatedArticleIds(value: unknown) {
     .filter(Boolean);
 }
 
+function relatedPeopleNames(value: unknown) {
+  if (typeof value === "string") {
+    return value
+      .split(/[\n,;]/)
+      .map((item) => item.split(":")[0]?.trim() ?? "")
+      .filter(Boolean);
+  }
+
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .map((item) => {
+      if (typeof item === "string") return item;
+      if (!item || typeof item !== "object") return "";
+      const record = item as Record<string, unknown>;
+      return (
+        cleanText(record.display_name) ||
+        cleanText(record.name) ||
+        cleanText(record.title) ||
+        cleanText(record.slug)
+      );
+    })
+    .filter(Boolean);
+}
+
 async function getTaxonomyTerms() {
   const [taxonomyDefinitions, taxonomyRows, termRows] = await Promise.all([
     getSnapshotTable<TaxonomyDefinitionEntry>("_emdash_taxonomy_defs"),
@@ -442,6 +467,10 @@ function attachBylineEdges(
     const id = cleanText(value);
     return bylineById.get(id) ?? bylineBySlug.get(bylineSlugFromId(id));
   };
+  const relatedBylines = (tool: ToolEntry) =>
+    relatedPeopleNames(tool.related_people)
+      .map((name) => bylineBySlug.get(slugify(name)))
+      .filter((byline): byline is BylineEntry => Boolean(byline));
 
   for (const post of posts) {
     const postId = `content:${post.id}`;
@@ -464,9 +493,14 @@ function attachBylineEdges(
 
   for (const tool of tools) {
     const toolId = `tool:${tool.id}`;
-    const directByline = resolveByline(tool.primary_byline_id);
-    if (directByline) {
-      edges.push(edge(toolId, `author:${directByline.id}`, "authored_by", 70));
+    const bylinesForTool = new Map(
+      [resolveByline(tool.primary_byline_id), ...relatedBylines(tool)]
+        .filter((byline): byline is BylineEntry => Boolean(byline?.id))
+        .map((byline) => [byline.id, byline]),
+    );
+
+    for (const byline of bylinesForTool.values()) {
+      edges.push(edge(toolId, `author:${byline.id}`, "authored_by", 70));
     }
   }
 
@@ -549,6 +583,10 @@ function authorPublicationCounts(
     const id = cleanText(value);
     return bylineById.get(id)?.id ?? bylineBySlug.get(bylineSlugFromId(id))?.id;
   };
+  const relatedBylineIds = (tool: ToolEntry) =>
+    relatedPeopleNames(tool.related_people)
+      .map((name) => bylineBySlug.get(slugify(name))?.id)
+      .filter((id): id is string => Boolean(id));
 
   const addCount = (bylineId: string | undefined, itemId: string) => {
     if (!bylineId || !bylineById.has(bylineId)) return;
@@ -566,6 +604,9 @@ function authorPublicationCounts(
 
   for (const tool of tools) {
     addCount(resolveBylineId(tool.primary_byline_id), `tool:${tool.id}`);
+    for (const bylineId of relatedBylineIds(tool)) {
+      addCount(bylineId, `tool:${tool.id}`);
+    }
   }
 
   for (const row of contentBylines) {
