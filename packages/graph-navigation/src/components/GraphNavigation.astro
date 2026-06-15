@@ -10,12 +10,14 @@ export interface Props {
   graph: GraphNavigationSnapshot;
   heading?: string;
   label?: string;
+  variant?: "default" | "compact";
 }
 
 const {
   graph,
   heading = "Content graph",
   label = "Content graph navigation",
+  variant = "default",
 } = Astro.props;
 const nodeTypeLabels: Record<GraphNavigationNodeType, string> = {
   author: "Author",
@@ -160,7 +162,13 @@ const detailPanels = visualNodes.map((node) => ({
 const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${laidOutGraph.generatedAt}`)}`;
 ---
 
-<nav class="temis-graph-nav" aria-label={label}>
+<nav
+  class:list={[
+    "temis-graph-nav",
+    variant === "compact" && "temis-graph-nav--compact",
+  ]}
+  aria-label={label}
+>
   <div class="temis-graph-nav__header">
     <h2>{heading}</h2>
     <span>{laidOutGraph.scope}</span>
@@ -653,6 +661,57 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
   .temis-graph-nav__fallback-description {
     color: var(--ds-color-text-muted, currentColor);
     font-size: var(--ds-font-size-body, 1rem);
+  }
+
+  .temis-graph-nav--compact {
+    gap: var(--ds-space-phi-1, 0.625rem);
+    padding-block: var(--ds-space-phi-1, 0.625rem);
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__map {
+    aspect-ratio: 1 / 1;
+    min-height: calc(var(--ds-grid-unit, 2.625rem) * 6);
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__node {
+    font-size: var(--ds-font-size-caption, 0.625rem);
+    max-width: calc(var(--ds-grid-unit, 2.625rem) * 3);
+    min-height: var(--ds-space-phi-4, 2.625rem);
+    padding: var(--ds-space-phi-00, 0.25rem);
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__detail {
+    gap: var(--ds-space-phi-1, 0.625rem);
+    grid-template-columns: 1fr;
+    padding-block: var(--ds-space-phi-1, 0.625rem);
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__detail h3 {
+    font-family: var(--ds-font-sans, ui-sans-serif);
+    font-size: var(--ds-font-size-body-lg, 1.125rem);
+  }
+
+  .temis-graph-nav--compact
+    .temis-graph-nav__detail-main
+    > p:not(.temis-graph-nav__detail-type) {
+    font-size: var(--ds-font-size-body, 1rem);
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__detail-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__detail-actions {
+    justify-self: start;
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__detail-related li {
+    align-items: start;
+    grid-template-columns: 1fr;
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__fallback {
+    display: none;
   }
 
   @media (max-width: 42rem) {

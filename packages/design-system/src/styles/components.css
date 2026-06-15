@@ -261,6 +261,25 @@
   font-family: var(--ds-font-mono);
 }
 
+.ds-content-page {
+  display: grid;
+  gap: var(--ds-space-phi-4);
+}
+
+.ds-content-main,
+.ds-content-rail {
+  min-width: 0;
+}
+
+.ds-content-rail {
+  align-self: start;
+}
+
+.ds-content-rail__inner {
+  display: grid;
+  gap: var(--ds-space-phi-2);
+}
+
 .ds-meta-row {
   border-block: var(--ds-stroke-hairline) solid var(--ds-color-line);
   color: var(--ds-color-text-muted);
@@ -340,6 +359,33 @@
 
 .ds-tool-record__panel dd {
   max-width: var(--ds-measure-prose);
+}
+
+@container ds-page (min-width: 68.25rem) {
+  .ds-content-page {
+    gap: 0;
+    grid-template-columns: repeat(auto-fill, minmax(var(--ds-grid-unit), 1fr));
+  }
+
+  .ds-content-main {
+    grid-column: 1 / span 16;
+  }
+
+  .ds-content-rail {
+    grid-column: 19 / span 8;
+    position: sticky;
+    top: var(--ds-space-phi-3);
+  }
+}
+
+@container ds-page (min-width: 110.25rem) {
+  .ds-content-main {
+    grid-column: 1 / span 26;
+  }
+
+  .ds-content-rail {
+    grid-column: 29 / span 14;
+  }
 }
 
 .ds-topic-label {

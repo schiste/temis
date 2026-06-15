@@ -1,0 +1,31 @@
+---
+import GraphNavigation from "@temis/graph-navigation/components/GraphNavigation.astro";
+import type { GraphNavigationSnapshot } from "@temis/graph-navigation";
+
+export interface Props {
+  graph: GraphNavigationSnapshot;
+  heading?: string;
+  label?: string;
+}
+
+const {
+  graph,
+  heading = "Navigation graph",
+  label = "Navigation graph from this page",
+} = Astro.props;
+---
+
+{
+  graph.nodes.length > 0 && (
+    <aside class="ds-content-rail" aria-label={label}>
+      <div class="ds-content-rail__inner">
+        <GraphNavigation
+          graph={graph}
+          heading={heading}
+          label={label}
+          variant="compact"
+        />
+      </div>
+    </aside>
+  )
+}

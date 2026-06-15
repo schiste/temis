@@ -1,5 +1,6 @@
 import {
   createGraphNavigationSnapshot,
+  focusGraphNavigationSnapshot,
   type GraphNavigationEdgeInput,
   type GraphNavigationNodeInput,
   type GraphNavigationNodeMetaInput,
@@ -224,6 +225,10 @@ function postNode(post: PostEntry): GraphNavigationNodeInput {
   };
 }
 
+export function postGraphNodeId(post: PostEntry) {
+  return `content:${post.id}`;
+}
+
 function toolNode(tool: ToolEntry): GraphNavigationNodeInput {
   const technicalMaturity =
     cleanText(tool.technical_maturity) || cleanText(tool.maturity);
@@ -256,6 +261,10 @@ function toolNode(tool: ToolEntry): GraphNavigationNodeInput {
     type: "tool",
     visible: !isHiddenFromGraph(tool),
   };
+}
+
+export function toolGraphNodeId(tool: ToolEntry) {
+  return `tool:${tool.id}`;
 }
 
 function authorNode(
@@ -667,4 +676,12 @@ export async function getContentGraphSnapshot(): Promise<GraphNavigationSnapshot
     nodes,
     scope: "global",
   });
+}
+
+export async function getFocusedContentGraphSnapshot(currentNodeId: string) {
+  return focusGraphNavigationSnapshot(
+    await getContentGraphSnapshot(),
+    currentNodeId,
+    { includeIsolatedCurrent: true },
+  );
 }

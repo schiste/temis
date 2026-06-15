@@ -1,7 +1,12 @@
 ---
 import MetadataRow from "@temis/design-system/components/MetadataRow.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
+import ContentGraphRail from "../../components/ContentGraphRail.astro";
 import SiteLayout from "../../components/SiteLayout.astro";
+import {
+  getFocusedContentGraphSnapshot,
+  toolGraphNodeId,
+} from "../../lib/content-graph";
 import {
   entryDescription,
   entryExternalUrl,
@@ -32,6 +37,8 @@ const description = entryDescription(resolvedTool);
 const copy = await getSiteTexts({
   toolDocumentationLabel: "Documentation",
   toolEditorialConfidenceLabel: "Editorial confidence",
+  toolGraphHeading: "Navigation graph",
+  toolGraphLabel: "Graph navigation from this tool",
   toolHeroEyebrow: "Tool",
   toolLanguageLabel: "Language",
   toolLastCommitLabel: "Last commit",
@@ -42,6 +49,9 @@ const copy = await getSiteTexts({
   toolTechnicalMaturityLabel: "Technical maturity",
   toolWebsiteLabel: "Website",
 });
+const graph = await getFocusedContentGraphSnapshot(
+  toolGraphNodeId(resolvedTool),
+);
 const toolUrl = entryExternalUrl(resolvedTool.tool_url);
 const repositoryUrl = entryExternalUrl(resolvedTool.repository_url);
 const documentationUrl = entryExternalUrl(resolvedTool.documentation_url);
@@ -135,31 +145,38 @@ const openPrivacyItems = [
 ---
 
 <SiteLayout title={title} description={description}>
-  <article class="ds-tool-record">
-    <PageHero
-      eyebrow={copy.toolHeroEyebrow}
-      title={title}
-      description={description}
+  <div class="ds-content-page">
+    <article class="ds-content-main ds-tool-record">
+      <PageHero
+        eyebrow={copy.toolHeroEyebrow}
+        title={title}
+        description={description}
+      />
+      <MetadataRow items={metadataItems} />
+      {
+        openPrivacyItems.length > 0 && (
+          <section class="ds-tool-record__panel">
+            <h2>{copy.toolOpenPrivacyHeading}</h2>
+            <dl>
+              {openPrivacyItems.map((item) => (
+                <div>
+                  <dt>{item.label}</dt>
+                  <dd>{item.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        )
+      }
+      <div
+        class="ds-prose"
+        set:html={portableTextToHtml(resolvedTool.description)}
+      />
+    </article>
+    <ContentGraphRail
+      graph={graph}
+      heading={copy.toolGraphHeading}
+      label={copy.toolGraphLabel}
     />
-    <MetadataRow items={metadataItems} />
-    {
-      openPrivacyItems.length > 0 && (
-        <section class="ds-tool-record__panel">
-          <h2>{copy.toolOpenPrivacyHeading}</h2>
-          <dl>
-            {openPrivacyItems.map((item) => (
-              <div>
-                <dt>{item.label}</dt>
-                <dd>{item.value}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-      )
-    }
-    <div
-      class="ds-prose"
-      set:html={portableTextToHtml(resolvedTool.description)}
-    />
-  </article>
+  </div>
 </SiteLayout>

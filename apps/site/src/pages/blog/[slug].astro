@@ -1,7 +1,12 @@
 ---
 import MetadataRow from "@temis/design-system/components/MetadataRow.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
+import ContentGraphRail from "../../components/ContentGraphRail.astro";
 import SiteLayout from "../../components/SiteLayout.astro";
+import {
+  getFocusedContentGraphSnapshot,
+  postGraphNodeId,
+} from "../../lib/content-graph";
 import {
   entryAuthorHref,
   entryAuthorName,
@@ -31,11 +36,16 @@ if (!resolvedPost) {
 const title = entryTitle(resolvedPost);
 const description = entryDescription(resolvedPost);
 const copy = await getSiteTexts({
+  postGraphHeading: "Navigation graph",
+  postGraphLabel: "Graph navigation from this article",
   postAuthorLabel: "Author",
   postHeroEyebrow: "Article",
   postStatusLabel: "Status",
   postStatusValue: "Published content",
 });
+const graph = await getFocusedContentGraphSnapshot(
+  postGraphNodeId(resolvedPost),
+);
 const authorName = entryAuthorName(resolvedPost);
 const authorHref = entryAuthorHref(resolvedPost);
 const metadataItems = [
@@ -53,13 +63,23 @@ const metadataItems = [
 ---
 
 <SiteLayout title={title} description={description}>
-  <article>
-    <PageHero
-      eyebrow={copy.postHeroEyebrow}
-      title={title}
-      description={description}
+  <div class="ds-content-page">
+    <article class="ds-content-main">
+      <PageHero
+        eyebrow={copy.postHeroEyebrow}
+        title={title}
+        description={description}
+      />
+      <MetadataRow items={metadataItems} />
+      <div
+        class="ds-prose"
+        set:html={portableTextToHtml(resolvedPost.content)}
+      />
+    </article>
+    <ContentGraphRail
+      graph={graph}
+      heading={copy.postGraphHeading}
+      label={copy.postGraphLabel}
     />
-    <MetadataRow items={metadataItems} />
-    <div class="ds-prose" set:html={portableTextToHtml(resolvedPost.content)} />
-  </article>
+  </div>
 </SiteLayout>
