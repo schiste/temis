@@ -267,17 +267,12 @@
 }
 
 .ds-content-main,
-.ds-content-rail {
+.ds-content-graph {
   min-width: 0;
 }
 
-.ds-content-rail {
+.ds-content-graph {
   align-self: start;
-}
-
-.ds-content-rail__inner {
-  display: grid;
-  gap: var(--ds-space-phi-2);
 }
 
 .ds-meta-row {
@@ -653,12 +648,9 @@
     grid-column: 1 / span 16;
   }
 
-  .ds-content-rail {
-    grid-column: 19 / span 8;
-    max-height: calc(100svh - var(--ds-space-phi-4));
-    overflow: auto;
-    position: sticky;
-    top: var(--ds-space-phi-3);
+  .ds-content-graph {
+    grid-column: 1 / -1;
+    margin-block-start: var(--ds-space-phi-4);
   }
 
   .ds-tool-hero__identity {
@@ -684,10 +676,6 @@
 @container ds-page (min-width: 110.25rem) {
   .ds-content-main {
     grid-column: 1 / span 26;
-  }
-
-  .ds-content-rail {
-    grid-column: 29 / span 14;
   }
 
   .ds-tool-hero__identity {

@@ -18,16 +18,19 @@ function uniqueMatches(source, pattern) {
 
 const html = await readFile(targetPath, "utf8");
 
-if (!html.includes("temis-graph-nav--compact")) {
-  fail("Expected compact graph navigation on the tool page.");
+if (html.includes("temis-graph-nav--compact")) {
+  fail("Expected full graph navigation on the tool page, found compact graph.");
 }
 
-if (!html.includes("temis-graph-nav__index")) {
-  fail("Expected compact graph index labels.");
+if (html.includes("temis-graph-nav__index")) {
+  fail("Expected full graph navigation without compact index labels.");
+}
+
+if (!html.includes("temis-graph-nav__node-label")) {
+  fail("Expected visible full graph node labels.");
 }
 
 const nodeIds = uniqueMatches(html, /data-node-id="([^"]+)"/g);
-const indexNodeIds = uniqueMatches(html, /data-index-node-id="([^"]+)"/g);
 const detailNodeIds = uniqueMatches(html, /data-detail-node-id="([^"]+)"/g);
 const edgeCount = [...html.matchAll(/data-edge-source="[^"]+"/g)].length;
 
@@ -40,10 +43,6 @@ if (edgeCount < 1) {
 }
 
 for (const nodeId of nodeIds) {
-  if (!indexNodeIds.has(nodeId)) {
-    fail(`Missing compact index item for node ${nodeId}.`);
-  }
-
   if (!detailNodeIds.has(nodeId)) {
     fail(`Missing detail panel for node ${nodeId}.`);
   }
