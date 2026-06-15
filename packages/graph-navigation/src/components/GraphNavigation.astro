@@ -27,6 +27,13 @@ const nodeTypeLabels: Record<GraphNavigationNodeType, string> = {
   tool: "Tool",
   topic: "Topic",
 };
+const nodeTypeShortLabels: Record<GraphNavigationNodeType, string> = {
+  author: "A",
+  content: "C",
+  tag: "#",
+  tool: "T",
+  topic: "+",
+};
 const laidOutGraph = withGraphNavigationLayout(graph);
 type VisualGraphNode = GraphNavigationNode & {
   idleDelay: number;
@@ -211,11 +218,38 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
           id={`graph-node-${node.slug}`}
           style={`--node-x:${node.visualX};--node-y:${node.visualY};--node-idle-x:${node.idleX}rem;--node-idle-y:${node.idleY}rem;--node-idle-duration:${node.idleDuration}ms;--node-idle-delay:${node.idleDelay}ms;${node.accent ? `--node-accent:${node.accent};` : ""}`}
         >
-          <span>{node.label}</span>
+          <span class="temis-graph-nav__node-marker" aria-hidden="true">
+            {nodeTypeShortLabels[node.type]}
+          </span>
+          <span class="temis-graph-nav__node-label">{node.label}</span>
         </a>
       ))
     }
   </div>
+
+  {
+    variant === "compact" && visualNodes.length > 1 && (
+      <div class="temis-graph-nav__index" aria-label="Graph nodes">
+        {visualNodes.map((node) => (
+          <a
+            class:list={[
+              "temis-graph-nav__index-link",
+              node.id === laidOutGraph.currentNodeId &&
+                "temis-graph-nav__index-link--current",
+            ]}
+            aria-controls={detailRegionId}
+            aria-expanded={node.id === initialDetailNodeId ? "true" : "false"}
+            data-index-node-id={node.id}
+            href={node.href}
+          >
+            <span aria-hidden="true">{nodeTypeShortLabels[node.type]}</span>
+            <strong>{node.label}</strong>
+            <em>{nodeTypeLabels[node.type]}</em>
+          </a>
+        ))}
+      </div>
+    )
+  }
 
   <section
     class="temis-graph-nav__details"
@@ -398,9 +432,13 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     transform: translate(-50%, -50%);
   }
 
-  .temis-graph-nav__node span {
+  .temis-graph-nav__node-label {
     display: inline-block;
     transition: transform 160ms ease;
+  }
+
+  .temis-graph-nav__node-marker {
+    display: none;
   }
 
   .temis-graph-nav__node--content {
@@ -621,6 +659,10 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     text-transform: uppercase;
   }
 
+  .temis-graph-nav__index {
+    display: none;
+  }
+
   .temis-graph-nav__fallback {
     border-block-start: var(--ds-stroke-hairline, 1px) solid
       var(--ds-color-line, currentColor);
@@ -690,7 +732,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     inline-size: var(--ds-space-phi-3, 1.625rem);
   }
 
-  .temis-graph-nav--compact .temis-graph-nav__node span {
+  .temis-graph-nav--compact .temis-graph-nav__node-label {
     block-size: 1px;
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
@@ -698,6 +740,102 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     overflow: hidden;
     position: absolute;
     white-space: nowrap;
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__node-marker {
+    align-items: center;
+    display: inline-flex;
+    font-family: var(--ds-font-mono, ui-monospace);
+    font-size: var(--ds-font-size-micro, 0.625rem);
+    font-style: normal;
+    font-weight: 700;
+    inline-size: 100%;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__index {
+    border-block: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line, currentColor);
+    display: grid;
+    gap: 0;
+    max-block-size: calc(var(--ds-grid-unit, 2.625rem) * 4);
+    overflow: auto;
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__index-link {
+    align-items: center;
+    border-block-end: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line, currentColor);
+    color: var(--ds-color-text, currentColor);
+    display: grid;
+    gap: var(--ds-space-phi-00, 0.25rem) var(--ds-space-phi-1, 0.625rem);
+    grid-template-columns: var(--ds-space-phi-3, 1.625rem) minmax(0, 1fr) auto;
+    min-block-size: var(--ds-grid-unit, 2.625rem);
+    padding-block: var(--ds-space-phi-0, 0.375rem);
+    text-decoration: none;
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__index-link:last-child {
+    border-block-end: 0;
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__index-link > span {
+    align-items: center;
+    border: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line-strong, currentColor);
+    display: inline-flex;
+    font-family: var(--ds-font-mono, ui-monospace);
+    font-size: var(--ds-font-size-micro, 0.625rem);
+    font-weight: 700;
+    justify-content: center;
+    min-block-size: var(--ds-space-phi-3, 1.625rem);
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__index-link strong,
+  .temis-graph-nav--compact .temis-graph-nav__index-link em {
+    font-family: var(--ds-font-mono, ui-monospace);
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__index-link strong {
+    font-size: var(--ds-font-size-meta, 0.75rem);
+    text-transform: uppercase;
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__index-link em {
+    color: var(--ds-color-text-muted, currentColor);
+    font-size: var(--ds-font-size-micro, 0.625rem);
+    font-style: normal;
+    text-transform: uppercase;
+  }
+
+  .temis-graph-nav--compact
+    .temis-graph-nav__index-link:is(
+      :hover,
+      :focus-visible,
+      [data-index-state="active"],
+      .temis-graph-nav__index-link--current
+    ) {
+    background: var(--ds-color-panel, transparent);
+    color: var(--temis-graph-link-active);
+  }
+
+  .temis-graph-nav--compact
+    .temis-graph-nav__index-link:is(
+      :hover,
+      :focus-visible,
+      [data-index-state="active"],
+      .temis-graph-nav__index-link--current
+    )
+    > span {
+    border-color: var(--temis-graph-link-active);
+  }
+
+  .temis-graph-nav--compact
+    .temis-graph-nav__index-link[data-index-state="neighbor"] {
+    color: var(--ds-color-text, currentColor);
   }
 
   .temis-graph-nav--compact .temis-graph-nav__detail {
@@ -766,20 +904,20 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
   @media (prefers-reduced-motion: reduce) {
     .temis-graph-nav__edges path,
     .temis-graph-nav__node,
-    .temis-graph-nav__node span {
+    .temis-graph-nav__node-label {
       transition: none;
     }
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .temis-graph-nav__node span {
+    .temis-graph-nav__node-label {
       animation: temis-graph-node-idle var(--node-idle-duration, 9800ms)
         ease-in-out infinite;
       animation-delay: var(--node-idle-delay, 0ms);
     }
 
-    .temis-graph-nav[data-graph-active] .temis-graph-nav__node span,
-    .temis-graph-nav:focus-within .temis-graph-nav__node span {
+    .temis-graph-nav[data-graph-active] .temis-graph-nav__node-label,
+    .temis-graph-nav:focus-within .temis-graph-nav__node-label {
       animation-play-state: paused;
       transform: translate(0, 0);
     }
@@ -802,6 +940,9 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
 
   for (const graph of graphs) {
     const nodes = [...graph.querySelectorAll<HTMLElement>("[data-node-id]")];
+    const indexLinks = [
+      ...graph.querySelectorAll<HTMLElement>("[data-index-node-id]"),
+    ];
     const edges = [
       ...graph.querySelectorAll<SVGPathElement>("[data-edge-source]"),
     ];
@@ -809,6 +950,12 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
       ...graph.querySelectorAll<HTMLElement>("[data-detail-node-id]"),
     ];
     const neighbors = new Map<string, Set<string>>();
+    const initialNodeId =
+      nodes.find((node) => node.getAttribute("aria-expanded") === "true")
+        ?.dataset.nodeId ??
+      detailPanels.find((panel) => !panel.hidden)?.dataset.detailNodeId ??
+      nodes[0]?.dataset.nodeId ??
+      null;
     let lockedNodeId: string | null = null;
 
     const setExpandedNode = (nodeId: string | null) => {
@@ -816,6 +963,13 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
         node.setAttribute(
           "aria-expanded",
           node.dataset.nodeId === nodeId ? "true" : "false",
+        );
+      }
+
+      for (const indexLink of indexLinks) {
+        indexLink.setAttribute(
+          "aria-expanded",
+          indexLink.dataset.indexNodeId === nodeId ? "true" : "false",
         );
       }
     };
@@ -836,9 +990,13 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
 
     const clearGraphState = () => {
       graph.removeAttribute("data-graph-active");
-      setExpandedNode(null);
+      setExpandedNode(initialNodeId);
+      if (initialNodeId) showDetailPanel(initialNodeId);
       for (const node of nodes) node.removeAttribute("data-graph-state");
       for (const edge of edges) edge.removeAttribute("data-graph-state");
+      for (const indexLink of indexLinks) {
+        indexLink.removeAttribute("data-index-state");
+      }
     };
 
     const showDetailPanel = (nodeId: string) => {
@@ -861,6 +1019,17 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
           node.dataset.graphState = "neighbor";
         } else {
           node.removeAttribute("data-graph-state");
+        }
+      }
+
+      for (const indexLink of indexLinks) {
+        const currentNodeId = indexLink.dataset.indexNodeId;
+        if (currentNodeId === nodeId) {
+          indexLink.dataset.indexState = "active";
+        } else if (currentNodeId && relatedNodes.has(currentNodeId)) {
+          indexLink.dataset.indexState = "neighbor";
+        } else {
+          indexLink.removeAttribute("data-index-state");
         }
       }
 
@@ -910,6 +1079,47 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
 
       node.addEventListener("click", (event) => {
         const nodeId = node.dataset.nodeId;
+        if (!nodeId) return;
+
+        if (
+          event.defaultPrevented ||
+          event.button !== 0 ||
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey
+        ) {
+          return;
+        }
+
+        event.preventDefault();
+        lockNode(nodeId);
+      });
+    }
+
+    for (const indexLink of indexLinks) {
+      indexLink.addEventListener("pointerenter", () => {
+        if (lockedNodeId) return;
+        const nodeId = indexLink.dataset.indexNodeId;
+        if (nodeId) activateNode(nodeId);
+      });
+
+      indexLink.addEventListener("pointerleave", () => {
+        if (!lockedNodeId) clearGraphState();
+      });
+
+      indexLink.addEventListener("focus", () => {
+        if (lockedNodeId) return;
+        const nodeId = indexLink.dataset.indexNodeId;
+        if (nodeId) activateNode(nodeId);
+      });
+
+      indexLink.addEventListener("blur", () => {
+        if (!lockedNodeId) clearGraphState();
+      });
+
+      indexLink.addEventListener("click", (event) => {
+        const nodeId = indexLink.dataset.indexNodeId;
         if (!nodeId) return;
 
         if (
