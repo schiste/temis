@@ -43,7 +43,13 @@
     "toolWebsiteLabel": "Website",
     "toolRepositoryLabel": "Repository",
     "toolDocumentationLabel": "Documentation",
-    "toolMaturityLabel": "Maturity",
+    "toolLicenseLabel": "License",
+    "toolPrivacyLabel": "Privacy note",
+    "toolTechnicalMaturityLabel": "Technical maturity",
+    "toolEditorialConfidenceLabel": "Editorial confidence",
+    "toolLanguageLabel": "Language",
+    "toolLastCommitLabel": "Last commit",
+    "toolOpenPrivacyHeading": "Open-source and privacy",
     "aboutHeroEyebrow": "About",
     "aboutMissingTitle": "About",
     "aboutMissingDescription": "TEMIS is a public map of a technical commons.",
@@ -223,11 +229,47 @@
           "type": "url"
         },
         {
-          "slug": "maturity",
-          "label": "Maturity",
+          "slug": "license",
+          "label": "License",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "privacy_note",
+          "label": "Privacy note",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "technical_maturity",
+          "label": "Technical maturity",
           "type": "select",
+          "required": true,
           "validation": {
-            "options": ["prototype", "active", "stable", "archived"]
+            "options": [
+              "prototype",
+              "experimental",
+              "active",
+              "stable",
+              "archived"
+            ]
+          }
+        },
+        {
+          "slug": "editorial_confidence",
+          "label": "Editorial confidence",
+          "type": "select",
+          "required": true,
+          "validation": {
+            "options": [
+              "observed",
+              "promising",
+              "used_by_temis",
+              "recommended",
+              "needs_review"
+            ]
           }
         },
         {
@@ -243,6 +285,11 @@
             "collection": "posts",
             "allowMultiple": true
           }
+        },
+        {
+          "slug": "related_people",
+          "label": "Related people and roles",
+          "type": "text"
         },
         {
           "slug": "graph_visible",
@@ -436,6 +483,54 @@
           ],
           "seo_title": "Welcome to TEMIS",
           "seo_description": "Starter content for the TEMIS EmDash and Astro stack."
+        }
+      }
+    ],
+    "tools": [
+      {
+        "id": "seed:tool:wiki-polis",
+        "slug": "wiki-polis",
+        "status": "published",
+        "data": {
+          "title": "wiki-polis",
+          "summary": "A deliberation tool for Wikimedia communities that maps opinion clusters and structured arguments around short statements.",
+          "description": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "wiki-polis adapts Polis-style deliberation for Wikimedia contexts. Participants respond to atomic statements, the system maps areas of agreement and disagreement, and organizers can add a curated argument layer for more structured reasoning."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The live application is designed for Toolforge with Wikimedia login, conversation management, and a separation between identity and deliberation layers."
+                }
+              ]
+            }
+          ],
+          "tool_url": "https://wiki-polis.toolforge.org",
+          "repository_url": "https://github.com/lgelauff/wiki-polis",
+          "documentation_url": "https://github.com/lgelauff/wiki-polis/tree/main/v2/docs",
+          "license": "GPL-3.0",
+          "privacy_note": "Uses Wikimedia login for the application identity layer and separates deliberation data from direct public identity in the underlying Polis-style flow.",
+          "technical_maturity": "experimental",
+          "editorial_confidence": "promising",
+          "related_articles": [
+            "seed:post:innovating-with-wikimedia-decision-making"
+          ],
+          "related_people": "Lodewijk Gelauff: creator/maintainer",
+          "graph_visible": true,
+          "graph_priority": 72,
+          "seo_title": "wiki-polis",
+          "seo_description": "wiki-polis is a Wikimedia-focused deliberation tool for mapping opinion clusters and structured arguments."
         }
       }
     ]
