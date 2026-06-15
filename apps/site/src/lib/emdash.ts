@@ -1,6 +1,11 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
+import {
+  enrichToolsWithGithubData,
+  type ToolGithubData,
+} from "@temis/tool-github-data";
+
 export interface SnapshotRow {
   [key: string]: unknown;
   id?: string;
@@ -58,6 +63,7 @@ export interface ToolEntry extends SnapshotRow {
   license?: string | null;
   maturity?: string | null;
   privacy_note?: string | null;
+  primary_byline_id?: string | null;
   related_articles?: unknown;
   related_people?: unknown;
   repository_url?: string | null;
@@ -67,6 +73,7 @@ export interface ToolEntry extends SnapshotRow {
   technical_maturity?: string | null;
   title: string;
   tool_url?: string | null;
+  github?: ToolGithubData | null;
 }
 
 interface MenuRow extends SnapshotRow {
@@ -100,6 +107,7 @@ const defaultSnapshotPath = path.resolve(
 );
 
 let cachedSnapshot: SnapshotData | null = null;
+let cachedTools: ToolEntry[] | null = null;
 
 function snapshotPath() {
   return (
@@ -345,8 +353,18 @@ export async function getPostBySlug(slug: string) {
 }
 
 export async function getTools() {
+  if (cachedTools) return cachedTools;
+
   const tools = await getCollection<ToolEntry>("tools");
-  return tools.sort((a, b) => entryTitle(a).localeCompare(entryTitle(b)));
+  const sortedTools = tools.sort((a, b) =>
+    entryTitle(a).localeCompare(entryTitle(b)),
+  );
+  const enrichedTools = await enrichToolsWithGithubData(sortedTools, {
+    disabled: process.env.TEMIS_GITHUB_FETCH_DISABLED === "1",
+    token: process.env.TEMIS_GITHUB_TOKEN ?? process.env.GITHUB_TOKEN,
+  });
+  cachedTools = enrichedTools;
+  return enrichedTools;
 }
 
 export async function getToolBySlug(slug: string) {

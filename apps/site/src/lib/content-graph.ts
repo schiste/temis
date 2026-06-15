@@ -113,6 +113,12 @@ const starterContentTaxonomies: ContentTaxonomyEntry[] = [
     taxonomy: "tag",
     term_id: "starter-topic:open-knowledge",
   },
+  {
+    collection_slug: "tools",
+    content_id: "seed:tool:wiki-polis",
+    taxonomy: "category",
+    term_id: "starter-topic:tools",
+  },
 ];
 
 function isDeleted(row: SnapshotRow) {
@@ -174,6 +180,20 @@ function isGraphMetaItem(
   return Boolean(item);
 }
 
+function dateLabel(value: string | null | undefined) {
+  if (!value) return null;
+
+  const date = new Date(value);
+  if (Number.isNaN(date.valueOf())) return value.slice(0, 10);
+
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "short",
+    timeZone: "UTC",
+    year: "numeric",
+  }).format(date);
+}
+
 function postMeta(post: PostEntry) {
   const publishedDateTime = entryPublishedDateTime(post);
 
@@ -207,6 +227,7 @@ function postNode(post: PostEntry): GraphNavigationNodeInput {
 function toolNode(tool: ToolEntry): GraphNavigationNodeInput {
   const technicalMaturity =
     cleanText(tool.technical_maturity) || cleanText(tool.maturity);
+  const github = tool.github;
 
   return {
     description: entryDescription(tool) || entrySummary(tool),
@@ -219,6 +240,10 @@ function toolNode(tool: ToolEntry): GraphNavigationNodeInput {
       graphMeta("Technical maturity", technicalMaturity),
       graphMeta("Editorial confidence", cleanText(tool.editorial_confidence)),
       graphMeta("Privacy", cleanText(tool.privacy_note)),
+      graphMeta("Language", github?.primaryLanguage),
+      graphMeta("Last commit", dateLabel(github?.lastCommitAt), {
+        datetime: github?.lastCommitAt,
+      }),
       graphMeta("Repository", entryExternalUrl(tool.repository_url), {
         href: entryExternalUrl(tool.repository_url),
       }),
@@ -397,6 +422,7 @@ function contentNodeId(collection: string, entry: GraphableEntry) {
 
 function attachBylineEdges(
   posts: PostEntry[],
+  tools: ToolEntry[],
   bylines: BylineEntry[],
   contentBylines: ContentBylineEntry[],
 ) {
@@ -425,13 +451,24 @@ function attachBylineEdges(
     }
   }
 
+  for (const tool of tools) {
+    const toolId = `tool:${tool.id}`;
+    const directByline = bylineById.get(tool.primary_byline_id ?? "");
+    if (directByline) {
+      edges.push(edge(toolId, `author:${directByline.id}`, "authored_by", 70));
+    }
+  }
+
   for (const row of contentBylines) {
-    if (contentTaxonomyCollection(row) !== "posts") continue;
+    const collection = contentTaxonomyCollection(row);
+    if (collection !== "posts" && collection !== "tools") continue;
     const contentId = contentTaxonomyContentId(row);
     const bylineId = cleanText(row.byline_id);
     if (!contentId || !bylineId || !bylineById.has(bylineId)) continue;
+    const nodeId =
+      collection === "tools" ? `tool:${contentId}` : `content:${contentId}`;
     edges.push(
-      edge(`content:${contentId}`, `author:${bylineId}`, "authored_by", 70),
+      edge(nodeId, `author:${bylineId}`, "authored_by", 70),
     );
   }
 
@@ -488,12 +525,23 @@ function attachToolEdges(tools: ToolEntry[], posts: PostEntry[]) {
   return edges;
 }
 
-function authorPublicationCounts(posts: PostEntry[], bylines: BylineEntry[]) {
-  const counts = new Map<string, number>();
+function authorPublicationCounts(
+  posts: PostEntry[],
+  tools: ToolEntry[],
+  bylines: BylineEntry[],
+  contentBylines: ContentBylineEntry[],
+) {
+  const counts = new Map<string, Set<string>>();
   const bylineById = new Map(bylines.map((byline) => [byline.id, byline]));
   const bylineBySlug = new Map(
     bylines.map((byline) => [entryBylineSlug(byline), byline]),
   );
+
+  const addCount = (bylineId: string | undefined, itemId: string) => {
+    if (!bylineId || !bylineById.has(bylineId)) return;
+    if (!counts.has(bylineId)) counts.set(bylineId, new Set());
+    counts.get(bylineId)!.add(itemId);
+  };
 
   for (const post of posts) {
     const directByline = bylineById.get(post.primary_byline_id ?? "");
@@ -501,11 +549,26 @@ function authorPublicationCounts(posts: PostEntry[], bylines: BylineEntry[]) {
       ? bylineBySlug.get(slugify(entryAuthorName(post) ?? ""))
       : null;
     const byline = directByline ?? fallbackByline;
-    if (!byline?.id) continue;
-    counts.set(byline.id, (counts.get(byline.id) ?? 0) + 1);
+    addCount(byline?.id, `content:${post.id}`);
   }
 
-  return counts;
+  for (const tool of tools) {
+    addCount(tool.primary_byline_id ?? undefined, `tool:${tool.id}`);
+  }
+
+  for (const row of contentBylines) {
+    const collection = contentTaxonomyCollection(row);
+    if (collection !== "posts" && collection !== "tools") continue;
+    const contentId = contentTaxonomyContentId(row);
+    const bylineId = cleanText(row.byline_id);
+    if (!contentId || !bylineId) continue;
+    addCount(
+      bylineId,
+      collection === "tools" ? `tool:${contentId}` : `content:${contentId}`,
+    );
+  }
+
+  return new Map([...counts].map(([bylineId, items]) => [bylineId, items.size]));
 }
 
 export async function getContentGraphSnapshot(): Promise<GraphNavigationSnapshot> {
@@ -519,7 +582,12 @@ export async function getContentGraphSnapshot(): Promise<GraphNavigationSnapshot
       getContentTaxonomies(),
     ]);
 
-  const publicationCounts = authorPublicationCounts(posts, bylines);
+  const publicationCounts = authorPublicationCounts(
+    posts,
+    tools,
+    bylines,
+    contentBylines,
+  );
   const nodes: GraphNavigationNodeInput[] = [
     ...posts.map(postNode),
     ...tools.map(toolNode),
@@ -536,7 +604,7 @@ export async function getContentGraphSnapshot(): Promise<GraphNavigationSnapshot
     ["tools", tools],
   ]);
   const edges: GraphNavigationEdgeInput[] = [
-    ...attachBylineEdges(posts, bylines, contentBylines),
+    ...attachBylineEdges(posts, tools, bylines, contentBylines),
     ...attachTaxonomyEdges(entries, terms, assignments),
     ...attachToolEdges(tools, posts),
   ];

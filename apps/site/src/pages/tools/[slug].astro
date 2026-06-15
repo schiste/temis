@@ -33,6 +33,8 @@ const copy = await getSiteTexts({
   toolDocumentationLabel: "Documentation",
   toolEditorialConfidenceLabel: "Editorial confidence",
   toolHeroEyebrow: "Tool",
+  toolLanguageLabel: "Language",
+  toolLastCommitLabel: "Last commit",
   toolLicenseLabel: "License",
   toolOpenPrivacyHeading: "Open-source and privacy",
   toolPrivacyLabel: "Privacy note",
@@ -48,6 +50,18 @@ const privacyNote = resolvedTool.privacy_note?.trim();
 const technicalMaturity =
   resolvedTool.technical_maturity?.trim() || resolvedTool.maturity?.trim();
 const editorialConfidence = resolvedTool.editorial_confidence?.trim();
+const github = resolvedTool.github;
+const lastCommitDateTime = github?.lastCommitAt;
+const lastCommitDate = lastCommitDateTime ? new Date(lastCommitDateTime) : null;
+const lastCommitLabel =
+  lastCommitDate && !Number.isNaN(lastCommitDate.valueOf())
+    ? new Intl.DateTimeFormat("en-GB", {
+        day: "2-digit",
+        month: "short",
+        timeZone: "UTC",
+        year: "numeric",
+      }).format(lastCommitDate)
+    : lastCommitDateTime?.slice(0, 10);
 const metadataItems = [
   toolUrl
     ? {
@@ -86,6 +100,19 @@ const metadataItems = [
     ? {
         label: copy.toolEditorialConfidenceLabel,
         value: editorialConfidence,
+      }
+    : null,
+  github?.primaryLanguage
+    ? {
+        label: copy.toolLanguageLabel,
+        value: github.primaryLanguage,
+      }
+    : null,
+  lastCommitLabel
+    ? {
+        href: github?.lastCommitUrl,
+        label: copy.toolLastCommitLabel,
+        value: lastCommitLabel,
       }
     : null,
 ].filter((item): item is { href?: string; label: string; value: string } =>
