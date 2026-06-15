@@ -205,6 +205,9 @@ function postNode(post: PostEntry): GraphNavigationNodeInput {
 }
 
 function toolNode(tool: ToolEntry): GraphNavigationNodeInput {
+  const technicalMaturity =
+    cleanText(tool.technical_maturity) || cleanText(tool.maturity);
+
   return {
     description: entryDescription(tool) || entrySummary(tool),
     href: `/tools/${entrySlug(tool)}/`,
@@ -212,7 +215,10 @@ function toolNode(tool: ToolEntry): GraphNavigationNodeInput {
     label: entryTitle(tool),
     meta: [
       graphMeta("Content type", "Tool"),
-      graphMeta("Maturity", cleanText(tool.maturity)),
+      graphMeta("License", cleanText(tool.license)),
+      graphMeta("Technical maturity", technicalMaturity),
+      graphMeta("Editorial confidence", cleanText(tool.editorial_confidence)),
+      graphMeta("Privacy", cleanText(tool.privacy_note)),
       graphMeta("Repository", entryExternalUrl(tool.repository_url), {
         href: entryExternalUrl(tool.repository_url),
       }),

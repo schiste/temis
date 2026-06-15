@@ -31,15 +31,23 @@ const title = entryTitle(resolvedTool);
 const description = entryDescription(resolvedTool);
 const copy = await getSiteTexts({
   toolDocumentationLabel: "Documentation",
+  toolEditorialConfidenceLabel: "Editorial confidence",
   toolHeroEyebrow: "Tool",
-  toolMaturityLabel: "Maturity",
+  toolLicenseLabel: "License",
+  toolOpenPrivacyHeading: "Open-source and privacy",
+  toolPrivacyLabel: "Privacy note",
   toolRepositoryLabel: "Repository",
+  toolTechnicalMaturityLabel: "Technical maturity",
   toolWebsiteLabel: "Website",
 });
 const toolUrl = entryExternalUrl(resolvedTool.tool_url);
 const repositoryUrl = entryExternalUrl(resolvedTool.repository_url);
 const documentationUrl = entryExternalUrl(resolvedTool.documentation_url);
-const maturity = resolvedTool.maturity?.trim();
+const license = resolvedTool.license?.trim();
+const privacyNote = resolvedTool.privacy_note?.trim();
+const technicalMaturity =
+  resolvedTool.technical_maturity?.trim() || resolvedTool.maturity?.trim();
+const editorialConfidence = resolvedTool.editorial_confidence?.trim();
 const metadataItems = [
   toolUrl
     ? {
@@ -62,25 +70,66 @@ const metadataItems = [
         value: copy.toolDocumentationLabel,
       }
     : null,
-  maturity
+  license
     ? {
-        label: copy.toolMaturityLabel,
-        value: maturity,
+        label: copy.toolLicenseLabel,
+        value: license,
+      }
+    : null,
+  technicalMaturity
+    ? {
+        label: copy.toolTechnicalMaturityLabel,
+        value: technicalMaturity,
+      }
+    : null,
+  editorialConfidence
+    ? {
+        label: copy.toolEditorialConfidenceLabel,
+        value: editorialConfidence,
       }
     : null,
 ].filter((item): item is { href?: string; label: string; value: string } =>
   Boolean(item),
 );
+const openPrivacyItems = [
+  license
+    ? {
+        label: copy.toolLicenseLabel,
+        value: license,
+      }
+    : null,
+  privacyNote
+    ? {
+        label: copy.toolPrivacyLabel,
+        value: privacyNote,
+      }
+    : null,
+].filter((item): item is { label: string; value: string } => Boolean(item));
 ---
 
 <SiteLayout title={title} description={description}>
-  <article>
+  <article class="ds-tool-record">
     <PageHero
       eyebrow={copy.toolHeroEyebrow}
       title={title}
       description={description}
     />
     <MetadataRow items={metadataItems} />
+    {
+      openPrivacyItems.length > 0 && (
+        <section class="ds-tool-record__panel">
+          <h2>{copy.toolOpenPrivacyHeading}</h2>
+          <dl>
+            {openPrivacyItems.map((item) => (
+              <div>
+                <dt>{item.label}</dt>
+                <dd>{item.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )
+    }
     <div
       class="ds-prose"
       set:html={portableTextToHtml(resolvedTool.description)}

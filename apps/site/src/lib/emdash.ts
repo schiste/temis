@@ -51,15 +51,20 @@ export interface PostEntry extends SnapshotRow {
 export interface ToolEntry extends SnapshotRow {
   description?: unknown;
   documentation_url?: string | null;
+  editorial_confidence?: string | null;
   featured_image?: unknown;
   graph_priority?: number | null;
   graph_visible?: boolean | number | null;
+  license?: string | null;
   maturity?: string | null;
+  privacy_note?: string | null;
   related_articles?: unknown;
+  related_people?: unknown;
   repository_url?: string | null;
   seo_description?: string;
   seo_title?: string;
   summary?: string;
+  technical_maturity?: string | null;
   title: string;
   tool_url?: string | null;
 }
