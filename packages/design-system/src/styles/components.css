@@ -668,11 +668,11 @@
   }
 
   .ds-content-main {
-    grid-column: 1 / span 16;
+    grid-column: 1 / -13;
   }
 
   .ds-content-rail {
-    grid-column: 19 / span 10;
+    grid-column: -11 / -1;
   }
 
   .ds-content-rail .temis-graph-nav__map {
@@ -716,11 +716,11 @@
 
 @container ds-page (min-width: 110.25rem) {
   .ds-content-main {
-    grid-column: 1 / span 26;
+    grid-column: 1 / -15;
   }
 
   .ds-content-rail {
-    grid-column: 29 / span 12;
+    grid-column: -13 / -1;
   }
 
   .ds-tool-hero__identity {
