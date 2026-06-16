@@ -198,6 +198,7 @@ Use phi relationships for major layout decisions.
   --layout-major: 61.8%;
   --layout-minor: 38.2%;
   --grid-columns-prose: 16;
+  --grid-columns-article: 22;
   --grid-columns-wide: 26;
   --grid-columns-page: 42;
   --content-target-width: 92vw;
@@ -206,6 +207,7 @@ Use phi relationships for major layout decisions.
     var(--measure-page)
   );
   --measure-prose: calc(var(--grid-unit) * var(--grid-columns-prose));
+  --measure-article: calc(var(--grid-unit) * var(--grid-columns-article));
   --measure-wide: calc(var(--grid-unit) * var(--grid-columns-wide));
   --measure-page: calc(var(--grid-unit) * var(--grid-columns-page));
 }
@@ -215,8 +217,15 @@ Recommended layout uses:
 
 - Homepage graph/editorial split: graph as the major visual field, articles or
   editorial entry points visible above the fold.
-- Article layout: centered editorial reading column, with metadata integrated
-  before and around the article rather than persistent dashboard sidebars.
+- Default prose: `16` grid columns for compact CMS pages and secondary text.
+- Article prose: `22` grid columns for long-form content pages with graph
+  rails. This keeps line length controlled while preventing the article body
+  from looking detached inside the wider content column.
+- Wide measure: `26` grid columns for page heroes and feature-level editorial
+  moments.
+- Article layout: editorial reading column with metadata integrated before and
+  around the article. The article body may use the wider article measure when a
+  graph rail is present; it should not expand to the full main column.
 - Site chrome, main content, and footer should share the same snapped page
   content area. Avoid separate chrome caps that create a second horizontal
   system.

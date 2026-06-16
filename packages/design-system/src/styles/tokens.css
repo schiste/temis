@@ -23,6 +23,7 @@
   --ds-row-quarter: calc(var(--ds-row-unit) / 4);
   --ds-row-eighth: calc(var(--ds-row-unit) / 8);
   --ds-grid-columns-prose: 16;
+  --ds-grid-columns-article: 22;
   --ds-grid-columns-wide: 26;
   --ds-grid-columns-page: 42;
   --ds-content-target-width: 92vw;
@@ -52,6 +53,7 @@
   --ds-layout-major: 61.8%;
   --ds-layout-minor: 38.2%;
   --ds-measure-prose: 42rem;
+  --ds-measure-article: 57.75rem;
   --ds-measure-wide: 68.25rem;
   --ds-measure-page: 110.25rem;
 
@@ -95,6 +97,9 @@
     );
     --ds-measure-prose: calc(
       var(--ds-grid-unit) * var(--ds-grid-columns-prose)
+    );
+    --ds-measure-article: calc(
+      var(--ds-grid-unit) * var(--ds-grid-columns-article)
     );
     --ds-measure-wide: calc(var(--ds-grid-unit) * var(--ds-grid-columns-wide));
     --ds-measure-page: calc(var(--ds-grid-unit) * var(--ds-grid-columns-page));
