@@ -721,7 +721,7 @@
         "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Use this entry to verify the publish-to-static flow, then replace it with PRD-backed content.\"}]}]",
         "seo_title": "Welcome to TEMIS",
         "seo_description": "Starter content for the TEMIS EmDash and Astro stack.",
-        "author_name": null
+        "author_name": "TEMIS editorial team"
       },
       {
         "id": "seed:post:innovating-with-wikimedia-decision-making",
@@ -1119,6 +1119,7 @@
         "screenshot_url": "/media/tools/wiki-polis-home.png",
         "screenshot_alt": "Screenshot of the wiki-polis homepage showing the Wikimedia login call to action and open consultations list.",
         "screenshot_caption": "wiki-polis public homepage captured from the live Toolforge prototype.",
+        "screenshot_license": "CC BY-SA 4.0",
         "license": "GPL-3.0",
         "privacy_note": "Uses Wikimedia login for the application identity layer and separates deliberation data from direct public identity in the underlying Polis-style flow.",
         "technical_maturity": "experimental",

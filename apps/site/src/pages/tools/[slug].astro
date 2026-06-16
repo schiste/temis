@@ -157,6 +157,7 @@ const screenshotAlt =
   textField(resolvedTool.screenshot_alt) ||
   `Screenshot of the ${title} interface.`;
 const screenshotCaption = textField(resolvedTool.screenshot_caption);
+const screenshotLicense = textField(resolvedTool.screenshot_license);
 const maintenance = maintenanceSignal(lastCommitDate, lastCommitLabel);
 type ToolSignalItem = {
   detail?: string;
@@ -356,8 +357,13 @@ const peopleLinks = [...peopleByKey.values()];
               <h2>{copy.toolScreenshotHeading}</h2>
             </div>
             <figure class="ds-media-frame ds-media-frame--screenshot">
-              {screenshotCaption && (
-                <figcaption>{screenshotCaption}</figcaption>
+              {(screenshotCaption || screenshotLicense) && (
+                <figcaption>
+                  {screenshotCaption && <span>{screenshotCaption}</span>}
+                  {screenshotLicense && (
+                    <small>License: {screenshotLicense}</small>
+                  )}
+                </figcaption>
               )}
               <img
                 class="ds-media-frame__image"

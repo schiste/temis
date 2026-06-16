@@ -629,16 +629,22 @@
 }
 
 .ds-media-frame figcaption {
-  align-items: flex-end;
+  align-items: flex-start;
   border-block-end: var(--ds-stroke-hairline) solid var(--ds-color-line);
   color: var(--ds-color-text-muted);
-  display: flex;
+  display: grid;
   font-family: var(--ds-font-mono);
   font-size: var(--ds-font-size-meta);
+  gap: var(--ds-space-3xs);
   line-height: 1.35;
   min-height: var(--ds-row-unit);
   padding: var(--ds-row-quarter);
   text-transform: uppercase;
+}
+
+.ds-media-frame figcaption small {
+  color: var(--ds-color-text-soft);
+  font: inherit;
 }
 
 .ds-tool-link-list {

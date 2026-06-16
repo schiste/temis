@@ -124,6 +124,12 @@
           "columnType": "TEXT"
         },
         {
+          "slug": "screenshot_license",
+          "label": "Screenshot license",
+          "type": "string",
+          "columnType": "TEXT"
+        },
+        {
           "slug": "related_articles",
           "label": "Related Articles",
           "type": "reference",

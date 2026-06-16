@@ -293,6 +293,11 @@
           "type": "text"
         },
         {
+          "slug": "screenshot_license",
+          "label": "Screenshot license",
+          "type": "string"
+        },
+        {
           "slug": "related_articles",
           "label": "Related Articles",
           "type": "reference",
@@ -484,6 +489,7 @@
         "data": {
           "title": "Welcome to TEMIS",
           "excerpt": "The first published article in the TEMIS starter content model.",
+          "author_name": "TEMIS editorial team",
           "content": [
             {
               "_type": "block",
@@ -541,6 +547,7 @@
           "screenshot_url": "/media/tools/wiki-polis-home.png",
           "screenshot_alt": "Screenshot of the wiki-polis homepage showing the Wikimedia login call to action and open consultations list.",
           "screenshot_caption": "wiki-polis public homepage captured from the live Toolforge prototype.",
+          "screenshot_license": "CC BY-SA 4.0",
           "related_articles": [
             "seed:post:innovating-with-wikimedia-decision-making"
           ],
