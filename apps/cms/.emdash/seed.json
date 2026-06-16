@@ -278,6 +278,21 @@
           "type": "image"
         },
         {
+          "slug": "screenshot_url",
+          "label": "Screenshot URL",
+          "type": "url"
+        },
+        {
+          "slug": "screenshot_alt",
+          "label": "Screenshot alt text",
+          "type": "text"
+        },
+        {
+          "slug": "screenshot_caption",
+          "label": "Screenshot caption",
+          "type": "text"
+        },
+        {
           "slug": "related_articles",
           "label": "Related Articles",
           "type": "reference",
@@ -523,6 +538,9 @@
           "privacy_note": "Uses Wikimedia login for the application identity layer and separates deliberation data from direct public identity in the underlying Polis-style flow.",
           "technical_maturity": "experimental",
           "editorial_confidence": "promising",
+          "screenshot_url": "/media/tools/wiki-polis-home.png",
+          "screenshot_alt": "Screenshot of the wiki-polis homepage showing the Wikimedia login call to action and open consultations list.",
+          "screenshot_caption": "wiki-polis public homepage captured from the live Toolforge prototype.",
           "related_articles": [
             "seed:post:innovating-with-wikimedia-decision-making"
           ],

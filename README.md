@@ -76,6 +76,39 @@ For the production static build, set `EMDASH_BASE_URL` and `EMDASH_PREVIEW_SECRE
 pnpm build
 ```
 
+## CMS Schema Management
+
+The V1 schema contract for tool records is tracked in
+`apps/cms/schema/tools.schema.json`.
+
+Check local CMS schema drift:
+
+```sh
+pnpm cms:schema:check
+```
+
+Apply safe additive local changes:
+
+```sh
+pnpm cms:schema:apply
+```
+
+Check production D1 schema drift:
+
+```sh
+pnpm cms:schema:check:production
+```
+
+Apply safe additive production changes:
+
+```sh
+pnpm cms:schema:apply:production
+```
+
+The current schema scripts manage `tools` only. They add or update missing tool
+fields and metadata, but they do not delete, rename, or rewrite existing
+content. Extra legacy fields are reported as warnings.
+
 ## Cloudflare Names
 
 - Pages project: `temis-site`
