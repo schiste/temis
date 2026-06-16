@@ -1,5 +1,5 @@
 ---
-import ArticleCard from "@temis/design-system/components/ArticleCard.astro";
+import Card from "@temis/design-system/components/Card.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
 import RichContent from "@temis/design-system/components/RichContent.astro";
 import SiteLayout from "../../components/SiteLayout.astro";
@@ -40,9 +40,10 @@ const description = page
 
   {
     bylines.length > 0 && (
-      <div class="ds-listing">
+      <div class="ds-card-grid">
         {bylines.map((byline) => (
-          <ArticleCard
+          <Card
+            variant="standard"
             eyebrow={copy.peopleCardEyebrow}
             href={entryBylineHref(byline)}
             title={entryBylineName(byline)}

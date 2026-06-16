@@ -7,7 +7,6 @@
   "description": "Astro-first TEMIS design system foundations and shared public-site components.",
   "exports": {
     "./styles.css": "./src/styles/index.css",
-    "./components/ArticleCard.astro": "./src/components/ArticleCard.astro",
     "./components/BaseLayout.astro": "./src/components/BaseLayout.astro",
     "./components/Card.astro": "./src/components/Card.astro",
     "./components/FieldNoteRow.astro": "./src/components/FieldNoteRow.astro",
