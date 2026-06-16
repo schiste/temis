@@ -426,6 +426,10 @@
   font-family: var(--ds-font-mono);
 }
 
+.ds-prose li > span {
+  min-width: 0;
+}
+
 .ds-content-page {
   align-items: start;
   display: grid;

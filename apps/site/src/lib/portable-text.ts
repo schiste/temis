@@ -91,7 +91,7 @@ function renderBlock(block: unknown) {
   const text = blockText(block);
   if (!text) return "";
 
-  if (data.listItem === "bullet") return `<li>${text}</li>`;
+  if (data.listItem === "bullet") return `<li><span>${text}</span></li>`;
 
   switch (data.style) {
     case "h2":
