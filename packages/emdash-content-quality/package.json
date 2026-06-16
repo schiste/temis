@@ -1,0 +1,21 @@
+{
+  "name": "@temis/emdash-content-quality",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT OR Apache-2.0",
+  "type": "module",
+  "description": "EmDash plugin wrapper for TEMIS content quality checks.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@temis/content-quality": "workspace:*",
+    "emdash": "^0.17.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}

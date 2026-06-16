@@ -7,6 +7,7 @@ import emdash, { local } from "emdash/astro";
 import { sqlite } from "emdash/db";
 import wasm from "vite-plugin-wasm";
 import cloudflareDeployTriggerPlugin from "@temis/emdash-cloudflare-deploy";
+import contentQualityPlugin from "@temis/emdash-content-quality";
 
 const isBuildCommand = process.env.TEMIS_CMS_BUILD === "1";
 
@@ -58,6 +59,7 @@ export default defineConfig({
       database,
       storage,
       plugins: [
+        contentQualityPlugin(),
         aexeoPlugin({ collections: ["posts", "pages", "tools"] }),
         ...productionPlugins,
       ],

@@ -1,0 +1,14 @@
+{
+  "name": "@temis/content-quality",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT OR Apache-2.0",
+  "type": "module",
+  "description": "Shared TEMIS content quality checks for CMS hooks and deterministic gates.",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.mjs"
+    }
+  }
+}

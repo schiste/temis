@@ -64,6 +64,26 @@ pnpm seed
 Local fixture content may be changed when it supports development, tests, or a
 reviewable UI state. Do not treat fixture changes as production publishing.
 
+Published fixture content is checked by the same content quality rules that are
+used by the CMS publish middleware:
+
+- title exists
+- summary or excerpt exists
+- author, person, or byline is linked for posts and tools
+- content type is resolvable
+- topic, tag, or category assignment exists when the current content model
+  exposes one
+- SEO title and description exist
+- images have alt text, caption, and license or rights note
+- tracking embeds and analytics references are absent
+
+Run the content gate after changing seed content, the committed site snapshot,
+or content-related CMS behavior:
+
+```sh
+pnpm content:check
+```
+
 For tool fields, update the tracked schema first:
 
 ```text
@@ -118,6 +138,7 @@ For CMS changes:
 pnpm --filter @temis/cms type-check
 pnpm cms:seed:validate
 pnpm cms:schema:check
+pnpm content:check
 ```
 
 For shared package or broad changes:

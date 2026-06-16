@@ -40,12 +40,21 @@ importers:
       "@emdash-cms/admin":
         specifier: ^0.17.2
         version: 0.17.2(@atcute/identity@2.0.0)(@floating-ui/dom@1.7.6)(@tiptap/extension-collaboration@3.26.1)(@tiptap/extensions@3.26.1)(@tiptap/y-tiptap@3.0.5)(@types/react-dom@19.2.3)(@types/react@19.2.17)(react-dom@19.2.7)(react@19.2.7)(typescript@5.9.3)(zod@4.4.3)
+      "@emdash-cms/auth":
+        specifier: ^0.17.2
+        version: 0.17.2(astro@6.4.6)(kysely@0.29.2)
       "@emdash-cms/cloudflare":
         specifier: ^0.17.2
         version: 0.17.2(@astrojs/react@5.0.7)(@atcute/identity@2.0.0)(@cloudflare/workers-types@4.20260613.1)(@floating-ui/dom@1.7.6)(@tiptap/extension-collaboration@3.26.1)(@tiptap/extensions@3.26.1)(@tiptap/pm@3.26.1)(@tiptap/y-tiptap@3.0.5)(@types/react-dom@19.2.3)(@types/react@19.2.17)(astro@6.4.6)(kysely@0.29.2)(react-dom@19.2.7)(react@19.2.7)(typescript@5.9.3)
+      "@temis/content-quality":
+        specifier: workspace:*
+        version: link:../../packages/content-quality
       "@temis/emdash-cloudflare-deploy":
         specifier: workspace:*
         version: link:../../packages/emdash-cloudflare-deploy
+      "@temis/emdash-content-quality":
+        specifier: workspace:*
+        version: link:../../packages/emdash-content-quality
       astro:
         specifier: ^6.2.2
         version: 6.4.6(@types/node@22.19.21)
@@ -97,11 +106,36 @@ importers:
         specifier: ^5.7.0
         version: 5.9.3
 
+  packages/content-quality: {}
+
   packages/design-system:
     dependencies:
       astro:
         specifier: ^6.0.0
         version: 6.4.6(@types/node@22.19.21)
+
+  packages/emdash-cloudflare-deploy:
+    dependencies:
+      emdash:
+        specifier: ^0.17.2
+        version: 0.17.2(@astrojs/react@5.0.7)(@atcute/identity@2.0.0)(@floating-ui/dom@1.7.6)(@tiptap/extension-collaboration@3.26.1)(@tiptap/extensions@3.26.1)(@tiptap/pm@3.26.1)(@tiptap/y-tiptap@3.0.5)(@types/react-dom@19.2.3)(@types/react@19.2.17)(astro@6.4.6)(react-dom@19.2.7)(react@19.2.7)(typescript@5.9.3)
+    devDependencies:
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+
+  packages/emdash-content-quality:
+    dependencies:
+      "@temis/content-quality":
+        specifier: workspace:*
+        version: link:../content-quality
+      emdash:
+        specifier: ^0.17.2
+        version: 0.17.2(@astrojs/react@5.0.7)(@atcute/identity@2.0.0)(@floating-ui/dom@1.7.6)(@tiptap/extension-collaboration@3.26.1)(@tiptap/extensions@3.26.1)(@tiptap/pm@3.26.1)(@tiptap/y-tiptap@3.0.5)(@types/react-dom@19.2.3)(@types/react@19.2.17)(astro@6.4.6)(react-dom@19.2.7)(react@19.2.7)(typescript@5.9.3)
+    devDependencies:
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
 
   packages/graph-navigation:
     dependencies:
@@ -115,16 +149,6 @@ importers:
       "@types/d3-force":
         specifier: ^3.0.10
         version: 3.0.10
-      typescript:
-        specifier: ^5.7.0
-        version: 5.9.3
-
-  packages/emdash-cloudflare-deploy:
-    dependencies:
-      emdash:
-        specifier: ^0.17.2
-        version: 0.17.2(@astrojs/react@5.0.7)(@atcute/identity@2.0.0)(@floating-ui/dom@1.7.6)(@tiptap/extension-collaboration@3.26.1)(@tiptap/extensions@3.26.1)(@tiptap/pm@3.26.1)(@tiptap/y-tiptap@3.0.5)(@types/react-dom@19.2.3)(@types/react@19.2.17)(astro@6.4.6)(react-dom@19.2.7)(react@19.2.7)(typescript@5.9.3)
-    devDependencies:
       typescript:
         specifier: ^5.7.0
         version: 5.9.3

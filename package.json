@@ -22,6 +22,7 @@
     "cms:schema:check": "node ./apps/cms/schema/check-schema.mjs",
     "cms:schema:check:production": "node ./apps/cms/schema/check-schema.mjs --production",
     "cms:seed:validate": "pnpm --filter @temis/cms exec emdash seed --validate",
+    "content:check": "node ./apps/cms/scripts/check-content-quality.mjs",
     "seed": "pnpm --filter @temis/cms seed",
     "type-check": "pnpm -r type-check",
     "format": "pnpm exec prettier --write \"**/*.{ts,js,mjs,json,jsonc,md,astro,css,yaml}\"",

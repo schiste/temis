@@ -48,6 +48,9 @@ jobs:
       - name: Validate CMS seed
         run: pnpm cms:seed:validate
 
+      - name: Check content quality
+        run: pnpm content:check
+
       - name: Type check
         run: pnpm type-check
 
