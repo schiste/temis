@@ -67,6 +67,9 @@ export interface ToolEntry extends SnapshotRow {
   related_articles?: unknown;
   related_people?: unknown;
   repository_url?: string | null;
+  screenshot_alt?: string | null;
+  screenshot_caption?: string | null;
+  screenshot_url?: string | null;
   seo_description?: string;
   seo_title?: string;
   summary?: string;

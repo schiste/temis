@@ -60,6 +60,7 @@ const copy = await getSiteTexts({
   toolPeopleHeading: "People",
   toolPrivacyLabel: "Privacy note",
   toolRepositoryLabel: "Repository",
+  toolScreenshotHeading: "Interface snapshot",
   toolStarsLabel: "Stars",
   toolTechnicalMaturityLabel: "Technical maturity",
   toolWebsiteLabel: "Website",
@@ -105,6 +106,10 @@ function numberLabel(value: number | null | undefined) {
     : "";
 }
 
+function textField(value: unknown) {
+  return typeof value === "string" ? value.trim() : "";
+}
+
 function maintenanceSignal(date: Date | null, label: string | undefined) {
   if (!date || Number.isNaN(date.valueOf())) {
     return {
@@ -147,6 +152,11 @@ function maintenanceSignal(date: Date | null, label: string | undefined) {
   };
 }
 
+const screenshotUrl = textField(resolvedTool.screenshot_url);
+const screenshotAlt =
+  textField(resolvedTool.screenshot_alt) ||
+  `Screenshot of the ${title} interface.`;
+const screenshotCaption = textField(resolvedTool.screenshot_caption);
 const maintenance = maintenanceSignal(lastCommitDate, lastCommitLabel);
 type ToolSignalItem = {
   detail?: string;
@@ -338,6 +348,30 @@ const peopleLinks = [...peopleByKey.values()];
           set:html={portableTextToHtml(resolvedTool.description)}
         />
       </section>
+
+      {
+        screenshotUrl && (
+          <section class="ds-tool-section ds-tool-section--media">
+            <div class="ds-tool-section__header">
+              <h2>{copy.toolScreenshotHeading}</h2>
+            </div>
+            <figure class="ds-media-frame ds-media-frame--screenshot">
+              <img
+                class="ds-media-frame__image"
+                src={screenshotUrl}
+                alt={screenshotAlt}
+                width="960"
+                height="690"
+                loading="lazy"
+                decoding="async"
+              />
+              {screenshotCaption && (
+                <figcaption>{screenshotCaption}</figcaption>
+              )}
+            </figure>
+          </section>
+        )
+      }
 
       {
         importantLinks.length > 0 && (

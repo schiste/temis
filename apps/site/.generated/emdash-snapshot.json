@@ -1116,6 +1116,9 @@
         "tool_url": "https://wiki-polis.toolforge.org",
         "repository_url": "https://github.com/lgelauff/wiki-polis",
         "documentation_url": "https://github.com/lgelauff/wiki-polis/tree/main/v2/docs",
+        "screenshot_url": "/media/tools/wiki-polis-home.png",
+        "screenshot_alt": "Screenshot of the wiki-polis homepage showing the Wikimedia login call to action and open consultations list.",
+        "screenshot_caption": "wiki-polis public homepage captured from the live Toolforge prototype.",
         "license": "GPL-3.0",
         "privacy_note": "Uses Wikimedia login for the application identity layer and separates deliberation data from direct public identity in the underlying Polis-style flow.",
         "technical_maturity": "experimental",
@@ -1265,10 +1268,7 @@
       }
     },
     "_emdash_migrations": {
-      "columns": [
-        "name",
-        "timestamp"
-      ],
+      "columns": ["name", "timestamp"],
       "types": {
         "name": "varchar(255)",
         "timestamp": "varchar(255)"
@@ -1445,10 +1445,7 @@
       }
     },
     "options": {
-      "columns": [
-        "name",
-        "value"
-      ],
+      "columns": ["name", "value"],
       "types": {
         "name": "TEXT",
         "value": "TEXT"

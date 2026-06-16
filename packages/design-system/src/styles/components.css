@@ -606,6 +606,41 @@
   max-width: var(--ds-measure-prose);
 }
 
+.ds-media-frame {
+  background: color-mix(in srgb, var(--ds-color-surface) 90%, transparent);
+  box-shadow:
+    inset var(--ds-stroke-hairline) 0 0 var(--ds-color-line),
+    inset calc(var(--ds-stroke-hairline) * -1) 0 0 var(--ds-color-line),
+    inset 0 var(--ds-stroke-hairline) 0 var(--ds-color-line),
+    inset 0 calc(var(--ds-stroke-hairline) * -1) 0 var(--ds-color-line);
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.ds-media-frame__image {
+  aspect-ratio: 32 / 23;
+  border-radius: 0;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  object-position: top center;
+  width: 100%;
+}
+
+.ds-media-frame figcaption {
+  align-items: center;
+  border-block-start: var(--ds-stroke-hairline) solid var(--ds-color-line);
+  color: var(--ds-color-text-muted);
+  display: flex;
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-font-size-meta);
+  line-height: 1.35;
+  min-height: var(--ds-row-unit);
+  padding: var(--ds-row-quarter);
+  text-transform: uppercase;
+}
+
 .ds-tool-link-list {
   box-shadow: inset 0 var(--ds-stroke-hairline) 0 var(--ds-color-line);
   display: grid;

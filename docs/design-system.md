@@ -643,6 +643,7 @@ Use:
 - Generated abstract maps.
 - Editorial diagrams.
 - Hard-edged data/topology visuals.
+- Product and tool screenshots when they help readers inspect the thing being described.
 - Typographic placeholders.
 - Rectangular portraits when available.
 
@@ -653,6 +654,25 @@ Avoid:
 - Decorative orbs and blobs.
 - Rounded image masks.
 - Purely atmospheric images that do not help the reader understand the content.
+
+### Product Screenshots
+
+Product and tool screenshots should be treated as documentary evidence, not
+decorative art.
+
+Use:
+
+- Real interface captures.
+- Crops that prioritize the meaningful surface over empty browser chrome.
+- Hard-edged image frames aligned to the grid.
+- Short captions that state what was captured and where it came from.
+
+Avoid:
+
+- Rounded screenshot cards.
+- Heavy shadows or mock-device frames.
+- Blurred screenshots as backgrounds.
+- Screenshots that require tracking scripts or third-party embeds to render.
 
 ### Map Plates And Field-Note Illustrations
 
