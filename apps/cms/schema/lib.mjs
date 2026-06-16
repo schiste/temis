@@ -211,8 +211,7 @@ export function normalizeJsonValue(value) {
 
 export function normalizeDefaultValue(value) {
   if (value === null || value === undefined) return null;
-  if (typeof value === "boolean") return value ? "true" : "false";
-  return String(value);
+  return JSON.stringify(value);
 }
 
 export function slugify(value) {
