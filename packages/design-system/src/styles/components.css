@@ -2,13 +2,13 @@
   background:
     linear-gradient(
       90deg,
-      color-mix(in srgb, var(--ds-color-line) 38%, transparent)
+      color-mix(in srgb, var(--ds-color-line) 18%, transparent)
         var(--ds-stroke-hairline),
       transparent var(--ds-stroke-hairline)
     ),
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--ds-color-line) 26%, transparent)
+      color-mix(in srgb, var(--ds-color-line) 12%, transparent)
         var(--ds-stroke-hairline),
       transparent var(--ds-stroke-hairline)
     ),
