@@ -60,11 +60,11 @@ const imageFieldDefinitions = [
   },
 ];
 
-function isRecord(value) {
+export function isRecord(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
-function parseMaybeJson(value) {
+export function parseMaybeJson(value) {
   if (typeof value !== "string") return value;
 
   const trimmed = value.trim();

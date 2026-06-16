@@ -9,6 +9,7 @@ import {
   type SimulationLinkDatum,
   type SimulationNodeDatum,
 } from "d3-force";
+import { clamp, round, seededUnit } from "./geometry";
 import type {
   GraphNavigationLayoutOptions,
   GraphNavigationNode,
@@ -40,29 +41,6 @@ type ForceLayoutNode = SimulationNodeDatum & {
 type ForceLayoutLink = SimulationLinkDatum<ForceLayoutNode> & {
   id: string;
 };
-
-function hashText(value: string) {
-  let hash = 2166136261;
-
-  for (let index = 0; index < value.length; index += 1) {
-    hash ^= value.charCodeAt(index);
-    hash = Math.imul(hash, 16777619);
-  }
-
-  return hash >>> 0;
-}
-
-function round(value: number) {
-  return Math.round(value * 100) / 100;
-}
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, value));
-}
-
-function seededUnit(id: string, salt: string) {
-  return hashText(`${id}:${salt}`) / 0xffffffff;
-}
 
 function seededInitialPosition(
   node: GraphNavigationNode,
@@ -106,45 +84,17 @@ function scalePosition(
   return outputCenter + (value - inputCenter) * scale;
 }
 
-export function withGraphNavigationLayout(
-  snapshot: GraphNavigationSnapshot,
-  options: GraphNavigationLayoutOptions = {},
-): GraphNavigationSnapshot {
-  const layout = resolveLayout(options);
-  if (snapshot.nodes.length === 0) return snapshot;
-  if (snapshot.nodes.length === 1) {
-    const [node] = snapshot.nodes;
-
-    return {
-      ...snapshot,
-      nodes: [
-        {
-          ...node,
-          x: node.x ?? layout.centerX,
-          y: node.y ?? layout.centerY,
-        },
-      ],
-    };
-  }
-
-  const simulationNodes = snapshot.nodes
-    .map((node) => createForceLayoutNode(node, layout))
-    .sort((a, b) => a.id.localeCompare(b.id));
-  const nodeIds = new Set(simulationNodes.map((node) => node.id));
-  const simulationLinks: ForceLayoutLink[] = snapshot.edges
-    .filter((edge) => nodeIds.has(edge.source) && nodeIds.has(edge.target))
-    .map((edge) => ({
-      id: edge.id,
-      source: edge.source,
-      target: edge.target,
-    }))
-    .sort((a, b) => a.id.localeCompare(b.id));
-
-  forceSimulation<ForceLayoutNode, ForceLayoutLink>(simulationNodes)
+// Run the force simulation in place, mutating each node's x/y.
+function runForceSimulation(
+  nodes: ForceLayoutNode[],
+  links: ForceLayoutLink[],
+  layout: Required<GraphNavigationLayoutOptions>,
+) {
+  forceSimulation<ForceLayoutNode, ForceLayoutLink>(nodes)
     .stop()
     .force(
       "link",
-      forceLink<ForceLayoutNode, ForceLayoutLink>(simulationLinks)
+      forceLink<ForceLayoutNode, ForceLayoutLink>(links)
         .id((node) => node.id)
         .distance(layout.forceLinkDistance)
         .strength(0.72),
@@ -164,9 +114,16 @@ export function withGraphNavigationLayout(
     .force("x", forceX<ForceLayoutNode>(layout.centerX).strength(0.045))
     .force("y", forceY<ForceLayoutNode>(layout.centerY).strength(0.045))
     .tick(layout.forceIterations);
+}
 
-  const xValues = simulationNodes.map((node) => node.x ?? layout.centerX);
-  const yValues = simulationNodes.map((node) => node.y ?? layout.centerY);
+// Scale and clamp the simulated positions to fit inside the viewport, keeping
+// pinned nodes at their given coordinates. Returns positions keyed by node id.
+function fitPositionsToViewport(
+  nodes: ForceLayoutNode[],
+  layout: Required<GraphNavigationLayoutOptions>,
+) {
+  const xValues = nodes.map((node) => node.x ?? layout.centerX);
+  const yValues = nodes.map((node) => node.y ?? layout.centerY);
   const xMin = Math.min(...xValues);
   const xMax = Math.max(...xValues);
   const yMin = Math.min(...yValues);
@@ -184,8 +141,9 @@ export function withGraphNavigationLayout(
   );
   const forceCenterX = (xMin + xMax) / 2;
   const forceCenterY = (yMin + yMax) / 2;
-  const positionsById = new Map(
-    simulationNodes.map((node) => {
+
+  return new Map(
+    nodes.map((node) => {
       if (node.sourceNode.x !== undefined && node.sourceNode.y !== undefined) {
         return [
           node.id,
@@ -227,6 +185,44 @@ export function withGraphNavigationLayout(
       ];
     }),
   );
+}
+
+export function withGraphNavigationLayout(
+  snapshot: GraphNavigationSnapshot,
+  options: GraphNavigationLayoutOptions = {},
+): GraphNavigationSnapshot {
+  const layout = resolveLayout(options);
+  if (snapshot.nodes.length === 0) return snapshot;
+  if (snapshot.nodes.length === 1) {
+    const [node] = snapshot.nodes;
+
+    return {
+      ...snapshot,
+      nodes: [
+        {
+          ...node,
+          x: node.x ?? layout.centerX,
+          y: node.y ?? layout.centerY,
+        },
+      ],
+    };
+  }
+
+  const simulationNodes = snapshot.nodes
+    .map((node) => createForceLayoutNode(node, layout))
+    .sort((a, b) => a.id.localeCompare(b.id));
+  const nodeIds = new Set(simulationNodes.map((node) => node.id));
+  const simulationLinks: ForceLayoutLink[] = snapshot.edges
+    .filter((edge) => nodeIds.has(edge.source) && nodeIds.has(edge.target))
+    .map((edge) => ({
+      id: edge.id,
+      source: edge.source,
+      target: edge.target,
+    }))
+    .sort((a, b) => a.id.localeCompare(b.id));
+
+  runForceSimulation(simulationNodes, simulationLinks, layout);
+  const positionsById = fitPositionsToViewport(simulationNodes, layout);
 
   return {
     ...snapshot,

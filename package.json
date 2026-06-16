@@ -21,6 +21,8 @@
     "cms:schema:apply:production": "node ./apps/cms/schema/apply-schema.mjs --production",
     "cms:schema:check": "node ./apps/cms/schema/check-schema.mjs",
     "cms:schema:check:production": "node ./apps/cms/schema/check-schema.mjs --production",
+    "cms:content:normalize-editorial-blocks": "node ./apps/cms/scripts/normalize-editorial-blocks.mjs",
+    "cms:content:normalize-editorial-blocks:production": "node ./apps/cms/scripts/normalize-editorial-blocks.mjs --production",
     "cms:seed:validate": "pnpm --filter @temis/cms exec emdash seed --validate",
     "content:check": "node ./apps/cms/scripts/check-content-quality.mjs",
     "seed": "pnpm --filter @temis/cms seed",

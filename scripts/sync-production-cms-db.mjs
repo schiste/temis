@@ -11,12 +11,17 @@ import {
 } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  createDbAdapter,
+  defaultD1Database,
+  quoteIdent,
+  sqlLiteral,
+} from "../apps/cms/schema/lib.mjs";
 
 const rootDir = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
 );
-const wranglerBin = path.join(rootDir, "node_modules", ".bin", "wrangler");
 const importsDir = path.join(rootDir, "imports");
 const sqlPath = path.join(importsDir, "temis-cms-production-replica.sql");
 const cmsDbPath = path.join(rootDir, "apps", "cms", "data.db");
@@ -37,49 +42,10 @@ function timestamp() {
   return new Date().toISOString().replace(/\D/g, "").slice(0, 14);
 }
 
-function run(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: rootDir,
-    encoding: "utf8",
-    stdio: options.stdio ?? ["ignore", "pipe", "pipe"],
-  });
-
-  if (result.status !== 0) {
-    throw new Error(
-      `${command} ${args.join(" ")} failed\n${result.stderr || result.stdout}`,
-    );
-  }
-
-  return result.stdout;
-}
-
-function d1(command) {
-  const stdout = run(wranglerBin, [
-    "d1",
-    "execute",
-    "temis-cms-db",
-    "--remote",
-    "--json",
-    "--command",
-    command,
-  ]);
-  const parsed = JSON.parse(stdout);
-  return parsed.flatMap((statement) => statement.results ?? []);
-}
-
-function quoteIdent(identifier) {
-  return `"${String(identifier).replaceAll('"', '""')}"`;
-}
-
-function literal(value) {
-  if (value === null || value === undefined) return "NULL";
-  if (typeof value === "number")
-    return Number.isFinite(value) ? String(value) : "NULL";
-  if (typeof value === "bigint") return String(value);
-  if (typeof value === "boolean") return value ? "1" : "0";
-  if (typeof value === "object") return literal(JSON.stringify(value));
-  return `'${String(value).replaceAll("'", "''")}'`;
-}
+const db = createDbAdapter({
+  mode: "production",
+  d1Database: defaultD1Database,
+});
 
 function isVirtualTable(row) {
   return /^CREATE\s+VIRTUAL\s+TABLE/i.test(row.sql ?? "");
@@ -93,13 +59,15 @@ function buildInsert(tableName, columns, row) {
   const columnList = columns
     .map((column) => quoteIdent(column.name))
     .join(", ");
-  const values = columns.map((column) => literal(row[column.name])).join(", ");
+  const values = columns
+    .map((column) => sqlLiteral(row[column.name]))
+    .join(", ");
   return `INSERT INTO ${quoteIdent(tableName)} (${columnList}) VALUES (${values});`;
 }
 
 mkdirSync(importsDir, { recursive: true });
 
-const schemaRows = d1(
+const schemaRows = await db.exec(
   "SELECT name, type, sql FROM sqlite_schema WHERE name NOT LIKE 'sqlite_%' AND name NOT LIKE '_cf_%' AND sql IS NOT NULL ORDER BY type, name",
 );
 const virtualTableNames = new Set(
@@ -134,8 +102,8 @@ const sql = [
 ];
 
 for (const table of normalTables) {
-  const columns = d1(`PRAGMA table_info(${quoteIdent(table.name)})`);
-  const rows = d1(`SELECT * FROM ${quoteIdent(table.name)}`);
+  const columns = await db.exec(`PRAGMA table_info(${quoteIdent(table.name)})`);
+  const rows = await db.exec(`SELECT * FROM ${quoteIdent(table.name)}`);
   for (const row of rows) {
     sql.push(buildInsert(table.name, columns, row));
   }

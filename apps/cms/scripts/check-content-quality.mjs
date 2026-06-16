@@ -6,6 +6,8 @@ import { fileURLToPath } from "node:url";
 
 import {
   formatContentQualityIssues,
+  isRecord,
+  parseMaybeJson,
   validateContentQuality,
 } from "@temis/content-quality";
 
@@ -22,23 +24,6 @@ const snapshotPath = path.join(
 );
 
 const checkedCollections = ["pages", "posts", "tools"];
-
-function isRecord(value) {
-  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
-}
-
-function parseMaybeJson(value) {
-  if (typeof value !== "string") return value;
-
-  const trimmed = value.trim();
-  if (!trimmed.startsWith("{") && !trimmed.startsWith("[")) return value;
-
-  try {
-    return JSON.parse(trimmed);
-  } catch {
-    return value;
-  }
-}
 
 async function readJson(filePath) {
   return JSON.parse(await readFile(filePath, "utf8"));
