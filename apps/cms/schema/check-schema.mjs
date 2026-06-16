@@ -2,54 +2,22 @@
 
 import {
   collectionContracts,
-  compareCollectionSchema,
-  compareMenuSchema,
-  compareOptionSchema,
-  compareRelationshipSchema,
-  compareTaxonomySchema,
   createDbAdapter,
   loadSchemaContract,
   parseArgs,
-  readBylineState,
-  readCollectionState,
-  readContentRows,
-  readMenuState,
-  readOptionState,
-  readTaxonomyState,
+  runFullSchemaCheck,
 } from "./lib.mjs";
 
 const args = parseArgs(process.argv.slice(2));
 const contract = await loadSchemaContract();
 const collections = collectionContracts(contract);
 const db = createDbAdapter(args);
-const failures = [];
-const warnings = [];
 
-for (const collection of collections) {
-  const state = await readCollectionState(db, collection);
-  const result = compareCollectionSchema(collection, state);
-  failures.push(...result.failures);
-  warnings.push(...result.warnings);
-}
-
-const [taxonomyState, bylineState, menuState, optionState, contentRows] =
-  await Promise.all([
-    readTaxonomyState(db),
-    readBylineState(db),
-    readMenuState(db),
-    readOptionState(db),
-    readContentRows(db, collections),
-  ]);
-
-for (const result of [
-  compareTaxonomySchema(contract, taxonomyState),
-  compareRelationshipSchema(contract, contentRows, taxonomyState, bylineState),
-  compareMenuSchema(contract, menuState),
-  compareOptionSchema(contract, optionState),
-]) {
-  failures.push(...result.failures);
-  warnings.push(...result.warnings);
-}
+const { failures, warnings } = await runFullSchemaCheck(
+  db,
+  contract,
+  collections,
+);
 
 for (const warning of warnings) {
   console.warn(`[cms:schema:check] warning: ${warning}`);

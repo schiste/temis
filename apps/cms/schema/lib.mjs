@@ -589,3 +589,41 @@ export function compareOptionSchema(contract, options) {
 
   return { failures, warnings: [] };
 }
+
+export async function runFullSchemaCheck(db, contract, collections) {
+  const failures = [];
+  const warnings = [];
+
+  for (const collection of collections) {
+    const state = await readCollectionState(db, collection);
+    const result = compareCollectionSchema(collection, state);
+    failures.push(...result.failures);
+    warnings.push(...result.warnings);
+  }
+
+  const [taxonomyState, bylineState, menuState, optionState, contentRows] =
+    await Promise.all([
+      readTaxonomyState(db),
+      readBylineState(db),
+      readMenuState(db),
+      readOptionState(db),
+      readContentRows(db, collections),
+    ]);
+
+  for (const result of [
+    compareTaxonomySchema(contract, taxonomyState),
+    compareRelationshipSchema(
+      contract,
+      contentRows,
+      taxonomyState,
+      bylineState,
+    ),
+    compareMenuSchema(contract, menuState),
+    compareOptionSchema(contract, optionState),
+  ]) {
+    failures.push(...result.failures);
+    warnings.push(...result.warnings);
+  }
+
+  return { failures, warnings };
+}
