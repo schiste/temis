@@ -3108,8 +3108,7 @@
               "children": [
                 {
                   "_type": "span",
-                  "text": "wiki-polis adapts Polis-style consultation for Wikimedia contexts. Instead of having a freeflowing discussion on a complex topic, participants respond to short statements. The system maps areas of agreement and disagreement and finds relevant clusters. 
-                  Participants can then map the relevant arguments for and against each key statement. Finally, all participants can revisit the key statements, with the most important arguments."
+                  "text": "wiki-polis adapts Polis-style consultation for Wikimedia contexts. Instead of having a freeflowing discussion on a complex topic, participants respond to short statements. The system maps areas of agreement and disagreement and finds relevant clusters. Participants can then map the relevant arguments for and against each key statement. Finally, all participants can revisit the key statements, with the most important arguments."
                 }
               ]
             },
