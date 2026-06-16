@@ -15,6 +15,7 @@ const root = path.resolve(
 );
 
 const seedPath = path.join(root, "apps/cms/.emdash/seed.json");
+const siteSchemaPath = path.join(root, "apps/cms/schema/site.schema.json");
 const snapshotPath = path.join(
   root,
   "apps/site/.generated/emdash-snapshot.json",
@@ -47,7 +48,20 @@ function isPublished(row) {
   return row?.status === "published" && row.deleted_at == null;
 }
 
-function seedRecords(seed) {
+function seedRelationshipState(siteSchema, collection, content) {
+  const slug = String(content.slug ?? "");
+
+  return {
+    authorLinked: (siteSchema.contentBylines ?? []).some(
+      (row) => row.collection === collection && row.slug === slug,
+    ),
+    topicOrTagAssigned: (siteSchema.taxonomyAssignments ?? []).some(
+      (row) => row.collection === collection && row.slug === slug,
+    ),
+  };
+}
+
+function seedRecords(seed, siteSchema) {
   const records = [];
 
   for (const collection of checkedCollections) {
@@ -62,6 +76,7 @@ function seedRecords(seed) {
           status: entry.status,
           ...(isRecord(entry.data) ? entry.data : {}),
         },
+        relationships: seedRelationshipState(siteSchema, collection, entry),
         source: "seed",
       });
     }
@@ -102,6 +117,7 @@ function relationshipState(snapshot, collection, content) {
   const contentBylines = tables._emdash_content_bylines ?? [];
   const taxonomyAssignments = [
     ...(tables._emdash_taxonomy_assignments ?? []),
+    ...(tables.content_taxonomies ?? []),
     ...(tables.taxonomy_assignments ?? []),
     ...(tables._emdash_content_taxonomies ?? []),
   ];
@@ -122,8 +138,9 @@ function relationshipState(snapshot, collection, content) {
   };
 }
 
+const siteSchema = await readJson(siteSchemaPath);
 const inputs = [
-  ...seedRecords(await readJson(seedPath)),
+  ...seedRecords(await readJson(seedPath), siteSchema),
   ...snapshotRecords(await readJson(snapshotPath)),
 ];
 
@@ -138,20 +155,39 @@ for (const input of inputs) {
     relationships: input.relationships,
   });
 
-  if (result.errors.length > 0) {
+  const blockingWarnings = result.warnings.filter(
+    (issue) => issue.code === "missing-topic-or-tag",
+  );
+
+  if (result.errors.length > 0 || blockingWarnings.length > 0) {
     failures.push({
       source: input.source,
-      result,
+      result: {
+        ...result,
+        errors: [...result.errors, ...blockingWarnings],
+        issues: [
+          ...result.errors,
+          ...blockingWarnings.map((issue) => ({
+            ...issue,
+            severity: "error",
+          })),
+        ],
+      },
     });
   }
 
-  if (result.warnings.length > 0) {
+  const nonBlockingWarnings = result.warnings.filter(
+    (issue) => issue.code !== "missing-topic-or-tag",
+  );
+
+  if (nonBlockingWarnings.length > 0) {
     warnings.push({
       source: input.source,
       result: {
         ...result,
         errors: [],
-        issues: result.warnings,
+        issues: nonBlockingWarnings,
+        warnings: nonBlockingWarnings,
       },
     });
   }

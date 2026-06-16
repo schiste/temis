@@ -1,0 +1,169 @@
+{
+  "version": 1,
+  "description": "TEMIS V1 site-level EmDash contract for graph terms, people/bylines, menus, and fixture relationships.",
+  "mediaPolicy": {
+    "canonicalStorage": "emdash-r2",
+    "checkedInPublicMedia": "Allowed only for V1 fixtures and deterministic local builds. Production editorial media should be uploaded through EmDash and stored in R2.",
+    "requiredMetadata": ["alt", "caption", "license"]
+  },
+  "bylines": [
+    {
+      "slug": "temis-editorial-team",
+      "displayName": "TEMIS editorial team",
+      "bio": "The TEMIS editorial team publishes shared notes, platform updates, and working-group material."
+    },
+    {
+      "slug": "lodewijk-gelauff",
+      "displayName": "Lodewijk Gelauff",
+      "bio": "Lodewijk Gelauff explores Wikimedia governance, deliberation, and community decision-making tools."
+    }
+  ],
+  "taxonomyTerms": [
+    {
+      "taxonomy": "category",
+      "slug": "essays",
+      "label": "Essays",
+      "description": "Long-form arguments, reflections, and field notes.",
+      "priority": 80,
+      "accent": "#006f6a"
+    },
+    {
+      "taxonomy": "category",
+      "slug": "tools",
+      "label": "Tools",
+      "description": "Software and prototypes connected to open knowledge work.",
+      "priority": 70,
+      "accent": "#1137ff"
+    },
+    {
+      "taxonomy": "tag",
+      "slug": "open-knowledge",
+      "label": "Open knowledge",
+      "description": "Questions about public knowledge, commons, and shared infrastructure.",
+      "priority": 60,
+      "accent": "#4f7f45"
+    }
+  ],
+  "taxonomyAssignments": [
+    {
+      "collection": "posts",
+      "slug": "welcome",
+      "taxonomy": "category",
+      "termSlug": "essays"
+    },
+    {
+      "collection": "posts",
+      "slug": "welcome",
+      "taxonomy": "tag",
+      "termSlug": "open-knowledge"
+    },
+    {
+      "collection": "posts",
+      "slug": "innovating-with-wikimedia-decision-making",
+      "taxonomy": "category",
+      "termSlug": "essays"
+    },
+    {
+      "collection": "posts",
+      "slug": "innovating-with-wikimedia-decision-making",
+      "taxonomy": "tag",
+      "termSlug": "open-knowledge"
+    },
+    {
+      "collection": "tools",
+      "slug": "wiki-polis",
+      "taxonomy": "category",
+      "termSlug": "tools"
+    },
+    {
+      "collection": "tools",
+      "slug": "wiki-polis",
+      "taxonomy": "tag",
+      "termSlug": "open-knowledge"
+    }
+  ],
+  "contentBylines": [
+    {
+      "collection": "posts",
+      "slug": "welcome",
+      "bylineSlug": "temis-editorial-team",
+      "roleLabel": "Author"
+    },
+    {
+      "collection": "posts",
+      "slug": "innovating-with-wikimedia-decision-making",
+      "bylineSlug": "lodewijk-gelauff",
+      "roleLabel": "Author"
+    },
+    {
+      "collection": "tools",
+      "slug": "wiki-polis",
+      "bylineSlug": "lodewijk-gelauff",
+      "roleLabel": "Creator"
+    }
+  ],
+  "contentDefaults": [
+    {
+      "collection": "pages",
+      "slug": "search",
+      "fields": {
+        "title": "Search",
+        "summary": "Search the published TEMIS static snapshot across essays, tools, people, and pages.",
+        "content": [
+          {
+            "_type": "block",
+            "style": "normal",
+            "children": [
+              {
+                "_type": "span",
+                "text": "This local search index is generated at build time from published EmDash content."
+              }
+            ]
+          }
+        ],
+        "seo_title": "Search",
+        "seo_description": "Search published TEMIS essays, tools, people, and pages."
+      }
+    },
+    {
+      "collection": "posts",
+      "slug": "welcome",
+      "fields": {
+        "author_name": "TEMIS editorial team",
+        "content_type": "team_note"
+      }
+    },
+    {
+      "collection": "posts",
+      "slug": "innovating-with-wikimedia-decision-making",
+      "fields": {
+        "author_name": "Lodewijk Gelauff",
+        "content_type": "essay"
+      }
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary",
+      "items": [
+        {
+          "label": "Essays",
+          "url": "/blog/"
+        },
+        {
+          "label": "Topics",
+          "url": "/topics/"
+        },
+        {
+          "label": "People",
+          "url": "/people/"
+        },
+        {
+          "label": "About",
+          "url": "/about/"
+        }
+      ]
+    }
+  ]
+}

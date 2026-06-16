@@ -84,10 +84,17 @@ or content-related CMS behavior:
 pnpm content:check
 ```
 
-For tool fields, update the tracked schema first:
+For collection fields, update the native EmDash seed first:
 
 ```text
-apps/cms/schema/tools.schema.json
+apps/cms/.emdash/seed.json
+```
+
+For graph terms, fixture bylines, menu expectations, relationship links, or the
+media policy, update:
+
+```text
+apps/cms/schema/site.schema.json
 ```
 
 Then apply and verify locally:
@@ -97,8 +104,9 @@ pnpm cms:schema:apply
 pnpm cms:schema:check
 ```
 
-The current schema tooling manages `tools` only and is additive-only. It may add
-or update field metadata, but it must not delete, rename, or rewrite existing
+The schema tooling is additive-only. It may add fields, field metadata, topic
+and tag terms, fixture bylines, menu items, missing site options, and
+relationship links. It must not delete, rename, or rewrite unrelated editorial
 content automatically.
 
 If starter data also needs the new field, update:

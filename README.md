@@ -81,8 +81,12 @@ pnpm build
 
 ## CMS Schema Management
 
-The V1 schema contract for tool records is tracked in
-`apps/cms/schema/tools.schema.json`.
+The V1 EmDash contract is tracked in two places:
+
+- `apps/cms/.emdash/seed.json` for native EmDash collections, fields,
+  taxonomies, starter content, menus, and site options.
+- `apps/cms/schema/site.schema.json` for TEMIS-specific V1 graph terms,
+  bylines, fixture relationships, and media policy.
 
 Check local CMS schema drift:
 
@@ -108,9 +112,10 @@ Apply safe additive production changes:
 pnpm cms:schema:apply:production
 ```
 
-The current schema scripts manage `tools` only. They add or update missing tool
-fields and metadata, but they do not delete, rename, or rewrite existing
-content. Extra legacy fields are reported as warnings.
+The schema scripts are additive. They may add fields, field metadata, topic/tag
+terms, fixture bylines, menu items, missing site options, and relationship
+links. They do not delete, rename, or rewrite unrelated editorial content.
+Extra legacy fields are reported as warnings.
 
 ## Cloudflare Names
 

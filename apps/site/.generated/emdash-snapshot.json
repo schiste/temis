@@ -512,7 +512,7 @@
         "label": "Categories",
         "label_singular": "Category",
         "hierarchical": 1,
-        "collections": "[\"posts\"]",
+        "collections": "[\"posts\",\"tools\"]",
         "created_at": "2026-06-13 21:31:29",
         "locale": "en",
         "translation_group": "taxdef_category"
@@ -523,7 +523,7 @@
         "label": "Tags",
         "label_singular": "Tag",
         "hierarchical": 0,
-        "collections": "[\"posts\"]",
+        "collections": "[\"posts\",\"tools\"]",
         "created_at": "2026-06-13 21:31:29",
         "locale": "en",
         "translation_group": "taxdef_tag"
@@ -543,25 +543,49 @@
         "updated_at": "2026-06-14 12:30:47",
         "locale": "en",
         "translation_group": "seed:byline:lodewijk-gelauff"
+      },
+      {
+        "id": "schema:byline:temis-editorial-team",
+        "slug": "temis-editorial-team",
+        "display_name": "TEMIS editorial team",
+        "bio": "The TEMIS editorial team publishes shared notes, platform updates, and working-group material.",
+        "avatar_media_id": null,
+        "website_url": null,
+        "user_id": null,
+        "is_guest": 1,
+        "created_at": "2026-06-16 00:00:00",
+        "updated_at": "2026-06-16 00:00:00",
+        "locale": "en",
+        "translation_group": "schema:byline:temis-editorial-team"
       }
     ],
     "_emdash_content_bylines": [
       {
-        "id": "seed:content-byline:innovating-with-wikimedia-decision-making:lodewijk-gelauff",
+        "id": "schema:content-byline:posts:innovating-with-wikimedia-decision-making:lodewijk-gelauff",
         "collection_slug": "posts",
         "content_id": "seed:post:innovating-with-wikimedia-decision-making",
         "byline_id": "seed:byline:lodewijk-gelauff",
         "sort_order": 0,
         "role_label": "Author",
-        "created_at": "2026-06-14T12:09:06.398Z"
+        "created_at": "2026-06-16 00:00:00"
       },
       {
-        "id": "seed:content-byline:wiki-polis:lodewijk-gelauff",
+        "id": "schema:content-byline:tools:wiki-polis:lodewijk-gelauff",
         "collection_slug": "tools",
         "content_id": "seed:tool:wiki-polis",
         "byline_id": "seed:byline:lodewijk-gelauff",
         "sort_order": 0,
-        "role_label": "Creator"
+        "role_label": "Creator",
+        "created_at": "2026-06-16 00:00:00"
+      },
+      {
+        "id": "schema:content-byline:posts:welcome:temis-editorial-team",
+        "collection_slug": "posts",
+        "content_id": "01KV1FV7AECH8GYF3V0FP8T9ZR",
+        "byline_id": "schema:byline:temis-editorial-team",
+        "sort_order": 0,
+        "role_label": "Author",
+        "created_at": "2026-06-16 00:00:00"
       }
     ],
     "ec_pages": [
@@ -625,11 +649,11 @@
         "draft_revision_id": null,
         "locale": "en",
         "translation_group": "seed:page:search",
-        "title": "Search is being mapped",
-        "summary": "Search will arrive after the V1 content structure is stable.",
-        "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"For now, browse the published essays and topic map while the search experience is designed around real content.\"}]}]",
+        "title": "Search",
+        "summary": "Search the published TEMIS static snapshot across essays, tools, people, and pages.",
+        "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"This local search index is generated at build time from published EmDash content.\"}]}]",
         "seo_title": "Search",
-        "seo_description": "Search will arrive after the V1 TEMIS content structure is stable."
+        "seo_description": "Search published TEMIS essays, tools, people, and pages."
       },
       {
         "id": "seed:page:topics",
@@ -704,7 +728,7 @@
         "slug": "welcome",
         "status": "published",
         "author_id": null,
-        "primary_byline_id": null,
+        "primary_byline_id": "schema:byline:temis-editorial-team",
         "created_at": "2026-06-13T21:57:41.326Z",
         "updated_at": "2026-06-13T21:57:41.358Z",
         "published_at": "2026-06-13T21:57:41.326Z",
@@ -721,7 +745,11 @@
         "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Use this entry to verify the publish-to-static flow, then replace it with PRD-backed content.\"}]}]",
         "seo_title": "Welcome to TEMIS",
         "seo_description": "Starter content for the TEMIS EmDash and Astro stack.",
-        "author_name": "TEMIS editorial team"
+        "author_name": "TEMIS editorial team",
+        "featured_image_alt": null,
+        "featured_image_caption": null,
+        "featured_image_license": null,
+        "content_type": "team_note"
       },
       {
         "id": "seed:post:innovating-with-wikimedia-decision-making",
@@ -745,7 +773,11 @@
         "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Wikipedia has proven to be a great concept to bring together different viewpoints on various really tough topics, presented in the form of encyclopedia articles. While many people complain about how they don't like the viewpoint of a specific article, or even the entire slate of articles, this kind of criticism would probably be true for any source nowadays. The Wikipedia community does this through an approach based on fundamental trust in the ability of its users to collaborate; on open-source spirit of mutual help, and a liberating invitation for people to 'be bold' and just fix the mistakes. It also puts faith in conversations, through 'talk pages' connected to every article.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Below, I will make the case why I think that Wikipedia communities often do not live up to their intent to be inclusive in internal policy making, that our policies are more conservative than we realize, and that …\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"When I talk to my friends in some of the larger editing communities across the world, I hear very different stories about our ability to make decisions internally. In a way, that is hardly surprising: Wikipedians are a peculiar type of people, who are often more motivated by content than by process. And that is ok. However, when I ask those same friends what their editorial and behavioral policies look like compared to a few years ago, the same story resonates over and over again: the policies are often written in the early 2000s, and haven't changed much. Not because they didn't want to, but because it's quite hard to.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Notable exceptions here are projects that are small enough to fit in a room: they can simply meet, online or offline, and agree on a new direction. The exact size will likely depend on the amount of trust, cultural coherence etc, but communities where you can recognize all your colleagues by their style of writing are fundamentally different from communities where you occasionally wonder why someone isn't an admin yet. Another notable deviation is the communities that incorporate the policies of another project as a rule (usually English Wikipedia).\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"I am myself active on Dutch Wikipedia, one of those sizable communuities with a lot of policies from the 2000s. We added some policies (the 2005/2006 Biographies of Living People and the Universal Code of Conduct), but serious rewrites have always been doomed to fail. They can often be expanded within reason, new rules can be added… but it's really hard to agree to rethink how we do things. That is not because these policies are so great.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Implementing change in an organization is a notoriously hard thing to begin with (e.g. Anderson, 2022). In our Wikimedia universe, we seem to have encoded even more thresholds to make it hard to change policies, whether these are formalized or implied.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"While I'm still trying to get a good grasp on the full breadth of Wikimedia's policy world, my understanding is that there are generally a spectrum is between \\\"consensus based\\\" policy making on one extreme and \\\"voting based\\\" procedures. English Wikipedia for example, has an interesting blend of the two, based on the Requests for Comments process. This lies mostly on the consensus-side of this spectrum.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"The open-source developers that were a driving force within the Wikipedia community in 2001 was likely more familiar than most people nowadays what the Request for Comments process is supposed to look like. The process is often used in deciding on standards, through formal rounds of feedback on a proposal, such as a new standard. This makes the process very suitable for a policy where you want to make sure that all the experts can weigh in with their best expectations to get an almost-objectively true result.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"The way many policy discussions work out in practice in Wikimedia is a bit more tricky. In the case of a Request for Comments, the proposal is written out by a small group of users, that often may have an incentive to push the policy in a direction. The proposal is then put forward to their colleagues, who can discuss and criticize the proposal, but at the same time they will give opinions on whether it should be adopted or not. They may share arguments, they may respond to other arguments, propose specific changes that may make them more amenable to support it, etc. In other words: there's a lot going on.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"When a colleague that is not intimately familiar with these processes, tries to participate, that takes quite a lot of reading up to understand what's going on, and what would be an effective way to engage. Not only that, the process encourages the production of enormous amounts of text and discussion, that are nearly impossible to process for a human in reasonable amounts of time. This likely biases the effective engagement to a small group of enthusiasts. The process takes an enormous amount of time investment.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"All in all, I see a few challenges:\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"listItem\":\"bullet\",\"level\":1,\"children\":[{\"_type\":\"span\",\"text\":\"They do not involve a broad enough representation\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"listItem\":\"bullet\",\"level\":1,\"children\":[{\"_type\":\"span\",\"text\":\"Especially in RfC where the topic/proposal may shift, where a lot of interpretation is involved, there is no reliable way of closing these processes. This is in particular visible on Meta, where the many proposals are not closed at all, or do not reach a conclusive result.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"listItem\":\"bullet\",\"level\":1,\"children\":[{\"_type\":\"span\",\"text\":\"A very small group can dominate the process by simply out-debating everyone else ('veto by attrition'). There are limits to this, but especially in a complex topic, most users that are not very used to this process may feel overwhelmed, and may simply choose not to participate, because they feel they cannot process the entire amount of information to form an informed opinion.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"listItem\":\"bullet\",\"level\":1,\"children\":[{\"_type\":\"span\",\"text\":\"Herding is possible (although I am not sure if this is definitively established to happen): people may establish their opinion based on the people who have participated before them. This could even be negative herding: once you see that someone you do NOT like, has voted a certain way you may find subconsciously reasons to object to that.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"listItem\":\"bullet\",\"level\":1,\"children\":[{\"_type\":\"span\",\"text\":\"Anchoring: once people write down that they have a preference for a certain outcome, especially when this is publicly, it's hard to change your mind.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"listItem\":\"bullet\",\"level\":1,\"children\":[{\"_type\":\"span\",\"text\":\"It is really really taxing! It takes a tremendous amount of time to process pages like this, and most of it is not exactly relevant. So when people do, they are likely to miss very good arguments of objections.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"listItem\":\"bullet\",\"level\":1,\"children\":[{\"_type\":\"span\",\"text\":\"We're making it sometimes unnecessarily personal by forcing people to use a forum-style discussion to really just collect feedback and preferences.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"These concerns play out differently depending on the size of the community — this is not a small-wiki problem or a big-wiki problem, but the same format failing in opposite ways. On a large wiki, the challenge is noise: more voices than any thread can aggregate, veto by attrition, and a heroic closer expected to divine consensus from two hundred comments. On a small wiki, the challenge is scarcity: discussions die of silence, a handful of regulars constitute \\\"the community,\\\" and a single dissenter is both a meaningful percentage of opinion and impossible to outlast — there is simply no one to do the outlasting. Small communities also drift toward the in-crowd: when the same few people decide everything, every proposal implicitly critiques something they built, newcomer dissent reads as social friction with people you'll meet in every future discussion, and conservatism follows almost mechanically. Which deters new participants, which keeps the circle small, which hardens the in-crowd. The format doesn't just fail small communities; it helps keep them small.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"And in both cases, the rational response is the same: people end up working around the policy rather than changing it. Veterans accumulate the lore — which rules are dead letters, which are selectively enforced, which \\\"consensus\\\" was really five people in 2007. That works fine for them. But it is deeply unfair to newcomers, who get to follow the worst of both worlds: the policy as it stands, and the policy as it lives. They are sanctioned by written rules they couldn't know were still alive, and reverted by unwritten practice they couldn't know existed. A policy environment that can't be changed honestly will be navigated dishonestly — and only insiders have the map.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"I want to be clear about what I am \"},{\"_type\":\"span\",\"text\":\"not\",\"marks\":[\"em\"]},{\"_type\":\"span\",\"text\":\" saying: that Wikipedians are bad at deliberating. The research suggests the opposite — our policy discussions are remarkably argument-driven and grounded in shared principles. The problem is not the people or the quality of their reasoning; it is that we ask a single, twenty-year-old format to do five different jobs at once: generate ideas, refine wording, measure support, change minds, and legitimize an outcome. Each of those jobs needs a different mindset, and arguably a different structure.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Luckily, the world of democratic innovation has not been on hold for the past decades, and there are some models out there that we could learn a thing or two from!\"}]},{\"_type\":\"block\",\"style\":\"h2\",\"children\":[{\"_type\":\"span\",\"text\":\"What would better look like?\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"I don't pretend to have the definitive answer, but the failure modes above point to a few design directions that seem worth exploring:\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Separate the phases.\",\"marks\":[\"strong\"]},{\"_type\":\"span\",\"text\":\" Collecting ideas, improving wording, measuring where the community stands, and making a decision are different activities. When they happen in one thread, they sabotage each other: a wording nitpick reads as opposition, an early straw poll freezes a half-baked proposal. Give each phase its own space and its own rules.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Make participation accessible.\",\"marks\":[\"strong\"]},{\"_type\":\"span\",\"text\":\" Writing a well-argued talk page comment costs half an hour, reading all the other contributions can be even longer; most community members will not even pay that price when they care, and so we only ever hear from the few who do. If expressing a position took a few minutes, we would hear from many more people — including the silent majority that currently only shows up in our imagination, conveniently supporting whatever position we hold.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Decouple opinions from identity.\",\"marks\":[\"strong\"]},{\"_type\":\"span\",\"text\":\" Most of the herding, anchoring, and personalization problems disappear when you cannot see \"},{\"_type\":\"span\",\"text\":\"who\",\"marks\":[\"em\"]},{\"_type\":\"span\",\"text\":\" holds a position while forming your own. And on a small wiki, it does something more radical: it makes disagreeing with the in-crowd costless for the first time. Identity matters for accountability — but it can come later in the process, not at the moment of opinion formation.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Look for agreement.\",\"marks\":[\"strong\"]},{\"_type\":\"span\",\"text\":\" Our current formats surface disagreement by design: you respond to a comment because you object to it. Yet what we usually want to know is the opposite — where does the community already agree? That common ground is the natural foundation to build a proposal on, and today we discover it mostly by accident.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"None of this is hypothetical. The civic tech world has spent the last decade building and testing exactly these ideas — most famously in Taiwan, where the vTaiwan process used a tool called Polis to find unexpected common ground on regulating Uber [https://pol.is/3phdex2kjf].\"}]},{\"_type\":\"block\",\"style\":\"h2\",\"children\":[{\"_type\":\"span\",\"text\":\"Wiki-polis\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"This brings me to the prototype I have been working on: \"},{\"_type\":\"span\",\"text\":\"wiki-polis\",\"marks\":[\"strong\"]},{\"_type\":\"span\",\"text\":\", an adaptation of Polis for the Wikimedia ecosystem, running on Toolforge with your regular Wikimedia login. Polis is a well-known innovation that has been used in many citizen engagements, including vTaiwan. We have built on top of it to make it fit better the needs for a wiki: be more encouraging in editing the statements, and add argument mapping.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"The core mechanic is deliberately simple. A conversation (for example a new policy dealing with blocking temporary accounts) starts with a question and a set of short, atomic statements — one claim each (\\\"A temporary account should be warned at least once before being blocked for vandalism\\\"). Participants vote agree, disagree, or pass on each statement, and can submit statements of their own: to improve the phrasing of existing statements, or to fill a gap. That's the whole interaction: no threads, no replies, no walls of text to catch up on. Joining a conversation on day twelve is exactly as easy as joining on day one. And if you return on day 12, you can express your views on all those new statements.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Behind the scenes, the votes build an opinion map. Statistical clustering reveals the groups of participants who tend to vote alike — and, more importantly, the statements that are supported \"},{\"_type\":\"span\",\"text\":\"across\",\"marks\":[\"em\"]},{\"_type\":\"span\",\"text\":\" those groups. Instead of amplifying the sharpest disagreement the way a threaded discussion does, the system is designed to surface hidden consensus. Your vote is private while the conversation runs; opinions become visible as clusters, not as named individuals to follow or oppose. A faction that shows up to swing the outcome doesn't silently shift a headcount — it appears on the map as exactly what it is.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Where wiki-polis goes beyond standard Polis is in what happens after the opinion mapping. The organizer can curate a small set of the most informative statements — the points of strong consensus and the genuine fault lines — and open an \"},{\"_type\":\"span\",\"text\":\"argument layer\",\"marks\":[\"strong\"]},{\"_type\":\"span\",\"text\":\": participants write and rank short pro and con arguments for each featured statement. No threading here either; just the community's best reasoning on both sides, sorted by usefulness. And as an optional final phase, an \"},{\"_type\":\"span\",\"text\":\"informed vote\",\"marks\":[\"strong\"]},{\"_type\":\"span\",\"text\":\": a fresh voting round on just the featured statements, with the strongest arguments displayed alongside. Comparing the before and after even lets us see whether exposure to arguments actually changed minds — something our current processes are incapable of measuring.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Each phase maps onto one of the failure modes above: cheap voting addresses representation; atomic statements kill the catch-up cost; private votes remove herding and anchoring — and let people disagree with the regulars without it becoming personal. The phase separation gives ideation, refinement, and preference measurement each their own home. Notably, the same design serves both ends of the scale: a small wiki gets an honest reading of the lurkers it could never get to write talk page comments, while a large wiki gets a way to digest thousands of voices that no closer could. And the process is composable — an organizer can stop after the opinion mapping and already walk away with something valuable.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"One thing wiki-polis deliberately is \"},{\"_type\":\"span\",\"text\":\"not\",\"marks\":[\"em\"]},{\"_type\":\"span\",\"text\":\": a vote. While everything may feel like voting, it is much more about mapping where the agreement and disagreement are, and collecting arguments in an equitable manner. Then, we have a good foundation to draft policies from, and figure out how we can compromise between those views. It may also expose where more conversation is needed, and where we already agree and only a vocal minority pushes back. The report from the tool would be helpful to inform the final step of the policy process on-wiki. Because at this point, a Request for Comments or an opinion poll may actually make sense.\"}]},{\"_type\":\"block\",\"style\":\"h2\",\"children\":[{\"_type\":\"span\",\"text\":\"An invitation\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"This is one way of doing consensus building differently, but the principles remain the same. I would invite you to try it, and think about it from a constructive perspective: how would you improve it?\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"The prototype is live at \"},{\"_type\":\"span\",\"text\":\"wiki-polis.toolforge.org\",\"marks\":[\"link-1\"]},{\"_type\":\"span\",\"text\":\", and what it needs now is reality: some groups willing to run a real consultation on a real question. If your wiki, wikiProject or group has a policy discussion that has been stuck for years — and whose hasn't? — I would love to talk.\"}],\"markDefs\":[{\"_key\":\"link-1\",\"_type\":\"link\",\"href\":\"https://wiki-polis.toolforge.org\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Twenty-five years ago we built an encyclopedia. I refuse to believe that the way we made decisions in 2004 is the best we can do in 2026. The editors who join us next year deserve rules they can actually read, trust — and change.\"}]},{\"_type\":\"block\",\"style\":\"h2\",\"children\":[{\"_type\":\"span\",\"text\":\"todo & open questions\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Shorten: more focus. Perhaps break up the piece? Audience: Diff for this one, maybe the blogpost at my own website. Authors: Schroedinger Collective? A small group of us? Me? Thoughts welcome!\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"And in both cases, the rational response is the same: people end up working around the policy rather than changing it. Veterans accumulate the lore — which rules are dead letters, which are selectively enforced, which \\\"consensus\\\" was really five people in 2007. That works fine for them. But it is deeply unfair to newcomers, who get to follow the worst of both worlds: the policy as it stands, and the policy as it lives. Newcomers risk being judged as convenient - when the incrowd likes them, they can play by the rules they like. sanctioned by written rules they couldn't know were still alive, and reverted by unwritten practice they couldn't know existed. A policy environment that can't be changed honestly will be navigated dishonestly — and only insiders have the map.\"}]}]",
         "seo_title": "Innovating with Wikimedia decision making",
         "seo_description": "An essay by Lodewijk Gelauff on Wikimedia decision-making, consensus processes, and the wiki-polis prototype.",
-        "author_name": "Lodewijk Gelauff"
+        "author_name": "Lodewijk Gelauff",
+        "featured_image_alt": null,
+        "featured_image_caption": null,
+        "featured_image_license": null,
+        "content_type": "essay"
       }
     ],
     "options": [
@@ -955,11 +987,11 @@
       },
       {
         "name": "site:searchMissingTitle",
-        "value": "\"Search is being mapped\""
+        "value": "\"Search\""
       },
       {
         "name": "site:searchMissingDescription",
-        "value": "\"Search will arrive after the V1 content structure is stable. For now, browse the published essays.\""
+        "value": "\"Search the published TEMIS static snapshot across essays, tools, people, and pages.\""
       },
       {
         "name": "site:pageHeroEyebrow",
@@ -1032,6 +1064,22 @@
       {
         "name": "site:toolOpenPrivacyHeading",
         "value": "\"Open-source and privacy\""
+      },
+      {
+        "name": "site:searchEmptyLabel",
+        "value": "\"No matching records\""
+      },
+      {
+        "name": "site:searchInputLabel",
+        "value": "\"Search TEMIS\""
+      },
+      {
+        "name": "site:searchInputPlaceholder",
+        "value": "\"Search essays, tools, people, and pages\""
+      },
+      {
+        "name": "site:searchResultsLabel",
+        "value": "\"Search results\""
       }
     ],
     "revisions": [
@@ -1130,6 +1178,70 @@
         "graph_priority": 72,
         "seo_title": "wiki-polis",
         "seo_description": "wiki-polis is a Wikimedia-focused deliberation tool for mapping opinion clusters and structured arguments."
+      }
+    ],
+    "taxonomies": [
+      {
+        "id": "schema:taxonomy:category:essays",
+        "name": "category",
+        "slug": "essays",
+        "label": "Essays",
+        "parent_id": null,
+        "data": "{\"accent\":\"#006f6a\",\"description\":\"Long-form arguments, reflections, and field notes.\",\"priority\":80}",
+        "locale": "en",
+        "translation_group": "schema:taxonomy:category:essays"
+      },
+      {
+        "id": "schema:taxonomy:category:tools",
+        "name": "category",
+        "slug": "tools",
+        "label": "Tools",
+        "parent_id": null,
+        "data": "{\"accent\":\"#1137ff\",\"description\":\"Software and prototypes connected to open knowledge work.\",\"priority\":70}",
+        "locale": "en",
+        "translation_group": "schema:taxonomy:category:tools"
+      },
+      {
+        "id": "schema:taxonomy:tag:open-knowledge",
+        "name": "tag",
+        "slug": "open-knowledge",
+        "label": "Open knowledge",
+        "parent_id": null,
+        "data": "{\"accent\":\"#4f7f45\",\"description\":\"Questions about public knowledge, commons, and shared infrastructure.\",\"priority\":60}",
+        "locale": "en",
+        "translation_group": "schema:taxonomy:tag:open-knowledge"
+      }
+    ],
+    "content_taxonomies": [
+      {
+        "collection": "posts",
+        "entry_id": "01KV1FV7AECH8GYF3V0FP8T9ZR",
+        "taxonomy_id": "schema:taxonomy:category:essays"
+      },
+      {
+        "collection": "posts",
+        "entry_id": "01KV1FV7AECH8GYF3V0FP8T9ZR",
+        "taxonomy_id": "schema:taxonomy:tag:open-knowledge"
+      },
+      {
+        "collection": "posts",
+        "entry_id": "seed:post:innovating-with-wikimedia-decision-making",
+        "taxonomy_id": "schema:taxonomy:category:essays"
+      },
+      {
+        "collection": "posts",
+        "entry_id": "seed:post:innovating-with-wikimedia-decision-making",
+        "taxonomy_id": "schema:taxonomy:tag:open-knowledge"
+      },
+      {
+        "collection": "tools",
+        "entry_id": "seed:tool:wiki-polis",
+        "taxonomy_id": "schema:taxonomy:category:tools"
+      },
+      {
+        "collection": "tools",
+        "entry_id": "seed:tool:wiki-polis",
+        "taxonomy_id": "schema:taxonomy:tag:open-knowledge"
       }
     ]
   },
@@ -1418,7 +1530,11 @@
         "content",
         "seo_title",
         "seo_description",
-        "author_name"
+        "author_name",
+        "content_type",
+        "featured_image_alt",
+        "featured_image_caption",
+        "featured_image_license"
       ],
       "types": {
         "id": "TEXT",
@@ -1442,7 +1558,11 @@
         "content": "JSON",
         "seo_title": "TEXT",
         "seo_description": "TEXT",
-        "author_name": "TEXT"
+        "author_name": "TEXT",
+        "content_type": "TEXT",
+        "featured_image_alt": "TEXT",
+        "featured_image_caption": "TEXT",
+        "featured_image_license": "TEXT"
       }
     },
     "options": {
@@ -1468,6 +1588,36 @@
         "data": "TEXT",
         "author_id": "TEXT",
         "created_at": "TEXT"
+      }
+    },
+    "taxonomies": {
+      "columns": [
+        "id",
+        "name",
+        "slug",
+        "label",
+        "parent_id",
+        "data",
+        "locale",
+        "translation_group"
+      ],
+      "types": {
+        "id": "TEXT",
+        "name": "TEXT",
+        "slug": "TEXT",
+        "label": "TEXT",
+        "parent_id": "TEXT",
+        "data": "TEXT",
+        "locale": "TEXT",
+        "translation_group": "TEXT"
+      }
+    },
+    "content_taxonomies": {
+      "columns": ["collection", "entry_id", "taxonomy_id"],
+      "types": {
+        "collection": "TEXT",
+        "entry_id": "TEXT",
+        "taxonomy_id": "TEXT"
       }
     }
   },

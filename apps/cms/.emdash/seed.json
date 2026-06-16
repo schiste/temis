@@ -63,8 +63,12 @@
     "authorHeroEyebrow": "Author",
     "authorArticlesHeading": "Published articles",
     "searchHeroEyebrow": "Search",
-    "searchMissingTitle": "Search is being mapped",
-    "searchMissingDescription": "Search will arrive after the V1 content structure is stable. For now, browse the published essays.",
+    "searchEmptyLabel": "No matching records",
+    "searchInputLabel": "Search TEMIS",
+    "searchInputPlaceholder": "Search essays, tools, people, and pages",
+    "searchMissingTitle": "Search",
+    "searchMissingDescription": "Search the published TEMIS static snapshot across essays, tools, people, and pages.",
+    "searchResultsLabel": "Search results",
     "pageHeroEyebrow": "Page",
     "notFoundEyebrow": "404",
     "notFoundTitle": "Not found",
@@ -151,6 +155,17 @@
           "searchable": true
         },
         {
+          "slug": "content_type",
+          "label": "Content type",
+          "type": "select",
+          "required": true,
+          "defaultValue": "essay",
+          "searchable": true,
+          "validation": {
+            "options": ["essay", "news", "tool_announcement", "team_note"]
+          }
+        },
+        {
           "slug": "excerpt",
           "label": "Excerpt",
           "type": "text",
@@ -166,6 +181,21 @@
           "slug": "featured_image",
           "label": "Featured Image",
           "type": "image"
+        },
+        {
+          "slug": "featured_image_alt",
+          "label": "Featured image alt text",
+          "type": "text"
+        },
+        {
+          "slug": "featured_image_caption",
+          "label": "Featured image caption",
+          "type": "text"
+        },
+        {
+          "slug": "featured_image_license",
+          "label": "Featured image license",
+          "type": "string"
         },
         {
           "slug": "content",
@@ -393,8 +423,8 @@
         "slug": "search",
         "status": "published",
         "data": {
-          "title": "Search is being mapped",
-          "summary": "Search will arrive after the V1 content structure is stable.",
+          "title": "Search",
+          "summary": "Search the published TEMIS static snapshot across essays, tools, people, and pages.",
           "content": [
             {
               "_type": "block",
@@ -402,13 +432,13 @@
               "children": [
                 {
                   "_type": "span",
-                  "text": "For now, browse the published essays and topic map while the search experience is designed around real content."
+                  "text": "This local search index is generated at build time from published EmDash content."
                 }
               ]
             }
           ],
           "seo_title": "Search",
-          "seo_description": "Search will arrive after the V1 TEMIS content structure is stable."
+          "seo_description": "Search published TEMIS essays, tools, people, and pages."
         }
       },
       {
@@ -488,6 +518,7 @@
         "status": "published",
         "data": {
           "title": "Welcome to TEMIS",
+          "content_type": "team_note",
           "excerpt": "The first published article in the TEMIS starter content model.",
           "author_name": "TEMIS editorial team",
           "content": [
