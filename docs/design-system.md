@@ -226,6 +226,14 @@ Recommended layout uses:
 - Article layout: editorial reading column with metadata integrated before and
   around the article. The article body may use the wider article measure when a
   graph rail is present; it should not expand to the full main column.
+- Content-detail structure: article/tool pages use a shared content grid where
+  the main column and graph rail start on the same grid line. Metadata rows,
+  graph headers, tool sections, and framed media should use whole row units for
+  their structural boxes.
+- Vertical rhythm: structural boxes use `--row-unit`, `--row-half`, and
+  `--row-quarter`. Continuous prose may not land every line on a strict row
+  grid, but paragraph and heading spacing must use row-derived tokens rather
+  than arbitrary margins.
 - Site chrome, main content, and footer should share the same snapped page
   content area. Avoid separate chrome caps that create a second horizontal
   system.

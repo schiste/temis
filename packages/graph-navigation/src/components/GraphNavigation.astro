@@ -449,7 +449,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
   }
 
   .temis-graph-nav__node--content {
-    --node-accent: var(--ds-color-link, var(--ds-color-accent, currentColor));
+    --node-accent: var(--ds-color-accent, currentColor);
   }
 
   .temis-graph-nav__node--topic {
@@ -546,15 +546,15 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
   .temis-graph-nav__detail-related > p {
     color: var(--ds-color-text-muted, currentColor);
     font-family: var(--ds-font-mono, ui-monospace);
-    font-size: var(--ds-font-size-micro, 0.625rem);
+    font-size: var(--ds-font-size-caption, 0.625rem);
     line-height: 1;
     margin: 0;
     text-transform: uppercase;
   }
 
   .temis-graph-nav__detail h3 {
-    font-size: var(--ds-font-size-step-1, 1.625rem);
-    line-height: var(--ds-line-height-tight, 1.1);
+    font-size: var(--ds-font-size-title-sm, 1.625rem);
+    line-height: var(--ds-line-tight, 1.1);
     margin: 0;
   }
 
@@ -562,7 +562,10 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     color: var(--ds-color-text-muted, currentColor);
     font-size: var(--ds-font-size-body, 1rem);
     margin: 0;
-    max-width: calc(var(--ds-grid-unit, 2.625rem) * 16);
+    max-width: var(
+      --ds-measure-prose,
+      calc(var(--ds-grid-unit, 2.625rem) * 16)
+    );
   }
 
   .temis-graph-nav__detail-meta {
@@ -574,7 +577,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
       auto-fit,
       minmax(calc(var(--ds-grid-unit, 2.625rem) * 4), 1fr)
     );
-    margin: var(--ds-space-phi-1, 0.625rem) 0 0;
+    margin: var(--ds-row-quarter, var(--ds-space-phi-1, 0.625rem)) 0 0;
   }
 
   .temis-graph-nav__detail-meta div {
@@ -594,7 +597,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
   .temis-graph-nav__detail-meta dt {
     color: var(--ds-color-text-muted, currentColor);
     font-family: var(--ds-font-mono, ui-monospace);
-    font-size: var(--ds-font-size-micro, 0.625rem);
+    font-size: var(--ds-font-size-caption, 0.625rem);
     line-height: 1;
     text-transform: uppercase;
   }
@@ -667,7 +670,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
   .temis-graph-nav__detail-related span {
     color: var(--ds-color-text-muted, currentColor);
     font-family: var(--ds-font-mono, ui-monospace);
-    font-size: var(--ds-font-size-micro, 0.625rem);
+    font-size: var(--ds-font-size-caption, 0.625rem);
     text-transform: uppercase;
   }
 
@@ -710,7 +713,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
   .temis-graph-nav__fallback-head span {
     color: var(--ds-color-text-muted, currentColor);
     font-family: var(--ds-font-mono, ui-monospace);
-    font-size: var(--ds-font-size-micro, 0.625rem);
+    font-size: var(--ds-font-size-caption, 0.625rem);
     text-transform: uppercase;
   }
 
@@ -759,7 +762,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     align-items: center;
     display: inline-flex;
     font-family: var(--ds-font-mono, ui-monospace);
-    font-size: var(--ds-font-size-micro, 0.625rem);
+    font-size: var(--ds-font-size-caption, 0.625rem);
     font-style: normal;
     font-weight: 700;
     inline-size: 100%;
@@ -799,7 +802,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
       var(--ds-color-line-strong, currentColor);
     display: inline-flex;
     font-family: var(--ds-font-mono, ui-monospace);
-    font-size: var(--ds-font-size-micro, 0.625rem);
+    font-size: var(--ds-font-size-caption, 0.625rem);
     font-weight: 700;
     justify-content: center;
     min-block-size: var(--ds-space-phi-3, 1.625rem);
@@ -819,7 +822,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
 
   .temis-graph-nav--compact .temis-graph-nav__index-link em {
     color: var(--ds-color-text-muted, currentColor);
-    font-size: var(--ds-font-size-micro, 0.625rem);
+    font-size: var(--ds-font-size-caption, 0.625rem);
     font-style: normal;
     text-transform: uppercase;
   }
