@@ -598,24 +598,10 @@
               ]
             },
             {
-              "_type": "block",
-              "style": "blockquote",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "92 points"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "The gap between internet growth (+83%) and our page views (-9%) since 2016"
-                }
-              ]
+              "_type": "callout",
+              "title": "92 points",
+              "body": "The gap between internet growth (+83%) and Wikimedia page views (-9%) since 2016.",
+              "tone": "critical"
             },
             {
               "_type": "block",
@@ -648,52 +634,25 @@
               ]
             },
             {
-              "_type": "block",
-              "style": "blockquote",
-              "children": [
+              "_type": "statGrid",
+              "cards": [
                 {
-                  "_type": "span",
-                  "text": "+83%"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
+                  "value": "+83%",
+                  "label": "Internet users growth",
+                  "detail": "2016 to 2025 · 3.3B to 6.0B",
+                  "tone": "positive"
+                },
                 {
-                  "_type": "span",
-                  "text": "Internet users growth 2016 → 2025 (3.3B → 6.0B)"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "blockquote",
-              "children": [
+                  "value": "-9%",
+                  "label": "Wikimedia page views",
+                  "detail": "2016 to 2025 · 194B to 177B",
+                  "tone": "critical"
+                },
                 {
-                  "_type": "span",
-                  "text": "-9%"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Wikimedia page views 2016 → 2025 (194B → 177B)"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "blockquote",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "↑ A 92 percentage point divergence ↑"
+                  "value": "92 points",
+                  "label": "Divergence",
+                  "detail": "Audience gap versus internet growth",
+                  "tone": "warning"
                 }
               ]
             },
@@ -775,6 +734,15 @@
               ]
             },
             {
+              "_type": "figure",
+              "src": "/media/articles/wikipedia-at-25/chart1-divergence.png",
+              "alt": "Line chart comparing global internet user growth and Wikimedia page views from 2016 to 2025, showing a widening gap.",
+              "caption": "Internet user growth diverged sharply from Wikimedia page views between 2016 and 2025.",
+              "credit": "Chart image from Wikimedia Commons",
+              "license": "Public domain",
+              "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chart1_divergence.png"
+            },
+            {
               "_type": "block",
               "style": "normal",
               "children": [
@@ -785,62 +753,25 @@
               ]
             },
             {
-              "_type": "block",
-              "style": "blockquote",
-              "children": [
+              "_type": "statGrid",
+              "cards": [
                 {
-                  "_type": "span",
-                  "text": "-36%"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
+                  "value": "-36%",
+                  "label": "New registrations",
+                  "detail": "2016 to 2025 · 317K/mo to 202K/mo",
+                  "tone": "critical"
+                },
                 {
-                  "_type": "span",
-                  "text": "Drop in new registrations (2016: 317K/mo → 2025: 202K/mo)"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "blockquote",
-              "children": [
+                  "value": "2.1x",
+                  "label": "Edits per new user",
+                  "detail": "Growing concentration risk",
+                  "tone": "warning"
+                },
                 {
-                  "_type": "span",
-                  "text": "2.1×"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Edits per new user (Growing concentration risk)"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "blockquote",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "+37%"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Edit volume increase (Fewer editors work harder)"
+                  "value": "+37%",
+                  "label": "Edit volume",
+                  "detail": "Fewer editors working harder",
+                  "tone": "positive"
                 }
               ]
             },
@@ -1301,6 +1232,15 @@
               ]
             },
             {
+              "_type": "figure",
+              "src": "/media/articles/wikipedia-at-25/chart2-acquisition.png",
+              "alt": "Line chart comparing internet growth with new Wikimedia registrations from 2016 to 2025.",
+              "caption": "New Wikimedia registrations declined while the global internet population continued to grow.",
+              "credit": "Chart image from Wikimedia Commons",
+              "license": "Public domain",
+              "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chart2_acquisition.png"
+            },
+            {
               "_type": "block",
               "style": "h3",
               "children": [
@@ -1464,6 +1404,15 @@
               ]
             },
             {
+              "_type": "figure",
+              "src": "/media/articles/wikipedia-at-25/chart3-concentration.png",
+              "alt": "Line chart showing edits per new Wikimedia registered user rising from 2016 to 2025.",
+              "caption": "Edit production is becoming more concentrated as fewer new contributors arrive.",
+              "credit": "Chart image from Wikimedia Commons",
+              "license": "Public domain",
+              "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chart3_concentration.png"
+            },
+            {
               "_type": "block",
               "style": "normal",
               "children": [
@@ -1474,14 +1423,10 @@
               ]
             },
             {
-              "_type": "block",
-              "style": "blockquote",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "The harsh truth: while the internet nearly doubled in size, Wikimedia's share of global attention was cut in half. And the people we lost, or never had, are precisely the people the internet added: young, mobile-first, from the Global South. We went from being essential infrastructure of the web to being one option among many, and increasingly, an option that doesn't speak their language, literally or figuratively."
-                }
-              ]
+              "_type": "callout",
+              "title": "The harsh truth",
+              "body": "The harsh truth: while the internet nearly doubled in size, Wikimedia's share of global attention was cut in half. And the people we lost, or never had, are precisely the people the internet added: young, mobile-first, from the Global South. We went from being essential infrastructure of the web to being one option among many, and increasingly, an option that doesn't speak their language, literally or figuratively.",
+              "tone": "critical"
             },
             {
               "_type": "block",
@@ -1554,14 +1499,10 @@
               ]
             },
             {
-              "_type": "block",
-              "style": "blockquote",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "With AI, we don't have fifteen years."
-                }
-              ]
+              "_type": "callout",
+              "title": "AI is compressing the timeline",
+              "body": "With AI, we don't have fifteen years.",
+              "tone": "warning"
             },
             {
               "_type": "block",
@@ -1703,14 +1644,10 @@
               ]
             },
             {
-              "_type": "block",
-              "style": "blockquote",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "The threat isn't that Wikipedia will be destroyed. It's worse than that. The threat is that Wikipedia will become unknown: a temple filled with aging Wikimedians, self-satisfied by work nobody looks at anymore."
-                }
-              ]
+              "_type": "callout",
+              "title": "The risk is invisibility",
+              "body": "The threat isn't that Wikipedia will be destroyed. It's worse than that. The threat is that Wikipedia will become unknown: a temple filled with aging Wikimedians, self-satisfied by work nobody looks at anymore.",
+              "tone": "critical"
             },
             {
               "_type": "block",
@@ -2162,14 +2099,10 @@
               ]
             },
             {
-              "_type": "block",
-              "style": "blockquote",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Our decline is the diversity debt coming due."
-                }
-              ]
+              "_type": "callout",
+              "title": "Diversity debt",
+              "body": "Our decline is the diversity debt coming due.",
+              "tone": "critical"
             },
             {
               "_type": "block",
@@ -2381,44 +2314,10 @@
               ]
             },
             {
-              "_type": "block",
-              "style": "blockquote",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "The Two-Year Window"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "By Wikipedia's 26th birthday, we need to have made fundamental decisions about revenue models, AI integration, knowledge equity, and contributor recruitment."
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "By Wikipedia's 27th birthday, we need to have executed them."
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "blockquote",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "That's the window. After that, we're managing decline."
-                }
-              ]
+              "_type": "callout",
+              "title": "The Two-Year Window",
+              "body": "By Wikipedia's 26th birthday, we need to have made fundamental decisions about revenue models, AI integration, knowledge equity, and contributor recruitment. By Wikipedia's 27th birthday, we need to have executed them. That's the window. After that, we're managing decline.",
+              "tone": "critical"
             },
             {
               "_type": "block",
@@ -2552,19 +2451,10 @@
               ]
             },
             {
-              "_type": "block",
-              "style": "blockquote",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "To every Board member, every staffer, every Wikimedian reading this:",
-                  "marks": ["strong"]
-                },
-                {
-                  "_type": "span",
-                  "text": "the numbers don't lie. The internet added 2.7 billion users since 2016. Our readership declined. That's not a plateau. That's being left behind. And the forces reshaping knowledge distribution aren't going to wait for us to finish deliberating."
-                }
-              ]
+              "_type": "callout",
+              "title": "The numbers do not lie",
+              "body": "To every Board member, every staffer, every Wikimedian reading this:the numbers don't lie. The internet added 2.7 billion users since 2016. Our readership declined. That's not a plateau. That's being left behind. And the forces reshaping knowledge distribution aren't going to wait for us to finish deliberating.",
+              "tone": "critical"
             },
             {
               "_type": "block",
@@ -2683,75 +2573,22 @@
               ]
             },
             {
-              "_type": "block",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Internet Users (World): 2016 3.27B; 2021 5.02B; 2025 6.0B; Change +83%"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Page Views (Annual): 2016 194B; 2021 192B; 2025 177B; Change -9%"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "New Registrations (Monthly Avg): 2016 317K; 2021 286K; 2025 202K; Change -36%"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Edits (Monthly Avg): 2016 15.6M; 2021 21.6M; 2025 21.4M; Change +37%"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Edits per New User: 2016 49.0; 2021 75.4; 2025 105.7; Change +116%"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Mobile Share (EN Wiki): 2016 62%; 2021 68%; 2025 74%; Change +12pp"
-                }
+              "_type": "dataTable",
+              "caption": "Key metrics 2016-2025",
+              "columns": ["Metric", "2016", "2021", "2025", "Change"],
+              "rows": [
+                ["Internet Users (World)", "3.27B", "5.02B", "6.0B", "+83%"],
+                ["Page Views (Annual)", "194B", "192B", "177B", "-9%"],
+                [
+                  "New Registrations (Monthly Avg)",
+                  "317K",
+                  "286K",
+                  "202K",
+                  "-36%"
+                ],
+                ["Edits (Monthly Avg)", "15.6M", "21.6M", "21.4M", "+37%"],
+                ["Edits per New User", "49.0", "75.4", "105.7", "+116%"],
+                ["Mobile Share (EN Wiki)", "62%", "68%", "74%", "+12pp"]
               ]
             },
             {
@@ -2765,123 +2602,20 @@
               ]
             },
             {
-              "_type": "block",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "2016: Internet Users 100; Page Views 100; Gap –"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "2017: Internet Users 106; Page Views 98; Gap -8"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "2018: Internet Users 116; Page Views 98; Gap -18"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "2019: Internet Users 128; Page Views 100; Gap -28"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "2020: Internet Users 144; Page Views 103; Gap -41"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "2021: Internet Users 154; Page Views 99; Gap -55"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "2022: Internet Users 162; Page Views 94; Gap -68"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "2023: Internet Users 168; Page Views 98; Gap -70"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "2024: Internet Users 177; Page Views 97; Gap -80"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "2025: Internet Users 183; Page Views 91; Gap -92"
-                }
+              "_type": "dataTable",
+              "caption": "Indexed growth, 2016 = 100",
+              "columns": ["Year", "Internet Users", "Page Views", "Gap"],
+              "rows": [
+                ["2016", "100", "100", "-"],
+                ["2017", "106", "98", "-8"],
+                ["2018", "116", "98", "-18"],
+                ["2019", "128", "100", "-28"],
+                ["2020", "144", "103", "-41"],
+                ["2021", "154", "99", "-55"],
+                ["2022", "162", "94", "-68"],
+                ["2023", "168", "98", "-70"],
+                ["2024", "177", "97", "-80"],
+                ["2025", "183", "91", "-92"]
               ]
             },
             {

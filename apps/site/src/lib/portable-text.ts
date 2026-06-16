@@ -7,6 +7,10 @@ function escapeHtml(value: string) {
     .replaceAll("'", "&#039;");
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
 function safeHref(value: unknown) {
   if (typeof value !== "string") return "#";
 
@@ -18,6 +22,10 @@ function safeHref(value: unknown) {
   }
 
   return "#";
+}
+
+function textValue(value: unknown) {
+  return typeof value === "string" ? value.trim() : "";
 }
 
 function renderSpan(
@@ -56,7 +64,13 @@ function blockText(block: unknown) {
 function renderBlock(block: unknown) {
   if (!block || typeof block !== "object") return "";
 
-  const data = block as { listItem?: string; style?: string };
+  const data = block as { _type?: string; listItem?: string; style?: string };
+
+  if (data._type === "figure") return renderFigure(data);
+  if (data._type === "statGrid") return renderStatGrid(data);
+  if (data._type === "callout") return renderCallout(data);
+  if (data._type === "dataTable") return renderDataTable(data);
+
   const text = blockText(block);
   if (!text) return "";
 
@@ -72,6 +86,95 @@ function renderBlock(block: unknown) {
     default:
       return `<p>${text}</p>`;
   }
+}
+
+function renderFigure(data: Record<string, unknown>) {
+  const src = safeHref(data.src);
+  const alt = textValue(data.alt);
+  const caption = textValue(data.caption);
+  const credit = textValue(data.credit);
+  const license = textValue(data.license);
+  const sourceUrl = safeHref(data.sourceUrl);
+
+  if (src === "#") return "";
+
+  const source =
+    sourceUrl === "#" ? "" : ` <a href="${escapeHtml(sourceUrl)}">Source</a>`;
+  const meta = [credit, license].filter(Boolean).join(" · ");
+  const figcaption =
+    caption || meta || source
+      ? `<figcaption>${escapeHtml(caption)}${
+          meta ? ` <span>${escapeHtml(meta)}</span>` : ""
+        }${source}</figcaption>`
+      : "";
+
+  return `<figure class="ds-prose-figure"><img src="${escapeHtml(
+    src,
+  )}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async" />${figcaption}</figure>`;
+}
+
+function renderStatGrid(data: Record<string, unknown>) {
+  const cards = Array.isArray(data.cards) ? data.cards : [];
+  const renderedCards = cards
+    .filter(isRecord)
+    .map((card) => {
+      const tone = textValue(card.tone) || "neutral";
+      const value = textValue(card.value);
+      const label = textValue(card.label);
+      const detail = textValue(card.detail);
+      if (!value && !label) return "";
+
+      return `<div class="ds-stat-card" data-tone="${escapeHtml(tone)}">${
+        value ? `<strong>${escapeHtml(value)}</strong>` : ""
+      }${label ? `<span>${escapeHtml(label)}</span>` : ""}${
+        detail ? `<small>${escapeHtml(detail)}</small>` : ""
+      }</div>`;
+    })
+    .filter(Boolean)
+    .join("");
+
+  return renderedCards
+    ? `<section class="ds-stat-grid">${renderedCards}</section>`
+    : "";
+}
+
+function renderCallout(data: Record<string, unknown>) {
+  const tone = textValue(data.tone) || "neutral";
+  const title = textValue(data.title);
+  const body = textValue(data.body);
+
+  if (!title && !body) return "";
+
+  return `<aside class="ds-prose-callout" data-tone="${escapeHtml(tone)}">${
+    title ? `<strong>${escapeHtml(title)}</strong>` : ""
+  }${body ? `<p>${escapeHtml(body)}</p>` : ""}</aside>`;
+}
+
+function renderDataTable(data: Record<string, unknown>) {
+  const caption = textValue(data.caption);
+  const columns = Array.isArray(data.columns)
+    ? data.columns.map(textValue).filter(Boolean)
+    : [];
+  const rows = Array.isArray(data.rows) ? data.rows : [];
+
+  if (columns.length === 0 || rows.length === 0) return "";
+
+  const head = columns
+    .map((column) => `<th scope="col">${escapeHtml(column)}</th>`)
+    .join("");
+  const body = rows
+    .filter(Array.isArray)
+    .map(
+      (row) =>
+        `<tr>${row
+          .map((cell) => `<td>${escapeHtml(textValue(cell))}</td>`)
+          .join("")}</tr>`,
+    )
+    .join("");
+
+  return `<figure class="ds-data-table">${
+    caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ""
+  }<div><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div></figure>`;
 }
 
 export function portableTextToHtml(value: unknown) {

@@ -233,6 +233,23 @@ function collectStrings(value, output = []) {
   return output;
 }
 
+function collectFigureBlocks(value, output = []) {
+  const parsed = parseMaybeJson(value);
+
+  if (Array.isArray(parsed)) {
+    for (const item of parsed) collectFigureBlocks(item, output);
+    return output;
+  }
+
+  if (!isRecord(parsed)) return output;
+
+  if (parsed._type === "figure") output.push(parsed);
+
+  for (const item of Object.values(parsed)) collectFigureBlocks(item, output);
+
+  return output;
+}
+
 function addIssue(issues, severity, code, message, field) {
   issues.push({
     code,
@@ -419,6 +436,48 @@ export function validateContentQuality(options) {
         "missing-image-license",
         "Images must have a license or rights note.",
         imageField.licenseFields[0] ?? imageField.field,
+      );
+    }
+  }
+
+  for (const figure of collectFigureBlocks(record.content)) {
+    if (!hasText(figure.src)) {
+      addIssue(
+        issues,
+        "error",
+        "missing-figure-source",
+        "Figure blocks must include an image source.",
+        "content",
+      );
+    }
+
+    if (!hasText(figure.alt)) {
+      addIssue(
+        issues,
+        "error",
+        "missing-figure-alt",
+        "Figure blocks must include alt text.",
+        "content",
+      );
+    }
+
+    if (!hasText(figure.caption)) {
+      addIssue(
+        issues,
+        "error",
+        "missing-figure-caption",
+        "Figure blocks must include a caption.",
+        "content",
+      );
+    }
+
+    if (!hasText(figure.license)) {
+      addIssue(
+        issues,
+        "error",
+        "missing-figure-license",
+        "Figure blocks must include a license or rights note.",
+        "content",
       );
     }
   }
