@@ -217,7 +217,7 @@ const args = parseArgs(process.argv.slice(2));
 const collections = args.collection
   ? [[args.collection, defaultCollections.get(args.collection)]]
   : [...defaultCollections.entries()];
-const statements = ["BEGIN;"];
+const statements = args.mode === "production" ? [] : ["BEGIN;"];
 const summary = [];
 
 for (const [collection, table] of collections) {
@@ -255,11 +255,14 @@ for (const [collection, table] of collections) {
   });
 }
 
-statements.push("COMMIT;");
+if (args.mode !== "production") statements.push("COMMIT;");
 
 console.log(JSON.stringify({ dryRun: args.dryRun, mode: args.mode, summary }));
 
-if (statements.length <= 2 || args.dryRun) {
+const changedStatementCount =
+  args.mode === "production" ? statements.length : statements.length - 2;
+
+if (changedStatementCount === 0 || args.dryRun) {
   process.exit(0);
 }
 
