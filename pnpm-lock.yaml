@@ -55,6 +55,9 @@ importers:
       "@temis/emdash-content-quality":
         specifier: workspace:*
         version: link:../../packages/emdash-content-quality
+      "@temis/emdash-editorial-blocks":
+        specifier: workspace:*
+        version: link:../../packages/emdash-editorial-blocks
       astro:
         specifier: ^6.2.2
         version: 6.4.6(@types/node@22.19.21)
@@ -129,6 +132,16 @@ importers:
       "@temis/content-quality":
         specifier: workspace:*
         version: link:../content-quality
+      emdash:
+        specifier: ^0.17.2
+        version: 0.17.2(@astrojs/react@5.0.7)(@atcute/identity@2.0.0)(@floating-ui/dom@1.7.6)(@tiptap/extension-collaboration@3.26.1)(@tiptap/extensions@3.26.1)(@tiptap/pm@3.26.1)(@tiptap/y-tiptap@3.0.5)(@types/react-dom@19.2.3)(@types/react@19.2.17)(astro@6.4.6)(react-dom@19.2.7)(react@19.2.7)(typescript@5.9.3)
+    devDependencies:
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+
+  packages/emdash-editorial-blocks:
+    dependencies:
       emdash:
         specifier: ^0.17.2
         version: 0.17.2(@astrojs/react@5.0.7)(@atcute/identity@2.0.0)(@floating-ui/dom@1.7.6)(@tiptap/extension-collaboration@3.26.1)(@tiptap/extensions@3.26.1)(@tiptap/pm@3.26.1)(@tiptap/y-tiptap@3.0.5)(@types/react-dom@19.2.3)(@types/react@19.2.17)(astro@6.4.6)(react-dom@19.2.7)(react@19.2.7)(typescript@5.9.3)

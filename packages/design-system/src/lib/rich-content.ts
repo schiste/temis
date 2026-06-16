@@ -78,32 +78,41 @@ function blockText(block: unknown) {
     .join("");
 }
 
+// Block renderers keyed by `_type`, and heading styles keyed by `style`.
+// Adding a block type or heading style is a one-line entry here — renderBlock's
+// control flow never changes (open for extension, closed for modification).
+const BLOCK_RENDERERS: Record<
+  string,
+  (data: Record<string, unknown>) => string
+> = {
+  callout: renderCallout,
+  dataTable: renderDataTable,
+  figure: renderFigure,
+  statGrid: renderStatGrid,
+  timeline: renderTimeline,
+};
+
+const BLOCK_STYLE_TAGS: Record<string, string> = {
+  blockquote: "blockquote",
+  h2: "h2",
+  h3: "h3",
+};
+
 function renderBlock(block: unknown) {
   if (!block || typeof block !== "object") return "";
 
   const data = block as { _type?: string; listItem?: string; style?: string };
 
-  if (data._type === "figure") return renderFigure(data);
-  if (data._type === "statGrid") return renderStatGrid(data);
-  if (data._type === "callout") return renderCallout(data);
-  if (data._type === "dataTable") return renderDataTable(data);
-  if (data._type === "timeline") return renderTimeline(data);
+  const renderType = data._type ? BLOCK_RENDERERS[data._type] : undefined;
+  if (renderType) return renderType(data);
 
   const text = blockText(block);
   if (!text) return "";
 
   if (data.listItem === "bullet") return `<li><span>${text}</span></li>`;
 
-  switch (data.style) {
-    case "h2":
-      return `<h2>${text}</h2>`;
-    case "h3":
-      return `<h3>${text}</h3>`;
-    case "blockquote":
-      return `<blockquote>${text}</blockquote>`;
-    default:
-      return `<p>${text}</p>`;
-  }
+  const tag = (data.style && BLOCK_STYLE_TAGS[data.style]) || "p";
+  return `<${tag}>${text}</${tag}>`;
 }
 
 function renderFigure(data: Record<string, unknown>) {
@@ -171,7 +180,11 @@ function renderCallout(data: Record<string, unknown>) {
 function renderDataTable(data: Record<string, unknown>) {
   const caption = textValue(data.caption);
   const columns = Array.isArray(data.columns)
-    ? data.columns.map(textValue).filter(Boolean)
+    ? data.columns
+        .map((column) =>
+          isRecord(column) ? textValue(column.label) : textValue(column),
+        )
+        .filter(Boolean)
     : [];
   const rows = Array.isArray(data.rows) ? data.rows : [];
 
@@ -181,13 +194,21 @@ function renderDataTable(data: Record<string, unknown>) {
     .map((column) => `<th scope="col">${escapeHtml(column)}</th>`)
     .join("");
   const body = rows
-    .filter(Array.isArray)
-    .map(
-      (row) =>
-        `<tr>${row
-          .map((cell) => `<td>${escapeHtml(textValue(cell))}</td>`)
-          .join("")}</tr>`,
-    )
+    .map((row) => {
+      const cells = Array.isArray(row)
+        ? row.map(textValue)
+        : isRecord(row)
+          ? columns.map((_, index) => textValue(row[`cell${index + 1}`]))
+          : [];
+
+      return cells.some(Boolean)
+        ? `<tr>${cells
+            .slice(0, columns.length || undefined)
+            .map((cell) => `<td>${escapeHtml(cell)}</td>`)
+            .join("")}</tr>`
+        : "";
+    })
+    .filter(Boolean)
     .join("");
 
   return `<figure class="ds-data-table">${

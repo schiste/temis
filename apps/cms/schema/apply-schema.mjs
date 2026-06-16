@@ -2,11 +2,6 @@
 
 import {
   collectionContracts,
-  compareCollectionSchema,
-  compareMenuSchema,
-  compareOptionSchema,
-  compareRelationshipSchema,
-  compareTaxonomySchema,
   createDbAdapter,
   fieldMetadata,
   fieldMetadataDiffers,
@@ -17,9 +12,9 @@ import {
   readBylineState,
   readCollectionState,
   readContentRows,
-  readMenuState,
   readOptionState,
   readTaxonomyState,
+  runFullSchemaCheck,
   slugify,
   sqlLiteral,
   taxonomyDefinitions,
@@ -442,39 +437,11 @@ await applyRelationships(contentRows);
 await applyMenus();
 await applyOptions();
 
-const failures = [];
-const warnings = [];
-
-for (const collection of collections) {
-  const state = await readCollectionState(db, collection);
-  const result = compareCollectionSchema(collection, state);
-  failures.push(...result.failures);
-  warnings.push(...result.warnings);
-}
-
-const [taxonomyState, bylineState, menuState, optionState, nextContentRows] =
-  await Promise.all([
-    readTaxonomyState(db),
-    readBylineState(db),
-    readMenuState(db),
-    readOptionState(db),
-    readContentRows(db, collections),
-  ]);
-
-for (const result of [
-  compareTaxonomySchema(contract, taxonomyState),
-  compareRelationshipSchema(
-    contract,
-    nextContentRows,
-    taxonomyState,
-    bylineState,
-  ),
-  compareMenuSchema(contract, menuState),
-  compareOptionSchema(contract, optionState),
-]) {
-  failures.push(...result.failures);
-  warnings.push(...result.warnings);
-}
+const { failures, warnings } = await runFullSchemaCheck(
+  db,
+  contract,
+  collections,
+);
 
 if (applied.length === 0) {
   console.log(`[cms:schema:apply] ${args.mode} schema already matches.`);

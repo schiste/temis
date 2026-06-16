@@ -1,12 +1,12 @@
 ---
 import "../styles/index.css";
-import SiteFooter from "./SiteFooter.astro";
-import SiteHeader from "./SiteHeader.astro";
+import SiteFooter, { type Props as SiteFooterProps } from "./SiteFooter.astro";
+import SiteHeader, { type Props as SiteHeaderProps } from "./SiteHeader.astro";
 
 export interface Props {
   description?: string;
-  footer?: Record<string, unknown>;
-  header?: Record<string, unknown>;
+  footer?: SiteFooterProps;
+  header?: SiteHeaderProps;
   lang?: string;
   title: string;
 }

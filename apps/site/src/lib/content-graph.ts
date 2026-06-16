@@ -8,6 +8,7 @@ import {
 } from "@temis/graph-navigation";
 
 import {
+  blogHref,
   entryAuthorHref,
   entryAuthorName,
   entryBylineBio,
@@ -22,10 +23,13 @@ import {
   entrySlug,
   entrySummary,
   entryTitle,
+  formatDateLabel,
   getBylines,
   getPosts,
   getSnapshotTable,
   getTools,
+  slugify,
+  toolHref,
   type BylineEntry,
   type PostEntry,
   type SnapshotRow,
@@ -90,15 +94,6 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
-function slugify(value: string) {
-  return value
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
 function uniqueById<T extends { id?: string | null }>(rows: T[]) {
   const result = new Map<string, T>();
 
@@ -136,20 +131,6 @@ function isGraphMetaItem(
   return Boolean(item);
 }
 
-function dateLabel(value: string | null | undefined) {
-  if (!value) return null;
-
-  const date = new Date(value);
-  if (Number.isNaN(date.valueOf())) return value.slice(0, 10);
-
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "2-digit",
-    month: "short",
-    timeZone: "UTC",
-    year: "numeric",
-  }).format(date);
-}
-
 function postMeta(post: PostEntry) {
   const publishedDateTime = entryPublishedDateTime(post);
 
@@ -169,7 +150,7 @@ function postMeta(post: PostEntry) {
 function postNode(post: PostEntry): GraphNavigationNodeInput {
   return {
     description: entryDescription(post),
-    href: `/blog/${entrySlug(post)}/`,
+    href: blogHref(post),
     id: `content:${post.id}`,
     label: entryTitle(post),
     meta: postMeta(post),
@@ -191,7 +172,7 @@ function toolNode(tool: ToolEntry): GraphNavigationNodeInput {
 
   return {
     description: entryDescription(tool) || entrySummary(tool),
-    href: `/tools/${entrySlug(tool)}/`,
+    href: toolHref(tool),
     id: `tool:${tool.id}`,
     label: entryTitle(tool),
     meta: [
@@ -201,7 +182,7 @@ function toolNode(tool: ToolEntry): GraphNavigationNodeInput {
       graphMeta("Editorial confidence", cleanText(tool.editorial_confidence)),
       graphMeta("Privacy", cleanText(tool.privacy_note)),
       graphMeta("Language", github?.primaryLanguage),
-      graphMeta("Last commit", dateLabel(github?.lastCommitAt), {
+      graphMeta("Last commit", formatDateLabel(github?.lastCommitAt), {
         datetime: github?.lastCommitAt,
       }),
       graphMeta("Repository", entryExternalUrl(tool.repository_url), {
@@ -389,6 +370,30 @@ function contentNodeId(collection: string, entry: GraphableEntry) {
   return collection === "tools" ? `tool:${entry.id}` : `content:${entry.id}`;
 }
 
+function createBylineResolver(bylines: BylineEntry[]) {
+  const bylineById = new Map(bylines.map((byline) => [byline.id, byline]));
+  const bylineBySlug = new Map(
+    bylines.map((byline) => [entryBylineSlug(byline), byline]),
+  );
+
+  const resolve = (value: string | null | undefined) => {
+    const id = cleanText(value);
+    return bylineById.get(id) ?? bylineBySlug.get(bylineSlugFromId(id));
+  };
+  const byName = (name: string) => bylineBySlug.get(slugify(name));
+
+  return {
+    has: (id: string | undefined) => Boolean(id) && bylineById.has(id),
+    resolve,
+    resolveId: (value: string | null | undefined) => resolve(value)?.id,
+    byName,
+    relatedBylines: (tool: ToolEntry) =>
+      relatedPeopleNames(tool.related_people)
+        .map((name) => byName(name))
+        .filter((byline): byline is BylineEntry => Boolean(byline)),
+  };
+}
+
 function attachBylineEdges(
   posts: PostEntry[],
   tools: ToolEntry[],
@@ -396,42 +401,26 @@ function attachBylineEdges(
   contentBylines: ContentBylineEntry[],
 ) {
   const edges: GraphNavigationEdgeInput[] = [];
-  const bylineById = new Map(bylines.map((byline) => [byline.id, byline]));
-  const bylineBySlug = new Map(
-    bylines.map((byline) => [entryBylineSlug(byline), byline]),
-  );
-  const resolveByline = (value: string | null | undefined) => {
-    const id = cleanText(value);
-    return bylineById.get(id) ?? bylineBySlug.get(bylineSlugFromId(id));
-  };
-  const relatedBylines = (tool: ToolEntry) =>
-    relatedPeopleNames(tool.related_people)
-      .map((name) => bylineBySlug.get(slugify(name)))
-      .filter((byline): byline is BylineEntry => Boolean(byline));
+  const resolver = createBylineResolver(bylines);
 
   for (const post of posts) {
     const postId = `content:${post.id}`;
-    const directByline = resolveByline(post.primary_byline_id);
-    if (directByline) {
-      edges.push(edge(postId, `author:${directByline.id}`, "authored_by", 70));
-      continue;
-    }
-
     const authorName = entryAuthorName(post);
-    const fallbackByline = authorName
-      ? bylineBySlug.get(slugify(authorName))
-      : null;
-    if (fallbackByline) {
-      edges.push(
-        edge(postId, `author:${fallbackByline.id}`, "authored_by", 70),
-      );
+    const byline =
+      resolver.resolve(post.primary_byline_id) ??
+      (authorName ? resolver.byName(authorName) : undefined);
+    if (byline?.id) {
+      edges.push(edge(postId, `author:${byline.id}`, "authored_by", 70));
     }
   }
 
   for (const tool of tools) {
     const toolId = `tool:${tool.id}`;
     const bylinesForTool = new Map(
-      [resolveByline(tool.primary_byline_id), ...relatedBylines(tool)]
+      [
+        resolver.resolve(tool.primary_byline_id),
+        ...resolver.relatedBylines(tool),
+      ]
         .filter((byline): byline is BylineEntry => Boolean(byline?.id))
         .map((byline) => [byline.id, byline]),
     );
@@ -445,7 +434,7 @@ function attachBylineEdges(
     const collection = contentTaxonomyCollection(row);
     if (collection !== "posts" && collection !== "tools") continue;
     const contentId = contentTaxonomyContentId(row);
-    const byline = resolveByline(row.byline_id);
+    const byline = resolver.resolve(row.byline_id);
     if (!contentId || !byline?.id) continue;
     const nodeId =
       collection === "tools" ? `tool:${contentId}` : `content:${contentId}`;
@@ -512,37 +501,25 @@ function authorPublicationCounts(
   contentBylines: ContentBylineEntry[],
 ) {
   const counts = new Map<string, Set<string>>();
-  const bylineById = new Map(bylines.map((byline) => [byline.id, byline]));
-  const bylineBySlug = new Map(
-    bylines.map((byline) => [entryBylineSlug(byline), byline]),
-  );
-  const resolveBylineId = (value: string | null | undefined) => {
-    const id = cleanText(value);
-    return bylineById.get(id)?.id ?? bylineBySlug.get(bylineSlugFromId(id))?.id;
-  };
-  const relatedBylineIds = (tool: ToolEntry) =>
-    relatedPeopleNames(tool.related_people)
-      .map((name) => bylineBySlug.get(slugify(name))?.id)
-      .filter((id): id is string => Boolean(id));
+  const resolver = createBylineResolver(bylines);
 
-  const addCount = (bylineId: string | undefined, itemId: string) => {
-    if (!bylineId || !bylineById.has(bylineId)) return;
+  const addCount = (bylineId: string | null | undefined, itemId: string) => {
+    if (!bylineId || !resolver.has(bylineId)) return;
     if (!counts.has(bylineId)) counts.set(bylineId, new Set());
     counts.get(bylineId)!.add(itemId);
   };
 
   for (const post of posts) {
-    const directBylineId = resolveBylineId(post.primary_byline_id);
-    const fallbackByline = entryAuthorName(post)
-      ? bylineBySlug.get(slugify(entryAuthorName(post) ?? ""))
-      : null;
-    addCount(directBylineId ?? fallbackByline?.id, `content:${post.id}`);
+    const authorName = entryAuthorName(post);
+    const directBylineId = resolver.resolveId(post.primary_byline_id);
+    const fallbackId = authorName ? resolver.byName(authorName)?.id : undefined;
+    addCount(directBylineId ?? fallbackId, `content:${post.id}`);
   }
 
   for (const tool of tools) {
-    addCount(resolveBylineId(tool.primary_byline_id), `tool:${tool.id}`);
-    for (const bylineId of relatedBylineIds(tool)) {
-      addCount(bylineId, `tool:${tool.id}`);
+    addCount(resolver.resolveId(tool.primary_byline_id), `tool:${tool.id}`);
+    for (const byline of resolver.relatedBylines(tool)) {
+      addCount(byline.id, `tool:${tool.id}`);
     }
   }
 
@@ -550,7 +527,7 @@ function authorPublicationCounts(
     const collection = contentTaxonomyCollection(row);
     if (collection !== "posts" && collection !== "tools") continue;
     const contentId = contentTaxonomyContentId(row);
-    const bylineId = resolveBylineId(row.byline_id);
+    const bylineId = resolver.resolveId(row.byline_id);
     if (!contentId || !bylineId) continue;
     addCount(
       bylineId,

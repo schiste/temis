@@ -3,13 +3,13 @@ import FieldNoteRow from "@temis/design-system/components/FieldNoteRow.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
 import SiteLayout from "../../components/SiteLayout.astro";
 import {
+  blogHref,
   entryAuthorHref,
   entryAuthorName,
   entryContentType,
   entryDescription,
   entryPublishedDateLabel,
   entryPublishedDateTime,
-  entrySlug,
   entryTitle,
   getPageBySlug,
   getPosts,
@@ -70,7 +70,7 @@ const postCountLabel = `${posts.length.toString().padStart(2, "0")} ${
             contentType={entryContentType(post)}
             description={entryDescription(post)}
             fallbackAuthorName={copy.blogListFallbackAuthor}
-            href={`/blog/${entrySlug(post)}/`}
+            href={blogHref(post)}
             index={(index + 1).toString().padStart(2, "0")}
             publishedDate={entryPublishedDateLabel(post)}
             publishedDateTime={entryPublishedDateTime(post) ?? undefined}

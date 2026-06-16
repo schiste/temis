@@ -206,7 +206,7 @@ function normalizeHref(href: string) {
   return prefixed.endsWith("/") ? prefixed : `${prefixed}/`;
 }
 
-function slugify(value: string) {
+export function slugify(value: string) {
   return value
     .toLowerCase()
     .normalize("NFD")
@@ -419,13 +419,13 @@ export async function getSearchDocuments(): Promise<SearchDocument[]> {
     })),
     ...posts.map((post) => ({
       description: entryDescription(post),
-      href: `/blog/${entrySlug(post)}/`,
+      href: blogHref(post),
       kind: entryContentType(post),
       title: entryTitle(post),
     })),
     ...tools.map((tool) => ({
       description: entryDescription(tool) || entrySummary(tool),
-      href: `/tools/${entrySlug(tool)}/`,
+      href: toolHref(tool),
       kind: "Tool",
       title: entryTitle(tool),
     })),
@@ -438,15 +438,34 @@ export async function getSearchDocuments(): Promise<SearchDocument[]> {
   ].sort((a, b) => a.title.localeCompare(b.title));
 }
 
+const COLLECTION_ROUTE_PREFIX: Record<string, string> = {
+  posts: "/blog",
+  tools: "/tools",
+};
+
+export function collectionHref(
+  collection: string | null | undefined,
+  slug: string,
+) {
+  const prefix = collection ? COLLECTION_ROUTE_PREFIX[collection] : undefined;
+  return prefix ? `${prefix}/${slug}/` : `/${slug}/`;
+}
+
+export function blogHref(post: SnapshotRow) {
+  return collectionHref("posts", entrySlug(post));
+}
+
+export function toolHref(tool: SnapshotRow) {
+  return collectionHref("tools", entrySlug(tool));
+}
+
 function referencedHref(
   collection: string | null | undefined,
   row: SnapshotRow,
 ) {
   const slug = publicSlug(row);
   if (!slug || slug === "home" || slug === "index") return "/";
-  if (collection === "posts") return `/blog/${slug}/`;
-  if (collection === "tools") return `/tools/${slug}/`;
-  return `/${slug}/`;
+  return collectionHref(collection, slug);
 }
 
 function referencedTitle(row: SnapshotRow) {
@@ -592,12 +611,12 @@ export async function getSiteChrome() {
       actions: [
         {
           href: optionValue(options, "headerSearchHref", "/search/"),
-          icon: "search",
+          icon: "search" as const,
           label: optionValue(options, "headerSearchLabel", "Search"),
         },
         {
           href: optionValue(options, "headerNetworkHref", "/topics/"),
-          icon: "network",
+          icon: "network" as const,
           label: optionValue(options, "headerNetworkLabel", "Topic network"),
         },
       ],
@@ -641,9 +660,8 @@ export function entryPublishedDateTime(row: SnapshotRow) {
   return rawValue.includes("T") ? rawValue : `${rawValue.replace(" ", "T")}Z`;
 }
 
-export function entryPublishedDateLabel(row: SnapshotRow) {
-  const value = entryPublishedDateTime(row);
-  if (!value) return "Undated";
+export function formatDateLabel(value: string | null | undefined) {
+  if (!value) return null;
 
   const date = new Date(value);
   if (Number.isNaN(date.valueOf())) return value.slice(0, 10);
@@ -654,6 +672,10 @@ export function entryPublishedDateLabel(row: SnapshotRow) {
     timeZone: "UTC",
     year: "numeric",
   }).format(date);
+}
+
+export function entryPublishedDateLabel(row: SnapshotRow) {
+  return formatDateLabel(entryPublishedDateTime(row)) ?? "Undated";
 }
 
 export function entryBylineSlug(row: BylineEntry) {

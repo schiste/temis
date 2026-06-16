@@ -186,6 +186,7 @@ export function sqlLiteral(value) {
   if (typeof value === "boolean") return value ? "1" : "0";
   if (typeof value === "number")
     return Number.isFinite(value) ? String(value) : "NULL";
+  if (typeof value === "bigint") return String(value);
   if (typeof value === "object") return sqlLiteral(JSON.stringify(value));
   return `'${String(value).replaceAll("'", "''")}'`;
 }
@@ -210,8 +211,7 @@ export function normalizeJsonValue(value) {
 
 export function normalizeDefaultValue(value) {
   if (value === null || value === undefined) return null;
-  if (typeof value === "boolean") return value ? "true" : "false";
-  return String(value);
+  return JSON.stringify(value);
 }
 
 export function slugify(value) {
@@ -588,4 +588,42 @@ export function compareOptionSchema(contract, options) {
   }
 
   return { failures, warnings: [] };
+}
+
+export async function runFullSchemaCheck(db, contract, collections) {
+  const failures = [];
+  const warnings = [];
+
+  for (const collection of collections) {
+    const state = await readCollectionState(db, collection);
+    const result = compareCollectionSchema(collection, state);
+    failures.push(...result.failures);
+    warnings.push(...result.warnings);
+  }
+
+  const [taxonomyState, bylineState, menuState, optionState, contentRows] =
+    await Promise.all([
+      readTaxonomyState(db),
+      readBylineState(db),
+      readMenuState(db),
+      readOptionState(db),
+      readContentRows(db, collections),
+    ]);
+
+  for (const result of [
+    compareTaxonomySchema(contract, taxonomyState),
+    compareRelationshipSchema(
+      contract,
+      contentRows,
+      taxonomyState,
+      bylineState,
+    ),
+    compareMenuSchema(contract, menuState),
+    compareOptionSchema(contract, optionState),
+  ]) {
+    failures.push(...result.failures);
+    warnings.push(...result.warnings);
+  }
+
+  return { failures, warnings };
 }

@@ -1,0 +1,20 @@
+{
+  "name": "@temis/emdash-editorial-blocks",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT OR Apache-2.0",
+  "type": "module",
+  "description": "Reusable EmDash plugin for TEMIS editorial rich-content blocks.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "emdash": "^0.17.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}

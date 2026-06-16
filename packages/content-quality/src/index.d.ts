@@ -37,9 +37,15 @@ export declare function formatContentQualityIssues(
   result: ContentQualityResult,
 ): string;
 
+export declare function isRecord(
+  value: unknown,
+): value is Record<string, unknown>;
+
 export declare function normalizeContentRecord(
   content: Record<string, unknown>,
 ): Record<string, unknown>;
+
+export declare function parseMaybeJson(value: unknown): unknown;
 
 export declare function validateContentQuality(
   options: ContentQualityOptions,
