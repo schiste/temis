@@ -27,6 +27,7 @@
     "type-check": "pnpm -r type-check",
     "format": "pnpm exec prettier --write \"**/*.{ts,js,mjs,json,jsonc,md,astro,css,yaml}\"",
     "format:check": "pnpm exec prettier --check \"**/*.{ts,js,mjs,json,jsonc,md,astro,css,yaml}\"",
+    "design:check": "node ./scripts/check-design-grid.mjs",
     "deploy:cms": "pnpm --filter @temis/cms run deploy"
   },
   "engines": {

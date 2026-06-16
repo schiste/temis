@@ -45,6 +45,9 @@ jobs:
       - name: Check formatting
         run: pnpm format:check
 
+      - name: Check design grid
+        run: pnpm design:check
+
       - name: Validate CMS seed
         run: pnpm cms:seed:validate
 
