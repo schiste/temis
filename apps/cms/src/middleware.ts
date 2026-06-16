@@ -2,6 +2,7 @@ import { hasPermission } from "@emdash-cms/auth";
 import { defineMiddleware } from "astro:middleware";
 import {
   formatContentQualityIssues,
+  isRecord,
   validateContentQuality,
 } from "@temis/content-quality";
 
@@ -17,10 +18,6 @@ interface PublishableLocals {
     }>;
   };
   user?: unknown;
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
 function contentItemFromResult(result: unknown) {
