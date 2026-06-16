@@ -21,6 +21,7 @@
     "cms:schema:apply:production": "node ./apps/cms/schema/apply-schema.mjs --production",
     "cms:schema:check": "node ./apps/cms/schema/check-schema.mjs",
     "cms:schema:check:production": "node ./apps/cms/schema/check-schema.mjs --production",
+    "cms:seed:validate": "pnpm --filter @temis/cms exec emdash seed --validate",
     "seed": "pnpm --filter @temis/cms seed",
     "type-check": "pnpm -r type-check",
     "format": "pnpm exec prettier --write \"**/*.{ts,js,mjs,json,jsonc,md,astro,css,yaml}\"",

@@ -116,6 +116,7 @@ For CMS changes:
 
 ```sh
 pnpm --filter @temis/cms type-check
+pnpm cms:seed:validate
 pnpm cms:schema:check
 ```
 
