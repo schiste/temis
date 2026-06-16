@@ -232,9 +232,10 @@ function normalizeTableRows(value: unknown) {
     .map((row) => {
       if (Array.isArray(row)) {
         return Object.fromEntries(
-          row
-            .slice(0, 6)
-            .map((cell, index) => [`cell${index + 1}`, cleanString(cell)]),
+          dataTableCellFields.map((field, index) => [
+            field.action_id,
+            cleanString(row[index]),
+          ]),
         );
       }
 

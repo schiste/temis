@@ -2471,42 +2471,48 @@
                   "cell2": "3.27B",
                   "cell3": "5.02B",
                   "cell4": "6.0B",
-                  "cell5": "+83%"
+                  "cell5": "+83%",
+                  "cell6": ""
                 },
                 {
                   "cell1": "Page Views (Annual)",
                   "cell2": "194B",
                   "cell3": "192B",
                   "cell4": "177B",
-                  "cell5": "-9%"
+                  "cell5": "-9%",
+                  "cell6": ""
                 },
                 {
                   "cell1": "New Registrations (Monthly Avg)",
                   "cell2": "317K",
                   "cell3": "286K",
                   "cell4": "202K",
-                  "cell5": "-36%"
+                  "cell5": "-36%",
+                  "cell6": ""
                 },
                 {
                   "cell1": "Edits (Monthly Avg)",
                   "cell2": "15.6M",
                   "cell3": "21.6M",
                   "cell4": "21.4M",
-                  "cell5": "+37%"
+                  "cell5": "+37%",
+                  "cell6": ""
                 },
                 {
                   "cell1": "Edits per New User",
                   "cell2": "49.0",
                   "cell3": "75.4",
                   "cell4": "105.7",
-                  "cell5": "+116%"
+                  "cell5": "+116%",
+                  "cell6": ""
                 },
                 {
                   "cell1": "Mobile Share (EN Wiki)",
                   "cell2": "62%",
                   "cell3": "68%",
                   "cell4": "74%",
-                  "cell5": "+12pp"
+                  "cell5": "+12pp",
+                  "cell6": ""
                 }
               ]
             },
@@ -2534,61 +2540,81 @@
                   "cell1": "2016",
                   "cell2": "100",
                   "cell3": "100",
-                  "cell4": "-"
+                  "cell4": "-",
+                  "cell5": "",
+                  "cell6": ""
                 },
                 {
                   "cell1": "2017",
                   "cell2": "106",
                   "cell3": "98",
-                  "cell4": "-8"
+                  "cell4": "-8",
+                  "cell5": "",
+                  "cell6": ""
                 },
                 {
                   "cell1": "2018",
                   "cell2": "116",
                   "cell3": "98",
-                  "cell4": "-18"
+                  "cell4": "-18",
+                  "cell5": "",
+                  "cell6": ""
                 },
                 {
                   "cell1": "2019",
                   "cell2": "128",
                   "cell3": "100",
-                  "cell4": "-28"
+                  "cell4": "-28",
+                  "cell5": "",
+                  "cell6": ""
                 },
                 {
                   "cell1": "2020",
                   "cell2": "144",
                   "cell3": "103",
-                  "cell4": "-41"
+                  "cell4": "-41",
+                  "cell5": "",
+                  "cell6": ""
                 },
                 {
                   "cell1": "2021",
                   "cell2": "154",
                   "cell3": "99",
-                  "cell4": "-55"
+                  "cell4": "-55",
+                  "cell5": "",
+                  "cell6": ""
                 },
                 {
                   "cell1": "2022",
                   "cell2": "162",
                   "cell3": "94",
-                  "cell4": "-68"
+                  "cell4": "-68",
+                  "cell5": "",
+                  "cell6": ""
                 },
                 {
                   "cell1": "2023",
                   "cell2": "168",
                   "cell3": "98",
-                  "cell4": "-70"
+                  "cell4": "-70",
+                  "cell5": "",
+                  "cell6": ""
                 },
                 {
                   "cell1": "2024",
                   "cell2": "177",
                   "cell3": "97",
-                  "cell4": "-80"
+                  "cell4": "-80",
+                  "cell5": "",
+                  "cell6": ""
                 },
                 {
                   "cell1": "2025",
                   "cell2": "183",
                   "cell3": "91",
-                  "cell4": "-92"
+                  "cell4": "-92",
+                  "cell5": "",
+                  "cell6": ""
                 }
               ]
             },
