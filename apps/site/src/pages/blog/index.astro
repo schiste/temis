@@ -5,6 +5,7 @@ import SiteLayout from "../../components/SiteLayout.astro";
 import {
   entryAuthorHref,
   entryAuthorName,
+  entryContentType,
   entryDescription,
   entryPublishedDateLabel,
   entryPublishedDateTime,
@@ -28,7 +29,6 @@ const copy = await getSiteTexts({
   blogListIndexHeading: "No.",
   blogListTaxonomyHeading: "Type / tags",
   blogListTitleHeading: "Title",
-  blogListType: "Essay",
   blogMissingDescription: "Published TEMIS articles.",
   blogMissingTitle: "Published articles",
 });
@@ -67,7 +67,7 @@ const postCountLabel = `${posts.length.toString().padStart(2, "0")} ${
           <FieldNoteRow
             authorHref={entryAuthorHref(post) ?? undefined}
             authorName={entryAuthorName(post) ?? undefined}
-            contentType={copy.blogListType}
+            contentType={entryContentType(post)}
             description={entryDescription(post)}
             fallbackAuthorName={copy.blogListFallbackAuthor}
             href={`/blog/${entrySlug(post)}/`}

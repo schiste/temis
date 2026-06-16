@@ -5,16 +5,22 @@ import {
   entryDescription,
   entryTitle,
   getPageBySlug,
+  getSearchDocuments,
   getSiteTexts,
 } from "../lib/emdash";
 import { portableTextToHtml } from "../lib/portable-text";
 
 const page = await getPageBySlug("search");
+const searchDocuments = await getSearchDocuments();
 const copy = await getSiteTexts({
+  searchEmptyLabel: "No matching records",
   searchHeroEyebrow: "Search",
+  searchInputLabel: "Search TEMIS",
+  searchInputPlaceholder: "Search essays, tools, people, and pages",
   searchMissingDescription:
-    "Search will arrive after the V1 content structure is stable. For now, browse the published essays.",
-  searchMissingTitle: "Search is being mapped",
+    "Search the published TEMIS static snapshot across essays, tools, people, and pages.",
+  searchMissingTitle: "Search",
+  searchResultsLabel: "Search results",
 });
 const title = page ? entryTitle(page) : copy.searchMissingTitle;
 const description = page
@@ -34,4 +40,115 @@ const description = page
       <article class="ds-prose" set:html={portableTextToHtml(page.content)} />
     )
   }
+
+  <section class="ds-search" aria-labelledby="search-results-heading">
+    <form class="ds-search__form" role="search">
+      <label for="temis-search-input">{copy.searchInputLabel}</label>
+      <input
+        id="temis-search-input"
+        name="q"
+        type="search"
+        autocomplete="off"
+        placeholder={copy.searchInputPlaceholder}
+      />
+    </form>
+
+    <div class="ds-search__header">
+      <h2 id="search-results-heading">{copy.searchResultsLabel}</h2>
+      <span data-search-count>{searchDocuments.length}</span>
+    </div>
+
+    <ol class="ds-search__results" data-search-results>
+      {
+        searchDocuments.map((document) => (
+          <li>
+            <a href={document.href}>
+              <span>{document.kind}</span>
+              <strong>{document.title}</strong>
+              {document.description && <em>{document.description}</em>}
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="ds-search__empty" data-search-empty hidden>
+      {copy.searchEmptyLabel}
+    </p>
+  </section>
+
+  <script
+    is:inline
+    type="application/json"
+    id="temis-search-index"
+    set:html={JSON.stringify(searchDocuments)}
+  />
+
+  <script>
+    const input = document.querySelector<HTMLInputElement>(
+      "#temis-search-input",
+    );
+    const list = document.querySelector<HTMLOListElement>(
+      "[data-search-results]",
+    );
+    const count = document.querySelector<HTMLElement>("[data-search-count]");
+    const empty = document.querySelector<HTMLElement>("[data-search-empty]");
+    const indexSource = document.querySelector<HTMLScriptElement>(
+      "#temis-search-index",
+    );
+    const documents = JSON.parse(indexSource?.textContent ?? "[]") as {
+      description: string;
+      href: string;
+      kind: string;
+      title: string;
+    }[];
+
+    function normalize(value: string) {
+      return value
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function render() {
+      if (!list || !count || !empty || !input) return;
+
+      const query = normalize(input.value.trim());
+      const matches = query
+        ? documents.filter((result) =>
+            normalize(
+              `${result.title} ${result.kind} ${result.description}`,
+            ).includes(query),
+          )
+        : documents;
+
+      list.replaceChildren(
+        ...matches.map((result) => {
+          const item = document.createElement("li");
+          const link = document.createElement("a");
+          const kind = document.createElement("span");
+          const title = document.createElement("strong");
+
+          link.href = result.href;
+          kind.textContent = result.kind;
+          title.textContent = result.title;
+          link.append(kind, title);
+
+          if (result.description) {
+            const description = document.createElement("em");
+            description.textContent = result.description;
+            link.append(description);
+          }
+
+          item.append(link);
+          return item;
+        }),
+      );
+      count.textContent = String(matches.length);
+      empty.hidden = matches.length > 0;
+    }
+
+    input?.addEventListener("input", render);
+    render();
+  </script>
 </SiteLayout>

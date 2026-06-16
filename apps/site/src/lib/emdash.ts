@@ -46,7 +46,11 @@ export interface PageEntry extends SnapshotRow {
 export interface PostEntry extends SnapshotRow {
   author_name?: string;
   content?: unknown;
+  content_type?: string | null;
   excerpt?: string;
+  featured_image_alt?: string | null;
+  featured_image_caption?: string | null;
+  featured_image_license?: string | null;
   primary_byline_id?: string | null;
   seo_description?: string;
   seo_title?: string;
@@ -101,6 +105,13 @@ export interface SiteNavItem {
   activePrefix?: string;
   href: string;
   label: string;
+}
+
+export interface SearchDocument {
+  description: string;
+  href: string;
+  kind: string;
+  title: string;
 }
 
 type SiteOptions = Record<string, string>;
@@ -387,6 +398,42 @@ export async function getPostsByAuthorSlug(slug: string) {
   });
 }
 
+export async function getSearchDocuments(): Promise<SearchDocument[]> {
+  const [pages, posts, tools, bylines] = await Promise.all([
+    getPages(),
+    getPosts(),
+    getTools(),
+    getBylines(),
+  ]);
+
+  return [
+    ...pages.map((page) => ({
+      description: entryDescription(page),
+      href: `/${entrySlug(page)}/`,
+      kind: "Page",
+      title: entryTitle(page),
+    })),
+    ...posts.map((post) => ({
+      description: entryDescription(post),
+      href: `/blog/${entrySlug(post)}/`,
+      kind: entryContentType(post),
+      title: entryTitle(post),
+    })),
+    ...tools.map((tool) => ({
+      description: entryDescription(tool) || entrySummary(tool),
+      href: `/tools/${entrySlug(tool)}/`,
+      kind: "Tool",
+      title: entryTitle(tool),
+    })),
+    ...bylines.map((byline) => ({
+      description: entryBylineBio(byline),
+      href: entryBylineHref(byline),
+      kind: "Person",
+      title: entryBylineName(byline),
+    })),
+  ].sort((a, b) => a.title.localeCompare(b.title));
+}
+
 function referencedHref(
   collection: string | null | undefined,
   row: SnapshotRow,
@@ -630,6 +677,18 @@ export function entryAuthorName(row: PostEntry) {
 export function entryAuthorHref(row: PostEntry) {
   const authorName = entryAuthorName(row);
   return authorName ? `/people/${slugify(authorName)}/` : null;
+}
+
+export function entryContentType(row: PostEntry) {
+  const contentType = row.content_type?.trim();
+  const labels: Record<string, string> = {
+    essay: "Essay",
+    news: "News",
+    team_note: "Team note",
+    tool_announcement: "Tool announcement",
+  };
+
+  return contentType ? (labels[contentType] ?? contentType) : "Essay";
 }
 
 export function entrySummary(row: SnapshotRow) {

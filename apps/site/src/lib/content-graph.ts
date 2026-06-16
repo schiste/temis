@@ -14,6 +14,7 @@ import {
   entryBylineHref,
   entryBylineName,
   entryBylineSlug,
+  entryContentType,
   entryDescription,
   entryExternalUrl,
   entryPublishedDateLabel,
@@ -47,6 +48,7 @@ interface TaxonomyDefinitionEntry extends SnapshotRow {
 interface TaxonomyTermEntry extends SnapshotRow {
   accent?: string | null;
   color?: string | null;
+  data?: unknown;
   description?: string | null;
   label?: string | null;
   name?: string | null;
@@ -71,58 +73,6 @@ interface ContentTaxonomyEntry extends SnapshotRow {
 
 type GraphableEntry = PostEntry | ToolEntry;
 
-const starterTopicTerms: TaxonomyTermEntry[] = [
-  {
-    id: "starter-topic:essays",
-    label: "Essays",
-    name: "Essays",
-    slug: "essays",
-    description: "Long-form arguments, reflections, and field notes.",
-    taxonomy: "category",
-    priority: 80,
-  },
-  {
-    id: "starter-topic:tools",
-    label: "Tools",
-    name: "Tools",
-    slug: "tools",
-    description: "Software and prototypes connected to open knowledge work.",
-    taxonomy: "category",
-    priority: 70,
-  },
-  {
-    id: "starter-topic:open-knowledge",
-    label: "Open knowledge",
-    name: "Open knowledge",
-    slug: "open-knowledge",
-    description:
-      "Questions about public knowledge, commons, and shared infrastructure.",
-    taxonomy: "tag",
-    priority: 60,
-  },
-];
-
-const starterContentTaxonomies: ContentTaxonomyEntry[] = [
-  {
-    collection_slug: "posts",
-    content_id: "seed:post:innovating-with-wikimedia-decision-making",
-    taxonomy: "category",
-    term_id: "starter-topic:essays",
-  },
-  {
-    collection_slug: "posts",
-    content_id: "seed:post:innovating-with-wikimedia-decision-making",
-    taxonomy: "tag",
-    term_id: "starter-topic:open-knowledge",
-  },
-  {
-    collection_slug: "tools",
-    content_id: "seed:tool:wiki-polis",
-    taxonomy: "category",
-    term_id: "starter-topic:tools",
-  },
-];
-
 function isDeleted(row: SnapshotRow) {
   return row.deleted_at !== null && row.deleted_at !== undefined;
 }
@@ -134,6 +84,10 @@ function isHiddenFromGraph(row: SnapshotRow) {
 function cleanText(value: unknown) {
   if (typeof value !== "string") return "";
   return value.trim();
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
 function slugify(value: string) {
@@ -208,7 +162,7 @@ function postMeta(post: PostEntry) {
           datetime: publishedDateTime,
         })
       : null,
-    graphMeta("Content type", "Essay"),
+    graphMeta("Content type", entryContentType(post)),
   ].filter(isGraphMetaItem);
 }
 
@@ -294,11 +248,13 @@ function authorNode(
 
 function taxonomyKind(term: TaxonomyTermEntry) {
   const taxonomy = cleanText(term.taxonomy).toLowerCase();
+  const nativeName = cleanText(term.name).toLowerCase();
   const taxonomyId = cleanText(term.taxonomy_def_id).toLowerCase();
   const id = cleanText(term.id).toLowerCase();
 
   if (
     taxonomy === "tag" ||
+    nativeName === "tag" ||
     taxonomyId.includes("tag") ||
     id.includes(":tag") ||
     id.includes("_tag")
@@ -307,6 +263,10 @@ function taxonomyKind(term: TaxonomyTermEntry) {
   }
 
   return "topic";
+}
+
+function taxonomyData(term: TaxonomyTermEntry) {
+  return isRecord(term.data) ? term.data : {};
 }
 
 function taxonomyLabel(term: TaxonomyTermEntry) {
@@ -392,20 +352,23 @@ async function getTaxonomyTerms() {
   const definitionById = new Map(
     taxonomyDefinitions.map((definition) => [definition.id, definition]),
   );
-  const terms = uniqueById([
-    ...taxonomyRows,
-    ...termRows,
-    ...starterTopicTerms,
-  ]);
+  const terms = uniqueById([...taxonomyRows, ...termRows]);
 
   return terms
     .filter((term) => !isDeleted(term))
     .map((term) => {
       const definition = definitionById.get(cleanText(term.taxonomy_def_id));
+      const data = taxonomyData(term);
+      const nativeDefinition = taxonomyDefinitions.find(
+        (item) => cleanText(item.name) === cleanText(term.name),
+      );
+
       return {
+        ...data,
         ...term,
         taxonomy:
           cleanText(term.taxonomy) ||
+          cleanText(nativeDefinition?.name) ||
           cleanText(definition?.name) ||
           cleanText(definition?.label_singular),
       };
@@ -419,9 +382,7 @@ async function getContentTaxonomies() {
     getSnapshotTable<ContentTaxonomyEntry>("taxonomy_assignments"),
   ]);
 
-  return [...rows.flat(), ...starterContentTaxonomies].filter(
-    (row) => !isDeleted(row),
-  );
+  return rows.flat().filter((row) => !isDeleted(row));
 }
 
 function contentNodeId(collection: string, entry: GraphableEntry) {

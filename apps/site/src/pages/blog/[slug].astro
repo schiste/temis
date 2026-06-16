@@ -10,7 +10,10 @@ import {
 import {
   entryAuthorHref,
   entryAuthorName,
+  entryContentType,
   entryDescription,
+  entryPublishedDateLabel,
+  entryPublishedDateTime,
   entrySlug,
   entryTitle,
   getPostBySlug,
@@ -39,7 +42,9 @@ const copy = await getSiteTexts({
   postGraphHeading: "Navigation graph",
   postGraphLabel: "Graph navigation from this article",
   postAuthorLabel: "Author",
+  postContentTypeLabel: "Type",
   postHeroEyebrow: "Article",
+  postPublishedLabel: "Published",
   postStatusLabel: "Status",
   postStatusValue: "Published content",
 });
@@ -57,6 +62,14 @@ const metadataItems = [
       }
     : null,
   { label: copy.postStatusLabel, value: copy.postStatusValue },
+  {
+    label: copy.postContentTypeLabel,
+    value: entryContentType(resolvedPost),
+  },
+  {
+    label: copy.postPublishedLabel,
+    value: entryPublishedDateLabel(resolvedPost),
+  },
 ].filter((item): item is { href?: string; label: string; value: string } =>
   Boolean(item),
 );
@@ -71,6 +84,16 @@ const metadataItems = [
         description={description}
       />
       <MetadataRow items={metadataItems} />
+      {
+        entryPublishedDateTime(resolvedPost) && (
+          <time
+            class="ds-visually-hidden"
+            datetime={entryPublishedDateTime(resolvedPost) ?? undefined}
+          >
+            {entryPublishedDateLabel(resolvedPost)}
+          </time>
+        )
+      }
       <div
         class="ds-prose ds-prose--article"
         set:html={portableTextToHtml(resolvedPost.content)}
