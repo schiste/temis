@@ -582,10 +582,10 @@
         "locale": "en",
         "translation_group": "01KV1FV76MPX5RC6ZST4TV0R94",
         "title": "TEMIS",
-        "summary": "A Cloudflare-first static website powered by Astro and EmDash.",
-        "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"This starter page is managed in EmDash and rendered statically by Astro.\"}]}]",
+        "summary": "A public map of a technical commons for open knowledge in a post-AI world.",
+        "content": "[]",
         "seo_title": "TEMIS",
-        "seo_description": "A static Astro site with EmDash-managed content."
+        "seo_description": "A public map of a technical commons for open knowledge in a post-AI world."
       },
       {
         "id": "seed:page:blog",
@@ -1039,7 +1039,7 @@
         "id": "01KV1FV77TGT6BSHZA28C73SDG",
         "collection": "pages",
         "entry_id": "01KV1FV76MPX5RC6ZST4TV0R94",
-        "data": "{\"title\":\"TEMIS\",\"summary\":\"A Cloudflare-first static website powered by Astro and EmDash.\",\"content\":[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"This starter page is managed in EmDash and rendered statically by Astro.\"}]}],\"seo_title\":\"TEMIS\",\"seo_description\":\"A static Astro site with EmDash-managed content.\"}",
+        "data": "{\"title\":\"TEMIS\",\"summary\":\"A public map of a technical commons for open knowledge in a post-AI world.\",\"content\":[],\"seo_title\":\"TEMIS\",\"seo_description\":\"A public map of a technical commons for open knowledge in a post-AI world.\"}",
         "author_id": null,
         "created_at": "2026-06-13 21:57:41"
       },
