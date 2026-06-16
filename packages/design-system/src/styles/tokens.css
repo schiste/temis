@@ -17,10 +17,17 @@
   --ds-space-phi-6: 6.875rem;
   --ds-grid-unit: var(--ds-space-phi-4);
   --ds-grid-pair: 5.25rem;
+  --ds-row-unit: var(--ds-grid-unit);
+  --ds-row-pair: var(--ds-grid-pair);
+  --ds-row-half: calc(var(--ds-row-unit) / 2);
+  --ds-row-quarter: calc(var(--ds-row-unit) / 4);
+  --ds-row-eighth: calc(var(--ds-row-unit) / 8);
   --ds-grid-columns-prose: 16;
   --ds-grid-columns-wide: 26;
   --ds-grid-columns-page: 42;
   --ds-content-target-width: 92vw;
+  --ds-content-target-height: 92svh;
+  --ds-content-area-height: auto;
 
   --ds-font-serif: "Source Serif 4", "Literata", ui-serif, Georgia, serif;
   --ds-font-sans:
@@ -81,6 +88,7 @@
 @supports (width: calc(1px * 1)) {
   :root {
     --ds-grid-pair: calc(var(--ds-grid-unit) * 2);
+    --ds-row-pair: calc(var(--ds-row-unit) * 2);
     --ds-content-area-width: min(
       round(down, var(--ds-content-target-width), var(--ds-grid-pair)),
       var(--ds-measure-page)
@@ -90,6 +98,16 @@
     );
     --ds-measure-wide: calc(var(--ds-grid-unit) * var(--ds-grid-columns-wide));
     --ds-measure-page: calc(var(--ds-grid-unit) * var(--ds-grid-columns-page));
+  }
+}
+
+@supports (height: round(down, 100svh, 1px)) {
+  :root {
+    --ds-content-area-height: round(
+      down,
+      var(--ds-content-target-height),
+      var(--ds-row-pair)
+    );
   }
 }
 
