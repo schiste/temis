@@ -356,6 +356,9 @@ const peopleLinks = [...peopleByKey.values()];
               <h2>{copy.toolScreenshotHeading}</h2>
             </div>
             <figure class="ds-media-frame ds-media-frame--screenshot">
+              {screenshotCaption && (
+                <figcaption>{screenshotCaption}</figcaption>
+              )}
               <img
                 class="ds-media-frame__image"
                 src={screenshotUrl}
@@ -365,9 +368,6 @@ const peopleLinks = [...peopleByKey.values()];
                 loading="lazy"
                 decoding="async"
               />
-              {screenshotCaption && (
-                <figcaption>{screenshotCaption}</figcaption>
-              )}
             </figure>
           </section>
         )

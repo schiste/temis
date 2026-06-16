@@ -629,8 +629,8 @@
 }
 
 .ds-media-frame figcaption {
-  align-items: center;
-  border-block-start: var(--ds-stroke-hairline) solid var(--ds-color-line);
+  align-items: flex-end;
+  border-block-end: var(--ds-stroke-hairline) solid var(--ds-color-line);
   color: var(--ds-color-text-muted);
   display: flex;
   font-family: var(--ds-font-mono);
