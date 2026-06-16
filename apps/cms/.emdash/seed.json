@@ -666,16 +666,16 @@
                 },
                 {
                   "_type": "span",
-                  "text": "2.7 billion people",
+                  "text": " 2.7 billion people",
                   "marks": ["strong"]
                 },
                 {
                   "_type": "span",
-                  "text": "to the internet. Nearly three billion new potential readers, learners, contributors. In that same period, our page views declined. Not stagnated."
+                  "text": " to the internet. Nearly three billion new potential readers, learners, contributors. In that same period, our page views declined. Not stagnated."
                 },
                 {
                   "_type": "span",
-                  "text": "Declined",
+                  "text": " Declined",
                   "marks": ["em"]
                 },
                 {
@@ -694,12 +694,12 @@
                 },
                 {
                   "_type": "span",
-                  "text": "355 billion page views annually",
+                  "text": " 355 billion page views annually",
                   "marks": ["strong"]
                 },
                 {
                   "_type": "span",
-                  "text": "today. Instead, we're at 177 billion. We're missing half the audience we should have."
+                  "text": " today. Instead, we're at 177 billion. We're missing half the audience we should have."
                 }
               ]
             },
@@ -796,7 +796,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "The contributor base we're losing was never representative to begin with. English Wikipedia, still the largest by far, is written predominantly by men from North America and Western Europe. Hindi Wikipedia has 160,000 articles for 600 million speakers. Bengali has 150,000 for 230 million speakers. Swahili, spoken by 100 million people across East Africa, has 80,000. The \"golden age\" we mourn was never golden for the Global South. It was an English-language project built by English-language editors from English-language sources. Our decline isn't just a quantity problem. It's the bill coming due for a diversity debt we've been accumulating for two decades."
+                  "text": " The contributor base we're losing was never representative to begin with. English Wikipedia, still the largest by far, is written predominantly by men from North America and Western Europe. Hindi Wikipedia has 160,000 articles for 600 million speakers. Bengali has 150,000 for 230 million speakers. Swahili, spoken by 100 million people across East Africa, has 80,000. The \"golden age\" we mourn was never golden for the Global South. It was an English-language project built by English-language editors from English-language sources. Our decline isn't just a quantity problem. It's the bill coming due for a diversity debt we've been accumulating for two decades."
                 }
               ]
             },
@@ -893,7 +893,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "The donation banners that sustain this movement require eyeballs. Fewer visitors means fewer donation opportunities means less money. This isn't abstract. It's survival."
+                  "text": " The donation banners that sustain this movement require eyeballs. Fewer visitors means fewer donation opportunities means less money. This isn't abstract. It's survival."
                 }
               ]
             },
@@ -910,7 +910,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "Our most successful contributor pipeline has always been: someone reads an article → notices an error or gap → clicks \"edit\" → becomes a contributor. Fewer readers means fewer potential editors. The contributor crisis and the readership crisis are linked."
+                  "text": " Our most successful contributor pipeline has always been: someone reads an article → notices an error or gap → clicks \"edit\" → becomes a contributor. Fewer readers means fewer potential editors. The contributor crisis and the readership crisis are linked."
                 }
               ]
             },
@@ -927,7 +927,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "The feedback loop that has sustained volunteer motivation for 25 years is simple: I write, people read, I can see the impact. Break that loop and you break the engine for some contributors. Social glue would then be the main retention lever we'd have."
+                  "text": " The feedback loop that has sustained volunteer motivation for 25 years is simple: I write, people read, I can see the impact. Break that loop and you break the engine for some contributors. Social glue would then be the main retention lever we'd have."
                 }
               ]
             },
@@ -962,7 +962,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "our content is probably reaching more people than ever. It's just reaching them through intermediaries we don't control: search snippets, AI assistants, apps, voice devices. The knowledge spreads. The mission arguably succeeds. But we don't see it, we can't fund ourselves from it, and our editors don't feel it."
+                  "text": " our content is probably reaching more people than ever. It's just reaching them through intermediaries we don't control: search snippets, AI assistants, apps, voice devices. The knowledge spreads. The mission arguably succeeds. But we don't see it, we can't fund ourselves from it, and our editors don't feel it."
                 }
               ]
             },
@@ -1079,7 +1079,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "How many people encounter our content, including through third parties? If ChatGPT gives the right answer because it trained on our article, that's mission success, even if no one clicked through to us."
+                  "text": " How many people encounter our content, including through third parties? If ChatGPT gives the right answer because it trained on our article, that's mission success, even if no one clicked through to us."
                 }
               ]
             },
@@ -1096,7 +1096,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "Are we building sustainable income beyond donation banners? If 100% of our funding depends on people visiting our site, we're one platform shift away from crisis. Enterprise partnerships, API licensing, institutional relationships. These aren't betrayals of the mission. They're how we survive long enough to keep fulfilling it."
+                  "text": " Are we building sustainable income beyond donation banners? If 100% of our funding depends on people visiting our site, we're one platform shift away from crisis. Enterprise partnerships, API licensing, institutional relationships. These aren't betrayals of the mission. They're how we survive long enough to keep fulfilling it."
                 }
               ]
             },
@@ -1113,7 +1113,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "Is \"I edit Wikipedia\" something people say with pride or embarrassment? Contributing to open source on GitHub has cachet. Making TikToks has cachet. Editing Wikipedia? We've become the encyclopedia your teacher warned you about, not the movement you want to join."
+                  "text": " Is \"I edit Wikipedia\" something people say with pride or embarrassment? Contributing to open source on GitHub has cachet. Making TikToks has cachet. Editing Wikipedia? We've become the encyclopedia your teacher warned you about, not the movement you want to join."
                 }
               ]
             },
@@ -1130,7 +1130,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "How often is our content integrated into other products and services? API calls, Wikidata queries, content syndication. These are signs of impact we currently don't celebrate."
+                  "text": " How often is our content integrated into other products and services? API calls, Wikidata queries, content syndication. These are signs of impact we currently don't celebrate."
                 }
               ]
             },
@@ -1147,7 +1147,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "Are we maintaining the contributor base that makes everything else possible? This is the real crisis metric. If production fails, nothing else matters."
+                  "text": " Are we maintaining the contributor base that makes everything else possible? This is the real crisis metric. If production fails, nothing else matters."
                 }
               ]
             },
@@ -1192,7 +1192,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "is what we do now. Editors write and maintain content. Community verifies and debates. It's slow, high-trust, transparent. It cannot be automated. It is irreplaceable."
+                  "text": " is what we do now. Editors write and maintain content. Community verifies and debates. It's slow, high-trust, transparent. It cannot be automated. It is irreplaceable."
                 }
               ]
             },
@@ -1207,7 +1207,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "is what we could do. Structured data through Wikidata. APIs that serve verification endpoints. Confidence ratings on claims. Services that complement AI systems rather than compete with them. It's fast, scalable, programmatic."
+                  "text": " is what we could do. Structured data through Wikidata. APIs that serve verification endpoints. Confidence ratings on claims. Services that complement AI systems rather than compete with them. It's fast, scalable, programmatic."
                 }
               ]
             },
@@ -1370,7 +1370,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "-5%/yr",
+                  "text": " -5%/yr",
                   "marks": ["strong"]
                 }
               ]
@@ -1385,7 +1385,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "declining",
+                  "text": " declining",
                   "marks": ["strong"]
                 },
                 {
@@ -1394,7 +1394,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "collapsing",
+                  "text": " collapsing",
                   "marks": ["strong"]
                 },
                 {
@@ -1549,7 +1549,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "that distribution had fundamentally changed. The communities that tried to ban Wikipedia, that installed filters, that punished students for citing it. They wasted a decade they could have spent adapting."
+                  "text": " that distribution had fundamentally changed. The communities that tried to ban Wikipedia, that installed filters, that punished students for citing it. They wasted a decade they could have spent adapting."
                 }
               ]
             },
@@ -1699,12 +1699,12 @@
                 },
                 {
                   "_type": "span",
-                  "text": "process",
+                  "text": " process",
                   "marks": ["em"]
                 },
                 {
                   "_type": "span",
-                  "text": "that creates and maintains the encyclopedia. The talk pages. The citation standards. The consensus mechanisms. The edit history. The ability to watch any claim evolve over time, to see who changed what and why, to trace every fact to its source."
+                  "text": " that creates and maintains the encyclopedia. The talk pages. The citation standards. The consensus mechanisms. The edit history. The ability to watch any claim evolve over time, to see who changed what and why, to trace every fact to its source."
                 }
               ]
             },
@@ -1839,7 +1839,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "The CC BY-SA license isn't going anywhere. Anyone can still access, reuse, and build on our content. That's the mission."
+                  "text": " The CC BY-SA license isn't going anywhere. Anyone can still access, reuse, and build on our content. That's the mission."
                 }
               ]
             },
@@ -1854,7 +1854,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "We already do this through Wikimedia Enterprise: companies that need high-reliability, low-latency, well-formatted access to our data pay for serviced versions. The content is free; the service layer isn't. This isn't betraying the mission. It's sustaining it."
+                  "text": " We already do this through Wikimedia Enterprise: companies that need high-reliability, low-latency, well-formatted access to our data pay for serviced versions. The content is free; the service layer isn't. This isn't betraying the mission. It's sustaining it."
                 }
               ]
             },
@@ -2134,12 +2134,12 @@
                 },
                 {
                   "_type": "span",
-                  "text": "the Global North built Wikipedia, and the Global North still controls it.",
+                  "text": " the Global North built Wikipedia, and the Global North still controls it.",
                   "marks": ["strong"]
                 },
                 {
                   "_type": "span",
-                  "text": "The Foundation is in San Francisco. The largest chapters are in Germany, France, the UK. The technical infrastructure assumes fast connections and desktop computers. The sourcing standards privilege published, English-language, Western academic sources, which means entire knowledge systems are structurally excluded because they don't produce the \"reliable sources\" our policies require."
+                  "text": " The Foundation is in San Francisco. The largest chapters are in Germany, France, the UK. The technical infrastructure assumes fast connections and desktop computers. The sourcing standards privilege published, English-language, Western academic sources, which means entire knowledge systems are structurally excluded because they don't produce the \"reliable sources\" our policies require."
                 }
               ]
             },
@@ -2453,7 +2453,7 @@
             {
               "_type": "callout",
               "title": "The numbers do not lie",
-              "body": "To every Board member, every staffer, every Wikimedian reading this:the numbers don't lie. The internet added 2.7 billion users since 2016. Our readership declined. That's not a plateau. That's being left behind. And the forces reshaping knowledge distribution aren't going to wait for us to finish deliberating.",
+              "body": "To every Board member, every staffer, every Wikimedian reading this: the numbers don't lie. The internet added 2.7 billion users since 2016. Our readership declined. That's not a plateau. That's being left behind. And the forces reshaping knowledge distribution aren't going to wait for us to finish deliberating.",
               "tone": "critical"
             },
             {
@@ -2687,7 +2687,7 @@
                 },
                 {
                   "_type": "span",
-                  "text": "This analysis identifies trends and divergences but does not prove causation. Multiple factors contribute to these patterns, including platform competition, mobile shifts, search engine changes, and AI integration."
+                  "text": " This analysis identifies trends and divergences but does not prove causation. Multiple factors contribute to these patterns, including platform competition, mobile shifts, search engine changes, and AI integration."
                 }
               ]
             },

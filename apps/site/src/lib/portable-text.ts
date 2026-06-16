@@ -49,6 +49,14 @@ function renderSpan(
   );
 }
 
+function needsSpanSeparator(previousText: string, nextText: string) {
+  if (!previousText || !nextText) return false;
+  if (/\s$/.test(previousText) || /^\s/.test(nextText)) return false;
+  if (/^[.,;:!?)}\]"'%]/.test(nextText)) return false;
+  if (/[([{]$/.test(previousText)) return false;
+  return true;
+}
+
 function blockText(block: unknown) {
   if (!block || typeof block !== "object") return "";
   const data = block as {
@@ -58,7 +66,16 @@ function blockText(block: unknown) {
   const children = data.children;
   if (!Array.isArray(children)) return "";
   const markDefs = Array.isArray(data.markDefs) ? data.markDefs : [];
-  return children.map((child) => renderSpan(child, markDefs)).join("");
+
+  let previousText = "";
+  return children
+    .map((child) => {
+      const text = child.text ?? "";
+      const separator = needsSpanSeparator(previousText, text) ? " " : "";
+      previousText = text;
+      return `${separator}${renderSpan(child, markDefs)}`;
+    })
+    .join("");
 }
 
 function renderBlock(block: unknown) {
