@@ -1261,145 +1261,42 @@
               ]
             },
             {
-              "_type": "block",
-              "style": "blockquote",
-              "children": [
+              "_type": "timeline",
+              "items": [
                 {
-                  "_type": "span",
-                  "text": "2001–2007"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "The Pioneers: Outpacing the Market"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Internet +18%/yr · Edits +238%/yr · Registrations +451%/yr"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Internet users grew ~18% annually. We scaled orders of magnitude faster than the internet itself. But let's be clear about who \"we\" was: overwhelmingly English-speaking, male, from wealthy countries with fast internet and time to spare. We built something extraordinary, and we built it for people who looked like us."
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "blockquote",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "2008–2015"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "The Cool Kids: Keeping Pace"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Internet +8%/yr · Edits +12%/yr · Registrations +10%/yr"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Wikipedia became mainstream, a household name. But mainstream where? The global internet was shifting. Mobile-first users in the Global South were coming online by the hundreds of millions, and we kept optimizing for desktop editors in the Global North. We called it success. It was the beginning of the gap."
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "blockquote",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "2016–Now"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "The Commodity: Falling Behind"
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Internet +7%/yr · Edits +4%/yr · Registrations"
+                  "period": "2001–2007",
+                  "title": "The Pioneers: Outpacing the Market",
+                  "metrics": [
+                    "Internet +18%/yr",
+                    "Edits +238%/yr",
+                    "Registrations +451%/yr"
+                  ],
+                  "body": "Internet users grew ~18% annually. We scaled orders of magnitude faster than the internet itself. But let's be clear about who \"we\" was: overwhelmingly English-speaking, male, from wealthy countries with fast internet and time to spare. We built something extraordinary, and we built it for people who looked like us.",
+                  "tone": "positive"
                 },
                 {
-                  "_type": "span",
-                  "text": " -5%/yr",
-                  "marks": ["strong"]
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "style": "normal",
-              "children": [
-                {
-                  "_type": "span",
-                  "text": "Page views:"
+                  "period": "2008–2015",
+                  "title": "The Cool Kids: Keeping Pace",
+                  "metrics": [
+                    "Internet +8%/yr",
+                    "Edits +12%/yr",
+                    "Registrations +10%/yr"
+                  ],
+                  "body": "Wikipedia became mainstream, a household name. But mainstream where? The global internet was shifting. Mobile-first users in the Global South were coming online by the hundreds of millions, and we kept optimizing for desktop editors in the Global North. We called it success. It was the beginning of the gap.",
+                  "tone": "neutral"
                 },
                 {
-                  "_type": "span",
-                  "text": " declining",
-                  "marks": ["strong"]
-                },
-                {
-                  "_type": "span",
-                  "text": ". New registrations:"
-                },
-                {
-                  "_type": "span",
-                  "text": " collapsing",
-                  "marks": ["strong"]
-                },
-                {
-                  "_type": "span",
-                  "text": ". The billions who came online found an encyclopedia that didn't speak their languages, didn't cover their topics, and wasn't designed for their devices. We became infrastructure for AI companies while remaining invisible to the people we claimed to serve. Our content powers the internet. But whose content? Whose internet?"
+                  "period": "2016–Now",
+                  "title": "The Commodity: Falling Behind",
+                  "metrics": [
+                    "Internet +7%/yr",
+                    "Edits +4%/yr",
+                    "Registrations -5%/yr",
+                    "Page views declining",
+                    "New registrations collapsing"
+                  ],
+                  "body": "The billions who came online found an encyclopedia that didn't speak their languages, didn't cover their topics, and wasn't designed for their devices. We became infrastructure for AI companies while remaining invisible to the people we claimed to serve. Our content powers the internet. But whose content? Whose internet?",
+                  "tone": "critical"
                 }
               ]
             },

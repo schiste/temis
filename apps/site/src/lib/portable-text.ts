@@ -87,6 +87,7 @@ function renderBlock(block: unknown) {
   if (data._type === "statGrid") return renderStatGrid(data);
   if (data._type === "callout") return renderCallout(data);
   if (data._type === "dataTable") return renderDataTable(data);
+  if (data._type === "timeline") return renderTimeline(data);
 
   const text = blockText(block);
   if (!text) return "";
@@ -192,6 +193,41 @@ function renderDataTable(data: Record<string, unknown>) {
   return `<figure class="ds-data-table">${
     caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ""
   }<div><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div></figure>`;
+}
+
+function renderTimeline(data: Record<string, unknown>) {
+  const items = Array.isArray(data.items) ? data.items : [];
+  const renderedItems = items
+    .filter(isRecord)
+    .map((item) => {
+      const period = textValue(item.period);
+      const title = textValue(item.title);
+      const metrics = Array.isArray(item.metrics)
+        ? item.metrics.map(textValue).filter(Boolean).join(" · ")
+        : textValue(item.metrics);
+      const body = textValue(item.body);
+      const tone = textValue(item.tone) || "neutral";
+
+      if (!period && !title && !metrics && !body) return "";
+
+      return `<article class="ds-prose-timeline__item" data-tone="${escapeHtml(
+        tone,
+      )}">${
+        period
+          ? `<span class="ds-prose-timeline__period">${escapeHtml(period)}</span>`
+          : ""
+      }<div class="ds-prose-timeline__body">${
+        title ? `<h4>${escapeHtml(title)}</h4>` : ""
+      }${metrics ? `<p data-role="metrics">${escapeHtml(metrics)}</p>` : ""}${
+        body ? `<p>${escapeHtml(body)}</p>` : ""
+      }</div></article>`;
+    })
+    .filter(Boolean)
+    .join("");
+
+  return renderedItems
+    ? `<section class="ds-prose-timeline">${renderedItems}</section>`
+    : "";
 }
 
 export function portableTextToHtml(value: unknown) {
