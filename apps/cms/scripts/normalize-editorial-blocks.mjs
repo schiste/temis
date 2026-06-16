@@ -173,7 +173,7 @@ function normalizedBlockPatches(value, pathPrefix) {
     .filter(Boolean);
 }
 
-function entrySelectSql(collection, table, slug) {
+function entrySelectSql(table, slug) {
   const where = [
     "content IS NOT NULL",
     slug ? `slug = ${sqlLiteral(slug)}` : null,
@@ -238,7 +238,7 @@ const statements = args.mode === "production" ? [] : ["BEGIN;"];
 const summary = [];
 
 for (const [collection, table] of collections) {
-  const entries = execJson(args, entrySelectSql(collection, table, args.slug));
+  const entries = execJson(args, entrySelectSql(table, args.slug));
   let changedEntries = 0;
   let changedRevisions = 0;
 
