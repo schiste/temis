@@ -220,6 +220,16 @@ function updateRevisionSql(revision, patches) {
   ].join(" ");
 }
 
+function serializeStatements(statements) {
+  return `${statements
+    .map((statement) =>
+      statement.trim().endsWith(";")
+        ? statement.trim()
+        : `${statement.trim()};`,
+    )
+    .join("\n")}\n`;
+}
+
 const args = parseArgs(process.argv.slice(2));
 const collections = args.collection
   ? [[args.collection, defaultCollections.get(args.collection)]]
@@ -275,4 +285,4 @@ if (changedStatementCount === 0 || args.dryRun) {
   process.exit(0);
 }
 
-execSqlFile(args, `${statements.join("\n")}\n`);
+execSqlFile(args, serializeStatements(statements));
