@@ -4,7 +4,7 @@ import { spawnSync } from "node:child_process";
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { normalizeEditorialContent } from "@temis/emdash-editorial-blocks";
+import { normalizeEditorialBlock } from "@temis/emdash-editorial-blocks";
 import {
   defaultD1Database,
   defaultDatabasePath,
@@ -152,24 +152,25 @@ function canonicalJson(value) {
   return JSON.stringify(value);
 }
 
-function normalizeContentField(value) {
-  const parsed = parseJson(value, []);
-  const normalized = normalizeEditorialContent({ content: parsed }).content;
-
-  return {
-    changed: canonicalJson(parsed) !== canonicalJson(normalized),
-    value: normalized,
-  };
+function jsonSql(value) {
+  return `json(${sqlLiteral(JSON.stringify(value))})`;
 }
 
-function normalizeRevisionData(value) {
-  const parsed = parseJson(value, {});
-  const normalized = normalizeEditorialContent(parsed);
+function normalizedBlockPatches(value, pathPrefix) {
+  const parsed = parseJson(value, []);
+  if (!Array.isArray(parsed)) return [];
 
-  return {
-    changed: canonicalJson(parsed) !== canonicalJson(normalized),
-    value: normalized,
-  };
+  return parsed
+    .map((block, index) => {
+      const normalized = normalizeEditorialBlock(block);
+      if (canonicalJson(block) === canonicalJson(normalized)) return null;
+
+      return {
+        path: `${pathPrefix}[${index}]`,
+        value: normalized,
+      };
+    })
+    .filter(Boolean);
 }
 
 function entrySelectSql(collection, table, slug) {
@@ -197,18 +198,24 @@ function changedRevisionIds(entry) {
   return [entry.live_revision_id, entry.draft_revision_id].filter(Boolean);
 }
 
-function updateEntrySql(table, entry, normalizedContent) {
+function jsonSetArgs(patches) {
+  return patches
+    .map((patch) => `${sqlLiteral(patch.path)}, ${jsonSql(patch.value)}`)
+    .join(", ");
+}
+
+function updateEntrySql(table, entry, patches) {
   return [
     `UPDATE ${quoteIdent(table)}`,
-    `SET content = ${sqlLiteral(JSON.stringify(normalizedContent))}`,
+    `SET content = json_set(content, ${jsonSetArgs(patches)})`,
     `WHERE id = ${sqlLiteral(entry.id)}`,
   ].join(" ");
 }
 
-function updateRevisionSql(revision, normalizedData) {
+function updateRevisionSql(revision, patches) {
   return [
     "UPDATE revisions",
-    `SET data = ${sqlLiteral(JSON.stringify(normalizedData))}`,
+    `SET data = json_set(data, ${jsonSetArgs(patches)})`,
     `WHERE id = ${sqlLiteral(revision.id)}`,
   ].join(" ");
 }
@@ -226,22 +233,24 @@ for (const [collection, table] of collections) {
   let changedRevisions = 0;
 
   for (const entry of entries) {
-    const normalizedEntry = normalizeContentField(entry.content);
-    if (normalizedEntry.changed) {
+    const entryPatches = normalizedBlockPatches(entry.content, "$");
+    if (entryPatches.length > 0) {
       changedEntries += 1;
-      statements.push(updateEntrySql(table, entry, normalizedEntry.value));
+      statements.push(updateEntrySql(table, entry, entryPatches));
     }
 
     const revisionIds = changedRevisionIds(entry);
     if (revisionIds.length > 0) {
       const revisions = execJson(args, revisionSelectSql(revisionIds));
       for (const revision of revisions) {
-        const normalizedRevision = normalizeRevisionData(revision.data);
-        if (normalizedRevision.changed) {
+        const revisionData = parseJson(revision.data, {});
+        const revisionPatches = normalizedBlockPatches(
+          JSON.stringify(revisionData.content ?? []),
+          "$.content",
+        );
+        if (revisionPatches.length > 0) {
           changedRevisions += 1;
-          statements.push(
-            updateRevisionSql(revision, normalizedRevision.value),
-          );
+          statements.push(updateRevisionSql(revision, revisionPatches));
         }
       }
     }
