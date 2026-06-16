@@ -6,6 +6,7 @@ const targetPath = path.resolve(
   siteRoot,
   process.argv[2] ?? "dist/tools/wiki-polis/index.html",
 );
+const topicsPath = path.resolve(siteRoot, "dist/topics/index.html");
 
 function fail(message) {
   console.error(`[graph-navigation] ${message}`);
@@ -17,6 +18,7 @@ function uniqueMatches(source, pattern) {
 }
 
 const html = await readFile(targetPath, "utf8");
+const topicsHtml = await readFile(topicsPath, "utf8");
 
 if (html.includes("temis-graph-nav--compact")) {
   fail("Expected full graph navigation on the tool page, found compact graph.");
@@ -55,10 +57,10 @@ if (edgeCount < 1) {
   fail("Expected at least 1 graph edge.");
 }
 
-for (const nodeId of nodeIds) {
-  if (!detailNodeIds.has(nodeId)) {
-    fail(`Missing detail panel for node ${nodeId}.`);
-  }
+if (detailNodeIds.size > 0) {
+  fail(
+    `Expected sidebar graph to omit persistent detail panels, found ${detailNodeIds.size}.`,
+  );
 }
 
 if (currentNodeIds.size !== 1) {
@@ -83,10 +85,26 @@ if (previewNodeIds.size !== nodeIds.size - 1) {
   );
 }
 
-if (!html.includes('aria-expanded="true"')) {
-  fail("Expected one initially expanded graph node.");
+if (html.includes('aria-expanded="true"')) {
+  fail("Expected sidebar graph to omit expanded node state.");
+}
+
+const topicsNodeIds = uniqueMatches(topicsHtml, /data-node-id="([^"]+)"/g);
+const topicsDetailNodeIds = uniqueMatches(
+  topicsHtml,
+  /data-detail-node-id="([^"]+)"/g,
+);
+
+if (topicsNodeIds.size < 2) {
+  fail(`Expected at least 2 topic graph nodes, found ${topicsNodeIds.size}.`);
+}
+
+for (const nodeId of topicsNodeIds) {
+  if (!topicsDetailNodeIds.has(nodeId)) {
+    fail(`Missing topic graph detail panel for node ${nodeId}.`);
+  }
 }
 
 console.log(
-  `[graph-navigation] OK ${nodeIds.size} nodes, ${edgeCount} edges, ${detailNodeIds.size} detail panels, ${previewNodeIds.size} preview cards`,
+  `[graph-navigation] OK sidebar ${nodeIds.size} nodes, ${edgeCount} edges, ${previewNodeIds.size} preview cards; topics ${topicsDetailNodeIds.size} detail panels`,
 );

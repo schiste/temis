@@ -19,7 +19,12 @@ const {
   graph.nodes.length > 0 && (
     <aside class="ds-content-rail" aria-label={label}>
       <div class="ds-content-rail__inner">
-        <GraphNavigation graph={graph} heading={heading} label={label} />
+        <GraphNavigation
+          graph={graph}
+          heading={heading}
+          label={label}
+          showDetails={false}
+        />
       </div>
     </aside>
   )

@@ -10,6 +10,7 @@ export interface Props {
   graph: GraphNavigationSnapshot;
   heading?: string;
   label?: string;
+  showDetails?: boolean;
   variant?: "default" | "compact";
 }
 
@@ -17,6 +18,7 @@ const {
   graph,
   heading = "Content graph",
   label = "Content graph navigation",
+  showDetails = true,
   variant = "default",
 } = Astro.props;
 const showNodeMeta = variant !== "compact";
@@ -160,13 +162,15 @@ const initialDetailNodeId =
   laidOutGraph.currentNodeId && nodesById.has(laidOutGraph.currentNodeId)
     ? laidOutGraph.currentNodeId
     : visualNodes[0]?.id;
-const detailPanels = visualNodes.map((node) => ({
-  node,
-  relatedNodes: [...(relatedNodesById.get(node.id) ?? [])].sort((a, b) => {
-    if (a.priority !== b.priority) return b.priority - a.priority;
-    return a.label.localeCompare(b.label);
-  }),
-}));
+const detailPanels = showDetails
+  ? visualNodes.map((node) => ({
+      node,
+      relatedNodes: [...(relatedNodesById.get(node.id) ?? [])].sort((a, b) => {
+        if (a.priority !== b.priority) return b.priority - a.priority;
+        return a.label.localeCompare(b.label);
+      }),
+    }))
+  : [];
 const previewPanels = visualNodes
   .filter((node) => node.id !== laidOutGraph.currentNodeId)
   .map((node) => {
@@ -224,8 +228,14 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
               "temis-graph-nav__node--current",
           ]}
           aria-label={`${node.label} (${nodeTypeLabels[node.type]})`}
-          aria-controls={detailRegionId}
-          aria-expanded={node.id === initialDetailNodeId ? "true" : "false"}
+          aria-controls={showDetails ? detailRegionId : undefined}
+          aria-expanded={
+            showDetails
+              ? node.id === initialDetailNodeId
+                ? "true"
+                : "false"
+              : undefined
+          }
           data-node-id={node.id}
           data-node-type={node.type}
           href={node.href}
@@ -290,8 +300,14 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
               node.id === laidOutGraph.currentNodeId &&
                 "temis-graph-nav__index-link--current",
             ]}
-            aria-controls={detailRegionId}
-            aria-expanded={node.id === initialDetailNodeId ? "true" : "false"}
+            aria-controls={showDetails ? detailRegionId : undefined}
+            aria-expanded={
+              showDetails
+                ? node.id === initialDetailNodeId
+                  ? "true"
+                  : "false"
+                : undefined
+            }
             data-index-node-id={node.id}
             href={node.href}
           >
@@ -304,68 +320,70 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     )
   }
 
-  <section
-    class="temis-graph-nav__details"
-    aria-label="Selected graph node"
-    aria-live="polite"
-    id={detailRegionId}
-  >
-    {
-      detailPanels.map(({ node, relatedNodes }) => (
-        <article
-          class="temis-graph-nav__detail"
-          data-detail-node-id={node.id}
-          hidden={node.id !== initialDetailNodeId}
-        >
-          <div class="temis-graph-nav__detail-main">
-            <p class="temis-graph-nav__detail-type">
-              {nodeTypeLabels[node.type]}
-            </p>
-            <h3>{node.label}</h3>
-            {node.description && <p>{node.description}</p>}
-            {showNodeMeta && node.meta.length > 0 && (
-              <dl class="temis-graph-nav__detail-meta">
-                {node.meta.map((item) => (
-                  <div>
-                    <dt>{item.label}</dt>
-                    <dd>
-                      {item.href ? (
-                        <a href={item.href}>{item.value}</a>
-                      ) : item.datetime ? (
-                        <time datetime={item.datetime}>{item.value}</time>
-                      ) : (
-                        item.value
-                      )}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            )}
-          </div>
-
-          <div class="temis-graph-nav__detail-actions">
-            <a href={node.href} aria-label={`Open ${node.label}`}>
-              Open
-            </a>
-          </div>
-
-          {relatedNodes.length > 0 && (
-            <div class="temis-graph-nav__detail-related">
-              <p>Related</p>
-              <ul>
-                {relatedNodes.map((relatedNode) => (
-                  <li>
-                    <a href={relatedNode.href}>{relatedNode.label}</a>
-                    <span>{nodeTypeLabels[relatedNode.type]}</span>
-                  </li>
-                ))}
-              </ul>
+  {
+    showDetails && (
+      <section
+        class="temis-graph-nav__details"
+        aria-label="Selected graph node"
+        aria-live="polite"
+        id={detailRegionId}
+      >
+        {detailPanels.map(({ node, relatedNodes }) => (
+          <article
+            class="temis-graph-nav__detail"
+            data-detail-node-id={node.id}
+            hidden={node.id !== initialDetailNodeId}
+          >
+            <div class="temis-graph-nav__detail-main">
+              <p class="temis-graph-nav__detail-type">
+                {nodeTypeLabels[node.type]}
+              </p>
+              <h3>{node.label}</h3>
+              {node.description && <p>{node.description}</p>}
+              {showNodeMeta && node.meta.length > 0 && (
+                <dl class="temis-graph-nav__detail-meta">
+                  {node.meta.map((item) => (
+                    <div>
+                      <dt>{item.label}</dt>
+                      <dd>
+                        {item.href ? (
+                          <a href={item.href}>{item.value}</a>
+                        ) : item.datetime ? (
+                          <time datetime={item.datetime}>{item.value}</time>
+                        ) : (
+                          item.value
+                        )}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
             </div>
-          )}
-        </article>
-      ))
-    }
-  </section>
+
+            <div class="temis-graph-nav__detail-actions">
+              <a href={node.href} aria-label={`Open ${node.label}`}>
+                Open
+              </a>
+            </div>
+
+            {relatedNodes.length > 0 && (
+              <div class="temis-graph-nav__detail-related">
+                <p>Related</p>
+                <ul>
+                  {relatedNodes.map((relatedNode) => (
+                    <li>
+                      <a href={relatedNode.href}>{relatedNode.label}</a>
+                      <span>{nodeTypeLabels[relatedNode.type]}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </article>
+        ))}
+      </section>
+    )
+  }
 
   <ul class="temis-graph-nav__fallback">
     {
@@ -1162,6 +1180,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
       ...graph.querySelectorAll<HTMLElement>("[data-preview-node-id]"),
     ];
     const neighbors = new Map<string, Set<string>>();
+    const hasDetails = detailPanels.length > 0;
     const initialNodeId =
       nodes.find((node) => node.getAttribute("aria-expanded") === "true")
         ?.dataset.nodeId ??
@@ -1172,6 +1191,11 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
 
     const setExpandedNode = (nodeId: string | null) => {
       for (const node of nodes) {
+        if (!hasDetails) {
+          node.removeAttribute("aria-expanded");
+          continue;
+        }
+
         node.setAttribute(
           "aria-expanded",
           node.dataset.nodeId === nodeId ? "true" : "false",
@@ -1179,6 +1203,11 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
       }
 
       for (const indexLink of indexLinks) {
+        if (!hasDetails) {
+          indexLink.removeAttribute("aria-expanded");
+          continue;
+        }
+
         indexLink.setAttribute(
           "aria-expanded",
           indexLink.dataset.indexNodeId === nodeId ? "true" : "false",
@@ -1221,7 +1250,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     const clearGraphState = () => {
       graph.removeAttribute("data-graph-active");
       setExpandedNode(initialNodeId);
-      if (initialNodeId) showDetailPanel(initialNodeId);
+      if (hasDetails && initialNodeId) showDetailPanel(initialNodeId);
       hidePreviewPanels();
       for (const node of nodes) node.removeAttribute("data-graph-state");
       for (const edge of edges) edge.removeAttribute("data-graph-state");
@@ -1234,7 +1263,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
       const relatedNodes = neighbors.get(nodeId) ?? new Set();
       graph.dataset.graphActive = nodeId;
       setExpandedNode(nodeId);
-      showDetailPanel(nodeId);
+      if (hasDetails) showDetailPanel(nodeId);
 
       for (const node of nodes) {
         const currentNodeId = node.dataset.nodeId;
