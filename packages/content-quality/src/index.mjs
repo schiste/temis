@@ -347,6 +347,28 @@ export function validateContentQuality(options) {
     );
   }
 
+  if (hasText(record.source_url)) {
+    if (!hasText(record.source_title)) {
+      addIssue(
+        issues,
+        "error",
+        "missing-source-title",
+        "Imported or republished content with a source URL must name the source.",
+        "source_title",
+      );
+    }
+
+    if (!hasText(record.content_license)) {
+      addIssue(
+        issues,
+        "error",
+        "missing-content-license",
+        "Imported or republished content with a source URL must declare its content license.",
+        "content_license",
+      );
+    }
+  }
+
   for (const imageField of imageFieldDefinitions) {
     const image = record[imageField.field];
     if (!imageValueExists(image)) continue;

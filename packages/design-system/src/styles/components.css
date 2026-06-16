@@ -256,6 +256,17 @@
   text-underline-offset: var(--ds-space-phi-00);
 }
 
+.ds-prose blockquote {
+  border-block: var(--ds-stroke-hairline) solid var(--ds-color-line-strong);
+  color: var(--ds-color-text);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-font-size-body);
+  inline-size: min(100%, var(--ds-measure-article));
+  line-height: var(--ds-line-body);
+  margin-inline: 0;
+  padding: var(--ds-row-half) var(--ds-grid-unit);
+}
+
 .ds-prose ul {
   display: grid;
   gap: var(--ds-row-quarter);

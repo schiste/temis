@@ -51,9 +51,13 @@ export interface PostEntry extends SnapshotRow {
   featured_image_alt?: string | null;
   featured_image_caption?: string | null;
   featured_image_license?: string | null;
+  content_license?: string | null;
+  content_license_url?: string | null;
   primary_byline_id?: string | null;
   seo_description?: string;
   seo_title?: string;
+  source_title?: string | null;
+  source_url?: string | null;
   title: string;
 }
 

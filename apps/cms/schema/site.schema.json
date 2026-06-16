@@ -16,6 +16,11 @@
       "slug": "lodewijk-gelauff",
       "displayName": "Lodewijk Gelauff",
       "bio": "Lodewijk Gelauff explores Wikimedia governance, deliberation, and community decision-making tools."
+    },
+    {
+      "slug": "christophe-henner",
+      "displayName": "Christophe Henner",
+      "bio": "Christophe Henner is a 20-year Wikimedian, former Chair of Wikimedia France, and former Chair of the Wikimedia Foundation Board of Trustees."
     }
   ],
   "taxonomyTerms": [
@@ -42,6 +47,46 @@
       "description": "Questions about public knowledge, commons, and shared infrastructure.",
       "priority": 60,
       "accent": "#4f7f45"
+    },
+    {
+      "taxonomy": "tag",
+      "slug": "wikipedia",
+      "label": "Wikipedia",
+      "description": "Essays and tools about Wikipedia as infrastructure, community, and product.",
+      "priority": 58,
+      "accent": "#111111"
+    },
+    {
+      "taxonomy": "tag",
+      "slug": "wikimedia",
+      "label": "Wikimedia",
+      "description": "Movement, governance, and shared Wikimedia infrastructure.",
+      "priority": 56,
+      "accent": "#7a4f00"
+    },
+    {
+      "taxonomy": "tag",
+      "slug": "ai",
+      "label": "AI",
+      "description": "AI-era questions for open knowledge, verification, distribution, and tooling.",
+      "priority": 54,
+      "accent": "#1137ff"
+    },
+    {
+      "taxonomy": "tag",
+      "slug": "knowledge-equity",
+      "label": "Knowledge equity",
+      "description": "Equity questions about whose knowledge is created, maintained, and visible.",
+      "priority": 52,
+      "accent": "#8a1f5c"
+    },
+    {
+      "taxonomy": "tag",
+      "slug": "movement-strategy",
+      "label": "Movement strategy",
+      "description": "Strategy, governance, and direction-setting for open knowledge movements.",
+      "priority": 50,
+      "accent": "#006f6a"
     }
   ],
   "taxonomyAssignments": [
@@ -80,6 +125,48 @@
       "slug": "wiki-polis",
       "taxonomy": "tag",
       "termSlug": "open-knowledge"
+    },
+    {
+      "collection": "posts",
+      "slug": "wikipedia-at-25-a-wake-up-call",
+      "taxonomy": "category",
+      "termSlug": "essays"
+    },
+    {
+      "collection": "posts",
+      "slug": "wikipedia-at-25-a-wake-up-call",
+      "taxonomy": "tag",
+      "termSlug": "open-knowledge"
+    },
+    {
+      "collection": "posts",
+      "slug": "wikipedia-at-25-a-wake-up-call",
+      "taxonomy": "tag",
+      "termSlug": "wikipedia"
+    },
+    {
+      "collection": "posts",
+      "slug": "wikipedia-at-25-a-wake-up-call",
+      "taxonomy": "tag",
+      "termSlug": "wikimedia"
+    },
+    {
+      "collection": "posts",
+      "slug": "wikipedia-at-25-a-wake-up-call",
+      "taxonomy": "tag",
+      "termSlug": "ai"
+    },
+    {
+      "collection": "posts",
+      "slug": "wikipedia-at-25-a-wake-up-call",
+      "taxonomy": "tag",
+      "termSlug": "knowledge-equity"
+    },
+    {
+      "collection": "posts",
+      "slug": "wikipedia-at-25-a-wake-up-call",
+      "taxonomy": "tag",
+      "termSlug": "movement-strategy"
     }
   ],
   "contentBylines": [
@@ -100,6 +187,12 @@
       "slug": "wiki-polis",
       "bylineSlug": "lodewijk-gelauff",
       "roleLabel": "Creator"
+    },
+    {
+      "collection": "posts",
+      "slug": "wikipedia-at-25-a-wake-up-call",
+      "bylineSlug": "christophe-henner",
+      "roleLabel": "Author"
     }
   ],
   "contentDefaults": [
@@ -139,6 +232,18 @@
       "fields": {
         "author_name": "Lodewijk Gelauff",
         "content_type": "essay"
+      }
+    },
+    {
+      "collection": "posts",
+      "slug": "wikipedia-at-25-a-wake-up-call",
+      "fields": {
+        "author_name": "Christophe Henner",
+        "content_type": "essay",
+        "source_title": "Meta-Wiki",
+        "source_url": "https://meta.wikimedia.org/wiki/User:Schiste/what-now",
+        "content_license": "CC BY-SA 4.0",
+        "content_license_url": "https://creativecommons.org/licenses/by-sa/4.0/"
       }
     }
   ],
