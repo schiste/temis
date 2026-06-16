@@ -194,7 +194,6 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
 >
   <div class="temis-graph-nav__header">
     <h2>{heading}</h2>
-    <span>{laidOutGraph.scope}</span>
   </div>
 
   <div class="temis-graph-nav__map">
@@ -407,23 +406,18 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
   }
 
   .temis-graph-nav__header {
-    align-items: center;
-    display: flex;
+    align-items: start;
+    display: grid;
     font-family: var(--ds-font-mono, ui-monospace);
-    justify-content: space-between;
     min-height: var(--ds-row-unit, var(--ds-grid-unit, 2.625rem));
+    padding-block-start: var(--ds-space-phi-1, 0.625rem);
     text-transform: uppercase;
   }
 
-  .temis-graph-nav__header h2,
-  .temis-graph-nav__header span {
+  .temis-graph-nav__header h2 {
     font-size: var(--ds-font-size-meta, 0.75rem);
     line-height: 1;
     margin: 0;
-  }
-
-  .temis-graph-nav__header span {
-    color: var(--ds-color-text-muted, currentColor);
   }
 
   .temis-graph-nav__map {
