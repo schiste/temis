@@ -673,8 +673,6 @@
 
   .ds-content-rail {
     grid-column: 19 / span 10;
-    position: sticky;
-    top: var(--ds-space-phi-3);
   }
 
   .ds-content-rail .temis-graph-nav__map {
