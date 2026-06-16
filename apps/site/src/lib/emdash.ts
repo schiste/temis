@@ -611,12 +611,12 @@ export async function getSiteChrome() {
       actions: [
         {
           href: optionValue(options, "headerSearchHref", "/search/"),
-          icon: "search",
+          icon: "search" as const,
           label: optionValue(options, "headerSearchLabel", "Search"),
         },
         {
           href: optionValue(options, "headerNetworkHref", "/topics/"),
-          icon: "network",
+          icon: "network" as const,
           label: optionValue(options, "headerNetworkLabel", "Topic network"),
         },
       ],
