@@ -8,6 +8,7 @@ import {
 } from "@temis/graph-navigation";
 
 import {
+  blogHref,
   entryAuthorHref,
   entryAuthorName,
   entryBylineBio,
@@ -28,6 +29,7 @@ import {
   getSnapshotTable,
   getTools,
   slugify,
+  toolHref,
   type BylineEntry,
   type PostEntry,
   type SnapshotRow,
@@ -148,7 +150,7 @@ function postMeta(post: PostEntry) {
 function postNode(post: PostEntry): GraphNavigationNodeInput {
   return {
     description: entryDescription(post),
-    href: `/blog/${entrySlug(post)}/`,
+    href: blogHref(post),
     id: `content:${post.id}`,
     label: entryTitle(post),
     meta: postMeta(post),
@@ -170,7 +172,7 @@ function toolNode(tool: ToolEntry): GraphNavigationNodeInput {
 
   return {
     description: entryDescription(tool) || entrySummary(tool),
-    href: `/tools/${entrySlug(tool)}/`,
+    href: toolHref(tool),
     id: `tool:${tool.id}`,
     label: entryTitle(tool),
     meta: [
@@ -415,7 +417,10 @@ function attachBylineEdges(
   for (const tool of tools) {
     const toolId = `tool:${tool.id}`;
     const bylinesForTool = new Map(
-      [resolver.resolve(tool.primary_byline_id), ...resolver.relatedBylines(tool)]
+      [
+        resolver.resolve(tool.primary_byline_id),
+        ...resolver.relatedBylines(tool),
+      ]
         .filter((byline): byline is BylineEntry => Boolean(byline?.id))
         .map((byline) => [byline.id, byline]),
     );

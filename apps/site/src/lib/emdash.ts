@@ -419,13 +419,13 @@ export async function getSearchDocuments(): Promise<SearchDocument[]> {
     })),
     ...posts.map((post) => ({
       description: entryDescription(post),
-      href: `/blog/${entrySlug(post)}/`,
+      href: blogHref(post),
       kind: entryContentType(post),
       title: entryTitle(post),
     })),
     ...tools.map((tool) => ({
       description: entryDescription(tool) || entrySummary(tool),
-      href: `/tools/${entrySlug(tool)}/`,
+      href: toolHref(tool),
       kind: "Tool",
       title: entryTitle(tool),
     })),
@@ -438,15 +438,34 @@ export async function getSearchDocuments(): Promise<SearchDocument[]> {
   ].sort((a, b) => a.title.localeCompare(b.title));
 }
 
+const COLLECTION_ROUTE_PREFIX: Record<string, string> = {
+  posts: "/blog",
+  tools: "/tools",
+};
+
+export function collectionHref(
+  collection: string | null | undefined,
+  slug: string,
+) {
+  const prefix = collection ? COLLECTION_ROUTE_PREFIX[collection] : undefined;
+  return prefix ? `${prefix}/${slug}/` : `/${slug}/`;
+}
+
+export function blogHref(post: SnapshotRow) {
+  return collectionHref("posts", entrySlug(post));
+}
+
+export function toolHref(tool: SnapshotRow) {
+  return collectionHref("tools", entrySlug(tool));
+}
+
 function referencedHref(
   collection: string | null | undefined,
   row: SnapshotRow,
 ) {
   const slug = publicSlug(row);
   if (!slug || slug === "home" || slug === "index") return "/";
-  if (collection === "posts") return `/blog/${slug}/`;
-  if (collection === "tools") return `/tools/${slug}/`;
-  return `/${slug}/`;
+  return collectionHref(collection, slug);
 }
 
 function referencedTitle(row: SnapshotRow) {

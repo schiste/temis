@@ -3,11 +3,11 @@ import Card from "@temis/design-system/components/Card.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
 import SiteLayout from "../../components/SiteLayout.astro";
 import {
+  blogHref,
   entryBylineBio,
   entryBylineName,
   entryBylineSlug,
   entryDescription,
-  entrySlug,
   entryTitle,
   getBylineBySlug,
   getBylines,
@@ -61,7 +61,7 @@ const description =
             <Card
               variant="standard"
               eyebrow={copy.articleCardEyebrow}
-              href={`/blog/${entrySlug(post)}/`}
+              href={blogHref(post)}
               title={entryTitle(post)}
               description={entryDescription(post)}
             />

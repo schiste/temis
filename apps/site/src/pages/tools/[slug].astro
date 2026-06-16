@@ -7,6 +7,7 @@ import {
   toolGraphNodeId,
 } from "../../lib/content-graph";
 import {
+  blogHref,
   entryDescription,
   entryBylineHref,
   entryBylineName,
@@ -104,7 +105,10 @@ function textField(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
 
-function maintenanceSignal(date: Date | null, label: string | null | undefined) {
+function maintenanceSignal(
+  date: Date | null,
+  label: string | null | undefined,
+) {
   if (!date || Number.isNaN(date.valueOf())) {
     return {
       detail: "No public commit signal",
@@ -281,7 +285,7 @@ const relatedPosts = posts
   .filter((post) => post.id && relatedPostIds.has(post.id))
   .map((post) => ({
     description: entryDescription(post),
-    href: `/blog/${entrySlug(post)}/`,
+    href: blogHref(post),
     label: entryTitle(post),
   }));
 const bylineById = new Map(bylines.map((byline) => [byline.id, byline]));
