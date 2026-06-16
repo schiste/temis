@@ -1397,8 +1397,12 @@
     grid-template-columns: repeat(12, minmax(0, 1fr));
   }
 
+  .ds-site-kicker {
+    grid-column: span 9;
+  }
+
   .ds-nav {
-    grid-column: -16 / span 12;
+    grid-column: 13 / -4;
   }
 
   .ds-header-actions {
