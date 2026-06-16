@@ -171,7 +171,11 @@ function renderCallout(data: Record<string, unknown>) {
 function renderDataTable(data: Record<string, unknown>) {
   const caption = textValue(data.caption);
   const columns = Array.isArray(data.columns)
-    ? data.columns.map(textValue).filter(Boolean)
+    ? data.columns
+        .map((column) =>
+          isRecord(column) ? textValue(column.label) : textValue(column),
+        )
+        .filter(Boolean)
     : [];
   const rows = Array.isArray(data.rows) ? data.rows : [];
 
@@ -181,13 +185,21 @@ function renderDataTable(data: Record<string, unknown>) {
     .map((column) => `<th scope="col">${escapeHtml(column)}</th>`)
     .join("");
   const body = rows
-    .filter(Array.isArray)
-    .map(
-      (row) =>
-        `<tr>${row
-          .map((cell) => `<td>${escapeHtml(textValue(cell))}</td>`)
-          .join("")}</tr>`,
-    )
+    .map((row) => {
+      const cells = Array.isArray(row)
+        ? row.map(textValue)
+        : isRecord(row)
+          ? columns.map((_, index) => textValue(row[`cell${index + 1}`]))
+          : [];
+
+      return cells.some(Boolean)
+        ? `<tr>${cells
+            .slice(0, columns.length || undefined)
+            .map((cell) => `<td>${escapeHtml(cell)}</td>`)
+            .join("")}</tr>`
+        : "";
+    })
+    .filter(Boolean)
     .join("");
 
   return `<figure class="ds-data-table">${
