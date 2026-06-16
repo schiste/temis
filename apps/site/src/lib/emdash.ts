@@ -206,7 +206,7 @@ function normalizeHref(href: string) {
   return prefixed.endsWith("/") ? prefixed : `${prefixed}/`;
 }
 
-function slugify(value: string) {
+export function slugify(value: string) {
   return value
     .toLowerCase()
     .normalize("NFD")
@@ -641,9 +641,8 @@ export function entryPublishedDateTime(row: SnapshotRow) {
   return rawValue.includes("T") ? rawValue : `${rawValue.replace(" ", "T")}Z`;
 }
 
-export function entryPublishedDateLabel(row: SnapshotRow) {
-  const value = entryPublishedDateTime(row);
-  if (!value) return "Undated";
+export function formatDateLabel(value: string | null | undefined) {
+  if (!value) return null;
 
   const date = new Date(value);
   if (Number.isNaN(date.valueOf())) return value.slice(0, 10);
@@ -654,6 +653,10 @@ export function entryPublishedDateLabel(row: SnapshotRow) {
     timeZone: "UTC",
     year: "numeric",
   }).format(date);
+}
+
+export function entryPublishedDateLabel(row: SnapshotRow) {
+  return formatDateLabel(entryPublishedDateTime(row)) ?? "Undated";
 }
 
 export function entryBylineSlug(row: BylineEntry) {

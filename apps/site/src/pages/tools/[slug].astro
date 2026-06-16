@@ -14,11 +14,13 @@ import {
   entryExternalUrl,
   entrySlug,
   entryTitle,
+  formatDateLabel,
   getBylines,
   getPosts,
   getSiteTexts,
   getToolBySlug,
   getTools,
+  slugify,
 } from "../../lib/emdash";
 import { relatedPeopleReferences, relatedRecordIds } from "../../lib/relations";
 
@@ -80,15 +82,7 @@ const editorialConfidence = resolvedTool.editorial_confidence?.trim();
 const github = resolvedTool.github;
 const lastCommitDateTime = github?.lastCommitAt;
 const lastCommitDate = lastCommitDateTime ? new Date(lastCommitDateTime) : null;
-const lastCommitLabel =
-  lastCommitDate && !Number.isNaN(lastCommitDate.valueOf())
-    ? new Intl.DateTimeFormat("en-GB", {
-        day: "2-digit",
-        month: "short",
-        timeZone: "UTC",
-        year: "numeric",
-      }).format(lastCommitDate)
-    : lastCommitDateTime?.slice(0, 10);
+const lastCommitLabel = formatDateLabel(lastCommitDateTime);
 
 function hostLabel(value: string | null | undefined) {
   if (!value) return "";
@@ -110,7 +104,7 @@ function textField(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
 
-function maintenanceSignal(date: Date | null, label: string | undefined) {
+function maintenanceSignal(date: Date | null, label: string | null | undefined) {
   if (!date || Number.isNaN(date.valueOf())) {
     return {
       detail: "No public commit signal",
@@ -312,12 +306,7 @@ if (primaryByline) {
 }
 
 for (const person of personReferences) {
-  const slug = person.label
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+  const slug = slugify(person.label);
   const byline = bylineBySlug.get(slug);
   peopleByKey.set(slug || person.label, {
     detail: person.detail,

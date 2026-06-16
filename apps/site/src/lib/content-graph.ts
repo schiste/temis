@@ -22,10 +22,12 @@ import {
   entrySlug,
   entrySummary,
   entryTitle,
+  formatDateLabel,
   getBylines,
   getPosts,
   getSnapshotTable,
   getTools,
+  slugify,
   type BylineEntry,
   type PostEntry,
   type SnapshotRow,
@@ -90,15 +92,6 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
-function slugify(value: string) {
-  return value
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
 function uniqueById<T extends { id?: string | null }>(rows: T[]) {
   const result = new Map<string, T>();
 
@@ -134,20 +127,6 @@ function isGraphMetaItem(
   item: GraphNavigationNodeMetaInput | null,
 ): item is GraphNavigationNodeMetaInput {
   return Boolean(item);
-}
-
-function dateLabel(value: string | null | undefined) {
-  if (!value) return null;
-
-  const date = new Date(value);
-  if (Number.isNaN(date.valueOf())) return value.slice(0, 10);
-
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "2-digit",
-    month: "short",
-    timeZone: "UTC",
-    year: "numeric",
-  }).format(date);
 }
 
 function postMeta(post: PostEntry) {
@@ -201,7 +180,7 @@ function toolNode(tool: ToolEntry): GraphNavigationNodeInput {
       graphMeta("Editorial confidence", cleanText(tool.editorial_confidence)),
       graphMeta("Privacy", cleanText(tool.privacy_note)),
       graphMeta("Language", github?.primaryLanguage),
-      graphMeta("Last commit", dateLabel(github?.lastCommitAt), {
+      graphMeta("Last commit", formatDateLabel(github?.lastCommitAt), {
         datetime: github?.lastCommitAt,
       }),
       graphMeta("Repository", entryExternalUrl(tool.repository_url), {
