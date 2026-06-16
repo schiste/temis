@@ -1266,35 +1266,21 @@
                 {
                   "period": "2001–2007",
                   "title": "The Pioneers: Outpacing the Market",
-                  "metrics": [
-                    "Internet +18%/yr",
-                    "Edits +238%/yr",
-                    "Registrations +451%/yr"
-                  ],
+                  "metrics": "Internet +18%/yr · Edits +238%/yr · Registrations +451%/yr",
                   "body": "Internet users grew ~18% annually. We scaled orders of magnitude faster than the internet itself. But let's be clear about who \"we\" was: overwhelmingly English-speaking, male, from wealthy countries with fast internet and time to spare. We built something extraordinary, and we built it for people who looked like us.",
                   "tone": "positive"
                 },
                 {
                   "period": "2008–2015",
                   "title": "The Cool Kids: Keeping Pace",
-                  "metrics": [
-                    "Internet +8%/yr",
-                    "Edits +12%/yr",
-                    "Registrations +10%/yr"
-                  ],
+                  "metrics": "Internet +8%/yr · Edits +12%/yr · Registrations +10%/yr",
                   "body": "Wikipedia became mainstream, a household name. But mainstream where? The global internet was shifting. Mobile-first users in the Global South were coming online by the hundreds of millions, and we kept optimizing for desktop editors in the Global North. We called it success. It was the beginning of the gap.",
                   "tone": "neutral"
                 },
                 {
                   "period": "2016–Now",
                   "title": "The Commodity: Falling Behind",
-                  "metrics": [
-                    "Internet +7%/yr",
-                    "Edits +4%/yr",
-                    "Registrations -5%/yr",
-                    "Page views declining",
-                    "New registrations collapsing"
-                  ],
+                  "metrics": "Internet +7%/yr · Edits +4%/yr · Registrations -5%/yr · Page views declining · New registrations collapsing",
                   "body": "The billions who came online found an encyclopedia that didn't speak their languages, didn't cover their topics, and wasn't designed for their devices. We became infrastructure for AI companies while remaining invisible to the people we claimed to serve. Our content powers the internet. But whose content? Whose internet?",
                   "tone": "critical"
                 }
@@ -2472,20 +2458,56 @@
             {
               "_type": "dataTable",
               "caption": "Key metrics 2016-2025",
-              "columns": ["Metric", "2016", "2021", "2025", "Change"],
+              "columns": [
+                { "label": "Metric" },
+                { "label": "2016" },
+                { "label": "2021" },
+                { "label": "2025" },
+                { "label": "Change" }
+              ],
               "rows": [
-                ["Internet Users (World)", "3.27B", "5.02B", "6.0B", "+83%"],
-                ["Page Views (Annual)", "194B", "192B", "177B", "-9%"],
-                [
-                  "New Registrations (Monthly Avg)",
-                  "317K",
-                  "286K",
-                  "202K",
-                  "-36%"
-                ],
-                ["Edits (Monthly Avg)", "15.6M", "21.6M", "21.4M", "+37%"],
-                ["Edits per New User", "49.0", "75.4", "105.7", "+116%"],
-                ["Mobile Share (EN Wiki)", "62%", "68%", "74%", "+12pp"]
+                {
+                  "cell1": "Internet Users (World)",
+                  "cell2": "3.27B",
+                  "cell3": "5.02B",
+                  "cell4": "6.0B",
+                  "cell5": "+83%"
+                },
+                {
+                  "cell1": "Page Views (Annual)",
+                  "cell2": "194B",
+                  "cell3": "192B",
+                  "cell4": "177B",
+                  "cell5": "-9%"
+                },
+                {
+                  "cell1": "New Registrations (Monthly Avg)",
+                  "cell2": "317K",
+                  "cell3": "286K",
+                  "cell4": "202K",
+                  "cell5": "-36%"
+                },
+                {
+                  "cell1": "Edits (Monthly Avg)",
+                  "cell2": "15.6M",
+                  "cell3": "21.6M",
+                  "cell4": "21.4M",
+                  "cell5": "+37%"
+                },
+                {
+                  "cell1": "Edits per New User",
+                  "cell2": "49.0",
+                  "cell3": "75.4",
+                  "cell4": "105.7",
+                  "cell5": "+116%"
+                },
+                {
+                  "cell1": "Mobile Share (EN Wiki)",
+                  "cell2": "62%",
+                  "cell3": "68%",
+                  "cell4": "74%",
+                  "cell5": "+12pp"
+                }
               ]
             },
             {
@@ -2501,18 +2523,73 @@
             {
               "_type": "dataTable",
               "caption": "Indexed growth, 2016 = 100",
-              "columns": ["Year", "Internet Users", "Page Views", "Gap"],
+              "columns": [
+                { "label": "Year" },
+                { "label": "Internet Users" },
+                { "label": "Page Views" },
+                { "label": "Gap" }
+              ],
               "rows": [
-                ["2016", "100", "100", "-"],
-                ["2017", "106", "98", "-8"],
-                ["2018", "116", "98", "-18"],
-                ["2019", "128", "100", "-28"],
-                ["2020", "144", "103", "-41"],
-                ["2021", "154", "99", "-55"],
-                ["2022", "162", "94", "-68"],
-                ["2023", "168", "98", "-70"],
-                ["2024", "177", "97", "-80"],
-                ["2025", "183", "91", "-92"]
+                {
+                  "cell1": "2016",
+                  "cell2": "100",
+                  "cell3": "100",
+                  "cell4": "-"
+                },
+                {
+                  "cell1": "2017",
+                  "cell2": "106",
+                  "cell3": "98",
+                  "cell4": "-8"
+                },
+                {
+                  "cell1": "2018",
+                  "cell2": "116",
+                  "cell3": "98",
+                  "cell4": "-18"
+                },
+                {
+                  "cell1": "2019",
+                  "cell2": "128",
+                  "cell3": "100",
+                  "cell4": "-28"
+                },
+                {
+                  "cell1": "2020",
+                  "cell2": "144",
+                  "cell3": "103",
+                  "cell4": "-41"
+                },
+                {
+                  "cell1": "2021",
+                  "cell2": "154",
+                  "cell3": "99",
+                  "cell4": "-55"
+                },
+                {
+                  "cell1": "2022",
+                  "cell2": "162",
+                  "cell3": "94",
+                  "cell4": "-68"
+                },
+                {
+                  "cell1": "2023",
+                  "cell2": "168",
+                  "cell3": "98",
+                  "cell4": "-70"
+                },
+                {
+                  "cell1": "2024",
+                  "cell2": "177",
+                  "cell3": "97",
+                  "cell4": "-80"
+                },
+                {
+                  "cell1": "2025",
+                  "cell2": "183",
+                  "cell3": "91",
+                  "cell4": "-92"
+                }
               ]
             },
             {
