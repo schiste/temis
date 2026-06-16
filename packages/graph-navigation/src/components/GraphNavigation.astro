@@ -167,6 +167,20 @@ const detailPanels = visualNodes.map((node) => ({
     return a.label.localeCompare(b.label);
   }),
 }));
+const previewPanels = visualNodes
+  .filter((node) => node.id !== laidOutGraph.currentNodeId)
+  .map((node) => {
+    const horizontal = node.visualX > 66 ? "left" : "right";
+    const vertical =
+      node.visualY > 70 ? "up" : node.visualY < 30 ? "down" : "middle";
+
+    return {
+      node,
+      horizontal,
+      primaryMeta: node.meta[0],
+      vertical,
+    };
+  });
 const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${laidOutGraph.generatedAt}`)}`;
 ---
 
@@ -176,6 +190,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     variant === "compact" && "temis-graph-nav--compact",
   ]}
   aria-label={label}
+  tabindex="-1"
 >
   <div class="temis-graph-nav__header">
     <h2>{heading}</h2>
@@ -225,6 +240,43 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
           )}
           <span class="temis-graph-nav__node-label">{node.label}</span>
         </a>
+      ))
+    }
+
+    {
+      previewPanels.map(({ horizontal, node, primaryMeta, vertical }) => (
+        <aside
+          class="temis-graph-nav__preview"
+          data-preview-node-id={node.id}
+          data-preview-placement-x={horizontal}
+          data-preview-placement-y={vertical}
+          hidden
+          style={`--preview-x:${node.visualX};--preview-y:${node.visualY};`}
+        >
+          <button type="button" aria-label={`Close ${node.label} preview`}>
+            x
+          </button>
+          <p>{nodeTypeLabels[node.type]}</p>
+          <h3>{node.label}</h3>
+          {node.description && <span>{node.description}</span>}
+          {primaryMeta && (
+            <dl>
+              <dt>{primaryMeta.label}</dt>
+              <dd>
+                {primaryMeta.href ? (
+                  <a href={primaryMeta.href}>{primaryMeta.value}</a>
+                ) : primaryMeta.datetime ? (
+                  <time datetime={primaryMeta.datetime}>
+                    {primaryMeta.value}
+                  </time>
+                ) : (
+                  primaryMeta.value
+                )}
+              </dd>
+            </dl>
+          )}
+          <a href={node.href}>Open</a>
+        </aside>
       ))
     }
   </div>
@@ -514,6 +566,145 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     stroke: var(--temis-graph-link-active);
     stroke-width: 0.74px;
     transform: scale(1.006);
+  }
+
+  .temis-graph-nav__preview {
+    background: var(--ds-color-surface, Canvas);
+    border: var(--ds-stroke-hairline, 1px) solid var(--temis-graph-link-active);
+    box-shadow:
+      inset 0 var(--ds-stroke-hairline, 1px) 0
+        color-mix(in srgb, var(--temis-graph-link-active) 42%, transparent),
+      0 var(--ds-space-phi-0, 0.375rem) var(--ds-space-phi-2, 1rem)
+        color-mix(in srgb, var(--ds-color-text, currentColor) 12%, transparent);
+    color: var(--ds-color-text, currentColor);
+    display: grid;
+    gap: var(--ds-space-phi-00, 0.25rem);
+    inline-size: min(
+      calc(var(--ds-grid-unit, 2.625rem) * 6),
+      calc(100% - var(--ds-grid-unit, 2.625rem))
+    );
+    inset-block-start: calc(var(--preview-y) * 1%);
+    inset-inline-start: calc(var(--preview-x) * 1%);
+    padding: var(--ds-row-quarter, var(--ds-space-phi-1, 0.625rem))
+      var(--ds-space-phi-2, 1rem);
+    position: absolute;
+    z-index: 4;
+  }
+
+  .temis-graph-nav__preview[hidden] {
+    display: none;
+  }
+
+  .temis-graph-nav__preview[data-preview-placement-x="right"] {
+    transform: translate(var(--ds-space-phi-2, 1rem), -50%);
+  }
+
+  .temis-graph-nav__preview[data-preview-placement-x="left"] {
+    transform: translate(calc(-100% - var(--ds-space-phi-2, 1rem)), -50%);
+  }
+
+  .temis-graph-nav__preview[data-preview-placement-y="down"] {
+    transform: translate(var(--ds-space-phi-2, 1rem), 0);
+  }
+
+  .temis-graph-nav__preview[data-preview-placement-x="left"][data-preview-placement-y="down"] {
+    transform: translate(calc(-100% - var(--ds-space-phi-2, 1rem)), 0);
+  }
+
+  .temis-graph-nav__preview[data-preview-placement-y="up"] {
+    transform: translate(var(--ds-space-phi-2, 1rem), -100%);
+  }
+
+  .temis-graph-nav__preview[data-preview-placement-x="left"][data-preview-placement-y="up"] {
+    transform: translate(calc(-100% - var(--ds-space-phi-2, 1rem)), -100%);
+  }
+
+  .temis-graph-nav__preview button {
+    align-items: center;
+    background: transparent;
+    border: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line-strong, currentColor);
+    color: var(--ds-color-text, currentColor);
+    cursor: pointer;
+    display: inline-flex;
+    font-family: var(--ds-font-mono, ui-monospace);
+    font-size: var(--ds-font-size-body, 1rem);
+    inline-size: var(--ds-space-phi-3, 1.625rem);
+    justify-content: center;
+    line-height: 1;
+    min-block-size: var(--ds-space-phi-3, 1.625rem);
+    padding: 0;
+    position: absolute;
+    inset-block-start: calc(var(--ds-stroke-hairline, 1px) * -1);
+    inset-inline-end: calc(var(--ds-stroke-hairline, 1px) * -1);
+  }
+
+  .temis-graph-nav__preview button:hover,
+  .temis-graph-nav__preview button:focus-visible {
+    background: var(--temis-graph-link-active);
+    border-color: var(--temis-graph-link-active);
+    color: var(--ds-color-accent-contrast, Canvas);
+  }
+
+  .temis-graph-nav__preview p,
+  .temis-graph-nav__preview h3,
+  .temis-graph-nav__preview span,
+  .temis-graph-nav__preview dl,
+  .temis-graph-nav__preview dd {
+    margin: 0;
+  }
+
+  .temis-graph-nav__preview p,
+  .temis-graph-nav__preview dt {
+    color: var(--ds-color-text-muted, currentColor);
+    font-family: var(--ds-font-mono, ui-monospace);
+    font-size: var(--ds-font-size-caption, 0.625rem);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .temis-graph-nav__preview h3 {
+    font-family: var(--ds-font-sans, ui-sans-serif);
+    font-size: var(--ds-font-size-body-lg, 1.125rem);
+    line-height: var(--ds-line-heading, 1.16);
+    padding-inline-end: var(--ds-space-phi-3, 1.625rem);
+  }
+
+  .temis-graph-nav__preview span {
+    color: var(--ds-color-text-muted, currentColor);
+    display: -webkit-box;
+    font-size: var(--ds-font-size-body, 1rem);
+    line-height: 1.35;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .temis-graph-nav__preview dl {
+    border-block-start: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line, currentColor);
+    display: grid;
+    gap: var(--ds-space-phi-00, 0.25rem);
+    padding-block-start: var(--ds-space-phi-1, 0.625rem);
+  }
+
+  .temis-graph-nav__preview dd,
+  .temis-graph-nav__preview > a {
+    font-family: var(--ds-font-mono, ui-monospace);
+    font-size: var(--ds-font-size-meta, 0.75rem);
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .temis-graph-nav__preview a {
+    color: var(--temis-graph-link-active);
+  }
+
+  .temis-graph-nav__preview > a {
+    border-block-start: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line, currentColor);
+    padding-block-start: var(--ds-space-phi-1, 0.625rem);
   }
 
   .temis-graph-nav__details {
@@ -927,7 +1118,8 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
   @media (prefers-reduced-motion: reduce) {
     .temis-graph-nav__edges path,
     .temis-graph-nav__node,
-    .temis-graph-nav__node-label {
+    .temis-graph-nav__node-label,
+    .temis-graph-nav__preview {
       transition: none;
     }
   }
@@ -972,6 +1164,9 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     const detailPanels = [
       ...graph.querySelectorAll<HTMLElement>("[data-detail-node-id]"),
     ];
+    const previewPanels = [
+      ...graph.querySelectorAll<HTMLElement>("[data-preview-node-id]"),
+    ];
     const neighbors = new Map<string, Set<string>>();
     const initialNodeId =
       nodes.find((node) => node.getAttribute("aria-expanded") === "true")
@@ -1011,20 +1206,33 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
       neighbors.get(target)?.add(source);
     }
 
+    const showDetailPanel = (nodeId: string) => {
+      for (const panel of detailPanels) {
+        panel.hidden = panel.dataset.detailNodeId !== nodeId;
+      }
+    };
+
+    const hidePreviewPanels = () => {
+      for (const panel of previewPanels) {
+        panel.hidden = true;
+      }
+    };
+
+    const showPreviewPanel = (nodeId: string) => {
+      for (const panel of previewPanels) {
+        panel.hidden = panel.dataset.previewNodeId !== nodeId;
+      }
+    };
+
     const clearGraphState = () => {
       graph.removeAttribute("data-graph-active");
       setExpandedNode(initialNodeId);
       if (initialNodeId) showDetailPanel(initialNodeId);
+      hidePreviewPanels();
       for (const node of nodes) node.removeAttribute("data-graph-state");
       for (const edge of edges) edge.removeAttribute("data-graph-state");
       for (const indexLink of indexLinks) {
         indexLink.removeAttribute("data-index-state");
-      }
-    };
-
-    const showDetailPanel = (nodeId: string) => {
-      for (const panel of detailPanels) {
-        panel.hidden = panel.dataset.detailNodeId !== nodeId;
       }
     };
 
@@ -1077,7 +1285,18 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
       lockedNodeId = nodeId;
       graph.dataset.graphLocked = nodeId;
       activateNode(nodeId);
+      showPreviewPanel(nodeId);
     };
+
+    for (const panel of previewPanels) {
+      const closeButton = panel.querySelector<HTMLButtonElement>("button");
+      closeButton?.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        unlock();
+        graph.focus({ preventScroll: true });
+      });
+    }
 
     for (const node of nodes) {
       node.addEventListener("pointerenter", () => {
