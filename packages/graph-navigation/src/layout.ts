@@ -9,6 +9,7 @@ import {
   type SimulationLinkDatum,
   type SimulationNodeDatum,
 } from "d3-force";
+import { clamp, round, seededUnit } from "./geometry";
 import type {
   GraphNavigationLayoutOptions,
   GraphNavigationNode,
@@ -40,29 +41,6 @@ type ForceLayoutNode = SimulationNodeDatum & {
 type ForceLayoutLink = SimulationLinkDatum<ForceLayoutNode> & {
   id: string;
 };
-
-function hashText(value: string) {
-  let hash = 2166136261;
-
-  for (let index = 0; index < value.length; index += 1) {
-    hash ^= value.charCodeAt(index);
-    hash = Math.imul(hash, 16777619);
-  }
-
-  return hash >>> 0;
-}
-
-function round(value: number) {
-  return Math.round(value * 100) / 100;
-}
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, value));
-}
-
-function seededUnit(id: string, salt: string) {
-  return hashText(`${id}:${salt}`) / 0xffffffff;
-}
 
 function seededInitialPosition(
   node: GraphNavigationNode,

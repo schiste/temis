@@ -1,4 +1,11 @@
 ---
+import {
+  clamp,
+  hashText,
+  round,
+  seededSignedUnit,
+  seededUnit,
+} from "../geometry";
 import { withGraphNavigationLayout } from "../layout";
 import type {
   GraphNavigationNode,
@@ -50,33 +57,6 @@ type VisualGraphEdge = (typeof laidOutGraph.edges)[number] & {
   sourceNode: VisualGraphNode;
   targetNode: VisualGraphNode;
 };
-
-function hashText(value: string) {
-  let hash = 2166136261;
-
-  for (let index = 0; index < value.length; index += 1) {
-    hash ^= value.charCodeAt(index);
-    hash = Math.imul(hash, 16777619);
-  }
-
-  return hash >>> 0;
-}
-
-function round(value: number) {
-  return Math.round(value * 100) / 100;
-}
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, value));
-}
-
-function seededUnit(id: string, salt: string) {
-  return hashText(`${id}:${salt}`) / 0xffffffff;
-}
-
-function seededSignedUnit(id: string, salt: string) {
-  return seededUnit(id, salt) * 2 - 1;
-}
 
 function toVisualNode(node: GraphNavigationNode): VisualGraphNode {
   const baseX = node.x ?? 50;
