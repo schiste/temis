@@ -14,6 +14,9 @@ The V1 product direction is tracked in [docs/vision.md](./docs/vision.md),
 [docs/design-system.md](./docs/design-system.md), and the ADRs in
 [docs/adr](./docs/adr).
 
+Contribution guidelines are tracked in
+[CONTRIBUTING.md](./CONTRIBUTING.md).
+
 ## Local Setup
 
 ```sh
