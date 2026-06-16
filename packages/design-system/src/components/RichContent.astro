@@ -1,0 +1,37 @@
+---
+import { richContentToHtml } from "../lib/rich-content";
+
+export interface Props {
+  as?: "article" | "div" | "section";
+  class?: string;
+  value: unknown;
+  variant?: "article" | "default";
+}
+
+const {
+  as = "div",
+  class: extraClassName,
+  value,
+  variant = "default",
+} = Astro.props;
+
+const className = [
+  "ds-prose",
+  variant === "article" ? "ds-prose--article" : "",
+  extraClassName,
+]
+  .filter(Boolean)
+  .join(" ");
+
+const html = richContentToHtml(value);
+---
+
+{
+  as === "article" ? (
+    <article class={className} set:html={html} />
+  ) : as === "section" ? (
+    <section class={className} set:html={html} />
+  ) : (
+    <div class={className} set:html={html} />
+  )
+}

@@ -1,6 +1,7 @@
 ---
 import MetadataRow from "@temis/design-system/components/MetadataRow.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
+import RichContent from "@temis/design-system/components/RichContent.astro";
 import ContentGraphRail from "../../components/ContentGraphRail.astro";
 import SiteLayout from "../../components/SiteLayout.astro";
 import {
@@ -21,7 +22,6 @@ import {
   getPosts,
   getSiteTexts,
 } from "../../lib/emdash";
-import { portableTextToHtml } from "../../lib/portable-text";
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -113,10 +113,7 @@ const metadataItems = [
           </time>
         )
       }
-      <div
-        class="ds-prose ds-prose--article"
-        set:html={portableTextToHtml(resolvedPost.content)}
-      />
+      <RichContent value={resolvedPost.content} variant="article" />
     </article>
     <ContentGraphRail
       graph={graph}

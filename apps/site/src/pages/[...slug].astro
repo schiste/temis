@@ -1,5 +1,6 @@
 ---
 import PageHero from "@temis/design-system/components/PageHero.astro";
+import RichContent from "@temis/design-system/components/RichContent.astro";
 import SiteLayout from "../components/SiteLayout.astro";
 import {
   entryDescription,
@@ -9,7 +10,6 @@ import {
   getPageBySlug,
   getSiteTexts,
 } from "../lib/emdash";
-import { portableTextToHtml } from "../lib/portable-text";
 
 export async function getStaticPaths() {
   const pages = await getCatchAllPages();
@@ -39,8 +39,5 @@ const copy = await getSiteTexts({
     description={description}
   />
 
-  <article
-    class="ds-prose"
-    set:html={portableTextToHtml(resolvedPage.content)}
-  />
+  <RichContent as="article" value={resolvedPage.content} />
 </SiteLayout>

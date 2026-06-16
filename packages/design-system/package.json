@@ -13,9 +13,11 @@
     "./components/FieldNoteRow.astro": "./src/components/FieldNoteRow.astro",
     "./components/MetadataRow.astro": "./src/components/MetadataRow.astro",
     "./components/PageHero.astro": "./src/components/PageHero.astro",
+    "./components/RichContent.astro": "./src/components/RichContent.astro",
     "./components/SiteFooter.astro": "./src/components/SiteFooter.astro",
     "./components/SiteHeader.astro": "./src/components/SiteHeader.astro",
-    "./components/TopicLabel.astro": "./src/components/TopicLabel.astro"
+    "./components/TopicLabel.astro": "./src/components/TopicLabel.astro",
+    "./rich-content": "./src/lib/rich-content.ts"
   },
   "peerDependencies": {
     "astro": "^6.0.0"

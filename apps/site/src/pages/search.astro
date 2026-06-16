@@ -1,5 +1,6 @@
 ---
 import PageHero from "@temis/design-system/components/PageHero.astro";
+import RichContent from "@temis/design-system/components/RichContent.astro";
 import SiteLayout from "../components/SiteLayout.astro";
 import {
   entryDescription,
@@ -8,7 +9,6 @@ import {
   getSearchDocuments,
   getSiteTexts,
 } from "../lib/emdash";
-import { portableTextToHtml } from "../lib/portable-text";
 
 const page = await getPageBySlug("search");
 const searchDocuments = await getSearchDocuments();
@@ -35,11 +35,7 @@ const description = page
     description={description}
   />
 
-  {
-    page?.content && (
-      <article class="ds-prose" set:html={portableTextToHtml(page.content)} />
-    )
-  }
+  {page?.content && <RichContent as="article" value={page.content} />}
 
   <section class="ds-search" aria-labelledby="search-results-heading">
     <form class="ds-search__form" role="search">

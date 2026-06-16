@@ -230,7 +230,7 @@ function renderTimeline(data: Record<string, unknown>) {
     : "";
 }
 
-export function portableTextToHtml(value: unknown) {
+export function richContentToHtml(value: unknown) {
   if (!Array.isArray(value)) {
     return typeof value === "string" ? `<p>${escapeHtml(value)}</p>` : "";
   }

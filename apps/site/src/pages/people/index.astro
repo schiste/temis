@@ -1,6 +1,7 @@
 ---
 import ArticleCard from "@temis/design-system/components/ArticleCard.astro";
 import PageHero from "@temis/design-system/components/PageHero.astro";
+import RichContent from "@temis/design-system/components/RichContent.astro";
 import SiteLayout from "../../components/SiteLayout.astro";
 import {
   entryBylineBio,
@@ -12,7 +13,6 @@ import {
   getPageBySlug,
   getSiteTexts,
 } from "../../lib/emdash";
-import { portableTextToHtml } from "../../lib/portable-text";
 
 const page = await getPageBySlug("people");
 const copy = await getSiteTexts({
@@ -36,11 +36,7 @@ const description = page
     description={description}
   />
 
-  {
-    page?.content && (
-      <article class="ds-prose" set:html={portableTextToHtml(page.content)} />
-    )
-  }
+  {page?.content && <RichContent as="article" value={page.content} />}
 
   {
     bylines.length > 0 && (

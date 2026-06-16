@@ -31,3 +31,8 @@ second global site stylesheet unless there is a documented reason.
 Use `Card` for homepage and promotional grids. Use `FieldNoteRow` for dense
 editorial archives where title, published date, author, and type/tags need to
 read like a ruled field-notes table.
+
+Use `RichContent` for EmDash-managed rich text and structured editorial blocks.
+It owns the `ds-prose` wrapper and renders supported blocks such as figures,
+stat grids, callouts, data tables, timelines, lists, and blockquotes into the
+shared design-system class contract.
