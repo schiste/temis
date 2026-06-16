@@ -342,6 +342,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
       #00a66a 88%,
       var(--ds-color-text, currentColor) 12%
     );
+    --temis-graph-node-muted-opacity: 0.22;
     box-shadow:
       inset 0 var(--ds-stroke-hairline, 1px) 0
         var(--ds-color-line-strong, currentColor),
@@ -465,31 +466,40 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
   }
 
   .temis-graph-nav__node--tool {
-    --node-accent: var(--ds-color-focus, var(--ds-color-accent, currentColor));
+    --node-accent: var(--temis-graph-link-active);
   }
 
   .temis-graph-nav__node:hover,
   .temis-graph-nav__node:focus-visible,
-  .temis-graph-nav__node[data-graph-state="active"],
-  .temis-graph-nav__node--current {
-    background: var(--node-accent);
+  .temis-graph-nav__node[data-graph-state="active"] {
+    background: var(--temis-graph-link-active);
+    border-color: var(--temis-graph-link-active);
     color: var(--ds-color-accent-contrast, Canvas);
   }
 
-  .temis-graph-nav__node[data-graph-state="neighbor"] {
-    border-color: var(--node-accent);
-    color: var(--node-accent);
-    opacity: 1;
+  .temis-graph-nav__node--current {
+    border-color: var(--temis-graph-link-active);
   }
 
   .temis-graph-nav[data-graph-active] .temis-graph-nav__node {
-    opacity: 0.22;
+    border-color: var(--ds-color-line-strong, currentColor);
+    color: var(--ds-color-text-muted, currentColor);
+    opacity: var(--temis-graph-node-muted-opacity);
   }
 
   .temis-graph-nav[data-graph-active]
-    .temis-graph-nav__node[data-graph-state="active"],
+    .temis-graph-nav__node--current:not([data-graph-state="active"]) {
+    background: var(--ds-color-surface, Canvas);
+    border-color: var(--temis-graph-link-active);
+    color: var(--ds-color-text, currentColor);
+    opacity: 1;
+  }
+
   .temis-graph-nav[data-graph-active]
-    .temis-graph-nav__node[data-graph-state="neighbor"] {
+    .temis-graph-nav__node[data-graph-state="active"] {
+    background: var(--temis-graph-link-active);
+    border-color: var(--temis-graph-link-active);
+    color: var(--ds-color-accent-contrast, Canvas);
     opacity: 1;
   }
 
@@ -742,7 +752,6 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     padding: 0;
   }
 
-  .temis-graph-nav--compact .temis-graph-nav__node--current,
   .temis-graph-nav--compact .temis-graph-nav__node[data-graph-state="active"] {
     block-size: var(--ds-space-phi-3, 1.625rem);
     inline-size: var(--ds-space-phi-3, 1.625rem);
@@ -831,8 +840,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     .temis-graph-nav__index-link:is(
       :hover,
       :focus-visible,
-      [data-index-state="active"],
-      .temis-graph-nav__index-link--current
+      [data-index-state="active"]
     ) {
     background: var(--ds-color-panel, transparent);
     color: var(--temis-graph-link-active);
@@ -842,10 +850,13 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     .temis-graph-nav__index-link:is(
       :hover,
       :focus-visible,
-      [data-index-state="active"],
-      .temis-graph-nav__index-link--current
+      [data-index-state="active"]
     )
     > span {
+    border-color: var(--temis-graph-link-active);
+  }
+
+  .temis-graph-nav--compact .temis-graph-nav__index-link--current > span {
     border-color: var(--temis-graph-link-active);
   }
 
