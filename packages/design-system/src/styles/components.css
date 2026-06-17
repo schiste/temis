@@ -549,6 +549,14 @@
   gap: var(--ds-row-half);
 }
 
+.ds-post-main .ds-page-hero {
+  margin-block-end: var(--ds-row-half);
+}
+
+.ds-post-main .ds-meta-row {
+  margin-block-start: 0;
+}
+
 .ds-meta-row {
   align-items: stretch;
   border-block: var(--ds-stroke-hairline) solid var(--ds-color-line);
