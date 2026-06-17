@@ -73,6 +73,18 @@ const initialDetailNodeId =
   laidOutGraph.currentNodeId && nodesById.has(laidOutGraph.currentNodeId)
     ? laidOutGraph.currentNodeId
     : visualNodes[0]?.id;
+function nodeAnchorX(x: number) {
+  if (x < 18) return "left";
+  if (x > 82) return "right";
+  return "middle";
+}
+
+function nodeAnchorY(y: number) {
+  if (y < 18) return "top";
+  if (y > 82) return "bottom";
+  return "middle";
+}
+
 const detailPanels = showDetails
   ? visualNodes.map((node) => ({
       node,
@@ -149,6 +161,8 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
           }
           data-node-id={node.id}
           data-node-type={node.type}
+          data-node-anchor-x={nodeAnchorX(node.visualX)}
+          data-node-anchor-y={nodeAnchorY(node.visualY)}
           href={node.href}
           id={`graph-node-${node.slug}`}
           style={`--node-x:${node.visualX};--node-y:${node.visualY};--node-idle-x:${node.idleX}rem;--node-idle-y:${node.idleY}rem;--node-idle-duration:${node.idleDuration}ms;--node-idle-delay:${node.idleDelay}ms;${node.accent ? `--node-accent:${node.accent};` : ""}`}
@@ -331,6 +345,9 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     color: var(--ds-color-text, currentColor);
     display: grid;
     gap: 0;
+    inline-size: 100%;
+    max-inline-size: 100%;
+    min-inline-size: 0;
     padding-block: 0;
   }
 
@@ -361,7 +378,11 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
       color-mix(in srgb, var(--ds-color-panel, transparent) 50%, transparent);
     background-size: var(--ds-grid-unit, 2.625rem)
       var(--ds-row-unit, var(--ds-grid-unit, 2.625rem));
+    box-sizing: border-box;
+    inline-size: 100%;
+    max-inline-size: 100%;
     min-height: calc(var(--ds-row-unit, var(--ds-grid-unit, 2.625rem)) * 8);
+    min-inline-size: 0;
     position: relative;
   }
 
@@ -402,9 +423,12 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     line-height: 1.1;
     max-width: calc(var(--ds-grid-unit, 2.625rem) * 5);
     min-height: var(--ds-row-unit, var(--ds-grid-unit, 2.625rem));
+    min-width: 0;
+    overflow-wrap: anywhere;
     padding: var(--ds-space-phi-1, 0.625rem);
     position: absolute;
     text-decoration: none;
+    text-align: start;
     text-transform: uppercase;
     transition:
       background-color 160ms ease,
@@ -412,7 +436,34 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
       color 160ms ease,
       opacity 160ms ease,
       transform 160ms ease;
-    transform: translate(-50%, -50%);
+    transform: translate(
+      var(--node-anchor-x, -50%),
+      var(--node-anchor-y, -50%)
+    );
+  }
+
+  .temis-graph-nav__node[data-node-anchor-x="left"] {
+    --node-anchor-x: 0;
+  }
+
+  .temis-graph-nav__node[data-node-anchor-x="middle"] {
+    --node-anchor-x: -50%;
+  }
+
+  .temis-graph-nav__node[data-node-anchor-x="right"] {
+    --node-anchor-x: -100%;
+  }
+
+  .temis-graph-nav__node[data-node-anchor-y="top"] {
+    --node-anchor-y: 0;
+  }
+
+  .temis-graph-nav__node[data-node-anchor-y="middle"] {
+    --node-anchor-y: -50%;
+  }
+
+  .temis-graph-nav__node[data-node-anchor-y="bottom"] {
+    --node-anchor-y: -100%;
   }
 
   .temis-graph-nav__node-label {
