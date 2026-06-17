@@ -3130,6 +3130,92 @@
           "seo_title": "wiki-polis",
           "seo_description": "wiki-polis is a Wikimedia-focused deliberation tool for mapping opinion clusters and structured arguments."
         }
+      },
+      {
+        "id": "seed:tool:sp42",
+        "slug": "sp42",
+        "status": "published",
+        "data": {
+          "title": "SP42",
+          "summary": "A Rust-first Wikipedia patrolling workbench for shared review flows across browser, CLI, desktop, and local development targets.",
+          "description": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "SP42 combines shared patrol logic, a browser shell, a CLI, a desktop shell, and a localhost bridge so the same Wikipedia review flow can be exercised across targets while the project moves toward live Wikimedia verification."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The repository describes the project as alpha software: local and offline review flows are substantially implemented, while live Wikimedia integration and multi-user production authentication remain external milestones."
+                }
+              ]
+            }
+          ],
+          "tool_url": "https://github.com/schiste/SP42",
+          "repository_url": "https://github.com/schiste/SP42",
+          "documentation_url": "https://github.com/schiste/SP42/tree/main/docs",
+          "license": "GPL-3.0-only",
+          "privacy_note": "Designed around local/offline development and single-user local Wikimedia token testing through a localhost bridge; multi-user production authentication is not implemented yet.",
+          "technical_maturity": "experimental",
+          "editorial_confidence": "promising",
+          "related_people": "Christophe Henner: creator/maintainer",
+          "graph_visible": true,
+          "graph_priority": 68,
+          "seo_title": "SP42 Wikipedia patrolling workbench",
+          "seo_description": "SP42 is a Rust-first Wikipedia patrolling workbench for shared review flows across browser, CLI, desktop, and local development targets."
+        }
+      },
+      {
+        "id": "seed:tool:wiki-economics",
+        "slug": "wiki-economics",
+        "status": "published",
+        "data": {
+          "title": "wiki-economics",
+          "summary": "A Wikipedia research pipeline and dashboard for analyzing editor labor, content production, inequality, funnel health, and patrol behavior.",
+          "description": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "wiki-economics is a Wikipedia research pipeline and dashboard for analyzing editor labor, content production, inequality, funnel health, and patrol behavior across Wikipedia language editions."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The repository combines a Rust CLI for fetch, ingest, compute, merge, and benchmarking workflows, a Python sidecar pipeline for patrol logging data, and an Observable Framework site for publishing resulting datasets and charts."
+                }
+              ]
+            }
+          ],
+          "tool_url": "https://github.com/schiste/wiki-economics",
+          "repository_url": "https://github.com/schiste/wiki-economics",
+          "documentation_url": "https://github.com/schiste/wiki-economics/tree/main/docs",
+          "license": "MIT OR Apache-2.0",
+          "privacy_note": "The repository excludes generated datasets, local caches, build outputs, and installed dependencies from version control; local runs fetch and compute Wikimedia-derived data outside the repo.",
+          "technical_maturity": "experimental",
+          "editorial_confidence": "promising",
+          "related_people": "Christophe Henner: creator/maintainer",
+          "graph_visible": true,
+          "graph_priority": 66,
+          "seo_title": "wiki-economics Wikipedia research dashboard",
+          "seo_description": "wiki-economics is a Wikipedia research pipeline and dashboard for analyzing editor labor, content production, inequality, funnel health, and patrol behavior."
+        }
       }
     ]
   },

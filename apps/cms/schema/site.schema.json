@@ -127,6 +127,60 @@
       "termSlug": "open-knowledge"
     },
     {
+      "collection": "tools",
+      "slug": "sp42",
+      "taxonomy": "category",
+      "termSlug": "tools"
+    },
+    {
+      "collection": "tools",
+      "slug": "sp42",
+      "taxonomy": "tag",
+      "termSlug": "wikipedia"
+    },
+    {
+      "collection": "tools",
+      "slug": "sp42",
+      "taxonomy": "tag",
+      "termSlug": "wikimedia"
+    },
+    {
+      "collection": "tools",
+      "slug": "sp42",
+      "taxonomy": "tag",
+      "termSlug": "open-knowledge"
+    },
+    {
+      "collection": "tools",
+      "slug": "wiki-economics",
+      "taxonomy": "category",
+      "termSlug": "tools"
+    },
+    {
+      "collection": "tools",
+      "slug": "wiki-economics",
+      "taxonomy": "tag",
+      "termSlug": "wikipedia"
+    },
+    {
+      "collection": "tools",
+      "slug": "wiki-economics",
+      "taxonomy": "tag",
+      "termSlug": "wikimedia"
+    },
+    {
+      "collection": "tools",
+      "slug": "wiki-economics",
+      "taxonomy": "tag",
+      "termSlug": "open-knowledge"
+    },
+    {
+      "collection": "tools",
+      "slug": "wiki-economics",
+      "taxonomy": "tag",
+      "termSlug": "knowledge-equity"
+    },
+    {
       "collection": "posts",
       "slug": "wikipedia-at-25-a-wake-up-call",
       "taxonomy": "category",
@@ -186,6 +240,18 @@
       "collection": "tools",
       "slug": "wiki-polis",
       "bylineSlug": "lodewijk-gelauff",
+      "roleLabel": "Creator"
+    },
+    {
+      "collection": "tools",
+      "slug": "sp42",
+      "bylineSlug": "christophe-henner",
+      "roleLabel": "Creator"
+    },
+    {
+      "collection": "tools",
+      "slug": "wiki-economics",
+      "bylineSlug": "christophe-henner",
       "roleLabel": "Creator"
     },
     {

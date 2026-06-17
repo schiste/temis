@@ -12,8 +12,6 @@ export interface Page {
   title: string;
   summary?: string;
   content?: PortableTextBlock[];
-  seo_title?: string;
-  seo_description?: string;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -25,8 +23,9 @@ export interface Post {
   slug: string | null;
   status: string;
   title: string;
+  content_type: "essay" | "news" | "tool_announcement" | "team_note";
+  content?: PortableTextBlock[];
   excerpt?: string;
-  author_name?: string;
   featured_image?: {
     id: string;
     src?: string;
@@ -37,9 +36,65 @@ export interface Post {
     previewUrl?: string;
     meta?: Record<string, unknown>;
   };
-  content?: PortableTextBlock[];
-  seo_title?: string;
-  seo_description?: string;
+  featured_image_alt?: string;
+  featured_image_caption?: string;
+  featured_image_license?: string;
+  author_name?: string;
+  source_title?: string;
+  source_url?: string;
+  content_license?: string;
+  content_license_url?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Tool {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  summary?: string;
+  description?: PortableTextBlock[];
+  tool_url?: string;
+  repository_url?: string;
+  github_data?: unknown;
+  github_synced_at?: string;
+  github_sync_error?: string;
+  documentation_url?: string;
+  license: string;
+  privacy_note: string;
+  technical_maturity:
+    | "prototype"
+    | "experimental"
+    | "active"
+    | "stable"
+    | "archived";
+  editorial_confidence:
+    | "observed"
+    | "promising"
+    | "used_by_temis"
+    | "recommended"
+    | "needs_review";
+  featured_image?: {
+    id: string;
+    src?: string;
+    alt?: string;
+    width?: number;
+    height?: number;
+    provider?: string;
+    previewUrl?: string;
+    meta?: Record<string, unknown>;
+  };
+  screenshot_url?: string;
+  screenshot_alt?: string;
+  screenshot_caption?: string;
+  screenshot_license?: string;
+  related_articles?: string;
+  related_people?: string;
+  graph_visible?: boolean;
+  graph_priority?: number;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -50,5 +105,6 @@ declare module "emdash" {
   interface EmDashCollections {
     pages: Page;
     posts: Post;
+    tools: Tool;
   }
 }
