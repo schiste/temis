@@ -73,6 +73,7 @@ function seedRecords(seed, siteSchema) {
 function snapshotRecords(snapshot) {
   const records = [];
   const tables = snapshot.tables ?? {};
+  const seoByKey = nativeSeoByKey(tables);
 
   for (const collection of checkedCollections) {
     const table = tables[`ec_${collection}`] ?? [];
@@ -82,6 +83,13 @@ function snapshotRecords(snapshot) {
       const parsed = {};
       for (const [key, value] of Object.entries(row)) {
         parsed[key] = parseMaybeJson(value);
+      }
+
+      const nativeSeo = seoByKey.get(`${collection}:${parsed.id}`);
+      if (nativeSeo) {
+        parsed.seo_title = nativeSeo.seo_title ?? parsed.seo_title;
+        parsed.seo_description =
+          nativeSeo.seo_description ?? parsed.seo_description;
       }
 
       records.push({
@@ -94,6 +102,16 @@ function snapshotRecords(snapshot) {
   }
 
   return records;
+}
+
+function nativeSeoByKey(tables) {
+  const seoByKey = new Map();
+
+  for (const row of tables._emdash_seo ?? []) {
+    seoByKey.set(`${row.collection}:${row.content_id}`, row);
+  }
+
+  return seoByKey;
 }
 
 function relationshipState(snapshot, collection, content) {

@@ -9,7 +9,7 @@
     "build": "TEMIS_CMS_BUILD=1 astro build",
     "deploy": "pnpm run build && wrangler deploy",
     "preview": "astro preview",
-    "seed": "emdash seed",
+    "seed": "node ./scripts/seed-native-seo.mjs",
     "type-check": "astro check"
   },
   "dependencies": {
