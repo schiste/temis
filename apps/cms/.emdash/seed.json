@@ -258,6 +258,21 @@
           "type": "url"
         },
         {
+          "slug": "github_data",
+          "label": "GitHub data",
+          "type": "json"
+        },
+        {
+          "slug": "github_synced_at",
+          "label": "GitHub synced at",
+          "type": "string"
+        },
+        {
+          "slug": "github_sync_error",
+          "label": "GitHub sync error",
+          "type": "text"
+        },
+        {
           "slug": "documentation_url",
           "label": "Documentation URL",
           "type": "url"

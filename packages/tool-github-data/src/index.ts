@@ -24,8 +24,10 @@ export interface ToolGithubData {
 
 export interface ToolGithubDataOptions {
   disabled?: boolean;
+  failOnError?: boolean;
   fetch?: typeof fetch;
   token?: string;
+  userAgent?: string;
 }
 
 export interface GithubBackedTool {
@@ -105,11 +107,11 @@ export function parseGitHubRepositoryUrl(
   return { owner, repo };
 }
 
-function githubHeaders(token: string | undefined) {
+function githubHeaders(token: string | undefined, userAgent: string) {
   return {
     Accept: "application/vnd.github+json",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    "User-Agent": "temis-static-build",
+    "User-Agent": userAgent,
     "X-GitHub-Api-Version": "2022-11-28",
   };
 }
@@ -118,8 +120,11 @@ async function fetchJson<T>(
   fetcher: typeof fetch,
   url: string,
   token: string | undefined,
+  userAgent: string,
 ) {
-  const response = await fetcher(url, { headers: githubHeaders(token) });
+  const response = await fetcher(url, {
+    headers: githubHeaders(token, userAgent),
+  });
   if (!response.ok) {
     throw new Error(`GitHub request failed: ${response.status} ${url}`);
   }
@@ -131,6 +136,7 @@ async function fetchRepositoryData(
   options: ToolGithubDataOptions,
 ) {
   const fetcher = options.fetch ?? fetch;
+  const userAgent = options.userAgent ?? "temis-static-build";
   const encodedOwner = encodeURIComponent(repository.owner);
   const encodedRepo = encodeURIComponent(repository.repo);
   const apiBase = `https://api.github.com/repos/${encodedOwner}/${encodedRepo}`;
@@ -139,11 +145,13 @@ async function fetchRepositoryData(
     fetcher,
     apiBase,
     options.token,
+    userAgent,
   );
   const commits = await fetchJson<GitHubCommitResponse[]>(
     fetcher,
     `${apiBase}/commits?per_page=1`,
     options.token,
+    userAgent,
   );
   const lastCommit = commits[0];
 
@@ -180,6 +188,10 @@ export async function fetchToolGithubData(
 
   const repository = parseGitHubRepositoryUrl(repositoryUrl);
   if (!repository) return null;
+
+  if (options.failOnError) {
+    return fetchRepositoryData(repository, options);
+  }
 
   const cacheKey = `${repository.owner}/${repository.repo}`.toLowerCase();
   if (!repositoryCache.has(cacheKey)) {

@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 
 import {
-  enrichToolsWithGithubData,
+  fetchToolGithubData,
   type ToolGithubData,
 } from "@temis/tool-github-data";
 
@@ -66,6 +66,9 @@ export interface ToolEntry extends SnapshotRow {
   documentation_url?: string | null;
   editorial_confidence?: string | null;
   featured_image?: unknown;
+  github_data?: unknown;
+  github_sync_error?: string | null;
+  github_synced_at?: string | null;
   graph_priority?: number | null;
   graph_visible?: boolean | number | null;
   license?: string | null;
@@ -220,6 +223,44 @@ function parseOptionValue(value: unknown) {
   } catch {
     return value;
   }
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function persistedGithubData(value: unknown): ToolGithubData | null {
+  let candidate = value;
+
+  if (typeof candidate === "string") {
+    const trimmed = candidate.trim();
+    if (!trimmed) return null;
+
+    try {
+      candidate = JSON.parse(trimmed);
+    } catch {
+      return null;
+    }
+  }
+
+  if (!isRecord(candidate)) return null;
+
+  const fullName = candidate.fullName;
+  const repositoryUrl = candidate.repositoryUrl;
+  if (typeof fullName !== "string" || typeof repositoryUrl !== "string") {
+    return null;
+  }
+
+  return {
+    ...candidate,
+    fullName,
+    repositoryUrl,
+  };
+}
+
+function withPersistedGithubData(tool: ToolEntry): ToolEntry {
+  const github = persistedGithubData(tool.github_data);
+  return github ? { ...tool, github } : tool;
 }
 
 function isPublished(row: SnapshotRow) {
@@ -407,13 +448,30 @@ export async function getTools() {
   if (cachedTools) return cachedTools;
 
   const tools = await getCollection<ToolEntry>("tools");
-  const sortedTools = tools.sort((a, b) =>
-    entryTitle(a).localeCompare(entryTitle(b)),
+  const sortedTools = tools
+    .map(withPersistedGithubData)
+    .sort((a, b) => entryTitle(a).localeCompare(entryTitle(b)));
+
+  if (
+    process.env.TEMIS_GITHUB_FETCH_DISABLED === "1" ||
+    sortedTools.every((tool) => tool.github || !tool.repository_url)
+  ) {
+    cachedTools = sortedTools;
+    return sortedTools;
+  }
+
+  const enrichedTools = await Promise.all(
+    sortedTools.map(async (tool) =>
+      tool.github || !tool.repository_url
+        ? tool
+        : {
+            ...tool,
+            github: await fetchToolGithubData(tool.repository_url, {
+              token: process.env.TEMIS_GITHUB_TOKEN ?? process.env.GITHUB_TOKEN,
+            }),
+          },
+    ),
   );
-  const enrichedTools = await enrichToolsWithGithubData(sortedTools, {
-    disabled: process.env.TEMIS_GITHUB_FETCH_DISABLED === "1",
-    token: process.env.TEMIS_GITHUB_TOKEN ?? process.env.GITHUB_TOKEN,
-  });
   cachedTools = enrichedTools;
   return enrichedTools;
 }
