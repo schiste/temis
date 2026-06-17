@@ -575,15 +575,23 @@ export async function getSiteChrome() {
 
   const brandLabel = optionValue(
     options,
-    "siteTitle",
-    homePage ? entryTitle(homePage) : "TEMIS",
+    "title",
+    optionValue(
+      options,
+      "siteTitle",
+      homePage ? entryTitle(homePage) : "TEMIS",
+    ),
   );
   const tagline = optionValue(
     options,
-    "siteTagline",
-    homePage
-      ? entrySummary(homePage)
-      : "Exploring open knowledge in a post-AI world",
+    "tagline",
+    optionValue(
+      options,
+      "siteTagline",
+      homePage
+        ? entrySummary(homePage)
+        : "The knowledge ecosystem that anyone can transform",
+    ),
   );
   const aboutSummary = aboutPage ? entrySummary(aboutPage) : "";
 

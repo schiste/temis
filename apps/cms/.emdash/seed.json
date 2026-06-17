@@ -6,8 +6,10 @@
     "author": "TEMIS"
   },
   "settings": {
+    "title": "TEMIS",
+    "tagline": "The knowledge ecosystem that anyone can transform",
     "siteTitle": "TEMIS",
-    "siteTagline": "Exploring open knowledge in a post-AI world.",
+    "siteTagline": "The knowledge ecosystem that anyone can transform",
     "headerBrandAriaLabel": "TEMIS home",
     "headerPrimaryNavLabel": "Primary",
     "headerSearchHref": "/search/",
