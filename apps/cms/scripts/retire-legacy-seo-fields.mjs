@@ -147,7 +147,9 @@ function execSqlFile(args, sql) {
 
 function existingFieldsSql() {
   const fieldList = targetFields.map(sqlLiteral).join(", ");
-  const collectionList = [...collectionTables.keys()].map(sqlLiteral).join(", ");
+  const collectionList = [...collectionTables.keys()]
+    .map(sqlLiteral)
+    .join(", ");
   return [
     "SELECT f.id AS id, c.slug AS collection, f.slug AS field, f.searchable AS searchable",
     "FROM _emdash_fields f",
@@ -184,7 +186,9 @@ const summary = [];
 
 for (const field of fields) {
   const table = collectionTables.get(field.collection);
-  statements.push(`DELETE FROM _emdash_fields WHERE id = ${sqlLiteral(field.id)}`);
+  statements.push(
+    `DELETE FROM _emdash_fields WHERE id = ${sqlLiteral(field.id)}`,
+  );
   statements.push(
     `ALTER TABLE ${quoteIdent(table)} DROP COLUMN ${quoteIdent(field.field)}`,
   );
