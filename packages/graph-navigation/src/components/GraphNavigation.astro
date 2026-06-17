@@ -134,6 +134,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
         edges.map((edge) => (
           <path
             d={edge.path}
+            data-edge-id={edge.id}
             data-edge-source={edge.source}
             data-edge-target={edge.target}
           />
@@ -161,8 +162,11 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
           }
           data-node-id={node.id}
           data-node-type={node.type}
+          data-node-x={node.visualX}
+          data-node-y={node.visualY}
           data-node-anchor-x={nodeAnchorX(node.visualX)}
           data-node-anchor-y={nodeAnchorY(node.visualY)}
+          draggable="false"
           href={node.href}
           id={`graph-node-${node.slug}`}
           style={`--node-x:${node.visualX};--node-y:${node.visualY};--node-idle-x:${node.idleX}rem;--node-idle-y:${node.idleY}rem;--node-idle-duration:${node.idleDuration}ms;--node-idle-delay:${node.idleDelay}ms;${node.accent ? `--node-accent:${node.accent};` : ""}`}
@@ -414,6 +418,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     background: var(--ds-color-surface, Canvas);
     border: var(--ds-stroke-hairline, 1px) solid var(--node-accent);
     color: var(--ds-color-text, currentColor);
+    cursor: grab;
     display: inline-flex;
     font-family: var(--ds-font-mono, ui-monospace);
     font-size: var(--ds-font-size-meta, 0.75rem);
@@ -429,6 +434,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     position: absolute;
     text-decoration: none;
     text-align: start;
+    touch-action: none;
     text-transform: uppercase;
     transition:
       background-color 160ms ease,
@@ -440,6 +446,9 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
       var(--node-anchor-x, -50%),
       var(--node-anchor-y, -50%)
     );
+    user-select: none;
+    will-change: inset-block-start, inset-inline-start, transform;
+    z-index: 2;
   }
 
   .temis-graph-nav__node[data-node-anchor-x="left"] {
@@ -501,6 +510,18 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
     background: var(--temis-graph-link-active);
     border-color: var(--temis-graph-link-active);
     color: var(--ds-color-accent-contrast, Canvas);
+    z-index: 3;
+  }
+
+  .temis-graph-nav__node[data-node-dragging="true"] {
+    cursor: grabbing;
+    transition: none;
+    z-index: 5;
+  }
+
+  .temis-graph-nav[data-graph-dragging] .temis-graph-nav__edges path,
+  .temis-graph-nav[data-graph-dragging] .temis-graph-nav__node {
+    transition: none;
   }
 
   .temis-graph-nav__node--current {
@@ -1125,254 +1146,7 @@ const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${la
 </style>
 
 <script>
-  const graphs = document.querySelectorAll<HTMLElement>(".temis-graph-nav");
+  import { mountGraphNavigations } from "../client";
 
-  for (const graph of graphs) {
-    const nodes = [...graph.querySelectorAll<HTMLElement>("[data-node-id]")];
-    const indexLinks = [
-      ...graph.querySelectorAll<HTMLElement>("[data-index-node-id]"),
-    ];
-    const edges = [
-      ...graph.querySelectorAll<SVGPathElement>("[data-edge-source]"),
-    ];
-    const detailPanels = [
-      ...graph.querySelectorAll<HTMLElement>("[data-detail-node-id]"),
-    ];
-    const previewPanels = [
-      ...graph.querySelectorAll<HTMLElement>("[data-preview-node-id]"),
-    ];
-    const neighbors = new Map<string, Set<string>>();
-    const hasDetails = detailPanels.length > 0;
-    const initialNodeId =
-      nodes.find((node) => node.getAttribute("aria-expanded") === "true")
-        ?.dataset.nodeId ??
-      detailPanels.find((panel) => !panel.hidden)?.dataset.detailNodeId ??
-      nodes[0]?.dataset.nodeId ??
-      null;
-    let lockedNodeId: string | null = null;
-
-    const setExpandedNode = (nodeId: string | null) => {
-      for (const node of nodes) {
-        if (!hasDetails) {
-          node.removeAttribute("aria-expanded");
-          continue;
-        }
-
-        node.setAttribute(
-          "aria-expanded",
-          node.dataset.nodeId === nodeId ? "true" : "false",
-        );
-      }
-
-      for (const indexLink of indexLinks) {
-        if (!hasDetails) {
-          indexLink.removeAttribute("aria-expanded");
-          continue;
-        }
-
-        indexLink.setAttribute(
-          "aria-expanded",
-          indexLink.dataset.indexNodeId === nodeId ? "true" : "false",
-        );
-      }
-    };
-
-    for (const node of nodes) {
-      const nodeId = node.dataset.nodeId;
-      if (!nodeId) continue;
-      neighbors.set(nodeId, new Set());
-    }
-
-    for (const edge of edges) {
-      const source = edge.dataset.edgeSource;
-      const target = edge.dataset.edgeTarget;
-      if (!source || !target) continue;
-      neighbors.get(source)?.add(target);
-      neighbors.get(target)?.add(source);
-    }
-
-    const showDetailPanel = (nodeId: string) => {
-      for (const panel of detailPanels) {
-        panel.hidden = panel.dataset.detailNodeId !== nodeId;
-      }
-    };
-
-    const hidePreviewPanels = () => {
-      for (const panel of previewPanels) {
-        panel.hidden = true;
-      }
-    };
-
-    const showPreviewPanel = (nodeId: string) => {
-      for (const panel of previewPanels) {
-        panel.hidden = panel.dataset.previewNodeId !== nodeId;
-      }
-    };
-
-    const clearGraphState = () => {
-      graph.removeAttribute("data-graph-active");
-      setExpandedNode(initialNodeId);
-      if (hasDetails && initialNodeId) showDetailPanel(initialNodeId);
-      hidePreviewPanels();
-      for (const node of nodes) node.removeAttribute("data-graph-state");
-      for (const edge of edges) edge.removeAttribute("data-graph-state");
-      for (const indexLink of indexLinks) {
-        indexLink.removeAttribute("data-index-state");
-      }
-    };
-
-    const activateNode = (nodeId: string) => {
-      const relatedNodes = neighbors.get(nodeId) ?? new Set();
-      graph.dataset.graphActive = nodeId;
-      setExpandedNode(nodeId);
-      if (hasDetails) showDetailPanel(nodeId);
-
-      for (const node of nodes) {
-        const currentNodeId = node.dataset.nodeId;
-        if (currentNodeId === nodeId) {
-          node.dataset.graphState = "active";
-        } else if (currentNodeId && relatedNodes.has(currentNodeId)) {
-          node.dataset.graphState = "neighbor";
-        } else {
-          node.removeAttribute("data-graph-state");
-        }
-      }
-
-      for (const indexLink of indexLinks) {
-        const currentNodeId = indexLink.dataset.indexNodeId;
-        if (currentNodeId === nodeId) {
-          indexLink.dataset.indexState = "active";
-        } else if (currentNodeId && relatedNodes.has(currentNodeId)) {
-          indexLink.dataset.indexState = "neighbor";
-        } else {
-          indexLink.removeAttribute("data-index-state");
-        }
-      }
-
-      for (const edge of edges) {
-        const source = edge.dataset.edgeSource;
-        const target = edge.dataset.edgeTarget;
-        if (source === nodeId || target === nodeId) {
-          edge.dataset.graphState = "related";
-        } else {
-          edge.removeAttribute("data-graph-state");
-        }
-      }
-    };
-
-    const unlock = () => {
-      lockedNodeId = null;
-      graph.removeAttribute("data-graph-locked");
-      clearGraphState();
-    };
-
-    const lockNode = (nodeId: string) => {
-      lockedNodeId = nodeId;
-      graph.dataset.graphLocked = nodeId;
-      activateNode(nodeId);
-      showPreviewPanel(nodeId);
-    };
-
-    for (const panel of previewPanels) {
-      const closeButton = panel.querySelector<HTMLButtonElement>("button");
-      closeButton?.addEventListener("click", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        unlock();
-        graph.focus({ preventScroll: true });
-      });
-    }
-
-    for (const node of nodes) {
-      node.addEventListener("pointerenter", () => {
-        if (lockedNodeId) return;
-        const nodeId = node.dataset.nodeId;
-        if (nodeId) activateNode(nodeId);
-      });
-
-      node.addEventListener("pointerleave", () => {
-        if (!lockedNodeId) clearGraphState();
-      });
-
-      node.addEventListener("focus", () => {
-        if (lockedNodeId) return;
-        const nodeId = node.dataset.nodeId;
-        if (nodeId) activateNode(nodeId);
-      });
-
-      node.addEventListener("blur", () => {
-        if (!lockedNodeId) clearGraphState();
-      });
-
-      node.addEventListener("click", (event) => {
-        const nodeId = node.dataset.nodeId;
-        if (!nodeId) return;
-
-        if (
-          event.defaultPrevented ||
-          event.button !== 0 ||
-          event.metaKey ||
-          event.ctrlKey ||
-          event.shiftKey ||
-          event.altKey
-        ) {
-          return;
-        }
-
-        event.preventDefault();
-        lockNode(nodeId);
-      });
-    }
-
-    for (const indexLink of indexLinks) {
-      indexLink.addEventListener("pointerenter", () => {
-        if (lockedNodeId) return;
-        const nodeId = indexLink.dataset.indexNodeId;
-        if (nodeId) activateNode(nodeId);
-      });
-
-      indexLink.addEventListener("pointerleave", () => {
-        if (!lockedNodeId) clearGraphState();
-      });
-
-      indexLink.addEventListener("focus", () => {
-        if (lockedNodeId) return;
-        const nodeId = indexLink.dataset.indexNodeId;
-        if (nodeId) activateNode(nodeId);
-      });
-
-      indexLink.addEventListener("blur", () => {
-        if (!lockedNodeId) clearGraphState();
-      });
-
-      indexLink.addEventListener("click", (event) => {
-        const nodeId = indexLink.dataset.indexNodeId;
-        if (!nodeId) return;
-
-        if (
-          event.defaultPrevented ||
-          event.button !== 0 ||
-          event.metaKey ||
-          event.ctrlKey ||
-          event.shiftKey ||
-          event.altKey
-        ) {
-          return;
-        }
-
-        event.preventDefault();
-        lockNode(nodeId);
-      });
-    }
-
-    graph.addEventListener("keydown", (event) => {
-      if (event.key !== "Escape") return;
-      unlock();
-    });
-
-    document.addEventListener("pointerdown", (event) => {
-      if (!lockedNodeId || graph.contains(event.target as Node)) return;
-      unlock();
-    });
-  }
+  mountGraphNavigations();
 </script>

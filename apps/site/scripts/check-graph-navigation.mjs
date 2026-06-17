@@ -40,6 +40,20 @@ if (!html.includes("temis-graph-nav__node-label")) {
   fail("Expected visible full graph node labels.");
 }
 
+if (!html.includes("data-node-x=") || !html.includes("data-node-y=")) {
+  fail("Expected graph nodes to expose measured layout coordinates.");
+}
+
+if (!html.includes('draggable="false"')) {
+  fail(
+    "Expected graph nodes to disable native drag for pointer repositioning.",
+  );
+}
+
+if (!html.includes("data-edge-id=")) {
+  fail("Expected graph edges to expose stable ids for live path updates.");
+}
+
 const nodeIds = uniqueMatches(html, /data-node-id="([^"]+)"/g);
 const detailNodeIds = uniqueMatches(html, /data-detail-node-id="([^"]+)"/g);
 const previewNodeIds = uniqueMatches(html, /data-preview-node-id="([^"]+)"/g);
