@@ -118,16 +118,6 @@
           "label": "Content",
           "type": "portableText",
           "searchable": true
-        },
-        {
-          "slug": "seo_title",
-          "label": "SEO Title",
-          "type": "string"
-        },
-        {
-          "slug": "seo_description",
-          "label": "SEO Description",
-          "type": "text"
         }
       ]
     },
@@ -166,15 +156,15 @@
           }
         },
         {
-          "slug": "excerpt",
-          "label": "Excerpt",
-          "type": "text",
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
           "searchable": true
         },
         {
-          "slug": "author_name",
-          "label": "Author name",
-          "type": "string",
+          "slug": "excerpt",
+          "label": "Excerpt",
+          "type": "text",
           "searchable": true
         },
         {
@@ -198,6 +188,12 @@
           "type": "string"
         },
         {
+          "slug": "author_name",
+          "label": "Author name",
+          "type": "string",
+          "searchable": true
+        },
+        {
           "slug": "source_title",
           "label": "Source title",
           "type": "string",
@@ -218,22 +214,6 @@
           "slug": "content_license_url",
           "label": "Content license URL",
           "type": "url"
-        },
-        {
-          "slug": "content",
-          "label": "Content",
-          "type": "portableText",
-          "searchable": true
-        },
-        {
-          "slug": "seo_title",
-          "label": "SEO Title",
-          "type": "string"
-        },
-        {
-          "slug": "seo_description",
-          "label": "SEO Description",
-          "type": "text"
         }
       ]
     },
@@ -373,16 +353,6 @@
           "slug": "graph_priority",
           "label": "Graph Priority",
           "type": "number"
-        },
-        {
-          "slug": "seo_title",
-          "label": "SEO Title",
-          "type": "string"
-        },
-        {
-          "slug": "seo_description",
-          "label": "SEO Description",
-          "type": "text"
         }
       ]
     }

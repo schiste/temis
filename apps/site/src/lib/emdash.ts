@@ -146,12 +146,44 @@ async function readSnapshot(): Promise<SnapshotData> {
     throw new Error(`Invalid EmDash snapshot at ${snapshotPath()}`);
   }
 
+  overlayNativeSeo(parsed);
+
   cachedSnapshot = parsed;
   return parsed;
 }
 
+const CONTENT_TABLE_PREFIX = "ec_";
+
 function collectionTable(collection: string) {
-  return `ec_${collection}`;
+  return `${CONTENT_TABLE_PREFIX}${collection}`;
+}
+
+/**
+ * SEO is authored in EmDash's native panel and stored in `_emdash_seo`, keyed
+ * by (collection slug, content id). Project the native title/description onto
+ * each content row's `seo_title` / `seo_description` so the rest of this module
+ * keeps reading them uniformly. Falls back to any value already on the row when
+ * no native record exists, which keeps pre-migration snapshots working.
+ */
+function overlayNativeSeo(snapshot: SnapshotData) {
+  const seoRows = snapshot.tables["_emdash_seo"] ?? [];
+  if (seoRows.length === 0) return;
+
+  const seoByKey = new Map<string, SnapshotRow>();
+  for (const seo of seoRows) {
+    seoByKey.set(`${seo.collection}:${seo.content_id}`, seo);
+  }
+
+  for (const [table, rows] of Object.entries(snapshot.tables)) {
+    if (!table.startsWith(CONTENT_TABLE_PREFIX)) continue;
+    const collection = table.slice(CONTENT_TABLE_PREFIX.length);
+    for (const row of rows) {
+      const native = seoByKey.get(`${collection}:${row.id}`);
+      if (!native) continue;
+      row.seo_title = native.seo_title ?? row.seo_title;
+      row.seo_description = native.seo_description ?? row.seo_description;
+    }
+  }
 }
 
 function systemRows<T extends SnapshotRow>(
