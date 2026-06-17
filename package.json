@@ -12,6 +12,7 @@
     "build": "pnpm --filter @temis/site build",
     "build:offline": "pnpm --filter @temis/site build:offline",
     "build:cms": "pnpm --filter @temis/cms build",
+    "dev:tool-pipeline": "pnpm --filter @temis/tool-pipeline dev",
     "snapshot:pull:production": "pnpm --filter @temis/site snapshot:pull:production",
     "dev:site:production-content": "pnpm snapshot:pull:production && pnpm dev:site",
     "cms:sync:production-replica": "node ./scripts/sync-production-cms-db.mjs",
@@ -34,7 +35,8 @@
     "format": "pnpm exec prettier --write \"**/*.{ts,js,mjs,json,jsonc,md,astro,css,yaml}\"",
     "format:check": "pnpm exec prettier --check \"**/*.{ts,js,mjs,json,jsonc,md,astro,css,yaml}\"",
     "design:check": "node ./scripts/check-design-grid.mjs",
-    "deploy:cms": "pnpm --filter @temis/cms run deploy"
+    "deploy:cms": "pnpm --filter @temis/cms run deploy",
+    "deploy:tool-pipeline": "pnpm --filter @temis/tool-pipeline run deploy"
   },
   "engines": {
     "node": ">=22.0.0",

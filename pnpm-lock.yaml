@@ -109,6 +109,19 @@ importers:
         specifier: ^5.7.0
         version: 5.9.3
 
+  apps/tool-pipeline:
+    dependencies:
+      "@temis/tool-github-data":
+        specifier: workspace:*
+        version: link:../../packages/tool-github-data
+    devDependencies:
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      wrangler:
+        specifier: ^4.61.1
+        version: 4.100.0(@cloudflare/workers-types@4.20260613.1)
+
   packages/content-quality: {}
 
   packages/design-system:
