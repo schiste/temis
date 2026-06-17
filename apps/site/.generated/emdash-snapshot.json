@@ -48,7 +48,7 @@
         "author_id": null,
         "primary_byline_id": null,
         "created_at": "2026-06-14 10:54:30",
-        "updated_at": "2026-06-17 17:08:12",
+        "updated_at": "2026-06-17 17:28:42",
         "published_at": "2026-06-14 10:54:30",
         "scheduled_at": null,
         "deleted_at": null,
@@ -120,6 +120,26 @@
         "title": "Structured and open",
         "summary": "TEMIS is a public map of a technical commons for open knowledge in a post-AI world.",
         "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"TEMIS is built for exploration: essays, tools, topics, and people connected through a static public site managed in EmDash.\"}]}]"
+      },
+      {
+        "id": "01KVBA1B780JV3X72SWAS7KTCE",
+        "slug": "tools",
+        "status": "published",
+        "author_id": null,
+        "primary_byline_id": null,
+        "created_at": "2026-06-17T17:28:34.793Z",
+        "updated_at": "2026-06-17 17:28:42",
+        "published_at": "2026-06-17T17:28:34.791Z",
+        "scheduled_at": null,
+        "deleted_at": null,
+        "version": 1,
+        "live_revision_id": "01KVBA1B7AQZYJQNZZK2H4V7QG",
+        "draft_revision_id": null,
+        "locale": "en",
+        "translation_group": "01KVBA1B780JV3X72SWAS7KTCE",
+        "title": "Tool index",
+        "summary": "Software, prototypes, and research pipelines connected to open knowledge work.",
+        "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Tools are first-class TEMIS records: they connect authors, articles, repositories, topics, and maintenance signals into the graph.\"}]}]"
       }
     ],
     "ec_posts": [
@@ -344,7 +364,7 @@
         "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\"]",
         "source": "seed",
         "created_at": "2026-06-13 21:31:33",
-        "updated_at": "2026-06-17 17:08:12",
+        "updated_at": "2026-06-17 17:28:42",
         "search_config": "{\"enabled\":true}",
         "has_seo": 1,
         "url_pattern": "/{slug}",
@@ -363,7 +383,7 @@
         "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\",\"scheduling\"]",
         "source": "seed",
         "created_at": "2026-06-13 21:31:34",
-        "updated_at": "2026-06-17 17:08:12",
+        "updated_at": "2026-06-17 17:28:42",
         "search_config": "{\"enabled\":true}",
         "has_seo": 1,
         "url_pattern": "/blog/{slug}",
@@ -382,7 +402,7 @@
         "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\"]",
         "source": "seed",
         "created_at": "2026-06-14 16:04:30",
-        "updated_at": "2026-06-17 17:08:12",
+        "updated_at": "2026-06-17 17:28:42",
         "search_config": "{\"enabled\":true}",
         "has_seo": 1,
         "url_pattern": "/tools/{slug}",
@@ -1108,14 +1128,14 @@
         "name": "primary",
         "label": "Primary",
         "created_at": "2026-06-13T21:31:35.448Z",
-        "updated_at": "2026-06-17 17:08:12",
+        "updated_at": "2026-06-17 17:28:42",
         "locale": "en",
         "translation_group": "01KV1EBE4R508C1WCRPTDZV8YC"
       }
     ],
     "_emdash_menu_items": [
       {
-        "id": "01KVB9A2FAA322XTS7ABR915ZZ",
+        "id": "01KVBA1B7CAT9R78JJ8WVXZBQ2",
         "menu_id": "01KV1EBE4R508C1WCRPTDZV8YC",
         "parent_id": null,
         "sort_order": 0,
@@ -1127,12 +1147,12 @@
         "title_attr": null,
         "target": null,
         "css_classes": null,
-        "created_at": "2026-06-17T17:15:52.170Z",
+        "created_at": "2026-06-17T17:28:34.796Z",
         "locale": "en",
-        "translation_group": "01KVB9A2FAA322XTS7ABR915ZZ"
+        "translation_group": "01KVBA1B7CAT9R78JJ8WVXZBQ2"
       },
       {
-        "id": "01KVB9A2FC8SKKF9B1EC7Y413H",
+        "id": "01KVBA1B7CJJA3RJSTSPXSBD3F",
         "menu_id": "01KV1EBE4R508C1WCRPTDZV8YC",
         "parent_id": null,
         "sort_order": 1,
@@ -1144,12 +1164,12 @@
         "title_attr": null,
         "target": null,
         "css_classes": null,
-        "created_at": "2026-06-17T17:15:52.172Z",
+        "created_at": "2026-06-17T17:28:34.796Z",
         "locale": "en",
-        "translation_group": "01KVB9A2FC8SKKF9B1EC7Y413H"
+        "translation_group": "01KVBA1B7CJJA3RJSTSPXSBD3F"
       },
       {
-        "id": "01KVB9A2FCGGFYSD5HV79EE7PJ",
+        "id": "01KVBA1B7CKS0RBQK36NJ0YZF9",
         "menu_id": "01KV1EBE4R508C1WCRPTDZV8YC",
         "parent_id": null,
         "sort_order": 2,
@@ -1161,12 +1181,12 @@
         "title_attr": null,
         "target": null,
         "css_classes": null,
-        "created_at": "2026-06-17T17:15:52.172Z",
+        "created_at": "2026-06-17T17:28:34.796Z",
         "locale": "en",
-        "translation_group": "01KVB9A2FCGGFYSD5HV79EE7PJ"
+        "translation_group": "01KVBA1B7CKS0RBQK36NJ0YZF9"
       },
       {
-        "id": "01KVB9A2FC08BBNAAVHRVJ1Y7Q",
+        "id": "01KVBA1B7C21MT89YQ3F43JBF7",
         "menu_id": "01KV1EBE4R508C1WCRPTDZV8YC",
         "parent_id": null,
         "sort_order": 3,
@@ -1178,9 +1198,9 @@
         "title_attr": null,
         "target": null,
         "css_classes": null,
-        "created_at": "2026-06-17T17:15:52.172Z",
+        "created_at": "2026-06-17T17:28:34.796Z",
         "locale": "en",
-        "translation_group": "01KVB9A2FC08BBNAAVHRVJ1Y7Q"
+        "translation_group": "01KVBA1B7C21MT89YQ3F43JBF7"
       }
     ],
     "_emdash_seo": [
@@ -1193,7 +1213,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:15:52"
+        "updated_at": "2026-06-17 17:28:34"
       },
       {
         "collection": "posts",
@@ -1215,7 +1235,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:15:52"
+        "updated_at": "2026-06-17 17:28:34"
       },
       {
         "collection": "pages",
@@ -1226,7 +1246,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:15:52"
+        "updated_at": "2026-06-17 17:28:34"
       },
       {
         "collection": "pages",
@@ -1237,7 +1257,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:15:52"
+        "updated_at": "2026-06-17 17:28:34"
       },
       {
         "collection": "pages",
@@ -1248,7 +1268,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:15:52"
+        "updated_at": "2026-06-17 17:28:34"
       },
       {
         "collection": "pages",
@@ -1259,7 +1279,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:15:52"
+        "updated_at": "2026-06-17 17:28:34"
       },
       {
         "collection": "pages",
@@ -1270,7 +1290,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:15:52"
+        "updated_at": "2026-06-17 17:28:34"
       },
       {
         "collection": "pages",
@@ -1281,7 +1301,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:15:52"
+        "updated_at": "2026-06-17 17:28:34"
       },
       {
         "collection": "tools",
@@ -1292,7 +1312,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:15:52"
+        "updated_at": "2026-06-17 17:28:34"
       },
       {
         "collection": "tools",
@@ -1303,7 +1323,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 17:15:52",
-        "updated_at": "2026-06-17 17:15:52"
+        "updated_at": "2026-06-17 17:28:34"
       },
       {
         "collection": "tools",
@@ -1314,7 +1334,18 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 17:15:52",
-        "updated_at": "2026-06-17 17:15:52"
+        "updated_at": "2026-06-17 17:28:34"
+      },
+      {
+        "collection": "pages",
+        "content_id": "01KVBA1B780JV3X72SWAS7KTCE",
+        "seo_title": "TEMIS tools",
+        "seo_description": "Browse TEMIS tool dossiers for open knowledge software, research pipelines, and prototypes.",
+        "seo_image": null,
+        "seo_canonical": null,
+        "seo_no_index": 0,
+        "created_at": "2026-06-17 17:28:34",
+        "updated_at": "2026-06-17 17:28:34"
       }
     ],
     "_emdash_migrations": [
@@ -2119,6 +2150,14 @@
         "data": "{\"title\":\"wiki-economics\",\"summary\":\"A Wikipedia research pipeline and dashboard for analyzing editor labor, content production, inequality, funnel health, and patrol behavior.\",\"description\":[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"wiki-economics is a Wikipedia research pipeline and dashboard for analyzing editor labor, content production, inequality, funnel health, and patrol behavior across Wikipedia language editions.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"The repository combines a Rust CLI for fetch, ingest, compute, merge, and benchmarking workflows, a Python sidecar pipeline for patrol logging data, and an Observable Framework site for publishing resulting datasets and charts.\"}]}],\"tool_url\":\"https://github.com/schiste/wiki-economics\",\"repository_url\":\"https://github.com/schiste/wiki-economics\",\"documentation_url\":\"https://github.com/schiste/wiki-economics/tree/main/docs\",\"technical_maturity\":\"experimental\",\"graph_visible\":1,\"graph_priority\":66,\"license\":\"MIT OR Apache-2.0\",\"privacy_note\":\"The repository excludes generated datasets, local caches, build outputs, and installed dependencies from version control; local runs fetch and compute Wikimedia-derived data outside the repo.\",\"editorial_confidence\":\"promising\",\"related_people\":\"Christophe Henner: creator/maintainer\"}",
         "author_id": null,
         "created_at": "2026-06-17 17:08:07"
+      },
+      {
+        "id": "01KVBA1B7AQZYJQNZZK2H4V7QG",
+        "collection": "pages",
+        "entry_id": "01KVBA1B780JV3X72SWAS7KTCE",
+        "data": "{\"title\":\"Tool index\",\"summary\":\"Software, prototypes, and research pipelines connected to open knowledge work.\",\"content\":[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Tools are first-class TEMIS records: they connect authors, articles, repositories, topics, and maintenance signals into the graph.\"}]}]}",
+        "author_id": null,
+        "created_at": "2026-06-17 17:28:34"
       }
     ]
   },
@@ -2652,5 +2691,5 @@
       }
     }
   },
-  "generatedAt": "2026-06-17T17:16:13.669Z"
+  "generatedAt": "2026-06-17T17:42:20.696Z"
 }

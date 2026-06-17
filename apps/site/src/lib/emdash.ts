@@ -411,6 +411,7 @@ const explicitRoutePageSlugs = new Set([
   "people",
   "search",
   "topics",
+  "tools",
 ]);
 
 export async function getCatchAllPages() {

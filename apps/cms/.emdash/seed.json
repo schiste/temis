@@ -474,6 +474,29 @@
         }
       },
       {
+        "id": "seed:page:tools",
+        "slug": "tools",
+        "status": "published",
+        "data": {
+          "title": "Tool index",
+          "summary": "Software, prototypes, and research pipelines connected to open knowledge work.",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Tools are first-class TEMIS records: they connect authors, articles, repositories, topics, and maintenance signals into the graph."
+                }
+              ]
+            }
+          ],
+          "seo_title": "TEMIS tools",
+          "seo_description": "Browse TEMIS tool dossiers for open knowledge software, research pipelines, and prototypes."
+        }
+      },
+      {
         "id": "seed:page:people",
         "slug": "people",
         "status": "published",

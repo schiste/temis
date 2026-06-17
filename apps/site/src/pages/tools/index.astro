@@ -1,0 +1,163 @@
+---
+import PageHero from "@temis/design-system/components/PageHero.astro";
+import SiteLayout from "../../components/SiteLayout.astro";
+import {
+  entryDescription,
+  entryExternalUrl,
+  entrySummary,
+  entryTitle,
+  getPageBySlug,
+  getSiteTexts,
+  getTools,
+  toolHref,
+  type ToolEntry,
+} from "../../lib/emdash";
+
+const page = await getPageBySlug("tools");
+const tools = await getTools();
+const copy = await getSiteTexts({
+  toolsArchiveCountLabel: "tools",
+  toolsArchiveOrderLabel: "Alphabetical",
+  toolsArchiveScopeLabel: "Published tool dossiers",
+  toolsHeroEyebrow: "Tools",
+  toolsListIndexHeading: "No.",
+  toolsListLicenseHeading: "License",
+  toolsListMaturityHeading: "Maturity",
+  toolsListRepositoryHeading: "Repository",
+  toolsListSignalHeading: "Signal",
+  toolsListTitleHeading: "Tool",
+  toolsMissingDescription:
+    "Software, prototypes, and research pipelines connected to open knowledge work.",
+  toolsMissingTitle: "Tool index",
+  toolsNoLicenseLabel: "Unspecified",
+  toolsNoRepositoryLabel: "No repository",
+  toolsUnknownSignalLabel: "Waiting for sync",
+});
+const metaTitle = page ? entryTitle(page) : copy.toolsMissingTitle;
+const metaDescription = page
+  ? entryDescription(page)
+  : copy.toolsMissingDescription;
+const title = page ? String(page.title ?? metaTitle) : copy.toolsMissingTitle;
+const description = page
+  ? entrySummary(page) || metaDescription
+  : copy.toolsMissingDescription;
+const toolCountLabel = `${tools.length.toString().padStart(2, "0")} ${
+  tools.length === 1 ? "tool" : copy.toolsArchiveCountLabel
+}`;
+const monthFormatter = new Intl.DateTimeFormat("en-GB", {
+  month: "short",
+  timeZone: "UTC",
+  year: "numeric",
+});
+
+function clean(value: string | null | undefined) {
+  return value?.trim() ?? "";
+}
+
+function label(value: string | null | undefined, fallback: string) {
+  const cleaned = clean(value);
+  return cleaned ? cleaned.replaceAll("_", " ") : fallback;
+}
+
+function repositoryLabel(tool: ToolEntry) {
+  const repositoryUrl = entryExternalUrl(tool.repository_url);
+  const fallback = copy.toolsNoRepositoryLabel;
+  if (!repositoryUrl) return fallback;
+
+  if (tool.github?.fullName) return tool.github.fullName;
+
+  try {
+    const url = new URL(repositoryUrl);
+    if (url.hostname === "github.com" || url.hostname === "www.github.com") {
+      return url.pathname.replace(/^\/+|\/+$/g, "");
+    }
+    return url.hostname.replace(/^www\./, "");
+  } catch {
+    return fallback;
+  }
+}
+
+function activityDate(tool: ToolEntry) {
+  const value =
+    tool.github?.lastCommitAt ??
+    tool.github?.pushedAt ??
+    tool.github?.updatedAt ??
+    clean(tool.github_synced_at);
+  if (!value) return null;
+
+  const date = new Date(value);
+  return Number.isNaN(date.valueOf()) ? null : date;
+}
+
+function activitySignal(tool: ToolEntry) {
+  const date = activityDate(tool);
+  if (!date) return copy.toolsUnknownSignalLabel;
+  return `Active ${monthFormatter.format(date)}`;
+}
+
+function toolDescription(tool: ToolEntry) {
+  return entryDescription(tool) || entrySummary(tool);
+}
+---
+
+<SiteLayout title={metaTitle} description={metaDescription}>
+  <div class="ds-archive-page">
+    <PageHero
+      eyebrow={copy.toolsHeroEyebrow}
+      ledeSize="small"
+      title={title}
+      description={description}
+    />
+
+    <div class="ds-archive-toolbar" aria-label={copy.toolsArchiveScopeLabel}>
+      <span>{toolCountLabel}</span>
+      <span>{copy.toolsArchiveOrderLabel}</span>
+      <span>{copy.toolsArchiveScopeLabel}</span>
+    </div>
+
+    <section class="ds-tool-index" aria-label={title}>
+      <div class="ds-tool-index__header" aria-hidden="true">
+        <span>{copy.toolsListIndexHeading}</span>
+        <span>{copy.toolsListTitleHeading}</span>
+        <span>{copy.toolsListMaturityHeading}</span>
+        <span>{copy.toolsListLicenseHeading}</span>
+        <span>{copy.toolsListRepositoryHeading}</span>
+        <span>{copy.toolsListSignalHeading}</span>
+      </div>
+      {
+        tools.map((tool, index) => {
+          const repositoryUrl = entryExternalUrl(tool.repository_url);
+          return (
+            <article class="ds-tool-index-row">
+              <span class="ds-tool-index-row__index">
+                {(index + 1).toString().padStart(2, "0")}
+              </span>
+              <div class="ds-tool-index-row__identity">
+                <h2>
+                  <a href={toolHref(tool)}>{entryTitle(tool)}</a>
+                </h2>
+                <p>{toolDescription(tool)}</p>
+              </div>
+              <span class="ds-tool-index-row__meta ds-tool-index-row__meta--maturity">
+                {label(tool.technical_maturity ?? tool.maturity, "Unknown")}
+              </span>
+              <span class="ds-tool-index-row__meta ds-tool-index-row__meta--license">
+                {label(tool.license, copy.toolsNoLicenseLabel)}
+              </span>
+              <span class="ds-tool-index-row__repo">
+                {repositoryUrl ? (
+                  <a href={repositoryUrl}>{repositoryLabel(tool)}</a>
+                ) : (
+                  copy.toolsNoRepositoryLabel
+                )}
+              </span>
+              <span class="ds-tool-index-row__signal">
+                {activitySignal(tool)}
+              </span>
+            </article>
+          );
+        })
+      }
+    </section>
+  </div>
+</SiteLayout>
