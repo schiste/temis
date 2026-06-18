@@ -46,6 +46,40 @@ Recommended token profiles:
 Role permissions still apply. A token with `content:write` cannot publish if
 the associated EmDash user lacks publish permission.
 
+## Per-User Token Setup
+
+Every MCP token should belong to the person or agent operator using it. TEMIS
+does not use shared production MCP tokens.
+
+First, authenticate the EmDash CLI as the user who will own the token:
+
+```bash
+pnpm --filter @temis/cms exec emdash login \
+  --url https://temis-cms.christophe-henner.workers.dev
+```
+
+Then create a token for that signed-in user:
+
+```bash
+pnpm cms:mcp:token:create --name "Your Name MCP" --save-env .env.local
+```
+
+The command stores `EMDASH_MCP_TOKEN` and `EMDASH_MCP_BASE_URL` in the chosen
+env file, which is ignored by git. Without `--save-env`, the raw token is
+printed once and cannot be retrieved again.
+
+Useful commands:
+
+```bash
+pnpm cms:mcp:token:list
+pnpm cms:mcp:token:revoke <token-id>
+```
+
+The TEMIS token route creates, lists, and revokes tokens only for the current
+authenticated EmDash user. Token-authenticated calls may only create another
+token with scopes the current bearer token already has, and the user role must
+permit the requested scopes.
+
 For local development only, EmDash can mint a dev token:
 
 ```bash
