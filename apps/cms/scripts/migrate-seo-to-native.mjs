@@ -30,6 +30,7 @@ import {
 } from "../schema/lib.mjs";
 
 const collectionTables = new Map([
+  ["initiatives", "ec_initiatives"],
   ["posts", "ec_posts"],
   ["pages", "ec_pages"],
   ["publications", "ec_publications"],

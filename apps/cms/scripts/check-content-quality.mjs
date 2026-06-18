@@ -23,7 +23,13 @@ const snapshotPath = path.join(
   "apps/site/.generated/emdash-snapshot.json",
 );
 
-const checkedCollections = ["pages", "posts", "publications", "tools"];
+const checkedCollections = [
+  "initiatives",
+  "pages",
+  "posts",
+  "publications",
+  "tools",
+];
 
 async function readJson(filePath) {
   return JSON.parse(await readFile(filePath, "utf8"));

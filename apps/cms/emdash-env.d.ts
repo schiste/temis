@@ -5,6 +5,34 @@
 
 import type { ContentBylineCredit, PortableTextBlock } from "emdash";
 
+export interface Initiative {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  initiative_type:
+    | "exploration"
+    | "research_axis"
+    | "working_group"
+    | "project"
+    | "program";
+  summary?: string;
+  description?: PortableTextBlock[];
+  status_label: "exploring" | "active" | "paused" | "completed" | "archived";
+  steward_name?: string;
+  start_date?: string;
+  related_articles?: string;
+  related_publications?: string;
+  related_tools?: string;
+  related_people?: string;
+  graph_visible?: boolean;
+  graph_priority?: number;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
 export interface Page {
   id: string;
   slug: string | null;
@@ -139,6 +167,7 @@ export interface Tool {
 
 declare module "emdash" {
   interface EmDashCollections {
+    initiatives: Initiative;
     pages: Page;
     posts: Post;
     publications: Publication;

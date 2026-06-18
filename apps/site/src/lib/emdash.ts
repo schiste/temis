@@ -86,6 +86,25 @@ export interface PublicationEntry extends SnapshotRow {
   venue?: string | null;
 }
 
+export interface InitiativeEntry extends SnapshotRow {
+  description?: unknown;
+  graph_priority?: number | null;
+  graph_visible?: boolean | number | null;
+  initiative_type?: string | null;
+  primary_byline_id?: string | null;
+  related_articles?: unknown;
+  related_people?: unknown;
+  related_publications?: unknown;
+  related_tools?: unknown;
+  seo_description?: string;
+  seo_title?: string;
+  start_date?: string | null;
+  status_label?: string | null;
+  steward_name?: string | null;
+  summary?: string;
+  title: string;
+}
+
 export interface ToolEntry extends SnapshotRow {
   description?: unknown;
   documentation_url?: string | null;
@@ -434,6 +453,7 @@ function withAuthorBioOption(row: BylineEntry, options: SiteOptions) {
 const explicitRoutePageSlugs = new Set([
   "about",
   "blog",
+  "initiatives",
   "people",
   "publications",
   "search",
@@ -487,6 +507,24 @@ export async function getPublicationBySlug(slug: string) {
   );
 }
 
+export async function getInitiatives() {
+  const initiatives = await getCollection<InitiativeEntry>("initiatives");
+  return initiatives.sort((a, b) => {
+    const priorityDelta =
+      Number(b.graph_priority ?? 0) - Number(a.graph_priority ?? 0);
+    return priorityDelta || entryTitle(a).localeCompare(entryTitle(b));
+  });
+}
+
+export async function getInitiativeBySlug(slug: string) {
+  const normalized = slug.replace(/^\/+|\/+$/g, "");
+  const initiatives = await getInitiatives();
+  return (
+    initiatives.find((initiative) => publicSlug(initiative) === normalized) ??
+    null
+  );
+}
+
 export async function getTools() {
   if (cachedTools) return cachedTools;
 
@@ -536,13 +574,15 @@ export async function getPostsByAuthorSlug(slug: string) {
 }
 
 export async function getSearchDocuments(): Promise<SearchDocument[]> {
-  const [pages, posts, publications, tools, bylines] = await Promise.all([
-    getPages(),
-    getPosts(),
-    getPublications(),
-    getTools(),
-    getBylines(),
-  ]);
+  const [pages, posts, publications, initiatives, tools, bylines] =
+    await Promise.all([
+      getPages(),
+      getPosts(),
+      getPublications(),
+      getInitiatives(),
+      getTools(),
+      getBylines(),
+    ]);
 
   return [
     ...pages.map((page) => ({
@@ -563,6 +603,12 @@ export async function getSearchDocuments(): Promise<SearchDocument[]> {
       kind: entryPublicationTypeLabel(publication),
       title: entryTitle(publication),
     })),
+    ...initiatives.map((initiative) => ({
+      description: entryDescription(initiative) || entrySummary(initiative),
+      href: initiativeHref(initiative),
+      kind: entryInitiativeTypeLabel(initiative),
+      title: entryTitle(initiative),
+    })),
     ...tools.map((tool) => ({
       description: entryDescription(tool) || entrySummary(tool),
       href: toolHref(tool),
@@ -579,6 +625,7 @@ export async function getSearchDocuments(): Promise<SearchDocument[]> {
 }
 
 const COLLECTION_ROUTE_PREFIX: Record<string, string> = {
+  initiatives: "/initiatives",
   posts: "/blog",
   publications: "/publications",
   tools: "/tools",
@@ -598,6 +645,10 @@ export function blogHref(post: SnapshotRow) {
 
 export function publicationHref(publication: SnapshotRow) {
   return collectionHref("publications", entrySlug(publication));
+}
+
+export function initiativeHref(initiative: SnapshotRow) {
+  return collectionHref("initiatives", entrySlug(initiative));
 }
 
 export function toolHref(tool: SnapshotRow) {
@@ -868,6 +919,36 @@ export function entryContentType(row: PostEntry) {
   };
 
   return contentType ? (labels[contentType] ?? contentType) : "Essay";
+}
+
+export function entryInitiativeTypeLabel(row: InitiativeEntry) {
+  const initiativeType = row.initiative_type?.trim();
+  const labels: Record<string, string> = {
+    exploration: "Exploration",
+    project: "Project",
+    research_axis: "Research axis",
+    working_group: "Working group",
+    program: "Program",
+  };
+
+  return initiativeType
+    ? (labels[initiativeType] ?? initiativeType.replaceAll("_", " "))
+    : "Initiative";
+}
+
+export function entryInitiativeStatusLabel(row: InitiativeEntry) {
+  const statusLabel = row.status_label?.trim();
+  const labels: Record<string, string> = {
+    active: "Active",
+    archived: "Archived",
+    completed: "Completed",
+    exploring: "Exploring",
+    paused: "Paused",
+  };
+
+  return statusLabel
+    ? (labels[statusLabel] ?? statusLabel.replaceAll("_", " "))
+    : "Exploring";
 }
 
 export function entryPublicationTypeLabel(row: PublicationEntry) {

@@ -62,7 +62,15 @@ export default defineConfig({
       plugins: [
         editorialBlocksPlugin(),
         contentQualityPlugin(),
-        aexeoPlugin({ collections: ["posts", "pages", "tools"] }),
+        aexeoPlugin({
+          collections: [
+            "posts",
+            "pages",
+            "tools",
+            "publications",
+            "initiatives",
+          ],
+        }),
         ...productionPlugins,
       ],
     }),

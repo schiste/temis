@@ -18,6 +18,8 @@ import {
   entryContentType,
   entryDescription,
   entryExternalUrl,
+  entryInitiativeStatusLabel,
+  entryInitiativeTypeLabel,
   entryPublicationDateLabel,
   entryPublicationDateTime,
   entryPublicationTypeLabel,
@@ -28,14 +30,17 @@ import {
   entryTitle,
   formatDateLabel,
   getBylines,
+  getInitiatives,
   getPosts,
   getPublications,
   getSnapshotTable,
   getTools,
+  initiativeHref,
   publicationHref,
   slugify,
   toolHref,
   type BylineEntry,
+  type InitiativeEntry,
   type PostEntry,
   type PublicationEntry,
   type SnapshotRow,
@@ -81,7 +86,11 @@ interface ContentTaxonomyEntry extends SnapshotRow {
   term_id?: string | null;
 }
 
-type GraphableEntry = PostEntry | PublicationEntry | ToolEntry;
+type GraphableEntry =
+  | InitiativeEntry
+  | PostEntry
+  | PublicationEntry
+  | ToolEntry;
 
 function isDeleted(row: SnapshotRow) {
   return row.deleted_at !== null && row.deleted_at !== undefined;
@@ -227,6 +236,29 @@ function publicationNode(
 
 export function publicationGraphNodeId(publication: PublicationEntry) {
   return `publication:${publication.id}`;
+}
+
+function initiativeNode(initiative: InitiativeEntry): GraphNavigationNodeInput {
+  return {
+    description: entryDescription(initiative) || entrySummary(initiative),
+    href: initiativeHref(initiative),
+    id: `initiative:${initiative.id}`,
+    label: entryTitle(initiative),
+    meta: [
+      graphMeta("Content type", entryInitiativeTypeLabel(initiative)),
+      graphMeta("Status", entryInitiativeStatusLabel(initiative)),
+      graphMeta("Steward", cleanText(initiative.steward_name)),
+      graphMeta("Started", cleanText(initiative.start_date)),
+    ].filter(isGraphMetaItem),
+    priority: entryPriority(initiative, 58),
+    slug: entrySlug(initiative),
+    type: "initiative",
+    visible: !isHiddenFromGraph(initiative),
+  };
+}
+
+export function initiativeGraphNodeId(initiative: InitiativeEntry) {
+  return `initiative:${initiative.id}`;
 }
 
 function toolNode(tool: ToolEntry): GraphNavigationNodeInput {
@@ -431,6 +463,7 @@ async function getContentTaxonomies() {
 }
 
 function contentNodeId(collection: string, entry: GraphableEntry) {
+  if (collection === "initiatives") return `initiative:${entry.id}`;
   if (collection === "tools") return `tool:${entry.id}`;
   if (collection === "publications") return `publication:${entry.id}`;
   return `content:${entry.id}`;
@@ -453,8 +486,8 @@ function createBylineResolver(bylines: BylineEntry[]) {
     resolve,
     resolveId: (value: string | null | undefined) => resolve(value)?.id,
     byName,
-    relatedBylines: (tool: ToolEntry) =>
-      relatedPeopleNames(tool.related_people)
+    relatedBylines: (entry: { related_people?: unknown }) =>
+      relatedPeopleNames(entry.related_people)
         .map((name) => byName(name))
         .filter((byline): byline is BylineEntry => Boolean(byline)),
   };
@@ -462,6 +495,7 @@ function createBylineResolver(bylines: BylineEntry[]) {
 
 function attachBylineEdges(
   posts: PostEntry[],
+  initiatives: InitiativeEntry[],
   publications: PublicationEntry[],
   tools: ToolEntry[],
   bylines: BylineEntry[],
@@ -478,6 +512,22 @@ function attachBylineEdges(
       (authorName ? resolver.byName(authorName) : undefined);
     if (byline?.id) {
       edges.push(edge(postId, `author:${byline.id}`, "authored_by", 70));
+    }
+  }
+
+  for (const initiative of initiatives) {
+    const initiativeId = `initiative:${initiative.id}`;
+    const bylinesForInitiative = new Map(
+      [
+        resolver.resolve(initiative.primary_byline_id),
+        ...resolver.relatedBylines(initiative),
+      ]
+        .filter((byline): byline is BylineEntry => Boolean(byline?.id))
+        .map((byline) => [byline.id, byline]),
+    );
+
+    for (const byline of bylinesForInitiative.values()) {
+      edges.push(edge(initiativeId, `author:${byline.id}`, "authored_by", 70));
     }
   }
 
@@ -509,6 +559,7 @@ function attachBylineEdges(
     const collection = contentTaxonomyCollection(row);
     if (
       collection !== "posts" &&
+      collection !== "initiatives" &&
       collection !== "publications" &&
       collection !== "tools"
     ) {
@@ -518,11 +569,13 @@ function attachBylineEdges(
     const byline = resolver.resolve(row.byline_id);
     if (!contentId || !byline?.id) continue;
     const nodeId =
-      collection === "tools"
-        ? `tool:${contentId}`
-        : collection === "publications"
-          ? `publication:${contentId}`
-          : `content:${contentId}`;
+      collection === "initiatives"
+        ? `initiative:${contentId}`
+        : collection === "tools"
+          ? `tool:${contentId}`
+          : collection === "publications"
+            ? `publication:${contentId}`
+            : `content:${contentId}`;
     edges.push(edge(nodeId, `author:${byline.id}`, "authored_by", 70));
   }
 
@@ -657,8 +710,67 @@ function attachPublicationEdges(
   return edges;
 }
 
+function attachInitiativeEdges(
+  initiatives: InitiativeEntry[],
+  posts: PostEntry[],
+  publications: PublicationEntry[],
+  tools: ToolEntry[],
+) {
+  const edges: GraphNavigationEdgeInput[] = [];
+
+  for (const initiative of initiatives) {
+    for (const post of resolveRelatedRecords(
+      initiative.related_articles,
+      posts,
+      "posts",
+    )) {
+      edges.push(
+        edge(
+          `initiative:${initiative.id}`,
+          `content:${post.id}`,
+          "advances_initiative",
+          50,
+        ),
+      );
+    }
+
+    for (const publication of resolveRelatedRecords(
+      initiative.related_publications,
+      publications,
+      "publications",
+    )) {
+      edges.push(
+        edge(
+          `initiative:${initiative.id}`,
+          `publication:${publication.id}`,
+          "supports_initiative",
+          50,
+        ),
+      );
+    }
+
+    for (const tool of resolveRelatedRecords(
+      initiative.related_tools,
+      tools,
+      "tools",
+    )) {
+      edges.push(
+        edge(
+          `initiative:${initiative.id}`,
+          `tool:${tool.id}`,
+          "supports_initiative",
+          50,
+        ),
+      );
+    }
+  }
+
+  return edges;
+}
+
 function authorPublicationCounts(
   posts: PostEntry[],
+  initiatives: InitiativeEntry[],
   publications: PublicationEntry[],
   tools: ToolEntry[],
   bylines: BylineEntry[],
@@ -687,6 +799,16 @@ function authorPublicationCounts(
     }
   }
 
+  for (const initiative of initiatives) {
+    addCount(
+      resolver.resolveId(initiative.primary_byline_id),
+      `initiative:${initiative.id}`,
+    );
+    for (const byline of resolver.relatedBylines(initiative)) {
+      addCount(byline.id, `initiative:${initiative.id}`);
+    }
+  }
+
   for (const publication of publications) {
     addCount(
       resolver.resolveId(publication.primary_byline_id),
@@ -698,6 +820,7 @@ function authorPublicationCounts(
     const collection = contentTaxonomyCollection(row);
     if (
       collection !== "posts" &&
+      collection !== "initiatives" &&
       collection !== "publications" &&
       collection !== "tools"
     ) {
@@ -708,11 +831,13 @@ function authorPublicationCounts(
     if (!contentId || !bylineId) continue;
     addCount(
       bylineId,
-      collection === "tools"
-        ? `tool:${contentId}`
-        : collection === "publications"
-          ? `publication:${contentId}`
-          : `content:${contentId}`,
+      collection === "initiatives"
+        ? `initiative:${contentId}`
+        : collection === "tools"
+          ? `tool:${contentId}`
+          : collection === "publications"
+            ? `publication:${contentId}`
+            : `content:${contentId}`,
     );
   }
 
@@ -725,6 +850,7 @@ export async function getContentGraphSnapshot(): Promise<GraphNavigationSnapshot
   const [
     posts,
     publications,
+    initiatives,
     tools,
     bylines,
     contentBylines,
@@ -733,6 +859,7 @@ export async function getContentGraphSnapshot(): Promise<GraphNavigationSnapshot
   ] = await Promise.all([
     getPosts(),
     getPublications(),
+    getInitiatives(),
     getTools(),
     getBylines(),
     getSnapshotTable<ContentBylineEntry>("_emdash_content_bylines"),
@@ -742,6 +869,7 @@ export async function getContentGraphSnapshot(): Promise<GraphNavigationSnapshot
 
   const publicationCounts = authorPublicationCounts(
     posts,
+    initiatives,
     publications,
     tools,
     bylines,
@@ -750,6 +878,7 @@ export async function getContentGraphSnapshot(): Promise<GraphNavigationSnapshot
   const nodes: GraphNavigationNodeInput[] = [
     ...posts.map(postNode),
     ...publications.map(publicationNode),
+    ...initiatives.map(initiativeNode),
     ...tools.map(toolNode),
     ...bylines.map((byline) =>
       authorNode(
@@ -760,15 +889,24 @@ export async function getContentGraphSnapshot(): Promise<GraphNavigationSnapshot
     ...terms.map(taxonomyNode),
   ];
   const entries = new Map<string, GraphableEntry[]>([
+    ["initiatives", initiatives],
     ["posts", posts],
     ["publications", publications],
     ["tools", tools],
   ]);
   const edges: GraphNavigationEdgeInput[] = [
-    ...attachBylineEdges(posts, publications, tools, bylines, contentBylines),
+    ...attachBylineEdges(
+      posts,
+      initiatives,
+      publications,
+      tools,
+      bylines,
+      contentBylines,
+    ),
     ...attachTaxonomyEdges(entries, terms, assignments),
     ...attachToolEdges(tools, posts),
     ...attachPublicationEdges(posts, publications, tools),
+    ...attachInitiativeEdges(initiatives, posts, publications, tools),
   ];
 
   return createGraphNavigationSnapshot({

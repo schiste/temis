@@ -1,5 +1,37 @@
 {
   "tables": {
+    "ec_initiatives": [
+      {
+        "id": "01KVCMQ9C3RF9THXFBA6P9AJSP",
+        "slug": "ai-supported-community-review",
+        "status": "published",
+        "author_id": null,
+        "primary_byline_id": null,
+        "created_at": "2026-06-18T05:54:33.987Z",
+        "updated_at": "2026-06-18 05:54:40",
+        "published_at": "2026-06-18T05:54:33.987Z",
+        "scheduled_at": null,
+        "deleted_at": null,
+        "version": 1,
+        "live_revision_id": "01KVCMQ9C470HKR7F9HGTC6D0K",
+        "draft_revision_id": null,
+        "locale": "en",
+        "translation_group": "01KVCMQ9C3RF9THXFBA6P9AJSP",
+        "title": "AI-supported community review",
+        "initiative_type": "research_axis",
+        "summary": "Explore how AI can increase communities' capacity to review, guide, and support new editors while making harmful edits easier to detect and manage.",
+        "description": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"This initiative tracks work around AI-assisted review, newcomer guidance, moderation capacity, and community support in open knowledge projects.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"The goal is not to raise barriers by default. It is to help communities keep more good edits, identify harmful edits earlier, and give promising contributors clearer paths into shared norms.\"}]}]",
+        "status_label": "exploring",
+        "steward_name": "TEMIS editorial team",
+        "start_date": "2026",
+        "related_articles": "[\"seed:post:wikipedia-at-25-a-wake-up-call\"]",
+        "related_publications": "[\"seed:publication:hidden-costs-requiring-accounts\"]",
+        "related_tools": "[\"seed:tool:sp42\",\"seed:tool:wiki-economics\"]",
+        "related_people": "Christophe Henner: steward",
+        "graph_visible": 1,
+        "graph_priority": 74
+      }
+    ],
     "ec_pages": [
       {
         "id": "01KV1FV76MPX5RC6ZST4TV0R94",
@@ -48,7 +80,7 @@
         "author_id": null,
         "primary_byline_id": null,
         "created_at": "2026-06-14 10:54:30",
-        "updated_at": "2026-06-18 05:25:16",
+        "updated_at": "2026-06-18 05:54:40",
         "published_at": "2026-06-14 10:54:30",
         "scheduled_at": null,
         "deleted_at": null,
@@ -58,8 +90,8 @@
         "locale": "en",
         "translation_group": "seed:page:search",
         "title": "Search",
-        "summary": "Search the published TEMIS static snapshot across essays, tools, publications, people, and pages.",
-        "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"This local search index is generated at build time from published EmDash content: essays, tools, publications, people, and pages.\"}]}]"
+        "summary": "Search the published TEMIS static snapshot across essays, initiatives, tools, publications, people, and pages.",
+        "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"This local search index is generated at build time from published EmDash content: essays, initiatives, tools, publications, people, and pages.\"}]}]"
       },
       {
         "id": "seed:page:topics",
@@ -128,7 +160,7 @@
         "author_id": null,
         "primary_byline_id": null,
         "created_at": "2026-06-17T17:28:34.793Z",
-        "updated_at": "2026-06-18 05:25:17",
+        "updated_at": "2026-06-18 05:54:40",
         "published_at": "2026-06-17T17:28:34.791Z",
         "scheduled_at": null,
         "deleted_at": null,
@@ -148,7 +180,7 @@
         "author_id": null,
         "primary_byline_id": null,
         "created_at": "2026-06-18T04:44:06.652Z",
-        "updated_at": "2026-06-18 05:25:17",
+        "updated_at": "2026-06-18 05:54:40",
         "published_at": "2026-06-18T04:44:06.651Z",
         "scheduled_at": null,
         "deleted_at": null,
@@ -160,6 +192,26 @@
         "title": "Publication index",
         "summary": "Research papers, reports, and other publications connected to TEMIS essays, tools, people, and topics.",
         "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Publications are first-class knowledge objects in TEMIS. Editorial posts may summarize or discuss them, tools may implement them, and the graph can connect them to people and topics without treating them as ordinary articles.\"}]}]"
+      },
+      {
+        "id": "01KVCMQ9BYKBG6TSVSS3V3AEGA",
+        "slug": "initiatives",
+        "status": "published",
+        "author_id": null,
+        "primary_byline_id": null,
+        "created_at": "2026-06-18T05:54:33.982Z",
+        "updated_at": "2026-06-18 05:54:40",
+        "published_at": "2026-06-18T05:54:33.982Z",
+        "scheduled_at": null,
+        "deleted_at": null,
+        "version": 1,
+        "live_revision_id": "01KVCMQ9C2EFWK7PM7CBYMD6JV",
+        "draft_revision_id": null,
+        "locale": "en",
+        "translation_group": "01KVCMQ9BYKBG6TSVSS3V3AEGA",
+        "title": "Initiative index",
+        "summary": "Exploration axes and working tracks that connect TEMIS content, tools, publications, and people.",
+        "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Initiatives are first-class TEMIS records: they describe the axes we are exploring and connect the work around each axis into the graph.\"}]}]"
       }
     ],
     "ec_posts": [
@@ -265,7 +317,7 @@
         "author_id": null,
         "primary_byline_id": null,
         "created_at": "2026-06-18T05:17:08.778Z",
-        "updated_at": "2026-06-18 05:25:17",
+        "updated_at": "2026-06-18 05:54:40",
         "published_at": "2026-06-18T05:17:08.777Z",
         "scheduled_at": null,
         "deleted_at": null,
@@ -427,7 +479,7 @@
         "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\"]",
         "source": "seed",
         "created_at": "2026-06-13 21:31:33",
-        "updated_at": "2026-06-18 05:25:09",
+        "updated_at": "2026-06-18 05:54:39",
         "search_config": "{\"enabled\":true}",
         "has_seo": 1,
         "url_pattern": "/{slug}",
@@ -446,7 +498,7 @@
         "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\",\"scheduling\"]",
         "source": "seed",
         "created_at": "2026-06-13 21:31:34",
-        "updated_at": "2026-06-18 05:25:10",
+        "updated_at": "2026-06-18 05:54:39",
         "search_config": "{\"enabled\":true}",
         "has_seo": 1,
         "url_pattern": "/blog/{slug}",
@@ -465,7 +517,7 @@
         "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\"]",
         "source": "seed",
         "created_at": "2026-06-14 16:04:30",
-        "updated_at": "2026-06-18 05:25:11",
+        "updated_at": "2026-06-18 05:54:40",
         "search_config": "{\"enabled\":true}",
         "has_seo": 1,
         "url_pattern": "/tools/{slug}",
@@ -484,10 +536,29 @@
         "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\"]",
         "source": "seed",
         "created_at": "2026-06-18 04:44:06",
-        "updated_at": "2026-06-18 05:25:10",
+        "updated_at": "2026-06-18 05:54:39",
         "search_config": "{\"enabled\":true}",
         "has_seo": 1,
         "url_pattern": "/publications/{slug}",
+        "comments_enabled": 0,
+        "comments_moderation": "first_time",
+        "comments_closed_after_days": 90,
+        "comments_auto_approve_users": 1
+      },
+      {
+        "id": "01KVCMQ9BHF0J2W1P6R3BFNSPR",
+        "slug": "initiatives",
+        "label": "Initiatives",
+        "label_singular": "Initiative",
+        "description": "First-class exploration axes and working tracks that connect TEMIS content, tools, publications, people, topics, and tags.",
+        "icon": "compass",
+        "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\"]",
+        "source": "seed",
+        "created_at": "2026-06-18 05:54:33",
+        "updated_at": "2026-06-18 05:54:40",
+        "search_config": "{\"enabled\":true}",
+        "has_seo": 1,
+        "url_pattern": "/initiatives/{slug}",
         "comments_enabled": 0,
         "comments_moderation": "first_time",
         "comments_closed_after_days": 90,
@@ -1538,6 +1609,240 @@
         "created_at": "2026-06-18 05:17:02",
         "searchable": 1,
         "translatable": 1
+      },
+      {
+        "id": "01KVCMQ9BKKTG4XS16EZMAT849",
+        "collection_id": "01KVCMQ9BHF0J2W1P6R3BFNSPR",
+        "slug": "title",
+        "label": "Title",
+        "type": "string",
+        "column_type": "TEXT",
+        "required": 1,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 0,
+        "created_at": "2026-06-18 05:54:33",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCMQ9BNGHSDPXSP7M9M6P3G",
+        "collection_id": "01KVCMQ9BHF0J2W1P6R3BFNSPR",
+        "slug": "initiative_type",
+        "label": "Initiative type",
+        "type": "select",
+        "column_type": "TEXT",
+        "required": 1,
+        "unique": 0,
+        "default_value": "\"exploration\"",
+        "validation": "{\"options\":[\"exploration\",\"research_axis\",\"working_group\",\"project\",\"program\"]}",
+        "widget": null,
+        "options": null,
+        "sort_order": 1,
+        "created_at": "2026-06-18 05:54:33",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCMQ9BNF9CFTN99BTK6YYVS",
+        "collection_id": "01KVCMQ9BHF0J2W1P6R3BFNSPR",
+        "slug": "summary",
+        "label": "Summary",
+        "type": "text",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 2,
+        "created_at": "2026-06-18 05:54:33",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCMQ9BPEFXYCS4C19WKZY9P",
+        "collection_id": "01KVCMQ9BHF0J2W1P6R3BFNSPR",
+        "slug": "description",
+        "label": "Description",
+        "type": "portableText",
+        "column_type": "JSON",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 3,
+        "created_at": "2026-06-18 05:54:33",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCMQ9BQHQAZ125XWJAQRF99",
+        "collection_id": "01KVCMQ9BHF0J2W1P6R3BFNSPR",
+        "slug": "status_label",
+        "label": "Status",
+        "type": "select",
+        "column_type": "TEXT",
+        "required": 1,
+        "unique": 0,
+        "default_value": "\"exploring\"",
+        "validation": "{\"options\":[\"exploring\",\"active\",\"paused\",\"completed\",\"archived\"]}",
+        "widget": null,
+        "options": null,
+        "sort_order": 4,
+        "created_at": "2026-06-18 05:54:33",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCMQ9BQK8VPC726C7R17F19",
+        "collection_id": "01KVCMQ9BHF0J2W1P6R3BFNSPR",
+        "slug": "steward_name",
+        "label": "Steward",
+        "type": "string",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 5,
+        "created_at": "2026-06-18 05:54:33",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCMQ9BR42BVE2NXM2DVWJ20",
+        "collection_id": "01KVCMQ9BHF0J2W1P6R3BFNSPR",
+        "slug": "start_date",
+        "label": "Start date",
+        "type": "string",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 6,
+        "created_at": "2026-06-18 05:54:33",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCMQ9BSDWNXZ53278BN8C8A",
+        "collection_id": "01KVCMQ9BHF0J2W1P6R3BFNSPR",
+        "slug": "related_articles",
+        "label": "Related Articles",
+        "type": "reference",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": "{\"collection\":\"posts\",\"allowMultiple\":true}",
+        "sort_order": 7,
+        "created_at": "2026-06-18 05:54:33",
+        "searchable": 0,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCMQ9BS3XGRF5FCMCTQ9JMY",
+        "collection_id": "01KVCMQ9BHF0J2W1P6R3BFNSPR",
+        "slug": "related_publications",
+        "label": "Related Publications",
+        "type": "reference",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": "{\"collection\":\"publications\",\"allowMultiple\":true}",
+        "sort_order": 8,
+        "created_at": "2026-06-18 05:54:33",
+        "searchable": 0,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCMQ9BTW0ASC8RHCXJH61NV",
+        "collection_id": "01KVCMQ9BHF0J2W1P6R3BFNSPR",
+        "slug": "related_tools",
+        "label": "Related Tools",
+        "type": "reference",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": "{\"collection\":\"tools\",\"allowMultiple\":true}",
+        "sort_order": 9,
+        "created_at": "2026-06-18 05:54:33",
+        "searchable": 0,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCMQ9BV19GJHZXD0QZZ9DZ4",
+        "collection_id": "01KVCMQ9BHF0J2W1P6R3BFNSPR",
+        "slug": "related_people",
+        "label": "Related people and roles",
+        "type": "text",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 10,
+        "created_at": "2026-06-18 05:54:33",
+        "searchable": 0,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCMQ9BVH3GBPD5BM6311VJD",
+        "collection_id": "01KVCMQ9BHF0J2W1P6R3BFNSPR",
+        "slug": "graph_visible",
+        "label": "Visible in Graph",
+        "type": "boolean",
+        "column_type": "INTEGER",
+        "required": 0,
+        "unique": 0,
+        "default_value": "true",
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 11,
+        "created_at": "2026-06-18 05:54:33",
+        "searchable": 0,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCMQ9BW3V96MDTV6NWM5KCS",
+        "collection_id": "01KVCMQ9BHF0J2W1P6R3BFNSPR",
+        "slug": "graph_priority",
+        "label": "Graph Priority",
+        "type": "number",
+        "column_type": "REAL",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 12,
+        "created_at": "2026-06-18 05:54:33",
+        "searchable": 0,
+        "translatable": 1
       }
     ],
     "_emdash_taxonomy_defs": [
@@ -1547,7 +1852,7 @@
         "label": "Categories",
         "label_singular": "Category",
         "hierarchical": 1,
-        "collections": "[\"posts\",\"tools\",\"publications\"]",
+        "collections": "[\"posts\",\"tools\",\"publications\",\"initiatives\"]",
         "created_at": "2026-06-13 21:31:29",
         "locale": "en",
         "translation_group": "taxdef_category"
@@ -1558,7 +1863,7 @@
         "label": "Tags",
         "label_singular": "Tag",
         "hierarchical": 0,
-        "collections": "[\"posts\",\"tools\",\"publications\"]",
+        "collections": "[\"posts\",\"tools\",\"publications\",\"initiatives\"]",
         "created_at": "2026-06-13 21:31:29",
         "locale": "en",
         "translation_group": "taxdef_tag"
@@ -1570,14 +1875,14 @@
         "name": "primary",
         "label": "Primary",
         "created_at": "2026-06-13T21:31:35.448Z",
-        "updated_at": "2026-06-18 05:25:17",
+        "updated_at": "2026-06-18 05:54:40",
         "locale": "en",
         "translation_group": "01KV1EBE4R508C1WCRPTDZV8YC"
       }
     ],
     "_emdash_menu_items": [
       {
-        "id": "01KVCJP7PK5N15HNJ8F21FDWFM",
+        "id": "01KVCMQ9C4DR7T0VCZFEG3A950",
         "menu_id": "01KV1EBE4R508C1WCRPTDZV8YC",
         "parent_id": null,
         "sort_order": 0,
@@ -1589,12 +1894,12 @@
         "title_attr": null,
         "target": null,
         "css_classes": null,
-        "created_at": "2026-06-18T05:19:02.419Z",
+        "created_at": "2026-06-18T05:54:33.988Z",
         "locale": "en",
-        "translation_group": "01KVCJP7PK5N15HNJ8F21FDWFM"
+        "translation_group": "01KVCMQ9C4DR7T0VCZFEG3A950"
       },
       {
-        "id": "01KVCJP7V40FB9CE414R06FMRY",
+        "id": "01KVCMQ9C43276DCP4CEG88WMK",
         "menu_id": "01KV1EBE4R508C1WCRPTDZV8YC",
         "parent_id": null,
         "sort_order": 1,
@@ -1606,12 +1911,12 @@
         "title_attr": null,
         "target": null,
         "css_classes": null,
-        "created_at": "2026-06-18T05:19:02.500Z",
+        "created_at": "2026-06-18T05:54:33.988Z",
         "locale": "en",
-        "translation_group": "01KVCJP7V40FB9CE414R06FMRY"
+        "translation_group": "01KVCMQ9C43276DCP4CEG88WMK"
       },
       {
-        "id": "01KVCJP7V5TSK42TEYE9R3D21J",
+        "id": "01KVCMQ9C5Q2GN89WK7S66DA4R",
         "menu_id": "01KV1EBE4R508C1WCRPTDZV8YC",
         "parent_id": null,
         "sort_order": 2,
@@ -1623,12 +1928,12 @@
         "title_attr": null,
         "target": null,
         "css_classes": null,
-        "created_at": "2026-06-18T05:19:02.501Z",
+        "created_at": "2026-06-18T05:54:33.989Z",
         "locale": "en",
-        "translation_group": "01KVCJP7V5TSK42TEYE9R3D21J"
+        "translation_group": "01KVCMQ9C5Q2GN89WK7S66DA4R"
       },
       {
-        "id": "01KVCJP7V5KVPTZC6TCH2X1K4D",
+        "id": "01KVCMQ9C5146T9JNBTRHBQ3D3",
         "menu_id": "01KV1EBE4R508C1WCRPTDZV8YC",
         "parent_id": null,
         "sort_order": 3,
@@ -1640,9 +1945,9 @@
         "title_attr": null,
         "target": null,
         "css_classes": null,
-        "created_at": "2026-06-18T05:19:02.501Z",
+        "created_at": "2026-06-18T05:54:33.989Z",
         "locale": "en",
-        "translation_group": "01KVCJP7V5KVPTZC6TCH2X1K4D"
+        "translation_group": "01KVCMQ9C5146T9JNBTRHBQ3D3"
       }
     ],
     "_emdash_seo": [
@@ -1655,7 +1960,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 05:19:03"
+        "updated_at": "2026-06-18 05:54:34"
       },
       {
         "collection": "posts",
@@ -1677,7 +1982,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 05:19:03"
+        "updated_at": "2026-06-18 05:54:34"
       },
       {
         "collection": "pages",
@@ -1688,7 +1993,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 05:19:03"
+        "updated_at": "2026-06-18 05:54:34"
       },
       {
         "collection": "pages",
@@ -1699,7 +2004,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 05:19:03"
+        "updated_at": "2026-06-18 05:54:34"
       },
       {
         "collection": "pages",
@@ -1710,7 +2015,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 05:19:03"
+        "updated_at": "2026-06-18 05:54:34"
       },
       {
         "collection": "pages",
@@ -1721,18 +2026,18 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 05:19:03"
+        "updated_at": "2026-06-18 05:54:34"
       },
       {
         "collection": "pages",
         "content_id": "seed:page:search",
         "seo_title": "Search",
-        "seo_description": "Search published TEMIS essays, tools, people, and pages.",
+        "seo_description": "Search published TEMIS essays, initiatives, tools, publications, people, and pages.",
         "seo_image": null,
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 05:19:03"
+        "updated_at": "2026-06-18 05:54:34"
       },
       {
         "collection": "pages",
@@ -1743,7 +2048,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 05:19:03"
+        "updated_at": "2026-06-18 05:54:34"
       },
       {
         "collection": "tools",
@@ -1754,7 +2059,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 05:19:03"
+        "updated_at": "2026-06-18 05:54:34"
       },
       {
         "collection": "tools",
@@ -1765,7 +2070,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 17:15:52",
-        "updated_at": "2026-06-18 05:19:03"
+        "updated_at": "2026-06-18 05:54:34"
       },
       {
         "collection": "tools",
@@ -1776,7 +2081,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 17:15:52",
-        "updated_at": "2026-06-18 05:19:03"
+        "updated_at": "2026-06-18 05:54:34"
       },
       {
         "collection": "pages",
@@ -1787,7 +2092,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 17:28:34",
-        "updated_at": "2026-06-18 05:19:03"
+        "updated_at": "2026-06-18 05:54:34"
       },
       {
         "collection": "pages",
@@ -1798,7 +2103,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-18 04:44:06",
-        "updated_at": "2026-06-18 05:19:03"
+        "updated_at": "2026-06-18 05:54:34"
       },
       {
         "collection": "publications",
@@ -1809,7 +2114,29 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-18 05:17:08",
-        "updated_at": "2026-06-18 05:19:03"
+        "updated_at": "2026-06-18 05:54:34"
+      },
+      {
+        "collection": "pages",
+        "content_id": "01KVCMQ9BYKBG6TSVSS3V3AEGA",
+        "seo_title": "TEMIS initiatives",
+        "seo_description": "Browse TEMIS initiatives, exploration axes, and working tracks connected to open knowledge content and tools.",
+        "seo_image": null,
+        "seo_canonical": null,
+        "seo_no_index": 0,
+        "created_at": "2026-06-18 05:54:34",
+        "updated_at": "2026-06-18 05:54:34"
+      },
+      {
+        "collection": "initiatives",
+        "content_id": "01KVCMQ9C3RF9THXFBA6P9AJSP",
+        "seo_title": "AI-supported community review",
+        "seo_description": "TEMIS initiative exploring how AI can help communities review, guide, and support new editors while managing harmful edits.",
+        "seo_image": null,
+        "seo_canonical": null,
+        "seo_no_index": 0,
+        "created_at": "2026-06-18 05:54:34",
+        "updated_at": "2026-06-18 05:54:34"
       }
     ],
     "_emdash_migrations": [
@@ -2098,6 +2425,16 @@
         "data": "{\"accent\":\"#7a4f00\",\"description\":\"Review, triage, moderation, and support workflows for open communities.\",\"priority\":44}",
         "locale": "en",
         "translation_group": "schema:taxonomy:tag:community-review"
+      },
+      {
+        "id": "schema:taxonomy:category:initiatives",
+        "name": "category",
+        "slug": "initiatives",
+        "label": "Initiatives",
+        "parent_id": null,
+        "data": "{\"accent\":\"#5f6f1f\",\"description\":\"Exploration axes and working tracks connected to TEMIS content, tools, publications, and people.\",\"priority\":72}",
+        "locale": "en",
+        "translation_group": "schema:taxonomy:category:initiatives"
       }
     ],
     "content_taxonomies": [
@@ -2249,6 +2586,41 @@
       {
         "collection": "publications",
         "entry_id": "01KVCJJRS98D1775R5V4FGFEW1",
+        "taxonomy_id": "schema:taxonomy:tag:community-review"
+      },
+      {
+        "collection": "initiatives",
+        "entry_id": "01KVCMQ9C3RF9THXFBA6P9AJSP",
+        "taxonomy_id": "schema:taxonomy:category:initiatives"
+      },
+      {
+        "collection": "initiatives",
+        "entry_id": "01KVCMQ9C3RF9THXFBA6P9AJSP",
+        "taxonomy_id": "schema:taxonomy:tag:open-knowledge"
+      },
+      {
+        "collection": "initiatives",
+        "entry_id": "01KVCMQ9C3RF9THXFBA6P9AJSP",
+        "taxonomy_id": "schema:taxonomy:tag:wikipedia"
+      },
+      {
+        "collection": "initiatives",
+        "entry_id": "01KVCMQ9C3RF9THXFBA6P9AJSP",
+        "taxonomy_id": "schema:taxonomy:tag:wikimedia"
+      },
+      {
+        "collection": "initiatives",
+        "entry_id": "01KVCMQ9C3RF9THXFBA6P9AJSP",
+        "taxonomy_id": "schema:taxonomy:tag:ai"
+      },
+      {
+        "collection": "initiatives",
+        "entry_id": "01KVCMQ9C3RF9THXFBA6P9AJSP",
+        "taxonomy_id": "schema:taxonomy:tag:new-editors"
+      },
+      {
+        "collection": "initiatives",
+        "entry_id": "01KVCMQ9C3RF9THXFBA6P9AJSP",
         "taxonomy_id": "schema:taxonomy:tag:community-review"
       }
     ],
@@ -2419,7 +2791,7 @@
       },
       {
         "name": "site:topicsMissingDescription",
-        "value": "\"The TEMIS topic graph will make essays, tools, and people easier to explore as the V1 content model comes online.\""
+        "value": "\"The TEMIS topic graph makes essays, initiatives, tools, publications, and people easier to explore as the content model evolves.\""
       },
       {
         "name": "site:peopleHeroEyebrow",
@@ -2443,7 +2815,7 @@
       },
       {
         "name": "site:searchMissingDescription",
-        "value": "\"Search the published TEMIS static snapshot across essays, tools, publications, people, and pages.\""
+        "value": "\"Search the published TEMIS static snapshot across essays, initiatives, tools, publications, people, and pages.\""
       },
       {
         "name": "site:pageHeroEyebrow",
@@ -2527,7 +2899,7 @@
       },
       {
         "name": "site:homeTopicsCardDescription",
-        "value": "\"Follow topic routes across essays, tools, publications, and people as the map takes shape.\""
+        "value": "\"Follow topic routes across essays, initiatives, tools, publications, and people as the map takes shape.\""
       },
       {
         "name": "site:homeTopicsCardEyebrow",
@@ -2591,7 +2963,7 @@
       },
       {
         "name": "site:searchInputPlaceholder",
-        "value": "\"Search essays, tools, publications, people, and pages\""
+        "value": "\"Search essays, initiatives, tools, publications, people, and pages\""
       },
       {
         "name": "site:searchResultsLabel",
@@ -2718,10 +3090,88 @@
         "data": "{\"title\":\"The Hidden Costs of Requiring Accounts: Quasi-Experimental Evidence From Peer Production\",\"publication_type\":\"research_paper\",\"summary\":\"A quasi-experimental study of 136 wiki communities showing that account requirements deter some low-quality edits, but also reduce a larger volume of higher-quality contributions.\",\"abstract\":\"Online communities, like Wikipedia, produce valuable public information goods. Whereas some of these communities require would-be contributors to create accounts, many do not. Does this requirement catalyze cooperation or inhibit participation? Prior research provides divergent predictions but little causal evidence. We conduct an empirical test using longitudinal data from 136 natural experiments where would-be contributors to wikis were suddenly required to log in to contribute. Requiring accounts leads to a small increase in account creation, but reduces both high- and low-quality contributions from registered and unregistered participants. Although the change deters a large portion of low-quality participation, the vast majority of deterred contributions are of higher quality. We conclude that requiring accounts introduces an undertheorized tradeoff for public goods production in interactive communication systems.\",\"editorial_note\":[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"TEMIS reads this paper as a warning against treating friction as the main moderation strategy. In a post-AI knowledge environment, communities should use AI to increase their capacity to review, guide, and support new editors: make good edits easier to keep, make bad edits easier to detect and manage, and avoid blocking promising contributors before they learn the norms.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"The paper matters because it measures the tradeoff directly: account requirements reduce some low-quality participation, but the larger loss is higher-quality contribution. That pushes TEMIS toward tooling that strengthens mentorship, review queues, edit triage, and newcomer support rather than defaulting to broad entry barriers.\"}]}],\"publication_authors\":\"Benjamin Mako Hill; Aaron Shaw\",\"venue\":\"Communication Research 48(6): 771-795 (2021)\",\"publication_date\":\"2021-11-20\",\"doi\":\"10.1177/0093650220910345\",\"arxiv_id\":\"2111.10688\",\"source_url\":\"https://arxiv.org/abs/2111.10688\",\"pdf_url\":\"https://arxiv.org/pdf/2111.10688\",\"license\":\"arXiv non-exclusive distribution license 1.0\",\"related_articles\":[\"seed:post:wikipedia-at-25-a-wake-up-call\"],\"related_tools\":[\"seed:tool:sp42\",\"seed:tool:wiki-economics\"],\"graph_visible\":1,\"graph_priority\":64,\"source_title\":\"arXiv:2111.10688\"}",
         "author_id": null,
         "created_at": "2026-06-18 05:17:08"
+      },
+      {
+        "id": "01KVCMQ9C2EFWK7PM7CBYMD6JV",
+        "collection": "pages",
+        "entry_id": "01KVCMQ9BYKBG6TSVSS3V3AEGA",
+        "data": "{\"title\":\"Initiative index\",\"summary\":\"Exploration axes and working tracks that connect TEMIS content, tools, publications, and people.\",\"content\":[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Initiatives are first-class TEMIS records: they describe the axes we are exploring and connect the work around each axis into the graph.\"}]}]}",
+        "author_id": null,
+        "created_at": "2026-06-18 05:54:33"
+      },
+      {
+        "id": "01KVCMQ9C470HKR7F9HGTC6D0K",
+        "collection": "initiatives",
+        "entry_id": "01KVCMQ9C3RF9THXFBA6P9AJSP",
+        "data": "{\"title\":\"AI-supported community review\",\"initiative_type\":\"research_axis\",\"summary\":\"Explore how AI can increase communities' capacity to review, guide, and support new editors while making harmful edits easier to detect and manage.\",\"description\":[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"This initiative tracks work around AI-assisted review, newcomer guidance, moderation capacity, and community support in open knowledge projects.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"The goal is not to raise barriers by default. It is to help communities keep more good edits, identify harmful edits earlier, and give promising contributors clearer paths into shared norms.\"}]}],\"status_label\":\"exploring\",\"steward_name\":\"TEMIS editorial team\",\"start_date\":\"2026\",\"related_articles\":[\"seed:post:wikipedia-at-25-a-wake-up-call\"],\"related_publications\":[\"seed:publication:hidden-costs-requiring-accounts\"],\"related_tools\":[\"seed:tool:sp42\",\"seed:tool:wiki-economics\"],\"related_people\":\"Christophe Henner: steward\",\"graph_visible\":1,\"graph_priority\":74}",
+        "author_id": null,
+        "created_at": "2026-06-18 05:54:33"
       }
     ]
   },
   "schema": {
+    "ec_initiatives": {
+      "columns": [
+        "id",
+        "slug",
+        "status",
+        "author_id",
+        "primary_byline_id",
+        "created_at",
+        "updated_at",
+        "published_at",
+        "scheduled_at",
+        "deleted_at",
+        "version",
+        "live_revision_id",
+        "draft_revision_id",
+        "locale",
+        "translation_group",
+        "title",
+        "initiative_type",
+        "summary",
+        "description",
+        "status_label",
+        "steward_name",
+        "start_date",
+        "related_articles",
+        "related_publications",
+        "related_tools",
+        "related_people",
+        "graph_visible",
+        "graph_priority"
+      ],
+      "types": {
+        "id": "TEXT",
+        "slug": "TEXT",
+        "status": "TEXT",
+        "author_id": "TEXT",
+        "primary_byline_id": "TEXT",
+        "created_at": "TEXT",
+        "updated_at": "TEXT",
+        "published_at": "TEXT",
+        "scheduled_at": "TEXT",
+        "deleted_at": "TEXT",
+        "version": "INTEGER",
+        "live_revision_id": "TEXT",
+        "draft_revision_id": "TEXT",
+        "locale": "TEXT",
+        "translation_group": "TEXT",
+        "title": "TEXT",
+        "initiative_type": "TEXT",
+        "summary": "TEXT",
+        "description": "JSON",
+        "status_label": "TEXT",
+        "steward_name": "TEXT",
+        "start_date": "TEXT",
+        "related_articles": "TEXT",
+        "related_publications": "TEXT",
+        "related_tools": "TEXT",
+        "related_people": "TEXT",
+        "graph_visible": "INTEGER",
+        "graph_priority": "REAL"
+      }
+    },
     "ec_pages": {
       "columns": [
         "id",
@@ -3327,5 +3777,5 @@
       }
     }
   },
-  "generatedAt": "2026-06-18T05:25:54.050Z"
+  "generatedAt": "2026-06-18T05:55:30.376Z"
 }

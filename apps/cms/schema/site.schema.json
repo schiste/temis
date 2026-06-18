@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "description": "TEMIS site-level EmDash contract for graph terms, people/bylines, menus, publications, and fixture relationships.",
+  "description": "TEMIS site-level EmDash contract for graph terms, people/bylines, menus, initiatives, publications, and fixture relationships.",
   "mediaPolicy": {
     "canonicalStorage": "emdash-r2",
     "checkedInPublicMedia": "Allowed only for V1 fixtures and deterministic local builds. Production editorial media should be uploaded through EmDash and stored in R2.",
@@ -47,6 +47,14 @@
       "description": "Research papers, reports, and external knowledge objects connected to TEMIS work.",
       "priority": 68,
       "accent": "#8a1f5c"
+    },
+    {
+      "taxonomy": "category",
+      "slug": "initiatives",
+      "label": "Initiatives",
+      "description": "Exploration axes and working tracks connected to TEMIS content, tools, publications, and people.",
+      "priority": 72,
+      "accent": "#5f6f1f"
     },
     {
       "taxonomy": "tag",
@@ -301,6 +309,48 @@
       "slug": "hidden-costs-requiring-accounts",
       "taxonomy": "tag",
       "termSlug": "community-review"
+    },
+    {
+      "collection": "initiatives",
+      "slug": "ai-supported-community-review",
+      "taxonomy": "category",
+      "termSlug": "initiatives"
+    },
+    {
+      "collection": "initiatives",
+      "slug": "ai-supported-community-review",
+      "taxonomy": "tag",
+      "termSlug": "open-knowledge"
+    },
+    {
+      "collection": "initiatives",
+      "slug": "ai-supported-community-review",
+      "taxonomy": "tag",
+      "termSlug": "wikipedia"
+    },
+    {
+      "collection": "initiatives",
+      "slug": "ai-supported-community-review",
+      "taxonomy": "tag",
+      "termSlug": "wikimedia"
+    },
+    {
+      "collection": "initiatives",
+      "slug": "ai-supported-community-review",
+      "taxonomy": "tag",
+      "termSlug": "ai"
+    },
+    {
+      "collection": "initiatives",
+      "slug": "ai-supported-community-review",
+      "taxonomy": "tag",
+      "termSlug": "new-editors"
+    },
+    {
+      "collection": "initiatives",
+      "slug": "ai-supported-community-review",
+      "taxonomy": "tag",
+      "termSlug": "community-review"
     }
   ],
   "contentBylines": [
@@ -347,7 +397,7 @@
       "slug": "search",
       "fields": {
         "title": "Search",
-        "summary": "Search the published TEMIS static snapshot across essays, tools, publications, people, and pages.",
+        "summary": "Search the published TEMIS static snapshot across essays, initiatives, tools, publications, people, and pages.",
         "content": [
           {
             "_type": "block",
@@ -355,7 +405,7 @@
             "children": [
               {
                 "_type": "span",
-                "text": "This local search index is generated at build time from published EmDash content: essays, tools, publications, people, and pages."
+                "text": "This local search index is generated at build time from published EmDash content: essays, initiatives, tools, publications, people, and pages."
               }
             ]
           }
@@ -396,6 +446,26 @@
               {
                 "_type": "span",
                 "text": "Publications are first-class knowledge objects in TEMIS. Editorial posts may summarize or discuss them, tools may implement them, and the graph can connect them to people and topics without treating them as ordinary articles."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "collection": "pages",
+      "slug": "initiatives",
+      "fields": {
+        "title": "Initiative index",
+        "summary": "Exploration axes and working tracks that connect TEMIS content, tools, publications, and people.",
+        "content": [
+          {
+            "_type": "block",
+            "style": "normal",
+            "children": [
+              {
+                "_type": "span",
+                "text": "Initiatives are first-class TEMIS records: they describe the axes we are exploring and connect the work around each axis into the graph."
               }
             ]
           }
@@ -449,6 +519,25 @@
         "related_tools": ["seed:tool:sp42", "seed:tool:wiki-economics"],
         "graph_visible": true,
         "graph_priority": 64
+      }
+    },
+    {
+      "collection": "initiatives",
+      "slug": "ai-supported-community-review",
+      "fields": {
+        "initiative_type": "research_axis",
+        "summary": "Explore how AI can increase communities' capacity to review, guide, and support new editors while making harmful edits easier to detect and manage.",
+        "status_label": "exploring",
+        "steward_name": "TEMIS editorial team",
+        "start_date": "2026",
+        "related_articles": ["seed:post:wikipedia-at-25-a-wake-up-call"],
+        "related_publications": [
+          "seed:publication:hidden-costs-requiring-accounts"
+        ],
+        "related_tools": ["seed:tool:sp42", "seed:tool:wiki-economics"],
+        "related_people": "Christophe Henner: steward",
+        "graph_visible": true,
+        "graph_priority": 74
       }
     }
   ],

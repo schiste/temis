@@ -1,4 +1,5 @@
 const collectionContentTypes = {
+  initiatives: "Initiative",
   pages: "Page",
   posts: "Essay",
   publications: "Publication",
@@ -6,6 +7,7 @@ const collectionContentTypes = {
 };
 
 const summaryFieldsByCollection = {
+  initiatives: ["summary", "description"],
   pages: ["summary", "excerpt", "description"],
   posts: ["excerpt", "summary"],
   publications: ["summary", "abstract"],
@@ -17,7 +19,12 @@ const contentCollectionsWithAuthors = new Set([
   "publications",
   "tools",
 ]);
-const graphCollections = new Set(["posts", "publications", "tools"]);
+const graphCollections = new Set([
+  "initiatives",
+  "posts",
+  "publications",
+  "tools",
+]);
 
 const blockedTrackingPatterns = [
   "google-analytics.com",
@@ -132,6 +139,7 @@ function contentIdentifier(record, explicitId) {
 function contentType(record, collection) {
   return (
     cleanString(record.content_type) ||
+    cleanString(record.initiative_type) ||
     cleanString(record.publication_type) ||
     cleanString(record.contentType) ||
     cleanString(record.publicationType) ||

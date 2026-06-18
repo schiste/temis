@@ -9,6 +9,7 @@ type RelatedRecord = {
 };
 
 const seedCollectionNames: Record<string, string> = {
+  initiatives: "initiative",
   pages: "page",
   posts: "post",
   publications: "publication",

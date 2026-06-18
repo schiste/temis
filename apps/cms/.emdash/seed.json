@@ -2,7 +2,7 @@
   "version": "1",
   "meta": {
     "name": "TEMIS Starter",
-    "description": "Starter content model for a static Astro site managed in EmDash, including first-class graphable tools and publications.",
+    "description": "Starter content model for a static Astro site managed in EmDash, including first-class graphable initiatives, tools, and publications.",
     "author": "TEMIS"
   },
   "settings": {
@@ -31,7 +31,7 @@
     "homePeopleCardDescription": "Author pages connect published work to the people and teams behind it.",
     "homePeopleCardEyebrow": "People",
     "homePeopleCardTitle": "Find the authors",
-    "homeTopicsCardDescription": "Follow topic routes across essays, tools, publications, and people as the map takes shape.",
+    "homeTopicsCardDescription": "Follow topic routes across essays, initiatives, tools, publications, and people as the map takes shape.",
     "homeTopicsCardEyebrow": "Topic graph",
     "homeTopicsCardTitle": "Navigate the commons",
     "blogHeroEyebrow": "Articles",
@@ -57,7 +57,7 @@
     "aboutMissingDescription": "TEMIS is a public map of a technical commons.",
     "topicsHeroEyebrow": "Topics",
     "topicsMissingTitle": "Topic map",
-    "topicsMissingDescription": "The TEMIS topic graph will make essays, tools, and people easier to explore as the V1 content model comes online.",
+    "topicsMissingDescription": "The TEMIS topic graph makes essays, initiatives, tools, publications, and people easier to explore as the content model evolves.",
     "peopleHeroEyebrow": "People",
     "peopleCardEyebrow": "Author",
     "peopleMissingTitle": "People",
@@ -67,9 +67,9 @@
     "searchHeroEyebrow": "Search",
     "searchEmptyLabel": "No matching records",
     "searchInputLabel": "Search TEMIS",
-    "searchInputPlaceholder": "Search essays, tools, publications, people, and pages",
+    "searchInputPlaceholder": "Search essays, initiatives, tools, publications, people, and pages",
     "searchMissingTitle": "Search",
-    "searchMissingDescription": "Search the published TEMIS static snapshot across essays, tools, publications, people, and pages.",
+    "searchMissingDescription": "Search the published TEMIS static snapshot across essays, initiatives, tools, publications, people, and pages.",
     "searchResultsLabel": "Search results",
     "pageHeroEyebrow": "Page",
     "notFoundEyebrow": "404",
@@ -365,6 +365,125 @@
       ]
     },
     {
+      "slug": "initiatives",
+      "label": "Initiatives",
+      "labelSingular": "Initiative",
+      "description": "First-class exploration axes and working tracks that connect TEMIS content, tools, publications, people, topics, and tags.",
+      "icon": "compass",
+      "supports": ["drafts", "revisions", "preview", "seo", "search"],
+      "urlPattern": "/initiatives/{slug}",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "initiative_type",
+          "label": "Initiative type",
+          "type": "select",
+          "required": true,
+          "defaultValue": "exploration",
+          "searchable": true,
+          "validation": {
+            "options": [
+              "exploration",
+              "research_axis",
+              "working_group",
+              "project",
+              "program"
+            ]
+          }
+        },
+        {
+          "slug": "summary",
+          "label": "Summary",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "description",
+          "label": "Description",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "status_label",
+          "label": "Status",
+          "type": "select",
+          "required": true,
+          "defaultValue": "exploring",
+          "searchable": true,
+          "validation": {
+            "options": [
+              "exploring",
+              "active",
+              "paused",
+              "completed",
+              "archived"
+            ]
+          }
+        },
+        {
+          "slug": "steward_name",
+          "label": "Steward",
+          "type": "string",
+          "searchable": true
+        },
+        {
+          "slug": "start_date",
+          "label": "Start date",
+          "type": "string",
+          "searchable": true
+        },
+        {
+          "slug": "related_articles",
+          "label": "Related Articles",
+          "type": "reference",
+          "options": {
+            "collection": "posts",
+            "allowMultiple": true
+          }
+        },
+        {
+          "slug": "related_publications",
+          "label": "Related Publications",
+          "type": "reference",
+          "options": {
+            "collection": "publications",
+            "allowMultiple": true
+          }
+        },
+        {
+          "slug": "related_tools",
+          "label": "Related Tools",
+          "type": "reference",
+          "options": {
+            "collection": "tools",
+            "allowMultiple": true
+          }
+        },
+        {
+          "slug": "related_people",
+          "label": "Related people and roles",
+          "type": "text"
+        },
+        {
+          "slug": "graph_visible",
+          "label": "Visible in Graph",
+          "type": "boolean",
+          "defaultValue": true
+        },
+        {
+          "slug": "graph_priority",
+          "label": "Graph Priority",
+          "type": "number"
+        }
+      ]
+    },
+    {
       "slug": "tools",
       "label": "Tools",
       "labelSingular": "Tool",
@@ -534,14 +653,14 @@
       "label": "Categories",
       "labelSingular": "Category",
       "hierarchical": true,
-      "collections": ["posts", "tools", "publications"]
+      "collections": ["posts", "tools", "publications", "initiatives"]
     },
     {
       "name": "tag",
       "label": "Tags",
       "labelSingular": "Tag",
       "hierarchical": false,
-      "collections": ["posts", "tools", "publications"]
+      "collections": ["posts", "tools", "publications", "initiatives"]
     }
   ],
   "content": {
@@ -587,7 +706,7 @@
         "status": "published",
         "data": {
           "title": "Search",
-          "summary": "Search the published TEMIS static snapshot across essays, tools, people, and pages.",
+          "summary": "Search the published TEMIS static snapshot across essays, initiatives, tools, publications, people, and pages.",
           "content": [
             {
               "_type": "block",
@@ -595,13 +714,13 @@
               "children": [
                 {
                   "_type": "span",
-                  "text": "This local search index is generated at build time from published EmDash content."
+                  "text": "This local search index is generated at build time from published EmDash content: essays, initiatives, tools, publications, people, and pages."
                 }
               ]
             }
           ],
           "seo_title": "Search",
-          "seo_description": "Search published TEMIS essays, tools, people, and pages."
+          "seo_description": "Search published TEMIS essays, initiatives, tools, publications, people, and pages."
         }
       },
       {
@@ -610,7 +729,7 @@
         "status": "published",
         "data": {
           "title": "Topic map",
-          "summary": "A graph-shaped navigation layer for essays, tools, people, and shared technical commons.",
+          "summary": "A graph-shaped navigation layer for essays, initiatives, tools, publications, people, and shared technical commons.",
           "content": [
             {
               "_type": "block",
@@ -674,6 +793,29 @@
         }
       },
       {
+        "id": "seed:page:initiatives",
+        "slug": "initiatives",
+        "status": "published",
+        "data": {
+          "title": "Initiative index",
+          "summary": "Exploration axes and working tracks that connect TEMIS content, tools, publications, and people.",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Initiatives are first-class TEMIS records: they describe the axes we are exploring and connect the work around each axis into the graph."
+                }
+              ]
+            }
+          ],
+          "seo_title": "TEMIS initiatives",
+          "seo_description": "Browse TEMIS initiatives, exploration axes, and working tracks connected to open knowledge content and tools."
+        }
+      },
+      {
         "id": "seed:page:people",
         "slug": "people",
         "status": "published",
@@ -710,7 +852,7 @@
               "children": [
                 {
                   "_type": "span",
-                  "text": "TEMIS is built for exploration: essays, tools, topics, and people connected through a static public site managed in EmDash."
+                  "text": "TEMIS is built for exploration: essays, initiatives, tools, publications, topics, and people connected through a static public site managed in EmDash."
                 }
               ]
             }
@@ -3327,6 +3469,53 @@
           "graph_priority": 64,
           "seo_title": "The Hidden Costs of Requiring Accounts",
           "seo_description": "Research on account requirements in peer production, read by TEMIS as a case for AI-supported review and newcomer support."
+        }
+      }
+    ],
+    "initiatives": [
+      {
+        "id": "seed:initiative:ai-supported-community-review",
+        "slug": "ai-supported-community-review",
+        "status": "published",
+        "data": {
+          "title": "AI-supported community review",
+          "initiative_type": "research_axis",
+          "summary": "Explore how AI can increase communities' capacity to review, guide, and support new editors while making harmful edits easier to detect and manage.",
+          "description": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This initiative tracks work around AI-assisted review, newcomer guidance, moderation capacity, and community support in open knowledge projects."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The goal is not to raise barriers by default. It is to help communities keep more good edits, identify harmful edits earlier, and give promising contributors clearer paths into shared norms."
+                }
+              ]
+            }
+          ],
+          "status_label": "exploring",
+          "steward_name": "TEMIS editorial team",
+          "start_date": "2026",
+          "related_articles": ["seed:post:wikipedia-at-25-a-wake-up-call"],
+          "related_publications": [
+            "seed:publication:hidden-costs-requiring-accounts"
+          ],
+          "related_tools": ["seed:tool:sp42", "seed:tool:wiki-economics"],
+          "related_people": "Christophe Henner: steward",
+          "graph_visible": true,
+          "graph_priority": 74,
+          "seo_title": "AI-supported community review",
+          "seo_description": "TEMIS initiative exploring how AI can help communities review, guide, and support new editors while managing harmful edits."
         }
       }
     ],
