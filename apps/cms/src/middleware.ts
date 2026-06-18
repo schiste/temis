@@ -2,30 +2,20 @@ import { hasPermission } from "@emdash-cms/auth";
 import { defineMiddleware } from "astro:middleware";
 import {
   formatContentQualityIssues,
-  isRecord,
   validateContentQuality,
 } from "@temis/content-quality";
+import {
+  contentItemFromResult,
+  MCP_ENDPOINT_PATH,
+  mcpQualityFailureResponse,
+  mcpToolCallFromBody,
+  validateMcpPublishCall,
+  type ContentGetter,
+} from "./mcp-quality";
 
 interface PublishableLocals {
-  emdash?: {
-    handleContentGet?: (
-      collection: string,
-      id: string,
-    ) => Promise<{
-      data?: unknown;
-      error?: { code?: string; message?: string };
-      success: boolean;
-    }>;
-  };
+  emdash?: ContentGetter;
   user?: unknown;
-}
-
-function contentItemFromResult(result: unknown) {
-  if (!isRecord(result)) return null;
-  const data = result.data;
-  if (!isRecord(data)) return null;
-  const item = data.item;
-  return isRecord(item) ? item : data;
 }
 
 function publishTarget(pathname: string) {
@@ -48,17 +38,35 @@ function canPublish(user: unknown) {
   );
 }
 
+async function readMcpToolCall(request: Request) {
+  try {
+    return mcpToolCallFromBody(await request.clone().json());
+  } catch {
+    return null;
+  }
+}
+
 export const onRequest = defineMiddleware(async (context, next) => {
   if (context.request.method !== "POST") return next();
-
-  const target = publishTarget(context.url.pathname);
-  if (!target) return next();
 
   const locals = context.locals as PublishableLocals;
   if (!canPublish(locals.user)) return next();
 
   const emdash = locals.emdash;
   if (!emdash?.handleContentGet) return next();
+
+  if (context.url.pathname === MCP_ENDPOINT_PATH) {
+    const call = await readMcpToolCall(context.request);
+    if (!call) return next();
+
+    const result = await validateMcpPublishCall(call, emdash);
+    if (!result || result.errors.length === 0) return next();
+
+    return mcpQualityFailureResponse(call.id, result);
+  }
+
+  const target = publishTarget(context.url.pathname);
+  if (!target) return next();
 
   const existing = await emdash.handleContentGet(target.collection, target.id);
   if (!existing.success) return next();
