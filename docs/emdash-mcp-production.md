@@ -80,6 +80,10 @@ Direct `content_create` with `status: "published"` is allowed by EmDash but
 should be avoided. TEMIS middleware validates it and will reject incomplete
 published content.
 
+Batched MCP publish writes are allowed only when every publish operation passes
+the quality guard. If any publish operation in a batch fails, TEMIS rejects the
+whole batch so no companion request partially executes.
+
 ## TEMIS Quality Guard
 
 The CMS middleware blocks MCP publish-style calls that fail TEMIS content
@@ -146,6 +150,17 @@ EMDASH_MCP_BASE_URL=http://127.0.0.1:4322 \
   EMDASH_MCP_TOKEN=ec_pat_... \
   pnpm cms:mcp:check:auth
 ```
+
+Authenticated local guard regression:
+
+```bash
+EMDASH_MCP_BASE_URL=http://127.0.0.1:4322 \
+  EMDASH_MCP_TOKEN=ec_pat_... \
+  pnpm cms:mcp:check:guard
+```
+
+The guard regression intentionally sends invalid publish requests. Use it
+against local or disposable environments, not routine production checks.
 
 Production check:
 
