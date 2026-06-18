@@ -1,0 +1,116 @@
+---
+import PageHero from "@temis/design-system/components/PageHero.astro";
+import SiteLayout from "../../components/SiteLayout.astro";
+import {
+  entryDescription,
+  entryInitiativeStatusLabel,
+  entryInitiativeTypeLabel,
+  entrySummary,
+  entryTitle,
+  getInitiatives,
+  getPageBySlug,
+  getSiteTexts,
+  initiativeHref,
+} from "../../lib/emdash";
+
+const page = await getPageBySlug("initiatives");
+const initiatives = await getInitiatives();
+const copy = await getSiteTexts({
+  initiativesArchiveCountLabel: "initiatives",
+  initiativesArchiveOrderLabel: "Priority order",
+  initiativesArchiveScopeLabel: "Published initiative records",
+  initiativesHeroEyebrow: "Initiatives",
+  initiativesListIndexHeading: "No.",
+  initiativesListStatusHeading: "Status",
+  initiativesListStewardHeading: "Steward",
+  initiativesListTitleHeading: "Initiative",
+  initiativesListTypeHeading: "Type",
+  initiativesMissingDescription:
+    "Exploration axes and working tracks that connect TEMIS content, tools, publications, and people.",
+  initiativesMissingTitle: "Initiative index",
+  initiativesNoRecordsLabel: "No initiative records yet.",
+  initiativesNoStewardLabel: "Unassigned",
+});
+const metaTitle = page ? entryTitle(page) : copy.initiativesMissingTitle;
+const metaDescription = page
+  ? entryDescription(page)
+  : copy.initiativesMissingDescription;
+const title = page
+  ? String(page.title ?? metaTitle)
+  : copy.initiativesMissingTitle;
+const description = page
+  ? entrySummary(page) || metaDescription
+  : copy.initiativesMissingDescription;
+const initiativeCountLabel = `${initiatives.length
+  .toString()
+  .padStart(2, "0")} ${
+  initiatives.length === 1 ? "initiative" : copy.initiativesArchiveCountLabel
+}`;
+
+function clean(value: string | null | undefined) {
+  return value?.trim() ?? "";
+}
+---
+
+<SiteLayout title={metaTitle} description={metaDescription}>
+  <div class="ds-archive-page">
+    <PageHero
+      eyebrow={copy.initiativesHeroEyebrow}
+      ledeSize="small"
+      title={title}
+      description={description}
+    />
+
+    <div
+      class="ds-archive-toolbar"
+      aria-label={copy.initiativesArchiveScopeLabel}
+    >
+      <span>{initiativeCountLabel}</span>
+      <span>{copy.initiativesArchiveOrderLabel}</span>
+      <span>{copy.initiativesArchiveScopeLabel}</span>
+    </div>
+
+    <section class="ds-initiative-index" aria-label={title}>
+      <div class="ds-initiative-index__header" aria-hidden="true">
+        <span>{copy.initiativesListIndexHeading}</span>
+        <span>{copy.initiativesListTitleHeading}</span>
+        <span>{copy.initiativesListTypeHeading}</span>
+        <span>{copy.initiativesListStatusHeading}</span>
+        <span>{copy.initiativesListStewardHeading}</span>
+      </div>
+      {
+        initiatives.map((initiative, index) => (
+          <article class="ds-initiative-index-row">
+            <span class="ds-initiative-index-row__index">
+              {(index + 1).toString().padStart(2, "0")}
+            </span>
+            <div class="ds-initiative-index-row__identity">
+              <h2>
+                <a href={initiativeHref(initiative)}>
+                  {entryTitle(initiative)}
+                </a>
+              </h2>
+              <p>{entryDescription(initiative) || entrySummary(initiative)}</p>
+            </div>
+            <span class="ds-initiative-index-row__meta ds-initiative-index-row__meta--type">
+              {entryInitiativeTypeLabel(initiative)}
+            </span>
+            <span class="ds-initiative-index-row__meta ds-initiative-index-row__meta--status">
+              {entryInitiativeStatusLabel(initiative)}
+            </span>
+            <span class="ds-initiative-index-row__steward">
+              {clean(initiative.steward_name) || copy.initiativesNoStewardLabel}
+            </span>
+          </article>
+        ))
+      }
+      {
+        initiatives.length === 0 && (
+          <p class="ds-initiative-index__empty">
+            {copy.initiativesNoRecordsLabel}
+          </p>
+        )
+      }
+    </section>
+  </div>
+</SiteLayout>

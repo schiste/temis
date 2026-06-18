@@ -1,0 +1,96 @@
+---
+import MetadataRow from "@temis/design-system/components/MetadataRow.astro";
+import PageHero from "@temis/design-system/components/PageHero.astro";
+import RichContent from "@temis/design-system/components/RichContent.astro";
+import ContentGraphRail from "../../components/ContentGraphRail.astro";
+import SiteLayout from "../../components/SiteLayout.astro";
+import {
+  getFocusedContentGraphSnapshot,
+  initiativeGraphNodeId,
+} from "../../lib/content-graph";
+import {
+  entryDescription,
+  entryInitiativeStatusLabel,
+  entryInitiativeTypeLabel,
+  entrySlug,
+  entrySummary,
+  entryTitle,
+  getInitiativeBySlug,
+  getInitiatives,
+  getSiteTexts,
+} from "../../lib/emdash";
+
+export async function getStaticPaths() {
+  const initiatives = await getInitiatives();
+  return initiatives.map((initiative) => ({
+    params: { slug: entrySlug(initiative) },
+    props: { initiative },
+  }));
+}
+
+const { initiative } = Astro.props;
+const resolvedInitiative =
+  initiative ?? (await getInitiativeBySlug(Astro.params.slug ?? ""));
+if (!resolvedInitiative) {
+  return Astro.redirect("/404");
+}
+
+const title = entryTitle(resolvedInitiative);
+const description =
+  entryDescription(resolvedInitiative) || entrySummary(resolvedInitiative);
+const copy = await getSiteTexts({
+  initiativeGraphHeading: "Navigation graph",
+  initiativeGraphLabel: "Graph navigation from this initiative",
+  initiativeHeroEyebrow: "Initiative",
+  initiativeStartLabel: "Started",
+  initiativeStatusLabel: "Status",
+  initiativeStewardLabel: "Steward",
+  initiativeTypeLabel: "Type",
+});
+const graph = await getFocusedContentGraphSnapshot(
+  initiativeGraphNodeId(resolvedInitiative),
+);
+const metadataItems = [
+  {
+    label: copy.initiativeTypeLabel,
+    value: entryInitiativeTypeLabel(resolvedInitiative),
+  },
+  {
+    label: copy.initiativeStatusLabel,
+    value: entryInitiativeStatusLabel(resolvedInitiative),
+  },
+  resolvedInitiative.steward_name
+    ? {
+        label: copy.initiativeStewardLabel,
+        value: resolvedInitiative.steward_name,
+      }
+    : null,
+  resolvedInitiative.start_date
+    ? {
+        label: copy.initiativeStartLabel,
+        value: resolvedInitiative.start_date,
+      }
+    : null,
+].filter((item): item is { href?: string; label: string; value: string } =>
+  Boolean(item),
+);
+---
+
+<SiteLayout title={title} description={description}>
+  <div class="ds-content-page">
+    <article class="ds-content-main ds-initiative-main">
+      <PageHero
+        eyebrow={copy.initiativeHeroEyebrow}
+        title={title}
+        description={description}
+      />
+      <MetadataRow items={metadataItems} />
+      <RichContent value={resolvedInitiative.description} variant="article" />
+    </article>
+    <ContentGraphRail
+      graph={graph}
+      heading={copy.initiativeGraphHeading}
+      label={copy.initiativeGraphLabel}
+    />
+  </div>
+</SiteLayout>
