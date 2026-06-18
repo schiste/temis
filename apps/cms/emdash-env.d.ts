@@ -73,6 +73,8 @@ export interface Post {
   content_license?: string;
   content_license_url?: string;
   related_publications?: string;
+  graph_visible?: boolean;
+  graph_priority?: number;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;

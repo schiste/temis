@@ -225,6 +225,17 @@
             "collection": "publications",
             "allowMultiple": true
           }
+        },
+        {
+          "slug": "graph_visible",
+          "label": "Visible in Graph",
+          "type": "boolean",
+          "defaultValue": true
+        },
+        {
+          "slug": "graph_priority",
+          "label": "Graph Priority",
+          "type": "number"
         }
       ]
     },
@@ -885,7 +896,9 @@
             }
           ],
           "seo_title": "Welcome to TEMIS",
-          "seo_description": "Starter content for the TEMIS EmDash and Astro stack."
+          "seo_description": "Starter content for the TEMIS EmDash and Astro stack.",
+          "graph_visible": false,
+          "graph_priority": 1
         }
       },
       {
@@ -3464,7 +3477,6 @@
           "pdf_url": "https://arxiv.org/pdf/2111.10688",
           "license": "arXiv.org non-exclusive license to distribute 1.0",
           "related_articles": ["seed:post:wikipedia-at-25-a-wake-up-call"],
-          "related_tools": ["seed:tool:sp42", "seed:tool:wiki-economics"],
           "graph_visible": true,
           "graph_priority": 64,
           "seo_title": "The Hidden Costs of Requiring Accounts",

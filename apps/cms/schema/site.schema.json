@@ -62,7 +62,8 @@
       "label": "Open knowledge",
       "description": "Questions about public knowledge, commons, and shared infrastructure.",
       "priority": 60,
-      "accent": "#4f7f45"
+      "accent": "#4f7f45",
+      "graph_visible": false
     },
     {
       "taxonomy": "tag",
@@ -79,6 +80,14 @@
       "description": "Movement, governance, and shared Wikimedia infrastructure.",
       "priority": 56,
       "accent": "#7a4f00"
+    },
+    {
+      "taxonomy": "tag",
+      "slug": "community-decision-making",
+      "label": "Community decision-making",
+      "description": "Decision-making, deliberation, consensus, and governance workflows for open communities.",
+      "priority": 55,
+      "accent": "#006f6a"
     },
     {
       "taxonomy": "tag",
@@ -138,12 +147,6 @@
     },
     {
       "collection": "posts",
-      "slug": "welcome",
-      "taxonomy": "tag",
-      "termSlug": "open-knowledge"
-    },
-    {
-      "collection": "posts",
       "slug": "innovating-with-wikimedia-decision-making",
       "taxonomy": "category",
       "termSlug": "essays"
@@ -152,7 +155,13 @@
       "collection": "posts",
       "slug": "innovating-with-wikimedia-decision-making",
       "taxonomy": "tag",
-      "termSlug": "open-knowledge"
+      "termSlug": "community-decision-making"
+    },
+    {
+      "collection": "posts",
+      "slug": "innovating-with-wikimedia-decision-making",
+      "taxonomy": "tag",
+      "termSlug": "wikimedia"
     },
     {
       "collection": "tools",
@@ -164,7 +173,13 @@
       "collection": "tools",
       "slug": "wiki-polis",
       "taxonomy": "tag",
-      "termSlug": "open-knowledge"
+      "termSlug": "community-decision-making"
+    },
+    {
+      "collection": "tools",
+      "slug": "wiki-polis",
+      "taxonomy": "tag",
+      "termSlug": "wikimedia"
     },
     {
       "collection": "tools",
@@ -182,13 +197,7 @@
       "collection": "tools",
       "slug": "sp42",
       "taxonomy": "tag",
-      "termSlug": "wikimedia"
-    },
-    {
-      "collection": "tools",
-      "slug": "sp42",
-      "taxonomy": "tag",
-      "termSlug": "open-knowledge"
+      "termSlug": "community-review"
     },
     {
       "collection": "tools",
@@ -206,13 +215,7 @@
       "collection": "tools",
       "slug": "wiki-economics",
       "taxonomy": "tag",
-      "termSlug": "wikimedia"
-    },
-    {
-      "collection": "tools",
-      "slug": "wiki-economics",
-      "taxonomy": "tag",
-      "termSlug": "open-knowledge"
+      "termSlug": "peer-production"
     },
     {
       "collection": "tools",
@@ -230,19 +233,7 @@
       "collection": "posts",
       "slug": "wikipedia-at-25-a-wake-up-call",
       "taxonomy": "tag",
-      "termSlug": "open-knowledge"
-    },
-    {
-      "collection": "posts",
-      "slug": "wikipedia-at-25-a-wake-up-call",
-      "taxonomy": "tag",
       "termSlug": "wikipedia"
-    },
-    {
-      "collection": "posts",
-      "slug": "wikipedia-at-25-a-wake-up-call",
-      "taxonomy": "tag",
-      "termSlug": "wikimedia"
     },
     {
       "collection": "posts",
@@ -272,30 +263,6 @@
       "collection": "publications",
       "slug": "hidden-costs-requiring-accounts",
       "taxonomy": "tag",
-      "termSlug": "open-knowledge"
-    },
-    {
-      "collection": "publications",
-      "slug": "hidden-costs-requiring-accounts",
-      "taxonomy": "tag",
-      "termSlug": "wikipedia"
-    },
-    {
-      "collection": "publications",
-      "slug": "hidden-costs-requiring-accounts",
-      "taxonomy": "tag",
-      "termSlug": "wikimedia"
-    },
-    {
-      "collection": "publications",
-      "slug": "hidden-costs-requiring-accounts",
-      "taxonomy": "tag",
-      "termSlug": "ai"
-    },
-    {
-      "collection": "publications",
-      "slug": "hidden-costs-requiring-accounts",
-      "taxonomy": "tag",
       "termSlug": "peer-production"
     },
     {
@@ -315,24 +282,6 @@
       "slug": "ai-supported-community-review",
       "taxonomy": "category",
       "termSlug": "initiatives"
-    },
-    {
-      "collection": "initiatives",
-      "slug": "ai-supported-community-review",
-      "taxonomy": "tag",
-      "termSlug": "open-knowledge"
-    },
-    {
-      "collection": "initiatives",
-      "slug": "ai-supported-community-review",
-      "taxonomy": "tag",
-      "termSlug": "wikipedia"
-    },
-    {
-      "collection": "initiatives",
-      "slug": "ai-supported-community-review",
-      "taxonomy": "tag",
-      "termSlug": "wikimedia"
     },
     {
       "collection": "initiatives",
@@ -477,7 +426,9 @@
       "slug": "welcome",
       "fields": {
         "author_name": "TEMIS editorial team",
-        "content_type": "team_note"
+        "content_type": "team_note",
+        "graph_visible": false,
+        "graph_priority": 1
       }
     },
     {
@@ -516,7 +467,6 @@
         "pdf_url": "https://arxiv.org/pdf/2111.10688",
         "license": "arXiv.org non-exclusive license to distribute 1.0",
         "related_articles": ["seed:post:wikipedia-at-25-a-wake-up-call"],
-        "related_tools": ["seed:tool:sp42", "seed:tool:wiki-economics"],
         "graph_visible": true,
         "graph_priority": 64
       }
