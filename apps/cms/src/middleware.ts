@@ -1,20 +1,24 @@
-import { hasPermission } from "@emdash-cms/auth";
+import { hasPermission, hasScope } from "@emdash-cms/auth";
 import { defineMiddleware } from "astro:middleware";
 import {
   formatContentQualityIssues,
   validateContentQuality,
 } from "@temis/content-quality";
 import {
+  mcpBatchQualityFailureResponse,
   contentItemFromResult,
   MCP_ENDPOINT_PATH,
   mcpQualityFailureResponse,
-  mcpToolCallFromBody,
+  mcpToolCallBatchFromBody,
   validateMcpPublishCall,
   type ContentGetter,
+  type McpQualityFailure,
+  type McpToolCallBatch,
 } from "./mcp-quality";
 
 interface PublishableLocals {
   emdash?: ContentGetter;
+  tokenScopes?: string[];
   user?: unknown;
 }
 
@@ -38,12 +42,33 @@ function canPublish(user: unknown) {
   );
 }
 
-async function readMcpToolCall(request: Request) {
+function canUseMcpContentWriteScope(tokenScopes: unknown) {
+  if (tokenScopes === undefined) return true;
+  return Array.isArray(tokenScopes) && hasScope(tokenScopes, "content:write");
+}
+
+async function readMcpToolCallBatch(request: Request) {
   try {
-    return mcpToolCallFromBody(await request.clone().json());
+    return mcpToolCallBatchFromBody(await request.clone().json());
   } catch {
     return null;
   }
+}
+
+async function mcpPublishFailures(
+  batch: McpToolCallBatch,
+  emdash: ContentGetter,
+) {
+  const failures: McpQualityFailure[] = [];
+
+  for (const call of batch.calls) {
+    const result = await validateMcpPublishCall(call, emdash);
+    if (result && result.errors.length > 0) {
+      failures.push({ call, result });
+    }
+  }
+
+  return failures;
 }
 
 export const onRequest = defineMiddleware(async (context, next) => {
@@ -56,13 +81,18 @@ export const onRequest = defineMiddleware(async (context, next) => {
   if (!emdash?.handleContentGet) return next();
 
   if (context.url.pathname === MCP_ENDPOINT_PATH) {
-    const call = await readMcpToolCall(context.request);
-    if (!call) return next();
+    if (!canUseMcpContentWriteScope(locals.tokenScopes)) return next();
 
-    const result = await validateMcpPublishCall(call, emdash);
-    if (!result || result.errors.length === 0) return next();
+    const batch = await readMcpToolCallBatch(context.request);
+    if (!batch) return next();
 
-    return mcpQualityFailureResponse(call.id, result);
+    const failures = await mcpPublishFailures(batch, emdash);
+    if (failures.length === 0) return next();
+
+    if (batch.isBatch) return mcpBatchQualityFailureResponse(batch, failures);
+
+    const failure = failures[0];
+    return mcpQualityFailureResponse(failure.call.id, failure.result);
   }
 
   const target = publishTarget(context.url.pathname);

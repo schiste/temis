@@ -12,7 +12,26 @@ type JsonRpcId = string | number | null;
 export interface McpToolCall {
   args: Record<string, unknown>;
   id: JsonRpcId;
+  index: number;
   name: string;
+}
+
+export interface McpJsonRpcMessage {
+  call: McpToolCall | null;
+  hasId: boolean;
+  id: JsonRpcId;
+  index: number;
+}
+
+export interface McpToolCallBatch {
+  calls: McpToolCall[];
+  isBatch: boolean;
+  messages: McpJsonRpcMessage[];
+}
+
+export interface McpQualityFailure {
+  call: McpToolCall;
+  result: ContentQualityResult;
 }
 
 export interface ContentGetter {
@@ -35,25 +54,61 @@ export function contentItemFromResult(result: unknown) {
   return isRecord(item) ? item : data;
 }
 
-export function mcpToolCallFromBody(body: unknown): McpToolCall | null {
-  if (!isRecord(body)) return null;
-  if (body.method !== "tools/call") return null;
+function jsonRpcIdFromMessage(message: Record<string, unknown>) {
+  const id = message.id;
+  return typeof id === "string" || typeof id === "number" || id === null
+    ? id
+    : null;
+}
 
-  const params = body.params;
-  if (!isRecord(params)) return null;
+function mcpMessageFromBody(
+  message: unknown,
+  index: number,
+): McpJsonRpcMessage {
+  if (!isRecord(message)) {
+    return { call: null, hasId: false, id: null, index };
+  }
+
+  const hasId = Object.hasOwn(message, "id");
+  const id = jsonRpcIdFromMessage(message);
+
+  if (message.method !== "tools/call") {
+    return { call: null, hasId, id, index };
+  }
+
+  const params = message.params;
+  if (!isRecord(params)) return { call: null, hasId, id, index };
 
   const name = params.name;
   const args = params.arguments;
-  if (typeof name !== "string" || !isRecord(args)) return null;
+  if (typeof name !== "string" || !isRecord(args)) {
+    return { call: null, hasId, id, index };
+  }
 
-  const id =
-    typeof body.id === "string" ||
-    typeof body.id === "number" ||
-    body.id === null
-      ? body.id
-      : null;
+  return {
+    call: { args, id, index, name },
+    hasId,
+    id,
+    index,
+  };
+}
 
-  return { args, id, name };
+export function mcpToolCallBatchFromBody(
+  body: unknown,
+): McpToolCallBatch | null {
+  const isBatch = Array.isArray(body);
+  const rawMessages = isBatch ? body : [body];
+  const messages = rawMessages.map(mcpMessageFromBody);
+  const calls = messages
+    .map((message) => message.call)
+    .filter((call): call is McpToolCall => Boolean(call));
+
+  if (calls.length === 0) return null;
+  return { calls, isBatch, messages };
+}
+
+export function mcpToolCallFromBody(body: unknown): McpToolCall | null {
+  return mcpToolCallBatchFromBody(body)?.calls[0] ?? null;
 }
 
 function stringValue(value: unknown) {
@@ -76,7 +131,17 @@ function mergeContentForPublish(
   const slug = stringValue(args.slug);
   if (slug) merged.slug = slug;
 
-  if (args.seo !== undefined) merged.seo = args.seo;
+  if (args.seo === null) {
+    merged.seo = null;
+  } else if (isRecord(args.seo)) {
+    merged.seo = {
+      ...(isRecord(existing.seo) ? existing.seo : {}),
+      ...args.seo,
+    };
+  } else if (args.seo !== undefined) {
+    merged.seo = args.seo;
+  }
+
   if (args.bylines !== undefined) merged.bylines = args.bylines;
   if (args.publishedAt !== undefined) merged.publishedAt = args.publishedAt;
 
@@ -139,34 +204,46 @@ export async function validateMcpPublishCall(
   });
 }
 
+function mcpQualityFailurePayload(id: JsonRpcId, result: ContentQualityResult) {
+  return {
+    jsonrpc: "2.0",
+    id,
+    result: {
+      _meta: {
+        code: "CONTENT_QUALITY_FAILED",
+        issues: result.issues,
+      },
+      content: [
+        {
+          text: `[CONTENT_QUALITY_FAILED]\n${formatContentQualityIssues(
+            result,
+          )}`,
+          type: "text",
+        },
+      ],
+      isError: true,
+    },
+  };
+}
+
+function mcpBatchRejectedPayload(id: JsonRpcId) {
+  return {
+    jsonrpc: "2.0",
+    id,
+    error: {
+      code: -32000,
+      message:
+        "Batch rejected because at least one publish operation failed TEMIS content quality checks. Submit publish writes individually after fixing the reported issue.",
+    },
+  };
+}
+
 export function mcpQualityFailureResponse(
   id: JsonRpcId,
   result: ContentQualityResult,
 ) {
   return new Response(
-    JSON.stringify(
-      {
-        jsonrpc: "2.0",
-        id,
-        result: {
-          _meta: {
-            code: "CONTENT_QUALITY_FAILED",
-            issues: result.issues,
-          },
-          content: [
-            {
-              text: `[CONTENT_QUALITY_FAILED]\n${formatContentQualityIssues(
-                result,
-              )}`,
-              type: "text",
-            },
-          ],
-          isError: true,
-        },
-      },
-      null,
-      2,
-    ),
+    JSON.stringify(mcpQualityFailurePayload(id, result), null, 2),
     {
       headers: {
         "cache-control": "private, no-store",
@@ -175,4 +252,38 @@ export function mcpQualityFailureResponse(
       status: 200,
     },
   );
+}
+
+export function mcpBatchQualityFailureResponse(
+  batch: McpToolCallBatch,
+  failures: McpQualityFailure[],
+) {
+  const failuresByIndex = new Map(
+    failures.map((failure) => [failure.call.index, failure.result]),
+  );
+  const responses = batch.messages
+    .filter((message) => message.hasId)
+    .map((message) => {
+      const failure = failuresByIndex.get(message.index);
+      return failure
+        ? mcpQualityFailurePayload(message.id, failure)
+        : mcpBatchRejectedPayload(message.id);
+    });
+
+  if (responses.length === 0) {
+    return new Response(null, {
+      headers: {
+        "cache-control": "private, no-store",
+      },
+      status: 204,
+    });
+  }
+
+  return new Response(JSON.stringify(responses, null, 2), {
+    headers: {
+      "cache-control": "private, no-store",
+      "content-type": "application/json; charset=utf-8",
+    },
+    status: 200,
+  });
 }
