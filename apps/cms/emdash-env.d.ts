@@ -17,6 +17,10 @@ export interface Initiative {
     | "project"
     | "program";
   summary?: string;
+  focus_question?: string;
+  why_now?: string;
+  desired_outcome?: string;
+  scope_note?: string;
   description?: PortableTextBlock[];
   status_label: "exploring" | "active" | "paused" | "completed" | "archived";
   steward_name?: string;

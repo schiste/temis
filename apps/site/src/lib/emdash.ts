@@ -89,7 +89,9 @@ export interface PublicationEntry extends SnapshotRow {
 }
 
 export interface InitiativeEntry extends SnapshotRow {
+  desired_outcome?: string | null;
   description?: unknown;
+  focus_question?: string | null;
   graph_priority?: number | null;
   graph_visible?: boolean | number | null;
   initiative_type?: string | null;
@@ -100,11 +102,13 @@ export interface InitiativeEntry extends SnapshotRow {
   related_tools?: unknown;
   seo_description?: string;
   seo_title?: string;
+  scope_note?: string | null;
   start_date?: string | null;
   status_label?: string | null;
   steward_name?: string | null;
   summary?: string;
   title: string;
+  why_now?: string | null;
 }
 
 export interface ToolEntry extends SnapshotRow {

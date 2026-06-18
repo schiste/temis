@@ -300,6 +300,24 @@
       "slug": "ai-supported-community-review",
       "taxonomy": "tag",
       "termSlug": "community-review"
+    },
+    {
+      "collection": "initiatives",
+      "slug": "shared-decision-making",
+      "taxonomy": "category",
+      "termSlug": "initiatives"
+    },
+    {
+      "collection": "initiatives",
+      "slug": "shared-decision-making",
+      "taxonomy": "tag",
+      "termSlug": "community-decision-making"
+    },
+    {
+      "collection": "initiatives",
+      "slug": "shared-decision-making",
+      "taxonomy": "tag",
+      "termSlug": "wikimedia"
     }
   ],
   "contentBylines": [
@@ -406,7 +424,7 @@
       "slug": "initiatives",
       "fields": {
         "title": "Initiative index",
-        "summary": "Exploration axes and working tracks that connect TEMIS content, tools, publications, and people.",
+        "summary": "Project-level exploration axes that aggregate TEMIS essays, tools, publications, people, and topics around a shared idea.",
         "content": [
           {
             "_type": "block",
@@ -414,7 +432,7 @@
             "children": [
               {
                 "_type": "span",
-                "text": "Initiatives are first-class TEMIS records: they describe the axes we are exploring and connect the work around each axis into the graph."
+                "text": "Initiatives are first-class TEMIS records: they act as project-level dossiers for the ideas we are exploring and connect the work around each axis into the graph."
               }
             ]
           }
@@ -477,6 +495,10 @@
       "fields": {
         "initiative_type": "research_axis",
         "summary": "Explore how AI can increase communities' capacity to review, guide, and support new editors while making harmful edits easier to detect and manage.",
+        "focus_question": "How can AI increase community review capacity without turning participation into a higher-friction gatekeeping system?",
+        "why_now": "AI is changing both the volume and shape of contribution work. Open knowledge communities need review systems that protect quality while still helping promising newcomers learn the norms.",
+        "desired_outcome": "A practical body of essays, research, tools, and experiments that help communities keep more good edits, detect harmful edits earlier, and support new editors more effectively.",
+        "scope_note": "This initiative tracks review, newcomer guidance, moderation capacity, and community support. It does not treat broad account restrictions or contribution barriers as the default answer.",
         "status_label": "exploring",
         "steward_name": "TEMIS editorial team",
         "start_date": "2026",
@@ -488,6 +510,28 @@
         "related_people": "Christophe Henner: steward",
         "graph_visible": true,
         "graph_priority": 74
+      }
+    },
+    {
+      "collection": "initiatives",
+      "slug": "shared-decision-making",
+      "fields": {
+        "initiative_type": "research_axis",
+        "summary": "Explore how open communities can make decisions that are more legible, inclusive, and easier to participate in without losing deliberative quality.",
+        "focus_question": "How can open knowledge communities make collective decisions that surface agreement, reduce procedural overload, and remain accountable to the people affected?",
+        "why_now": "Many Wikimedia and open knowledge policy processes still depend on long forum-style discussions that are hard to join, hard to close, and easy for a small group to dominate by endurance.",
+        "desired_outcome": "A connected body of essays, tools, and experiments that helps communities separate ideation, preference mapping, argument collection, and final decision-making.",
+        "scope_note": "This initiative starts with shared decision-making and deliberation infrastructure. It includes wiki-polis as an early tool reference, but does not imply a single mandatory governance process.",
+        "status_label": "exploring",
+        "steward_name": "TEMIS editorial team",
+        "start_date": "2026",
+        "related_articles": [
+          "seed:post:innovating-with-wikimedia-decision-making"
+        ],
+        "related_tools": ["seed:tool:wiki-polis"],
+        "related_people": "Lodewijk Gelauff: tool creator and essay author; TEMIS editorial team: steward",
+        "graph_visible": true,
+        "graph_priority": 78
       }
     }
   ],
