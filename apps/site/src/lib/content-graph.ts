@@ -343,6 +343,15 @@ function taxonomyKind(term: TaxonomyTermEntry) {
 }
 
 function taxonomyData(term: TaxonomyTermEntry) {
+  if (typeof term.data === "string") {
+    try {
+      const data = JSON.parse(term.data);
+      return isRecord(data) ? data : {};
+    } catch {
+      return {};
+    }
+  }
+
   return isRecord(term.data) ? term.data : {};
 }
 

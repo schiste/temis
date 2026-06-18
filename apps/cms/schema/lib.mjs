@@ -288,6 +288,74 @@ export function seedContentRows(contract) {
   );
 }
 
+const taxonomyManagedCollections = new Set([
+  "initiatives",
+  "posts",
+  "publications",
+  "tools",
+]);
+
+export function taxonomyManagedContentEntries(contract) {
+  const managedKeys = new Set();
+
+  for (const { collectionSlug, entry } of seedContentRows(contract)) {
+    if (!taxonomyManagedCollections.has(collectionSlug)) continue;
+    managedKeys.add(`${collectionSlug}:${entry.slug}`);
+  }
+
+  for (const assignment of contract.siteSchema.taxonomyAssignments ?? []) {
+    if (!taxonomyManagedCollections.has(assignment.collection)) continue;
+    managedKeys.add(`${assignment.collection}:${assignment.slug}`);
+  }
+
+  return [...managedKeys].map((key) => {
+    const separatorIndex = key.indexOf(":");
+    return {
+      collection: key.slice(0, separatorIndex),
+      slug: key.slice(separatorIndex + 1),
+    };
+  });
+}
+
+export function desiredTaxonomyAssignmentMap(
+  contract,
+  contentRows,
+  termsByKey,
+) {
+  const desired = new Map();
+
+  for (const entry of taxonomyManagedContentEntries(contract)) {
+    const content = (contentRows.get(entry.collection) ?? []).find(
+      (row) => row.slug === entry.slug,
+    );
+    if (!content) continue;
+
+    desired.set(`${entry.collection}:${content.id}`, {
+      collection: entry.collection,
+      content,
+      slug: entry.slug,
+      termIds: new Set(),
+    });
+  }
+
+  for (const assignment of contract.siteSchema.taxonomyAssignments ?? []) {
+    const content = (contentRows.get(assignment.collection) ?? []).find(
+      (row) => row.slug === assignment.slug,
+    );
+    const term = termsByKey.get(
+      `${assignment.taxonomy}:${assignment.termSlug}`,
+    );
+    if (!content || !term) continue;
+
+    const desiredEntry = desired.get(`${assignment.collection}:${content.id}`);
+    if (desiredEntry) {
+      desiredEntry.termIds.add(term.id);
+    }
+  }
+
+  return desired;
+}
+
 export function contentFieldSlugs(collection) {
   return new Set(collection.fields.map((field) => field.slug));
 }
@@ -613,6 +681,20 @@ export function taxonomyTermId(term) {
   return `schema:taxonomy:${term.taxonomy}:${term.slug}`;
 }
 
+export function taxonomyTermData(term) {
+  const data = {
+    accent: term.accent ?? null,
+    description: term.description ?? null,
+    priority: term.priority ?? null,
+  };
+
+  if (term.graph_visible !== undefined) {
+    data.graph_visible = term.graph_visible;
+  }
+
+  return data;
+}
+
 export function compareTaxonomySchema(contract, state) {
   const failures = [];
   const definitionsByName = new Map(
@@ -654,6 +736,14 @@ export function compareTaxonomySchema(contract, state) {
         `Taxonomy term ${term.taxonomy}/${term.slug} label drift: expected ${term.label}, got ${actual.label}`,
       );
     }
+
+    const expectedData = normalizeJsonValue(taxonomyTermData(term));
+    const actualData = normalizeJsonValue(actual.data);
+    if (String(actualData ?? "") !== String(expectedData ?? "")) {
+      failures.push(
+        `Taxonomy term ${term.taxonomy}/${term.slug} data drift: expected ${expectedData}, got ${actual.data}`,
+      );
+    }
   }
 
   return { failures, warnings: [] };
@@ -669,6 +759,7 @@ export function compareRelationshipSchema(
   const termsByKey = new Map(
     taxonomyState.terms.map((term) => [`${term.name}:${term.slug}`, term]),
   );
+  const termsById = new Map(taxonomyState.terms.map((term) => [term.id, term]));
   const bylineBySlug = new Map(
     bylineState.bylines.map((row) => [row.slug, row]),
   );
@@ -706,6 +797,24 @@ export function compareRelationshipSchema(
         `Missing taxonomy assignment: ${assignment.collection}/${assignment.slug} -> ${assignment.taxonomy}/${assignment.termSlug}`,
       );
     }
+  }
+
+  const desiredAssignments = desiredTaxonomyAssignmentMap(
+    contract,
+    contentRows,
+    termsByKey,
+  );
+
+  for (const assignment of taxonomyState.assignments) {
+    const desired = desiredAssignments.get(
+      `${assignment.collection}:${assignment.entry_id}`,
+    );
+    if (!desired || desired.termIds.has(assignment.taxonomy_id)) continue;
+
+    const term = termsById.get(assignment.taxonomy_id);
+    failures.push(
+      `Extra taxonomy assignment: ${desired.collection}/${desired.slug} -> ${term?.name ?? "unknown"}/${term?.slug ?? assignment.taxonomy_id}`,
+    );
   }
 
   for (const assignment of contract.siteSchema.contentBylines ?? []) {

@@ -8,6 +8,7 @@ import {
   contentRowValues,
   createDbAdapter,
   createContentTableStatements,
+  desiredTaxonomyAssignmentMap,
   fieldMetadata,
   fieldMetadataDiffers,
   fieldValueForSql,
@@ -30,6 +31,7 @@ import {
   sqlLiteral,
   taxonomyDefinitions,
   taxonomyTermId,
+  taxonomyTermData,
   upsertSeoSql,
 } from "./lib.mjs";
 
@@ -221,11 +223,7 @@ async function applyTaxonomies() {
       )} AND slug = ${sqlLiteral(term.slug)}`,
     );
     const id = rows[0]?.id ?? taxonomyTermId(term);
-    const data = {
-      accent: term.accent ?? null,
-      description: term.description ?? null,
-      priority: term.priority ?? null,
-    };
+    const data = taxonomyTermData(term);
 
     if (rows.length === 0) {
       await db.exec(
@@ -416,6 +414,31 @@ async function applyRelationships(contentRows) {
     );
     applied.push(
       `assigned ${assignment.collection}/${assignment.slug} to ${assignment.taxonomy}/${assignment.termSlug}`,
+    );
+  }
+
+  const nextTaxonomyState = await readTaxonomyState(db);
+  const desiredAssignments = desiredTaxonomyAssignmentMap(
+    contract,
+    contentRows,
+    termsByKey,
+  );
+
+  for (const assignment of nextTaxonomyState.assignments) {
+    const desired = desiredAssignments.get(
+      `${assignment.collection}:${assignment.entry_id}`,
+    );
+    if (!desired || desired.termIds.has(assignment.taxonomy_id)) continue;
+
+    await db.exec(
+      `DELETE FROM content_taxonomies WHERE collection = ${sqlLiteral(
+        assignment.collection,
+      )} AND entry_id = ${sqlLiteral(
+        assignment.entry_id,
+      )} AND taxonomy_id = ${sqlLiteral(assignment.taxonomy_id)}`,
+    );
+    applied.push(
+      `removed stale taxonomy ${desired.collection}/${desired.slug} ${assignment.taxonomy_id}`,
     );
   }
 
