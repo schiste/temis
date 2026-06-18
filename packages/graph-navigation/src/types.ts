@@ -4,6 +4,7 @@ export type GraphNavigationVersion = typeof graphNavigationVersion;
 export type GraphNavigationScope = "global" | "page";
 export type GraphNavigationNodeType =
   | "content"
+  | "initiative"
   | "publication"
   | "research_paper"
   | "topic"
@@ -18,7 +19,9 @@ export type GraphNavigationEdgeType =
   | "mentions_tool"
   | "documents_tool"
   | "references_publication"
-  | "implements_publication";
+  | "implements_publication"
+  | "advances_initiative"
+  | "supports_initiative";
 
 export interface GraphNavigationNodeMetaInput {
   datetime?: string | null;

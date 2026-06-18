@@ -11,8 +11,9 @@ The package owns:
 - A static Astro renderer with accessible HTML links.
 
 The plugin intentionally does not own EmDash schema setup. EmDash should provide
-published graph data; this package turns content, topic, tag, author, and tool
-records into a stable navigation snapshot and renderer input.
+published graph data; this package turns content, initiative, topic, tag,
+author, publication, and tool records into a stable navigation snapshot and
+renderer input.
 
 ## V1 Shape
 
@@ -37,5 +38,6 @@ const graph = withGraphNavigationLayout(snapshot);
 <GraphNavigation graph={graph} />
 ```
 
-V1 nodes are typed as `content`, `topic`, `tag`, `author`, or `tool`. Tool nodes
-can be included in the graph without adding a top-level public tools menu.
+V1 nodes are typed as `content`, `initiative`, `topic`, `tag`, `author`,
+`publication`, `research_paper`, or `tool`. Tool and initiative nodes can be
+included in the graph without requiring a top-level public menu item.
