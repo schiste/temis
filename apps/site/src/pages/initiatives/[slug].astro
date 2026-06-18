@@ -15,10 +15,15 @@ import {
   entrySlug,
   entrySummary,
   entryTitle,
+  getBylines,
   getInitiativeBySlug,
   getInitiatives,
   getSiteTexts,
+  getPosts,
+  getPublications,
+  getTools,
 } from "../../lib/emdash";
+import { buildInitiativeDossier } from "../../lib/initiative-dossier";
 
 export async function getStaticPaths() {
   const initiatives = await getInitiatives();
@@ -39,16 +44,38 @@ const title = entryTitle(resolvedInitiative);
 const description =
   entryDescription(resolvedInitiative) || entrySummary(resolvedInitiative);
 const copy = await getSiteTexts({
+  initiativeArticlesHeading: "Articles",
+  initiativeDesiredOutcomeLabel: "Desired outcome",
+  initiativeFocusQuestionLabel: "Focus question",
   initiativeGraphHeading: "Navigation graph",
   initiativeGraphLabel: "Graph navigation from this initiative",
   initiativeHeroEyebrow: "Initiative",
+  initiativePeopleHeading: "People",
+  initiativePublicationsHeading: "Publications",
+  initiativeScopeNoteLabel: "Scope",
   initiativeStartLabel: "Started",
   initiativeStatusLabel: "Status",
   initiativeStewardLabel: "Steward",
+  initiativeToolsHeading: "Tools",
   initiativeTypeLabel: "Type",
+  initiativeWhyNowLabel: "Why now",
 });
 const graph = await getFocusedContentGraphSnapshot(
   initiativeGraphNodeId(resolvedInitiative),
+);
+const [posts, publications, tools, bylines] = await Promise.all([
+  getPosts(),
+  getPublications(),
+  getTools(),
+  getBylines(),
+]);
+const dossier = buildInitiativeDossier(
+  resolvedInitiative,
+  posts,
+  publications,
+  tools,
+  bylines,
+  copy,
 );
 const metadataItems = [
   {
@@ -85,7 +112,107 @@ const metadataItems = [
         description={description}
       />
       <MetadataRow items={metadataItems} />
+
+      {
+        dossier.briefItems.length > 0 && (
+          <section class="ds-initiative-section ds-initiative-section--brief">
+            <dl class="ds-initiative-brief-list">
+              {dossier.briefItems.map((item) => (
+                <div>
+                  <dt>{item.label}</dt>
+                  <dd>{item.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        )
+      }
+
       <RichContent value={resolvedInitiative.description} variant="article" />
+
+      {
+        dossier.articles.length > 0 && (
+          <section class="ds-initiative-section">
+            <div class="ds-initiative-section__header">
+              <h2>{copy.initiativeArticlesHeading}</h2>
+            </div>
+            <div class="ds-initiative-link-list">
+              {dossier.articles.map((item) => (
+                <a class="ds-initiative-link-card" href={item.href}>
+                  <span>{item.kind}</span>
+                  <strong>{item.label}</strong>
+                  {item.description && <em>{item.description}</em>}
+                </a>
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      {
+        dossier.tools.length > 0 && (
+          <section class="ds-initiative-section">
+            <div class="ds-initiative-section__header">
+              <h2>{copy.initiativeToolsHeading}</h2>
+            </div>
+            <div class="ds-initiative-link-list">
+              {dossier.tools.map((item) => (
+                <a class="ds-initiative-link-card" href={item.href}>
+                  <span>{item.kind}</span>
+                  <strong>{item.label}</strong>
+                  {item.description && <em>{item.description}</em>}
+                </a>
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      {
+        dossier.publications.length > 0 && (
+          <section class="ds-initiative-section">
+            <div class="ds-initiative-section__header">
+              <h2>{copy.initiativePublicationsHeading}</h2>
+            </div>
+            <div class="ds-initiative-link-list">
+              {dossier.publications.map((item) => (
+                <a class="ds-initiative-link-card" href={item.href}>
+                  <span>{item.kind}</span>
+                  <strong>{item.label}</strong>
+                  {item.description && <em>{item.description}</em>}
+                </a>
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      {
+        dossier.people.length > 0 && (
+          <section class="ds-initiative-section">
+            <div class="ds-initiative-section__header">
+              <h2>{copy.initiativePeopleHeading}</h2>
+            </div>
+            <div class="ds-initiative-link-list ds-initiative-link-list--people">
+              {dossier.people.map((item) =>
+                item.href ? (
+                  <a class="ds-initiative-link-card" href={item.href}>
+                    <span>{item.kind}</span>
+                    <strong>{item.label}</strong>
+                    {item.description && <em>{item.description}</em>}
+                  </a>
+                ) : (
+                  <div class="ds-initiative-link-card">
+                    <span>{item.kind}</span>
+                    <strong>{item.label}</strong>
+                    {item.description && <em>{item.description}</em>}
+                  </div>
+                ),
+              )}
+            </div>
+          </section>
+        )
+      }
     </article>
     <ContentGraphRail
       graph={graph}
