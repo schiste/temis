@@ -12,7 +12,7 @@ import {
   type PostEntry,
   type ToolEntry,
 } from "./emdash";
-import { relatedPeopleReferences, relatedRecordIds } from "./relations";
+import { relatedPeopleReferences, resolveRelatedRecords } from "./relations";
 
 // Site-text labels consumed when assembling the tool dossier view-model.
 // Declaring only the keys this builder reads keeps it decoupled from the full
@@ -252,14 +252,15 @@ export function buildToolDossier(
         }
       : null,
   ].filter((item): item is { label: string; value: string } => Boolean(item));
-  const relatedPostIds = new Set(relatedRecordIds(tool.related_articles));
-  const relatedPosts = posts
-    .filter((post) => post.id && relatedPostIds.has(post.id))
-    .map((post) => ({
-      description: entryDescription(post),
-      href: blogHref(post),
-      label: entryTitle(post),
-    }));
+  const relatedPosts = resolveRelatedRecords(
+    tool.related_articles,
+    posts,
+    "posts",
+  ).map((post) => ({
+    description: entryDescription(post),
+    href: blogHref(post),
+    label: entryTitle(post),
+  }));
   const bylineById = new Map(bylines.map((byline) => [byline.id, byline]));
   const bylineBySlug = new Map(
     bylines.map((byline) => [entryBylineSlug(byline), byline]),

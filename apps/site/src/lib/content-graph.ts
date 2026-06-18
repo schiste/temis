@@ -41,7 +41,7 @@ import {
   type SnapshotRow,
   type ToolEntry,
 } from "./emdash";
-import { relatedPeopleReferences, relatedRecordIds } from "./relations";
+import { relatedPeopleReferences, resolveRelatedRecords } from "./relations";
 
 interface ContentBylineEntry extends SnapshotRow {
   byline_id?: string | null;
@@ -565,13 +565,15 @@ function attachTaxonomyEdges(
 
 function attachToolEdges(tools: ToolEntry[], posts: PostEntry[]) {
   const edges: GraphNavigationEdgeInput[] = [];
-  const postIds = new Set(posts.map((post) => post.id));
 
   for (const tool of tools) {
-    for (const postId of relatedRecordIds(tool.related_articles)) {
-      if (!postIds.has(postId)) continue;
+    for (const post of resolveRelatedRecords(
+      tool.related_articles,
+      posts,
+      "posts",
+    )) {
       edges.push(
-        edge(`tool:${tool.id}`, `content:${postId}`, "documents_tool", 50),
+        edge(`tool:${tool.id}`, `content:${post.id}`, "documents_tool", 50),
       );
     }
   }
@@ -585,19 +587,17 @@ function attachPublicationEdges(
   tools: ToolEntry[],
 ) {
   const edges: GraphNavigationEdgeInput[] = [];
-  const postIds = new Set(posts.map((post) => post.id));
-  const publicationIds = new Set(
-    publications.map((publication) => publication.id),
-  );
-  const toolIds = new Set(tools.map((tool) => tool.id));
 
   for (const post of posts) {
-    for (const publicationId of relatedRecordIds(post.related_publications)) {
-      if (!publicationIds.has(publicationId)) continue;
+    for (const publication of resolveRelatedRecords(
+      post.related_publications,
+      publications,
+      "publications",
+    )) {
       edges.push(
         edge(
           `content:${post.id}`,
-          `publication:${publicationId}`,
+          `publication:${publication.id}`,
           "references_publication",
           50,
         ),
@@ -606,12 +606,15 @@ function attachPublicationEdges(
   }
 
   for (const tool of tools) {
-    for (const publicationId of relatedRecordIds(tool.related_publications)) {
-      if (!publicationIds.has(publicationId)) continue;
+    for (const publication of resolveRelatedRecords(
+      tool.related_publications,
+      publications,
+      "publications",
+    )) {
       edges.push(
         edge(
           `tool:${tool.id}`,
-          `publication:${publicationId}`,
+          `publication:${publication.id}`,
           "implements_publication",
           50,
         ),
@@ -620,24 +623,30 @@ function attachPublicationEdges(
   }
 
   for (const publication of publications) {
-    for (const postId of relatedRecordIds(publication.related_articles)) {
-      if (!postIds.has(postId)) continue;
+    for (const post of resolveRelatedRecords(
+      publication.related_articles,
+      posts,
+      "posts",
+    )) {
       edges.push(
         edge(
           `publication:${publication.id}`,
-          `content:${postId}`,
+          `content:${post.id}`,
           "references_publication",
           50,
         ),
       );
     }
 
-    for (const toolId of relatedRecordIds(publication.related_tools)) {
-      if (!toolIds.has(toolId)) continue;
+    for (const tool of resolveRelatedRecords(
+      publication.related_tools,
+      tools,
+      "tools",
+    )) {
       edges.push(
         edge(
           `publication:${publication.id}`,
-          `tool:${toolId}`,
+          `tool:${tool.id}`,
           "implements_publication",
           50,
         ),

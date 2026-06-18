@@ -3,6 +3,18 @@ export interface RelatedPersonReference {
   label: string;
 }
 
+type RelatedRecord = {
+  id?: unknown;
+  slug?: unknown;
+};
+
+const seedCollectionNames: Record<string, string> = {
+  pages: "page",
+  posts: "post",
+  publications: "publication",
+  tools: "tool",
+};
+
 function cleanText(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
@@ -34,9 +46,51 @@ export function relatedRecordIds(value: unknown) {
       if (typeof item === "string") return item;
       if (!item || typeof item !== "object") return "";
       const record = item as Record<string, unknown>;
-      return cleanText(record.id) || cleanText(record.reference_id);
+      return (
+        cleanText(record.id) ||
+        cleanText(record.reference_id) ||
+        cleanText(record.slug)
+      );
     })
     .filter(Boolean);
+}
+
+function recordReferenceKeys(record: RelatedRecord, collection: string) {
+  const keys = new Set<string>();
+  const id = cleanText(record.id);
+  const slug = cleanText(record.slug);
+  const seedCollection = seedCollectionNames[collection] ?? collection;
+
+  if (id) keys.add(id);
+  if (slug) {
+    keys.add(slug);
+    keys.add(`seed:${seedCollection}:${slug}`);
+  }
+
+  return keys;
+}
+
+export function resolveRelatedRecords<T extends RelatedRecord>(
+  value: unknown,
+  records: T[],
+  collection: string,
+) {
+  const byReference = new Map<string, T>();
+
+  for (const record of records) {
+    for (const key of recordReferenceKeys(record, collection)) {
+      if (!byReference.has(key)) byReference.set(key, record);
+    }
+  }
+
+  const resolved = new Map<string, T>();
+  for (const reference of relatedRecordIds(value)) {
+    const record = byReference.get(reference);
+    const id = record ? cleanText(record.id) : "";
+    if (record && id) resolved.set(id, record);
+  }
+
+  return [...resolved.values()];
 }
 
 export function relatedPeopleReferences(value: unknown) {
