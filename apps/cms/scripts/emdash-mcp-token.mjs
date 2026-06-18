@@ -246,11 +246,12 @@ async function apiRequest(options, path, init = {}) {
     },
   });
 
+  const body = await response.text();
   let payload;
   try {
-    payload = await response.json();
+    payload = body ? JSON.parse(body) : {};
   } catch {
-    payload = { error: { message: await response.text() } };
+    payload = { error: { message: body } };
   }
 
   if (!response.ok) {
