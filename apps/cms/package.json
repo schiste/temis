@@ -10,6 +10,8 @@
     "deploy": "pnpm run build && wrangler deploy",
     "preview": "astro preview",
     "seed": "node ./scripts/seed-native-seo.mjs",
+    "mcp:check": "node ./scripts/check-mcp-readiness.mjs",
+    "mcp:check:auth": "node ./scripts/check-mcp-readiness.mjs --require-auth",
     "type-check": "astro check"
   },
   "dependencies": {
