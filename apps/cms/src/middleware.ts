@@ -15,12 +15,20 @@ import {
   type McpQualityFailure,
   type McpToolCallBatch,
 } from "./mcp-quality";
+import {
+  createCurrentUserToken,
+  errorResponse,
+  listCurrentUserTokens,
+  revokeCurrentUserToken,
+} from "./temis-mcp-tokens";
 
 interface PublishableLocals {
   emdash?: ContentGetter;
   tokenScopes?: string[];
   user?: unknown;
 }
+
+const MCP_TOKENS_ENDPOINT_PATH = `${MCP_ENDPOINT_PATH}/tokens`;
 
 function publishTarget(pathname: string) {
   const match = pathname.match(
@@ -71,7 +79,45 @@ async function mcpPublishFailures(
   return failures;
 }
 
+function tokenIdFromPath(pathname: string) {
+  const match = pathname.match(/^\/_emdash\/api\/mcp\/tokens\/([^/]+)\/?$/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+async function mcpTokenRouteResponse(request: Request, locals: unknown) {
+  const { method } = request;
+  const { pathname } = new URL(request.url);
+
+  if (pathname === MCP_TOKENS_ENDPOINT_PATH) {
+    if (method === "GET") return listCurrentUserTokens(locals);
+    if (method === "POST") {
+      try {
+        return createCurrentUserToken(locals, await request.json());
+      } catch {
+        return errorResponse(
+          400,
+          "INVALID_JSON",
+          "Request body must be valid JSON.",
+        );
+      }
+    }
+  }
+
+  const tokenId = tokenIdFromPath(pathname);
+  if (tokenId && method === "DELETE") {
+    return revokeCurrentUserToken(locals, tokenId);
+  }
+
+  return null;
+}
+
 export const onRequest = defineMiddleware(async (context, next) => {
+  const tokenResponse = await mcpTokenRouteResponse(
+    context.request,
+    context.locals,
+  );
+  if (tokenResponse) return tokenResponse;
+
   if (context.request.method !== "POST") return next();
 
   const locals = context.locals as PublishableLocals;
