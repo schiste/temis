@@ -2,6 +2,7 @@ export const graphNavigationVersion = "temis.graph-navigation.v1" as const;
 
 export type GraphNavigationVersion = typeof graphNavigationVersion;
 export type GraphNavigationScope = "global" | "page";
+export type GraphNavigationMode = "overview" | "content" | "focus";
 export type GraphNavigationNodeType =
   | "content"
   | "initiative"
@@ -37,6 +38,7 @@ export interface GraphNavigationNodeInput {
   id: string;
   label?: string | null;
   meta?: GraphNavigationNodeMetaInput[] | null;
+  modes?: GraphNavigationMode[] | null;
   priority?: number | null;
   shortDescription?: string | null;
   slug?: string | null;
@@ -70,6 +72,7 @@ export interface GraphNavigationNode {
   id: string;
   label: string;
   meta: GraphNavigationNodeMeta[];
+  modes: GraphNavigationMode[];
   priority: number;
   slug: string;
   type: GraphNavigationNodeType;

@@ -2,6 +2,7 @@
 import { hashText } from "../geometry";
 import { withGraphNavigationLayout } from "../layout";
 import type {
+  GraphNavigationMode,
   GraphNavigationNodeType,
   GraphNavigationSnapshot,
 } from "../types";
@@ -11,16 +12,22 @@ export interface Props {
   graph: GraphNavigationSnapshot;
   heading?: string;
   label?: string;
+  defaultMode?: GraphNavigationMode;
+  showControls?: boolean;
   showDetails?: boolean;
+  showLegend?: boolean;
   variant?: "default" | "compact";
 }
 
 const {
   graph,
+  defaultMode = graph.scope === "global" ? "overview" : "focus",
   heading = "Content graph",
   label = "Content graph navigation",
-  showDetails = true,
   variant = "default",
+  showControls = variant !== "compact" && graph.scope === "global",
+  showDetails = true,
+  showLegend = variant !== "compact",
 } = Astro.props;
 const showNodeMeta = variant !== "compact";
 const nodeTypeLabels: Record<GraphNavigationNodeType, string> = {
@@ -43,6 +50,30 @@ const nodeTypeShortLabels: Record<GraphNavigationNodeType, string> = {
   tool: "T",
   topic: "+",
 };
+const nodeTypeGroupLabels: Record<GraphNavigationNodeType, string> = {
+  author: "People",
+  content: "Articles",
+  initiative: "Initiatives",
+  publication: "Publications",
+  research_paper: "Publications",
+  tag: "Topics",
+  tool: "Tools",
+  topic: "Topics",
+};
+const modeLabels: Record<GraphNavigationMode, string> = {
+  overview: "Overview",
+  content: "Content",
+  focus: "Focus",
+};
+const modeDescriptions: Record<GraphNavigationMode, string> = {
+  overview: "Initiatives, topics, tags, and major tools",
+  content: "All published graph records",
+  focus: "Selected node and direct neighbors",
+};
+const graphModes: GraphNavigationMode[] = ["overview", "content", "focus"];
+const resolvedDefaultMode = graphModes.includes(defaultMode)
+  ? defaultMode
+  : "overview";
 const laidOutGraph = withGraphNavigationLayout(graph);
 const visualNodes = laidOutGraph.nodes.map(toVisualNode);
 const nodesById = new Map(visualNodes.map((node) => [node.id, node]));
@@ -54,6 +85,7 @@ const edges: VisualGraphEdge[] = laidOutGraph.edges
 
     return {
       ...edge,
+      modes: sourceNode.modes.filter((mode) => targetNode.modes.includes(mode)),
       path: edgePath(edge.id, sourceNode, targetNode),
       sourceNode,
       targetNode,
@@ -61,6 +93,10 @@ const edges: VisualGraphEdge[] = laidOutGraph.edges
   })
   .filter((edge): edge is VisualGraphEdge => edge !== null);
 const relatedNodesById = new Map<string, typeof visualNodes>();
+const relatedEdgesById = new Map<
+  string,
+  { edge: VisualGraphEdge; node: (typeof visualNodes)[number] }[]
+>();
 
 for (const edge of edges) {
   if (!edge.sourceNode || !edge.targetNode) continue;
@@ -73,12 +109,29 @@ for (const edge of edges) {
     ...(relatedNodesById.get(edge.target) ?? []),
     edge.sourceNode,
   ]);
+  relatedEdgesById.set(edge.source, [
+    ...(relatedEdgesById.get(edge.source) ?? []),
+    { edge, node: edge.targetNode },
+  ]);
+  relatedEdgesById.set(edge.target, [
+    ...(relatedEdgesById.get(edge.target) ?? []),
+    { edge, node: edge.sourceNode },
+  ]);
+}
+
+function nodeSupportsMode(
+  node: (typeof visualNodes)[number],
+  mode: GraphNavigationMode,
+) {
+  if (mode === "focus") return true;
+  return node.modes.includes(mode);
 }
 
 const initialDetailNodeId =
   laidOutGraph.currentNodeId && nodesById.has(laidOutGraph.currentNodeId)
     ? laidOutGraph.currentNodeId
-    : visualNodes[0]?.id;
+    : (visualNodes.find((node) => nodeSupportsMode(node, resolvedDefaultMode))
+        ?.id ?? visualNodes[0]?.id);
 function nodeAnchorX(x: number) {
   if (x < 18) return "left";
   if (x > 82) return "right";
@@ -92,13 +145,41 @@ function nodeAnchorY(y: number) {
 }
 
 const detailPanels = showDetails
-  ? visualNodes.map((node) => ({
-      node,
-      relatedNodes: [...(relatedNodesById.get(node.id) ?? [])].sort((a, b) => {
-        if (a.priority !== b.priority) return b.priority - a.priority;
-        return a.label.localeCompare(b.label);
-      }),
-    }))
+  ? visualNodes.map((node) => {
+      const groupedRelatedNodes = new Map<
+        string,
+        (typeof visualNodes)[number][]
+      >();
+
+      for (const related of relatedEdgesById.get(node.id) ?? []) {
+        const groupLabel = nodeTypeGroupLabels[related.node.type];
+        groupedRelatedNodes.set(groupLabel, [
+          ...(groupedRelatedNodes.get(groupLabel) ?? []),
+          related.node,
+        ]);
+      }
+
+      const relatedGroups = [...groupedRelatedNodes]
+        .map(([groupLabel, nodes]) => ({
+          groupLabel,
+          nodes: nodes.sort((a, b) => {
+            if (a.priority !== b.priority) return b.priority - a.priority;
+            return a.label.localeCompare(b.label);
+          }),
+        }))
+        .sort((a, b) => a.groupLabel.localeCompare(b.groupLabel));
+
+      return {
+        node,
+        relatedGroups,
+        relatedNodes: [...(relatedNodesById.get(node.id) ?? [])].sort(
+          (a, b) => {
+            if (a.priority !== b.priority) return b.priority - a.priority;
+            return a.label.localeCompare(b.label);
+          },
+        ),
+      };
+    })
   : [];
 const previewPanels = visualNodes
   .filter((node) => node.id !== laidOutGraph.currentNodeId)
@@ -116,6 +197,26 @@ const previewPanels = visualNodes
   });
 const detailRegionId = `temis-graph-details-${hashText(`${heading}:${label}:${laidOutGraph.generatedAt}`)}`;
 const headingId = `temis-graph-heading-${hashText(`${heading}:${label}:${laidOutGraph.generatedAt}`)}`;
+const presentTypes = [...new Set(visualNodes.map((node) => node.type))].sort(
+  (a, b) =>
+    nodeTypeGroupLabels[a].localeCompare(nodeTypeGroupLabels[b]) ||
+    nodeTypeLabels[a].localeCompare(nodeTypeLabels[b]),
+);
+const legendTypes = presentTypes.filter(
+  (type) => type !== "publication" || !presentTypes.includes("research_paper"),
+);
+
+function nodeLabelWeight(node: (typeof visualNodes)[number]) {
+  if (node.id === laidOutGraph.currentNodeId) return "primary";
+  if (node.type === "initiative" || node.type === "topic") return "primary";
+  if (node.type === "tag" && node.priority >= 50) return "primary";
+  if (node.type === "tool" && node.priority >= 60) return "primary";
+  return "secondary";
+}
+
+function modeList(modes: GraphNavigationMode[]) {
+  return modes.join(" ");
+}
 ---
 
 <nav
@@ -124,11 +225,44 @@ const headingId = `temis-graph-heading-${hashText(`${heading}:${label}:${laidOut
     variant === "compact" && "temis-graph-nav--compact",
   ]}
   aria-labelledby={headingId}
+  data-graph-mode={resolvedDefaultMode}
   tabindex="-1"
 >
   <div class="temis-graph-nav__header">
     <h2 id={headingId}>{heading}</h2>
   </div>
+
+  {
+    showControls && (
+      <div class="temis-graph-nav__controls" aria-label="Graph display">
+        <div class="temis-graph-nav__mode-group" role="group" aria-label="Mode">
+          {graphModes.map((mode) => (
+            <button
+              type="button"
+              data-graph-mode-button={mode}
+              aria-pressed={mode === resolvedDefaultMode ? "true" : "false"}
+            >
+              <span>{modeLabels[mode]}</span>
+              <em>{modeDescriptions[mode]}</em>
+            </button>
+          ))}
+        </div>
+        <div
+          class="temis-graph-nav__filter-group"
+          role="group"
+          aria-label="Node filters"
+        >
+          {presentTypes.map((type) => (
+            <label>
+              <input type="checkbox" data-graph-type-filter={type} checked />
+              <span aria-hidden="true">{nodeTypeShortLabels[type]}</span>
+              <strong>{nodeTypeLabels[type]}</strong>
+            </label>
+          ))}
+        </div>
+      </div>
+    )
+  }
 
   <div class="temis-graph-nav__map">
     <svg
@@ -142,6 +276,7 @@ const headingId = `temis-graph-heading-${hashText(`${heading}:${label}:${laidOut
           <path
             d={edge.path}
             data-edge-id={edge.id}
+            data-edge-modes={modeList(edge.modes)}
             data-edge-source={edge.source}
             data-edge-target={edge.target}
           />
@@ -168,6 +303,8 @@ const headingId = `temis-graph-heading-${hashText(`${heading}:${label}:${laidOut
               : undefined
           }
           data-node-id={node.id}
+          data-node-label-weight={nodeLabelWeight(node)}
+          data-node-modes={modeList(node.modes)}
           data-node-type={node.type}
           data-node-x={node.visualX}
           data-node-y={node.visualY}
@@ -178,11 +315,9 @@ const headingId = `temis-graph-heading-${hashText(`${heading}:${label}:${laidOut
           id={`graph-node-${node.slug}`}
           style={`--node-x:${node.visualX};--node-y:${node.visualY};--node-idle-x:${node.idleX}rem;--node-idle-y:${node.idleY}rem;--node-idle-duration:${node.idleDuration}ms;--node-idle-delay:${node.idleDelay}ms;${node.accent ? `--node-accent:${node.accent};` : ""}`}
         >
-          {variant === "compact" && (
-            <span class="temis-graph-nav__node-marker" aria-hidden="true">
-              {nodeTypeShortLabels[node.type]}
-            </span>
-          )}
+          <span class="temis-graph-nav__node-marker" aria-hidden="true">
+            {nodeTypeShortLabels[node.type]}
+          </span>
           <span class="temis-graph-nav__node-label">{node.label}</span>
         </a>
       ))
@@ -264,7 +399,7 @@ const headingId = `temis-graph-heading-${hashText(`${heading}:${label}:${laidOut
         aria-live="polite"
         id={detailRegionId}
       >
-        {detailPanels.map(({ node, relatedNodes }) => (
+        {detailPanels.map(({ node, relatedGroups, relatedNodes }) => (
           <article
             class="temis-graph-nav__detail"
             data-detail-node-id={node.id}
@@ -305,19 +440,45 @@ const headingId = `temis-graph-heading-${hashText(`${heading}:${label}:${laidOut
             {relatedNodes.length > 0 && (
               <div class="temis-graph-nav__detail-related">
                 <p>Related</p>
-                <ul>
-                  {relatedNodes.map((relatedNode) => (
-                    <li>
-                      <a href={relatedNode.href}>{relatedNode.label}</a>
-                      <span>{nodeTypeLabels[relatedNode.type]}</span>
-                    </li>
-                  ))}
-                </ul>
+                {relatedGroups.map((group) => (
+                  <section>
+                    <h4>{group.groupLabel}</h4>
+                    <ul>
+                      {group.nodes.map((relatedNode) => (
+                        <li>
+                          <a href={relatedNode.href}>{relatedNode.label}</a>
+                          <span>{nodeTypeLabels[relatedNode.type]}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                ))}
               </div>
             )}
           </article>
         ))}
       </section>
+    )
+  }
+
+  {
+    showLegend && legendTypes.length > 0 && (
+      <ul class="temis-graph-nav__legend" aria-label="Graph legend">
+        {legendTypes.map((type) => (
+          <li>
+            <span
+              class:list={[
+                "temis-graph-nav__legend-marker",
+                `temis-graph-nav__legend-marker--${type}`,
+              ]}
+              aria-hidden="true"
+            >
+              {nodeTypeShortLabels[type]}
+            </span>
+            <strong>{nodeTypeLabels[type]}</strong>
+          </li>
+        ))}
+      </ul>
     )
   }
 
@@ -389,6 +550,108 @@ const headingId = `temis-graph-heading-${hashText(`${heading}:${label}:${laidOut
     padding-inline-end: var(--ds-space-phi-1, 0.625rem);
   }
 
+  .temis-graph-nav__controls {
+    border-block-end: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line, currentColor);
+    display: grid;
+    gap: 0;
+  }
+
+  .temis-graph-nav__mode-group,
+  .temis-graph-nav__filter-group {
+    display: grid;
+    gap: 0;
+  }
+
+  .temis-graph-nav__mode-group {
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(calc(var(--ds-grid-unit, 2.625rem) * 4), 1fr)
+    );
+  }
+
+  .temis-graph-nav__mode-group button,
+  .temis-graph-nav__filter-group label {
+    background: transparent;
+    border: 0;
+    border-block-end: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line, currentColor);
+    border-inline-end: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line, currentColor);
+    color: var(--ds-color-text, currentColor);
+    display: grid;
+    font: inherit;
+    gap: var(--ds-space-phi-00, 0.25rem);
+    min-height: var(--ds-row-unit, var(--ds-grid-unit, 2.625rem));
+    padding: var(--ds-row-quarter, var(--ds-space-phi-1, 0.625rem));
+    text-align: start;
+  }
+
+  .temis-graph-nav__mode-group button {
+    cursor: pointer;
+  }
+
+  .temis-graph-nav__mode-group button:hover,
+  .temis-graph-nav__mode-group button:focus-visible,
+  .temis-graph-nav__mode-group button[aria-pressed="true"] {
+    background: var(--ds-color-panel, transparent);
+    color: var(--temis-graph-link-active);
+  }
+
+  .temis-graph-nav__mode-group button:focus-visible,
+  .temis-graph-nav__filter-group label:has(input:focus-visible) {
+    outline: var(--ds-stroke-strong, 2px) solid
+      var(--ds-color-focus, currentColor);
+    outline-offset: calc(var(--ds-stroke-strong, 2px) * -1);
+  }
+
+  .temis-graph-nav__mode-group span,
+  .temis-graph-nav__filter-group strong {
+    font-family: var(--ds-font-mono, ui-monospace);
+    font-size: var(--ds-font-size-meta, 0.75rem);
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .temis-graph-nav__mode-group em {
+    color: var(--ds-color-text-muted, currentColor);
+    font-size: var(--ds-font-size-caption, 0.625rem);
+    font-style: normal;
+    line-height: 1.25;
+  }
+
+  .temis-graph-nav__filter-group {
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(calc(var(--ds-grid-unit, 2.625rem) * 3), 1fr)
+    );
+  }
+
+  .temis-graph-nav__filter-group label {
+    align-items: center;
+    cursor: pointer;
+    grid-template-columns: auto auto minmax(0, 1fr);
+  }
+
+  .temis-graph-nav__filter-group input {
+    accent-color: var(--temis-graph-link-active);
+    margin: 0;
+  }
+
+  .temis-graph-nav__filter-group label > span {
+    align-items: center;
+    border: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line-strong, currentColor);
+    display: inline-flex;
+    font-family: var(--ds-font-mono, ui-monospace);
+    font-size: var(--ds-font-size-caption, 0.625rem);
+    font-weight: 700;
+    inline-size: var(--ds-space-phi-3, 1.625rem);
+    justify-content: center;
+    min-block-size: var(--ds-space-phi-3, 1.625rem);
+  }
+
   .temis-graph-nav__map {
     aspect-ratio: 2.618 / 1;
     background:
@@ -431,6 +694,11 @@ const headingId = `temis-graph-heading-${hashText(`${heading}:${label}:${laidOut
     vector-effect: non-scaling-stroke;
   }
 
+  .temis-graph-nav__edges path[hidden],
+  .temis-graph-nav__node[hidden] {
+    display: none;
+  }
+
   .temis-graph-nav__node {
     --node-accent: var(--ds-color-accent, currentColor);
     align-items: center;
@@ -439,6 +707,7 @@ const headingId = `temis-graph-heading-${hashText(`${heading}:${label}:${laidOut
     color: var(--ds-color-text, currentColor);
     cursor: grab;
     display: inline-flex;
+    gap: var(--ds-space-phi-00, 0.25rem);
     font-family: var(--ds-font-mono, ui-monospace);
     font-size: var(--ds-font-size-meta, 0.75rem);
     font-weight: 700;
@@ -500,7 +769,62 @@ const headingId = `temis-graph-heading-${hashText(`${heading}:${label}:${laidOut
   }
 
   .temis-graph-nav__node-marker {
-    display: none;
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: var(--ds-font-size-caption, 0.625rem);
+    inline-size: var(--ds-space-phi-2, 1rem);
+    justify-content: center;
+    line-height: 1;
+  }
+
+  .temis-graph-nav__node[data-node-label-weight="secondary"] {
+    block-size: var(--ds-space-phi-3, 1.625rem);
+    inline-size: var(--ds-space-phi-3, 1.625rem);
+    justify-content: center;
+    max-width: none;
+    min-height: 0;
+    padding: 0;
+  }
+
+  .temis-graph-nav__node[data-node-label-weight="secondary"]
+    .temis-graph-nav__node-marker {
+    inline-size: 100%;
+  }
+
+  .temis-graph-nav__node[data-node-label-weight="secondary"]
+    .temis-graph-nav__node-label {
+    block-size: 1px;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    inline-size: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+  }
+
+  .temis-graph-nav__node[data-node-label-weight="secondary"]:is(
+      :hover,
+      :focus-visible,
+      [data-graph-state="active"],
+      .temis-graph-nav__node--current
+    )
+    .temis-graph-nav__node-label {
+    background: var(--ds-color-surface, Canvas);
+    border: var(--ds-stroke-hairline, 1px) solid var(--node-accent);
+    block-size: auto;
+    clip: auto;
+    clip-path: none;
+    color: var(--ds-color-text, currentColor);
+    inline-size: max-content;
+    inset-block-start: 50%;
+    inset-inline-start: calc(100% + var(--ds-space-phi-00, 0.25rem));
+    max-inline-size: calc(var(--ds-grid-unit, 2.625rem) * 5);
+    overflow: visible;
+    padding: var(--ds-space-phi-00, 0.25rem) var(--ds-space-phi-0, 0.375rem);
+    position: absolute;
+    transform: translateY(-50%);
+    white-space: normal;
   }
 
   .temis-graph-nav__node--content {
@@ -871,6 +1195,22 @@ const headingId = `temis-graph-heading-${hashText(`${heading}:${label}:${laidOut
     grid-column: 1 / -1;
   }
 
+  .temis-graph-nav__detail-related section {
+    display: grid;
+    gap: 0;
+  }
+
+  .temis-graph-nav__detail-related h4 {
+    color: var(--ds-color-text, currentColor);
+    font-family: var(--ds-font-mono, ui-monospace);
+    font-size: var(--ds-font-size-caption, 0.625rem);
+    line-height: 1;
+    margin: 0;
+    min-height: var(--ds-row-half, 1.3125rem);
+    padding-block-start: var(--ds-space-phi-00, 0.25rem);
+    text-transform: uppercase;
+  }
+
   .temis-graph-nav__detail-related ul {
     display: grid;
     gap: 0;
@@ -906,6 +1246,51 @@ const headingId = `temis-graph-heading-${hashText(`${heading}:${label}:${laidOut
 
   .temis-graph-nav__index {
     display: none;
+  }
+
+  .temis-graph-nav__legend {
+    border-block-start: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line, currentColor);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .temis-graph-nav__legend li {
+    align-items: center;
+    border-block-end: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line, currentColor);
+    border-inline-end: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line, currentColor);
+    display: inline-flex;
+    gap: var(--ds-space-phi-00, 0.25rem);
+    min-height: var(--ds-row-half, 1.3125rem);
+    padding-inline: var(--ds-space-phi-0, 0.375rem);
+  }
+
+  .temis-graph-nav__legend-marker {
+    align-items: center;
+    border: var(--ds-stroke-hairline, 1px) solid
+      var(--ds-color-line-strong, currentColor);
+    color: var(--ds-color-text, currentColor);
+    display: inline-flex;
+    font-family: var(--ds-font-mono, ui-monospace);
+    font-size: var(--ds-font-size-caption, 0.625rem);
+    font-weight: 700;
+    inline-size: var(--ds-space-phi-3, 1.625rem);
+    justify-content: center;
+    min-block-size: var(--ds-space-phi-3, 1.625rem);
+  }
+
+  .temis-graph-nav__legend strong {
+    color: var(--ds-color-text-muted, currentColor);
+    font-family: var(--ds-font-mono, ui-monospace);
+    font-size: var(--ds-font-size-caption, 0.625rem);
+    line-height: 1;
+    text-transform: uppercase;
   }
 
   .temis-graph-nav__fallback {

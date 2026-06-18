@@ -150,6 +150,12 @@ function mountGraphNavigation(graph: HTMLElement) {
   const previewPanels = [
     ...graph.querySelectorAll<HTMLElement>("[data-preview-node-id]"),
   ];
+  const modeButtons = [
+    ...graph.querySelectorAll<HTMLButtonElement>("[data-graph-mode-button]"),
+  ];
+  const typeFilters = [
+    ...graph.querySelectorAll<HTMLInputElement>("[data-graph-type-filter]"),
+  ];
   const nodeById = new Map(
     nodes.flatMap((node) =>
       node.dataset.nodeId ? [[node.dataset.nodeId, node] as const] : [],
@@ -176,6 +182,46 @@ function mountGraphNavigation(graph: HTMLElement) {
   let lockedNodeId: string | null = null;
   let resizeFrame = 0;
   let suppressClickNodeId: string | null = null;
+  let activeTypeFilters = new Set(
+    typeFilters
+      .filter((filter) => filter.checked)
+      .map((filter) => filter.dataset.graphTypeFilter)
+      .filter((type): type is string => Boolean(type)),
+  );
+
+  const mode = () => graph.dataset.graphMode ?? "overview";
+
+  const modesForNode = (node: HTMLElement) =>
+    new Set((node.dataset.nodeModes ?? "").split(/\s+/).filter(Boolean));
+
+  const modesForEdge = (edge: SVGPathElement) =>
+    new Set((edge.dataset.edgeModes ?? "").split(/\s+/).filter(Boolean));
+
+  const visibleByFilter = (node: HTMLElement) =>
+    typeFilters.length === 0 ||
+    activeTypeFilters.has(node.dataset.nodeType ?? "");
+
+  const visibleByMode = (node: HTMLElement) => {
+    const currentMode = mode();
+    if (currentMode === "content") return modesForNode(node).has("content");
+    if (currentMode === "overview") return modesForNode(node).has("overview");
+
+    const nodeId = node.dataset.nodeId;
+    const focusNodeId =
+      lockedNodeId ?? graph.dataset.graphActive ?? initialNodeId;
+    if (!nodeId || !focusNodeId) return modesForNode(node).has("overview");
+    return (
+      nodeId === focusNodeId || Boolean(neighbors.get(focusNodeId)?.has(nodeId))
+    );
+  };
+
+  const visibleNodeIds = () =>
+    new Set(
+      nodes
+        .filter((node) => !node.hidden)
+        .map((node) => node.dataset.nodeId)
+        .filter((nodeId): nodeId is string => Boolean(nodeId)),
+    );
 
   const applyPreviewPosition = (nodeId: string, position: NodePosition) => {
     const panel = previewById.get(nodeId);
@@ -239,6 +285,7 @@ function mountGraphNavigation(graph: HTMLElement) {
     const positions = new Map<string, NodePosition>();
 
     for (const node of nodes) {
+      if (node.hidden) continue;
       const nodeId = node.dataset.nodeId;
       if (!nodeId) continue;
 
@@ -278,6 +325,7 @@ function mountGraphNavigation(graph: HTMLElement) {
 
       for (let aIndex = 0; aIndex < nodes.length; aIndex += 1) {
         const nodeA = nodes[aIndex];
+        if (nodeA.hidden) continue;
         const idA = nodeA.dataset.nodeId;
         const measureA = measures.get(nodeA);
         const positionA = idA ? positions.get(idA) : null;
@@ -285,6 +333,7 @@ function mountGraphNavigation(graph: HTMLElement) {
 
         for (let bIndex = aIndex + 1; bIndex < nodes.length; bIndex += 1) {
           const nodeB = nodes[bIndex];
+          if (nodeB.hidden) continue;
           const idB = nodeB.dataset.nodeId;
           const measureB = measures.get(nodeB);
           const positionB = idB ? positions.get(idB) : null;
@@ -340,6 +389,7 @@ function mountGraphNavigation(graph: HTMLElement) {
     }
 
     for (const node of nodes) {
+      if (node.hidden) continue;
       const nodeId = node.dataset.nodeId;
       const position = nodeId ? positions.get(nodeId) : null;
       if (!nodeId || !position) continue;
@@ -386,6 +436,15 @@ function mountGraphNavigation(graph: HTMLElement) {
     }
   };
 
+  const applyModeButtons = () => {
+    for (const button of modeButtons) {
+      button.setAttribute(
+        "aria-pressed",
+        button.dataset.graphModeButton === mode() ? "true" : "false",
+      );
+    }
+  };
+
   for (const node of nodes) {
     const nodeId = node.dataset.nodeId;
     if (!nodeId) continue;
@@ -421,6 +480,41 @@ function mountGraphNavigation(graph: HTMLElement) {
     }
   };
 
+  const applyVisibility = () => {
+    const currentMode = mode();
+    const activeNodeId =
+      graph.dataset.graphActive ?? lockedNodeId ?? initialNodeId;
+
+    for (const node of nodes) {
+      node.hidden = !visibleByFilter(node) || !visibleByMode(node);
+    }
+
+    const visibleIds = visibleNodeIds();
+    for (const edge of edges) {
+      const source = edge.dataset.edgeSource;
+      const target = edge.dataset.edgeTarget;
+      const visible =
+        Boolean(
+          source && target && visibleIds.has(source) && visibleIds.has(target),
+        ) &&
+        (currentMode === "focus"
+          ? source === activeNodeId || target === activeNodeId
+          : modesForEdge(edge).has(currentMode));
+      edge.toggleAttribute("hidden", !visible);
+    }
+
+    for (const panel of previewPanels) {
+      const nodeId = panel.dataset.previewNodeId;
+      if (nodeId && !visibleIds.has(nodeId)) panel.hidden = true;
+    }
+
+    applyModeButtons();
+    scheduleCollisionPass({
+      resetToNatural: !dragState,
+      updateNatural: !dragState,
+    });
+  };
+
   const clearGraphState = () => {
     graph.removeAttribute("data-graph-active");
     setExpandedNode(initialNodeId);
@@ -431,9 +525,18 @@ function mountGraphNavigation(graph: HTMLElement) {
     for (const indexLink of indexLinks) {
       indexLink.removeAttribute("data-index-state");
     }
+    applyVisibility();
   };
 
   const activateNode = (nodeId: string) => {
+    const activeNode = nodeById.get(nodeId);
+    if (
+      activeNode &&
+      (!visibleByFilter(activeNode) || !visibleByMode(activeNode))
+    ) {
+      return;
+    }
+
     const relatedNodes = neighbors.get(nodeId) ?? new Set();
     graph.dataset.graphActive = nodeId;
     setExpandedNode(nodeId);
@@ -470,6 +573,8 @@ function mountGraphNavigation(graph: HTMLElement) {
         edge.removeAttribute("data-graph-state");
       }
     }
+
+    applyVisibility();
   };
 
   const unlock = () => {
@@ -484,6 +589,49 @@ function mountGraphNavigation(graph: HTMLElement) {
     activateNode(nodeId);
     showPreviewPanel(nodeId);
   };
+
+  const setMode = (nextMode: string) => {
+    graph.dataset.graphMode = nextMode;
+
+    if (nextMode === "focus") {
+      const focusNodeId =
+        lockedNodeId ?? graph.dataset.graphActive ?? initialNodeId;
+      if (focusNodeId) activateNode(focusNodeId);
+      else applyVisibility();
+      return;
+    }
+
+    if (lockedNodeId) {
+      activateNode(lockedNodeId);
+    } else {
+      clearGraphState();
+    }
+  };
+
+  for (const button of modeButtons) {
+    button.addEventListener("click", () => {
+      const nextMode = button.dataset.graphModeButton;
+      if (!nextMode) return;
+      setMode(nextMode);
+    });
+  }
+
+  for (const filter of typeFilters) {
+    filter.addEventListener("change", () => {
+      activeTypeFilters = new Set(
+        typeFilters
+          .filter((item) => item.checked)
+          .map((item) => item.dataset.graphTypeFilter)
+          .filter((type): type is string => Boolean(type)),
+      );
+      const lockedNode = lockedNodeId ? nodeById.get(lockedNodeId) : null;
+      if (lockedNode && !visibleByFilter(lockedNode)) {
+        unlock();
+      } else {
+        applyVisibility();
+      }
+    });
+  }
 
   for (const panel of previewPanels) {
     const closeButton = panel.querySelector<HTMLButtonElement>("button");
@@ -710,7 +858,7 @@ function mountGraphNavigation(graph: HTMLElement) {
     });
   }
 
-  scheduleCollisionPass({ resetToNatural: true });
+  applyVisibility();
   document.fonts?.ready
     .then(() => {
       scheduleCollisionPass({

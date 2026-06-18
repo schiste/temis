@@ -3,6 +3,7 @@ import {
   type GraphNavigationEdge,
   type GraphNavigationEdgeInput,
   type GraphNavigationEdgeType,
+  type GraphNavigationMode,
   type GraphNavigationNode,
   type GraphNavigationNodeInput,
   type GraphNavigationNodeMeta,
@@ -34,6 +35,12 @@ const edgeTypes = new Set<GraphNavigationEdgeType>([
   "implements_publication",
   "advances_initiative",
   "supports_initiative",
+]);
+
+const graphModes = new Set<GraphNavigationMode>([
+  "overview",
+  "content",
+  "focus",
 ]);
 
 function isVisible(value: GraphNavigationNodeInput | GraphNavigationEdgeInput) {
@@ -122,6 +129,30 @@ function normalizeNodeType(
   return value && nodeTypes.has(value) ? value : "topic";
 }
 
+function defaultModesForNode(
+  type: GraphNavigationNodeType,
+  priority: number,
+): GraphNavigationMode[] {
+  const overview =
+    type === "initiative" ||
+    type === "topic" ||
+    type === "tag" ||
+    (type === "tool" && priority >= 60);
+
+  return overview ? ["overview", "content", "focus"] : ["content", "focus"];
+}
+
+function normalizeModes(
+  value: GraphNavigationMode[] | null | undefined,
+  type: GraphNavigationNodeType,
+  priority: number,
+) {
+  if (!value || value.length === 0) return defaultModesForNode(type, priority);
+
+  const modes = value.filter((mode) => graphModes.has(mode));
+  return modes.length > 0 ? modes : defaultModesForNode(type, priority);
+}
+
 function normalizeEdgeType(
   value: GraphNavigationEdgeType | null | undefined,
 ): GraphNavigationEdgeType {
@@ -141,6 +172,8 @@ function normalizeNode(
     cleanText(node.description) ??
     cleanText(node.shortDescription) ??
     undefined;
+  const type = normalizeNodeType(node.type);
+  const priority = typeof node.priority === "number" ? node.priority : 0;
 
   return {
     ...(cleanText(node.accent)
@@ -157,9 +190,10 @@ function normalizeNode(
     id: node.id,
     label,
     meta: normalizeMetaItems(node.meta),
-    priority: typeof node.priority === "number" ? node.priority : 0,
+    modes: normalizeModes(node.modes, type, priority),
+    priority,
     slug,
-    type: normalizeNodeType(node.type),
+    type,
   };
 }
 

@@ -41,3 +41,19 @@ const graph = withGraphNavigationLayout(snapshot);
 V1 nodes are typed as `content`, `initiative`, `topic`, `tag`, `author`,
 `publication`, `research_paper`, or `tool`. Tool and initiative nodes can be
 included in the graph without requiring a top-level public menu item.
+
+## Display Models
+
+The renderer supports three targeted graph modes:
+
+- `overview`: a readable navigation map for initiatives, topics, tags, and
+  high-priority tools.
+- `content`: the complete published content graph across posts, publications,
+  tools, people, initiatives, topics, and tags.
+- `focus`: a selected node plus its direct neighbors, used by page sidebars and
+  detail exploration.
+
+Nodes can opt into modes through `modes`; otherwise the snapshot normalizer
+assigns conservative defaults. Content and people are intentionally omitted
+from `overview` by default so the public topic map stays readable as the graph
+grows.

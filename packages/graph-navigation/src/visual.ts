@@ -1,5 +1,9 @@
 import { clamp, round, seededSignedUnit, seededUnit } from "./geometry";
-import type { GraphNavigationEdge, GraphNavigationNode } from "./types";
+import type {
+  GraphNavigationEdge,
+  GraphNavigationMode,
+  GraphNavigationNode,
+} from "./types";
 
 // The visual-projection layer: turns laid-out nodes (from layout.ts) into the
 // jittered "constellation" coordinates and idle-animation offsets the renderer
@@ -16,6 +20,7 @@ export type VisualGraphNode = GraphNavigationNode & {
 };
 
 export type VisualGraphEdge = GraphNavigationEdge & {
+  modes: GraphNavigationMode[];
   path: string;
   sourceNode: VisualGraphNode;
   targetNode: VisualGraphNode;

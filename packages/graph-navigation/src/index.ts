@@ -8,6 +8,7 @@ export {
   type GraphNavigationEdgeType,
   type GraphNavigationFocusOptions,
   type GraphNavigationLayoutOptions,
+  type GraphNavigationMode,
   type GraphNavigationNode,
   type GraphNavigationNodeInput,
   type GraphNavigationNodeMeta,
