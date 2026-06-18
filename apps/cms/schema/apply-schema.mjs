@@ -1,10 +1,17 @@
 #!/usr/bin/env node
 
 import {
+  collectionHasSeo,
+  collectionId,
   collectionContracts,
+  collectionSearchConfig,
+  contentRowValues,
   createDbAdapter,
+  createContentTableStatements,
   fieldMetadata,
   fieldMetadataDiffers,
+  fieldValueForSql,
+  insertSql,
   loadSchemaContract,
   normalizeJsonValue,
   parseArgs,
@@ -14,11 +21,16 @@ import {
   readContentRows,
   readOptionState,
   readTaxonomyState,
+  revisionId,
+  revisionRowValues,
   runFullSchemaCheck,
+  seedContentRows,
+  seoRowValues,
   slugify,
   sqlLiteral,
   taxonomyDefinitions,
   taxonomyTermId,
+  upsertSeoSql,
 } from "./lib.mjs";
 
 const args = parseArgs(process.argv.slice(2));
@@ -28,13 +40,26 @@ const db = createDbAdapter(args);
 const applied = [];
 
 async function applyCollectionSchema(collection) {
-  const state = await readCollectionState(db, collection);
+  let state = await readCollectionState(db, collection);
 
   if (!state.collection) {
-    console.error(
-      `[cms:schema:apply] Missing ${collection.slug} collection in ${args.mode} database. Run the EmDash seed first, then rerun this command.`,
+    await insertCollectionRegistry(collection);
+    applied.push(`inserted collection ${collection.slug}`);
+  }
+
+  if (state.columns.length === 0) {
+    for (const statement of createContentTableStatements(collection)) {
+      await db.exec(statement);
+    }
+    applied.push(`created content table ${collection.table}`);
+  }
+
+  state = await readCollectionState(db, collection);
+
+  if (!state.collection) {
+    throw new Error(
+      `[cms:schema:apply] Could not create ${collection.slug} collection registry row.`,
     );
-    process.exit(1);
   }
 
   await db.exec(
@@ -49,11 +74,9 @@ async function applyCollectionSchema(collection) {
     )}, url_pattern = ${sqlLiteral(
       collection.urlPattern ?? collection.url_pattern ?? null,
     )}, has_seo = ${sqlLiteral(
-      (collection.supports ?? []).includes("seo") ? 1 : 0,
+      collectionHasSeo(collection),
     )}, search_config = ${sqlLiteral(
-      JSON.stringify({
-        enabled: (collection.supports ?? []).includes("search"),
-      }),
+      collectionSearchConfig(collection),
     )}, updated_at = datetime('now') WHERE id = ${sqlLiteral(
       state.collection.id,
     )}`,
@@ -130,6 +153,27 @@ async function applyCollectionSchema(collection) {
       applied.push(`inserted metadata ${collection.slug}.${field.slug}`);
     }
   }
+}
+
+async function insertCollectionRegistry(collection) {
+  const columns = await db.exec("PRAGMA table_info(_emdash_collections)");
+  const availableColumns = new Set(columns.map((column) => column.name));
+  const values = {
+    comments_enabled: 0,
+    description: collection.description ?? null,
+    has_seo: collectionHasSeo(collection),
+    icon: collection.icon ?? null,
+    id: collectionId(collection),
+    label: collection.label,
+    label_singular: collection.labelSingular ?? collection.label_singular,
+    search_config: collectionSearchConfig(collection),
+    slug: collection.slug,
+    source: "schema",
+    supports: normalizeJsonValue(collection.supports ?? []),
+    url_pattern: collection.urlPattern ?? collection.url_pattern ?? null,
+  };
+
+  await db.exec(insertSql("_emdash_collections", values, availableColumns));
 }
 
 async function applyTaxonomies() {
@@ -243,15 +287,97 @@ async function applyContentDefaults(contentRows) {
     if (!collection || !content) continue;
 
     for (const [field, value] of Object.entries(defaults.fields ?? {})) {
-      if (content[field] === value) continue;
+      const sqlValue = fieldValueForSql(value);
+      if (String(content[field] ?? "") === String(sqlValue ?? "")) continue;
       await db.exec(
         `UPDATE ${quoteIdent(collection.table)} SET ${quoteIdent(
           field,
-        )} = ${sqlLiteral(value)}, updated_at = datetime('now') WHERE id = ${sqlLiteral(
+        )} = ${sqlLiteral(sqlValue)}, updated_at = datetime('now') WHERE id = ${sqlLiteral(
           content.id,
         )}`,
       );
       applied.push(`updated ${defaults.collection}/${defaults.slug}.${field}`);
+    }
+  }
+}
+
+function existingContentBySlug(contentRows, collectionSlug, slug) {
+  return (contentRows.get(collectionSlug) ?? []).find(
+    (row) => row.slug === slug,
+  );
+}
+
+async function readAnyContentBySlug(collection, entry) {
+  const locale = entry.locale ?? "en";
+  const rows = await db.exec(
+    `SELECT * FROM ${quoteIdent(collection.table)} WHERE slug = ${sqlLiteral(
+      entry.slug,
+    )} AND COALESCE(locale, 'en') = ${sqlLiteral(
+      locale,
+    )} ORDER BY CASE WHEN deleted_at IS NULL THEN 0 ELSE 1 END LIMIT 1`,
+  );
+  return rows[0] ?? null;
+}
+
+async function applySeedContentRows(contentRows) {
+  for (const { collectionSlug, entry } of seedContentRows(contract)) {
+    const collection = collections.find((item) => item.slug === collectionSlug);
+    if (!collection) {
+      continue;
+    }
+
+    const existing =
+      existingContentBySlug(contentRows, collectionSlug, entry.slug) ??
+      (await readAnyContentBySlug(collection, entry));
+    if (existing) {
+      if (!existing.deleted_at) {
+        await ensureSeedContentPublishedState(
+          collection,
+          entry,
+          existing,
+          false,
+        );
+      }
+      continue;
+    }
+
+    const rowValues = contentRowValues(collection, entry);
+    await db.exec(insertSql(collection.table, rowValues));
+    applied.push(`inserted ${collectionSlug}/${entry.slug}`);
+
+    await ensureSeedContentPublishedState(collection, entry, rowValues, true);
+  }
+}
+
+async function ensureSeedContentPublishedState(
+  collection,
+  entry,
+  content,
+  shouldUpsertSeo,
+) {
+  if (entry.status && entry.status !== "published") return;
+
+  const liveRevisionId = revisionId(collection, entry);
+  if (!content.live_revision_id) {
+    const revisionValues = revisionRowValues(collection, entry, content.id);
+    await db.exec(
+      `${insertSql("revisions", revisionValues)} ON CONFLICT (id) DO UPDATE SET collection = excluded.collection, entry_id = excluded.entry_id, data = excluded.data`,
+    );
+    await db.exec(
+      `UPDATE ${quoteIdent(
+        collection.table,
+      )} SET live_revision_id = ${sqlLiteral(
+        liveRevisionId,
+      )}, updated_at = datetime('now') WHERE id = ${sqlLiteral(content.id)}`,
+    );
+    applied.push(`ensured live revision ${collection.slug}/${entry.slug}`);
+  }
+
+  if (shouldUpsertSeo) {
+    const seoValues = seoRowValues(collection, entry);
+    if (seoValues) {
+      await db.exec(upsertSeoSql(seoValues));
+      applied.push(`upserted SEO ${collection.slug}/${entry.slug}`);
     }
   }
 }
@@ -431,6 +557,8 @@ for (const collection of collections) {
 await applyTaxonomies();
 await applyBylines();
 let contentRows = await readContentRows(db, collections);
+await applySeedContentRows(contentRows);
+contentRows = await readContentRows(db, collections);
 await applyContentDefaults(contentRows);
 contentRows = await readContentRows(db, collections);
 await applyRelationships(contentRows);

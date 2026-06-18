@@ -97,6 +97,20 @@ export function taxonomyDefinitions(contract) {
   return contract.seed.taxonomies ?? [];
 }
 
+export function collectionId(collection) {
+  return `schema:collection:${collection.slug}`;
+}
+
+export function collectionSearchConfig(collection) {
+  return JSON.stringify({
+    enabled: (collection.supports ?? []).includes("search"),
+  });
+}
+
+export function collectionHasSeo(collection) {
+  return (collection.supports ?? []).includes("seo") ? 1 : 0;
+}
+
 function inferColumnType(type) {
   switch (type) {
     case "boolean":
@@ -191,6 +205,14 @@ export function sqlLiteral(value) {
   return `'${String(value).replaceAll("'", "''")}'`;
 }
 
+export function sqlColumnList(columns) {
+  return columns.map((column) => quoteIdent(column)).join(", ");
+}
+
+export function sqlValueList(values) {
+  return values.map((value) => sqlLiteral(value)).join(", ");
+}
+
 export function normalizeSqlType(type) {
   return String(type ?? "")
     .trim()
@@ -245,6 +267,165 @@ export function fieldMetadata(collectionId, collectionSlug, field, sortOrder) {
     validation: normalizeJsonValue(field.validation),
     widget: field.widget ?? null,
   };
+}
+
+export function fieldValueForSql(value) {
+  if (value === undefined) return null;
+  if (Array.isArray(value) || (value && typeof value === "object")) {
+    return JSON.stringify(value);
+  }
+  if (typeof value === "boolean") return value ? 1 : 0;
+  return value;
+}
+
+export function seedContentRows(contract) {
+  return Object.entries(contract.seed.content ?? {}).flatMap(
+    ([collectionSlug, entries]) =>
+      entries.map((entry) => ({
+        collectionSlug,
+        entry,
+      })),
+  );
+}
+
+export function contentFieldSlugs(collection) {
+  return new Set(collection.fields.map((field) => field.slug));
+}
+
+export function contentDataForCollection(collection, data) {
+  const fieldSlugs = contentFieldSlugs(collection);
+  return Object.fromEntries(
+    Object.entries(data ?? {}).filter(([field]) => fieldSlugs.has(field)),
+  );
+}
+
+export function contentRowValues(collection, entry) {
+  const now = new Date().toISOString();
+  const status = entry.status ?? "published";
+  const data = contentDataForCollection(collection, entry.data ?? {});
+
+  return {
+    ...Object.fromEntries(
+      Object.entries(data).map(([field, value]) => [
+        field,
+        fieldValueForSql(value),
+      ]),
+    ),
+    author_id: null,
+    created_at: now,
+    deleted_at: null,
+    draft_revision_id: null,
+    id: entry.id,
+    live_revision_id: null,
+    locale: entry.locale ?? "en",
+    primary_byline_id: null,
+    published_at: status === "published" ? now : null,
+    scheduled_at: null,
+    slug: entry.slug,
+    status,
+    translation_group: entry.id,
+    updated_at: now,
+    version: 1,
+  };
+}
+
+export function revisionId(collection, entry) {
+  return `schema:revision:${collection.slug}:${entry.slug}:live`;
+}
+
+export function revisionRowValues(collection, entry, contentId = entry.id) {
+  const now = new Date().toISOString();
+  const data = contentDataForCollection(collection, entry.data ?? {});
+
+  return {
+    author_id: null,
+    collection: collection.slug,
+    created_at: now,
+    data: JSON.stringify(data),
+    entry_id: contentId,
+    id: revisionId(collection, entry),
+  };
+}
+
+export function seoRowValues(collection, entry) {
+  if (!collectionHasSeo(collection)) return null;
+
+  const data = entry.data ?? {};
+  const hasSeo =
+    data.seo_title !== undefined ||
+    data.seo_description !== undefined ||
+    data.seo_image !== undefined ||
+    data.seo_canonical !== undefined ||
+    data.seo_no_index !== undefined;
+
+  if (!hasSeo) return null;
+
+  const now = new Date().toISOString();
+  return {
+    collection: collection.slug,
+    content_id: entry.id,
+    created_at: now,
+    seo_canonical: data.seo_canonical ?? null,
+    seo_description: data.seo_description ?? null,
+    seo_image: data.seo_image ?? null,
+    seo_no_index: data.seo_no_index ? 1 : 0,
+    seo_title: data.seo_title ?? null,
+    updated_at: now,
+  };
+}
+
+export function insertSql(table, values, allowedColumns = null) {
+  const entries = Object.entries(values).filter(
+    ([column]) => !allowedColumns || allowedColumns.has(column),
+  );
+
+  return `INSERT INTO ${quoteIdent(table)} (${sqlColumnList(
+    entries.map(([column]) => column),
+  )}) VALUES (${sqlValueList(entries.map(([, value]) => value))})`;
+}
+
+export function upsertSeoSql(values) {
+  return `${insertSql("_emdash_seo", values)} ON CONFLICT (collection, content_id) DO UPDATE SET seo_title = excluded.seo_title, seo_description = excluded.seo_description, seo_image = excluded.seo_image, seo_canonical = excluded.seo_canonical, seo_no_index = excluded.seo_no_index, updated_at = excluded.updated_at`;
+}
+
+export function createContentTableStatements(collection) {
+  const table = quoteIdent(collection.table);
+  const tableName = collection.table;
+
+  return [
+    `CREATE TABLE IF NOT EXISTS ${table} (
+      id TEXT PRIMARY KEY,
+      slug TEXT,
+      status TEXT DEFAULT 'draft',
+      author_id TEXT,
+      primary_byline_id TEXT,
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now')),
+      published_at TEXT,
+      scheduled_at TEXT,
+      deleted_at TEXT,
+      version INTEGER DEFAULT 1,
+      live_revision_id TEXT REFERENCES revisions(id),
+      draft_revision_id TEXT REFERENCES revisions(id),
+      locale TEXT NOT NULL DEFAULT 'en',
+      translation_group TEXT,
+      CONSTRAINT ${quoteIdent(`${tableName}_slug_locale_unique`)} UNIQUE (slug, locale)
+    )`,
+    `CREATE INDEX IF NOT EXISTS ${quoteIdent(`idx_${tableName}_slug`)} ON ${table} (slug)`,
+    `CREATE INDEX IF NOT EXISTS ${quoteIdent(`idx_${tableName}_scheduled`)} ON ${table} (scheduled_at) WHERE scheduled_at IS NOT NULL`,
+    `CREATE INDEX IF NOT EXISTS ${quoteIdent(`idx_${tableName}_live_revision`)} ON ${table} (live_revision_id)`,
+    `CREATE INDEX IF NOT EXISTS ${quoteIdent(`idx_${tableName}_draft_revision`)} ON ${table} (draft_revision_id)`,
+    `CREATE INDEX IF NOT EXISTS ${quoteIdent(`idx_${tableName}_author`)} ON ${table} (author_id)`,
+    `CREATE INDEX IF NOT EXISTS ${quoteIdent(`idx_${tableName}_primary_byline`)} ON ${table} (primary_byline_id)`,
+    `CREATE INDEX IF NOT EXISTS ${quoteIdent(`idx_${tableName}_locale`)} ON ${table} (locale)`,
+    `CREATE INDEX IF NOT EXISTS ${quoteIdent(`idx_${tableName}_translation_group`)} ON ${table} (translation_group)`,
+    `CREATE INDEX IF NOT EXISTS ${quoteIdent(`idx_${tableName}_deleted_updated_id`)} ON ${table} (deleted_at, updated_at DESC, id DESC)`,
+    `CREATE INDEX IF NOT EXISTS ${quoteIdent(`idx_${tableName}_deleted_status`)} ON ${table} (deleted_at, status)`,
+    `CREATE INDEX IF NOT EXISTS ${quoteIdent(`idx_${tableName}_deleted_created_id`)} ON ${table} (deleted_at, created_at DESC, id DESC)`,
+    `CREATE INDEX IF NOT EXISTS ${quoteIdent(`idx_${tableName}_deleted_published_id`)} ON ${table} (deleted_at, published_at DESC, id DESC)`,
+    `CREATE INDEX IF NOT EXISTS ${quoteIdent(`idx_${tableName}_loc_upd`)} ON ${table} (deleted_at, locale, updated_at DESC, id DESC)`,
+    `CREATE INDEX IF NOT EXISTS ${quoteIdent(`idx_${tableName}_loc_crt`)} ON ${table} (deleted_at, locale, created_at DESC, id DESC)`,
+  ];
 }
 
 function collectionMetadata(collection) {
@@ -408,12 +589,21 @@ export async function readContentRows(db, collections) {
   const rows = new Map();
 
   for (const collection of collections) {
-    rows.set(
-      collection.slug,
-      await db.exec(
-        `SELECT * FROM ${quoteIdent(collection.table)} WHERE deleted_at IS NULL ORDER BY slug`,
-      ),
-    );
+    try {
+      rows.set(
+        collection.slug,
+        await db.exec(
+          `SELECT * FROM ${quoteIdent(
+            collection.table,
+          )} WHERE deleted_at IS NULL ORDER BY slug`,
+        ),
+      );
+    } catch (error) {
+      if (!String(error?.message ?? error).includes("no such table")) {
+        throw error;
+      }
+      rows.set(collection.slug, []);
+    }
   }
 
   return rows;
