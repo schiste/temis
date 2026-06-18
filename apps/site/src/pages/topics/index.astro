@@ -39,8 +39,11 @@ const description = page
   <section class="topics-graph" aria-label={copy.topicsGraphLabel}>
     <GraphNavigation
       graph={graph}
+      defaultMode="overview"
       heading={copy.topicsGraphHeading}
       label={copy.topicsGraphLabel}
+      showControls
+      showLegend
     />
   </section>
 </SiteLayout>
