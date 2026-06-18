@@ -12,6 +12,7 @@
     "seed": "node ./scripts/seed-native-seo.mjs",
     "mcp:check": "node ./scripts/check-mcp-readiness.mjs",
     "mcp:check:auth": "node ./scripts/check-mcp-readiness.mjs --require-auth",
+    "mcp:check:guard": "node ./scripts/check-mcp-readiness.mjs --require-auth --check-publish-guard",
     "type-check": "astro check"
   },
   "dependencies": {

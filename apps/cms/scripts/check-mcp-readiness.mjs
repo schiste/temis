@@ -25,6 +25,7 @@ const REQUIRED_COLLECTIONS = [
 
 const args = new Set(process.argv.slice(2));
 const requireAuth = args.has("--require-auth");
+const checkPublishGuard = args.has("--check-publish-guard");
 const baseUrl = process.env.EMDASH_MCP_BASE_URL ?? DEFAULT_BASE_URL;
 const token = process.env.EMDASH_MCP_TOKEN ?? "";
 const endpoint = new URL("/_emdash/api/mcp", baseUrl);
@@ -115,6 +116,34 @@ function parseToolJson(result) {
   return JSON.parse(textBlock.text);
 }
 
+function invalidPublishedCreate(id) {
+  return {
+    id,
+    jsonrpc: "2.0",
+    method: "tools/call",
+    params: {
+      arguments: {
+        collection: "posts",
+        data: {},
+        status: "published",
+      },
+      name: "content_create",
+    },
+  };
+}
+
+function assertContentQualityFailure(payload, label) {
+  assertOk(payload, `${label} did not return a JSON-RPC payload`);
+  assertOk(
+    payload.result?._meta?.code === "CONTENT_QUALITY_FAILED",
+    `${label} did not return CONTENT_QUALITY_FAILED: ${JSON.stringify(payload)}`,
+  );
+  assertOk(
+    payload.result?.isError === true,
+    `${label} did not return an MCP tool error result`,
+  );
+}
+
 async function checkUnauthenticatedBoundary() {
   const { response } = await postJson({
     id: "unauthenticated-tools-list",
@@ -168,6 +197,56 @@ async function checkAuthenticatedTools() {
   );
 }
 
+async function checkAuthenticatedPublishGuard() {
+  const single = await postJson(
+    invalidPublishedCreate("publish-guard-single"),
+    authHeaders(),
+  );
+
+  assertOk(
+    single.response.ok,
+    `single publish guard check returned HTTP ${single.response.status}: ${single.text.slice(0, 500)}`,
+  );
+  assertContentQualityFailure(single.body, "single publish guard check");
+
+  const batch = await postJson(
+    [
+      invalidPublishedCreate("publish-guard-batch"),
+      {
+        id: "batch-companion",
+        jsonrpc: "2.0",
+        method: "tools/list",
+        params: {},
+      },
+    ],
+    authHeaders(),
+  );
+
+  assertOk(
+    batch.response.ok,
+    `batch publish guard check returned HTTP ${batch.response.status}: ${batch.text.slice(0, 500)}`,
+  );
+  assertOk(
+    Array.isArray(batch.body),
+    `batch publish guard check did not return a JSON-RPC batch response: ${batch.text}`,
+  );
+
+  const publishPayload = batch.body.find(
+    (payload) => payload.id === "publish-guard-batch",
+  );
+  assertContentQualityFailure(publishPayload, "batch publish guard check");
+
+  const companionPayload = batch.body.find(
+    (payload) => payload.id === "batch-companion",
+  );
+  assertOk(
+    companionPayload?.error?.message?.includes("Batch rejected"),
+    `batch companion request was not explicitly rejected: ${JSON.stringify(companionPayload)}`,
+  );
+
+  log("publish guard blocks invalid single and batched publish writes");
+}
+
 try {
   log(`checking ${endpoint.toString()}`);
   await checkUnauthenticatedBoundary();
@@ -179,6 +258,7 @@ try {
   }
 
   await checkAuthenticatedTools();
+  if (checkPublishGuard) await checkAuthenticatedPublishGuard();
   log("MCP readiness checks passed");
 } catch (error) {
   console.error(

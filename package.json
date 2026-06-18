@@ -30,6 +30,7 @@
     "cms:content:retire-seo-fields:production": "node ./apps/cms/scripts/retire-legacy-seo-fields.mjs --production",
     "cms:mcp:check": "pnpm --filter @temis/cms mcp:check",
     "cms:mcp:check:auth": "pnpm --filter @temis/cms mcp:check:auth",
+    "cms:mcp:check:guard": "pnpm --filter @temis/cms mcp:check:guard",
     "cms:mcp:check:production": "EMDASH_MCP_BASE_URL=https://temis-cms.christophe-henner.workers.dev pnpm --filter @temis/cms mcp:check:auth",
     "cms:seed:validate": "pnpm --filter @temis/cms exec emdash seed --validate",
     "content:check": "node ./apps/cms/scripts/check-content-quality.mjs",
