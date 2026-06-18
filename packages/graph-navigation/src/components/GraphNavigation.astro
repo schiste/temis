@@ -1515,8 +1515,65 @@ function modeList(modes: GraphNavigationMode[]) {
       aspect-ratio: 1 / 1;
     }
 
-    .temis-graph-nav__node {
-      max-width: calc(var(--ds-grid-unit, 2.625rem) * 4);
+    .temis-graph-nav:not(.temis-graph-nav--compact) .temis-graph-nav__node {
+      block-size: var(--ds-space-phi-3, 1.625rem);
+      inline-size: var(--ds-space-phi-3, 1.625rem);
+      justify-content: center;
+      max-width: none;
+      min-height: 0;
+      padding: 0;
+    }
+
+    .temis-graph-nav:not(.temis-graph-nav--compact)
+      .temis-graph-nav__node-marker {
+      inline-size: 100%;
+    }
+
+    .temis-graph-nav:not(.temis-graph-nav--compact)
+      .temis-graph-nav__node-label {
+      block-size: 1px;
+      border: 0;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      inline-size: 1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      transform: none;
+      white-space: nowrap;
+    }
+
+    .temis-graph-nav:not(.temis-graph-nav--compact)
+      .temis-graph-nav__node[data-node-label-weight]:is(
+        :hover,
+        :focus-visible,
+        [data-graph-state="active"],
+        .temis-graph-nav__node--current
+      )
+      .temis-graph-nav__node-label {
+      block-size: 1px;
+      border: 0;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      inline-size: 1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      transform: none;
+      white-space: nowrap;
+    }
+
+    .temis-graph-nav:not(.temis-graph-nav--compact) .temis-graph-nav__preview {
+      inline-size: auto;
+      inset-block: auto var(--ds-space-phi-1, 0.625rem);
+      inset-inline: var(--ds-space-phi-1, 0.625rem);
+      max-inline-size: none;
+      transform: none;
+    }
+
+    .temis-graph-nav:not(.temis-graph-nav--compact)
+      .temis-graph-nav__preview[data-preview-placement-x][data-preview-placement-y] {
+      transform: none;
     }
 
     .temis-graph-nav__detail {
