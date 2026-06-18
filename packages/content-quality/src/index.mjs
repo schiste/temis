@@ -1,17 +1,23 @@
 const collectionContentTypes = {
   pages: "Page",
   posts: "Essay",
+  publications: "Publication",
   tools: "Tool",
 };
 
 const summaryFieldsByCollection = {
   pages: ["summary", "excerpt", "description"],
   posts: ["excerpt", "summary"],
+  publications: ["summary", "abstract"],
   tools: ["summary", "excerpt"],
 };
 
-const contentCollectionsWithAuthors = new Set(["posts", "tools"]);
-const graphCollections = new Set(["posts", "tools"]);
+const contentCollectionsWithAuthors = new Set([
+  "posts",
+  "publications",
+  "tools",
+]);
+const graphCollections = new Set(["posts", "publications", "tools"]);
 
 const blockedTrackingPatterns = [
   "google-analytics.com",
@@ -126,7 +132,9 @@ function contentIdentifier(record, explicitId) {
 function contentType(record, collection) {
   return (
     cleanString(record.content_type) ||
+    cleanString(record.publication_type) ||
     cleanString(record.contentType) ||
+    cleanString(record.publicationType) ||
     cleanString(record.kind) ||
     cleanString(record.article_type) ||
     collectionContentTypes[collection] ||
@@ -157,6 +165,9 @@ function hasAuthor(record, relationships) {
     hasText(record.primaryBylineId) ||
     hasText(record.author_name) ||
     hasText(record.authorName) ||
+    hasText(record.publication_authors) ||
+    hasText(record.publicationAuthors) ||
+    hasText(record.authors) ||
     hasText(record.related_people) ||
     bylineArrayHasCredit(record.bylines)
   );

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "description": "TEMIS V1 site-level EmDash contract for graph terms, people/bylines, menus, and fixture relationships.",
+  "description": "TEMIS site-level EmDash contract for graph terms, people/bylines, menus, publications, and fixture relationships.",
   "mediaPolicy": {
     "canonicalStorage": "emdash-r2",
     "checkedInPublicMedia": "Allowed only for V1 fixtures and deterministic local builds. Production editorial media should be uploaded through EmDash and stored in R2.",
@@ -39,6 +39,14 @@
       "description": "Software and prototypes connected to open knowledge work.",
       "priority": 70,
       "accent": "#1137ff"
+    },
+    {
+      "taxonomy": "category",
+      "slug": "publications",
+      "label": "Publications",
+      "description": "Research papers, reports, and external knowledge objects connected to TEMIS work.",
+      "priority": 68,
+      "accent": "#8a1f5c"
     },
     {
       "taxonomy": "tag",
@@ -267,7 +275,7 @@
       "slug": "search",
       "fields": {
         "title": "Search",
-        "summary": "Search the published TEMIS static snapshot across essays, tools, people, and pages.",
+        "summary": "Search the published TEMIS static snapshot across essays, tools, publications, people, and pages.",
         "content": [
           {
             "_type": "block",
@@ -275,7 +283,7 @@
             "children": [
               {
                 "_type": "span",
-                "text": "This local search index is generated at build time from published EmDash content."
+                "text": "This local search index is generated at build time from published EmDash content: essays, tools, publications, people, and pages."
               }
             ]
           }
@@ -296,6 +304,26 @@
               {
                 "_type": "span",
                 "text": "Tools are first-class TEMIS records: they connect authors, articles, repositories, topics, and maintenance signals into the graph."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "collection": "pages",
+      "slug": "publications",
+      "fields": {
+        "title": "Publication index",
+        "summary": "Research papers, reports, and other publications connected to TEMIS essays, tools, people, and topics.",
+        "content": [
+          {
+            "_type": "block",
+            "style": "normal",
+            "children": [
+              {
+                "_type": "span",
+                "text": "Publications are first-class knowledge objects in TEMIS. Editorial posts may summarize or discuss them, tools may implement them, and the graph can connect them to people and topics without treating them as ordinary articles."
               }
             ]
           }

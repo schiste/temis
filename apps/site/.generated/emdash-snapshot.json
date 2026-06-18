@@ -48,7 +48,7 @@
         "author_id": null,
         "primary_byline_id": null,
         "created_at": "2026-06-14 10:54:30",
-        "updated_at": "2026-06-17 17:28:42",
+        "updated_at": "2026-06-18 04:44:14",
         "published_at": "2026-06-14 10:54:30",
         "scheduled_at": null,
         "deleted_at": null,
@@ -58,8 +58,8 @@
         "locale": "en",
         "translation_group": "seed:page:search",
         "title": "Search",
-        "summary": "Search the published TEMIS static snapshot across essays, tools, people, and pages.",
-        "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"This local search index is generated at build time from published EmDash content.\"}]}]"
+        "summary": "Search the published TEMIS static snapshot across essays, tools, publications, people, and pages.",
+        "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"This local search index is generated at build time from published EmDash content: essays, tools, publications, people, and pages.\"}]}]"
       },
       {
         "id": "seed:page:topics",
@@ -128,7 +128,7 @@
         "author_id": null,
         "primary_byline_id": null,
         "created_at": "2026-06-17T17:28:34.793Z",
-        "updated_at": "2026-06-17 17:28:42",
+        "updated_at": "2026-06-18 04:44:14",
         "published_at": "2026-06-17T17:28:34.791Z",
         "scheduled_at": null,
         "deleted_at": null,
@@ -140,6 +140,26 @@
         "title": "Tool index",
         "summary": "Software, prototypes, and research pipelines connected to open knowledge work.",
         "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Tools are first-class TEMIS records: they connect authors, articles, repositories, topics, and maintenance signals into the graph.\"}]}]"
+      },
+      {
+        "id": "01KVCGP93WA2M46EQW7FYP5ZCR",
+        "slug": "publications",
+        "status": "published",
+        "author_id": null,
+        "primary_byline_id": null,
+        "created_at": "2026-06-18T04:44:06.652Z",
+        "updated_at": "2026-06-18 04:44:14",
+        "published_at": "2026-06-18T04:44:06.651Z",
+        "scheduled_at": null,
+        "deleted_at": null,
+        "version": 1,
+        "live_revision_id": "01KVCGP93YFHVFDJX6N31QFK3Q",
+        "draft_revision_id": null,
+        "locale": "en",
+        "translation_group": "01KVCGP93WA2M46EQW7FYP5ZCR",
+        "title": "Publication index",
+        "summary": "Research papers, reports, and other publications connected to TEMIS essays, tools, people, and topics.",
+        "content": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Publications are first-class knowledge objects in TEMIS. Editorial posts may summarize or discuss them, tools may implement them, and the graph can connect them to people and topics without treating them as ordinary articles.\"}]}]"
       }
     ],
     "ec_posts": [
@@ -171,7 +191,8 @@
         "source_title": null,
         "source_url": null,
         "content_license": null,
-        "content_license_url": null
+        "content_license_url": null,
+        "related_publications": null
       },
       {
         "id": "seed:post:innovating-with-wikimedia-decision-making",
@@ -201,7 +222,8 @@
         "source_title": null,
         "source_url": null,
         "content_license": null,
-        "content_license_url": null
+        "content_license_url": null,
+        "related_publications": null
       },
       {
         "id": "seed:post:wikipedia-at-25-a-wake-up-call",
@@ -231,7 +253,8 @@
         "source_title": "Meta-Wiki",
         "source_url": "https://meta.wikimedia.org/wiki/User:Schiste/what-now",
         "content_license": "CC BY-SA 4.0",
-        "content_license_url": "https://creativecommons.org/licenses/by-sa/4.0/"
+        "content_license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "related_publications": null
       }
     ],
     "ec_tools": [
@@ -272,7 +295,8 @@
         "screenshot_license": null,
         "github_data": null,
         "github_synced_at": null,
-        "github_sync_error": null
+        "github_sync_error": null,
+        "related_publications": null
       },
       {
         "id": "01KVB8VWS6AXQASQWY86VS9TPR",
@@ -311,7 +335,8 @@
         "screenshot_license": null,
         "github_data": null,
         "github_synced_at": null,
-        "github_sync_error": null
+        "github_sync_error": null,
+        "related_publications": null
       },
       {
         "id": "seed:tool:wiki-polis",
@@ -350,7 +375,8 @@
         "screenshot_license": "CC BY-SA 4.0",
         "github_data": null,
         "github_synced_at": null,
-        "github_sync_error": null
+        "github_sync_error": null,
+        "related_publications": null
       }
     ],
     "_emdash_collections": [
@@ -364,7 +390,7 @@
         "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\"]",
         "source": "seed",
         "created_at": "2026-06-13 21:31:33",
-        "updated_at": "2026-06-17 17:28:42",
+        "updated_at": "2026-06-18 04:44:13",
         "search_config": "{\"enabled\":true}",
         "has_seo": 1,
         "url_pattern": "/{slug}",
@@ -383,7 +409,7 @@
         "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\",\"scheduling\"]",
         "source": "seed",
         "created_at": "2026-06-13 21:31:34",
-        "updated_at": "2026-06-17 17:28:42",
+        "updated_at": "2026-06-18 04:44:13",
         "search_config": "{\"enabled\":true}",
         "has_seo": 1,
         "url_pattern": "/blog/{slug}",
@@ -402,10 +428,29 @@
         "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\"]",
         "source": "seed",
         "created_at": "2026-06-14 16:04:30",
-        "updated_at": "2026-06-17 17:28:42",
+        "updated_at": "2026-06-18 04:44:13",
         "search_config": "{\"enabled\":true}",
         "has_seo": 1,
         "url_pattern": "/tools/{slug}",
+        "comments_enabled": 0,
+        "comments_moderation": "first_time",
+        "comments_closed_after_days": 90,
+        "comments_auto_approve_users": 1
+      },
+      {
+        "id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "publications",
+        "label": "Publications",
+        "label_singular": "Publication",
+        "description": "First-class research papers, reports, and other external publications connected to TEMIS content and graph navigation.",
+        "icon": "book-open",
+        "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\"]",
+        "source": "seed",
+        "created_at": "2026-06-18 04:44:06",
+        "updated_at": "2026-06-18 04:44:13",
+        "search_config": "{\"enabled\":true}",
+        "has_seo": 1,
+        "url_pattern": "/publications/{slug}",
         "comments_enabled": 0,
         "comments_moderation": "first_time",
         "comments_closed_after_days": 90,
@@ -732,7 +777,7 @@
         "validation": null,
         "widget": null,
         "options": null,
-        "sort_order": 20,
+        "sort_order": 21,
         "created_at": "2026-06-14 16:04:30",
         "searchable": 0,
         "translatable": 1
@@ -750,7 +795,7 @@
         "validation": null,
         "widget": null,
         "options": null,
-        "sort_order": 21,
+        "sort_order": 22,
         "created_at": "2026-06-14 16:04:30",
         "searchable": 0,
         "translatable": 1
@@ -822,7 +867,7 @@
         "validation": null,
         "widget": null,
         "options": null,
-        "sort_order": 19,
+        "sort_order": 20,
         "created_at": "2026-06-15T17:22:53.367Z",
         "searchable": 0,
         "translatable": 1
@@ -1096,6 +1141,348 @@
         "created_at": "2026-06-17 15:23:55",
         "searchable": 0,
         "translatable": 1
+      },
+      {
+        "id": "01KVCGP93D473H9ZWD9G2641RV",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "title",
+        "label": "Title",
+        "type": "string",
+        "column_type": "TEXT",
+        "required": 1,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 0,
+        "created_at": "2026-06-18 04:44:06",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCGP93FW0TZ6WFXYSM8ZHD1",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "publication_type",
+        "label": "Publication type",
+        "type": "select",
+        "column_type": "TEXT",
+        "required": 1,
+        "unique": 0,
+        "default_value": "\"research_paper\"",
+        "validation": "{\"options\":[\"research_paper\",\"preprint\",\"report\",\"whitepaper\",\"book\",\"dataset_paper\"]}",
+        "widget": null,
+        "options": null,
+        "sort_order": 1,
+        "created_at": "2026-06-18 04:44:06",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCGP93F0M5JKAK92828H2MY",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "summary",
+        "label": "TEMIS summary",
+        "type": "text",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 2,
+        "created_at": "2026-06-18 04:44:06",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCGP93GRGRA1T44W6TY9V4G",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "abstract",
+        "label": "Abstract",
+        "type": "text",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 3,
+        "created_at": "2026-06-18 04:44:06",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCGP93H5GAGZJA799M9WEYZ",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "editorial_note",
+        "label": "Editorial note",
+        "type": "portableText",
+        "column_type": "JSON",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 4,
+        "created_at": "2026-06-18 04:44:06",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCGP93H6FB585376QYMZZC5",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "publication_authors",
+        "label": "Publication authors",
+        "type": "text",
+        "column_type": "TEXT",
+        "required": 1,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 5,
+        "created_at": "2026-06-18 04:44:06",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCGP93J0E2DTAZ7GRSQP0BP",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "venue",
+        "label": "Venue",
+        "type": "string",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 6,
+        "created_at": "2026-06-18 04:44:06",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCGP93KC0A15SJ6YAJG4R4W",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "publication_date",
+        "label": "Publication date",
+        "type": "string",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 7,
+        "created_at": "2026-06-18 04:44:06",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCGP93K46YQBGHJGYFE6GGV",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "doi",
+        "label": "DOI",
+        "type": "string",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 8,
+        "created_at": "2026-06-18 04:44:06",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCGP93MNG2X154SEH2M6FFW",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "arxiv_id",
+        "label": "arXiv ID",
+        "type": "string",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 9,
+        "created_at": "2026-06-18 04:44:06",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCGP93NN7D5743X9HRGZS8B",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "source_url",
+        "label": "Source URL",
+        "type": "url",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 10,
+        "created_at": "2026-06-18 04:44:06",
+        "searchable": 0,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCGP93NZSDMZ19T2AJTTGAZ",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "pdf_url",
+        "label": "PDF URL",
+        "type": "url",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 11,
+        "created_at": "2026-06-18 04:44:06",
+        "searchable": 0,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCGP93PFFJ2ZB4HZA5KW0R3",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "license",
+        "label": "License",
+        "type": "string",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 12,
+        "created_at": "2026-06-18 04:44:06",
+        "searchable": 1,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCGP93QAQ1DXM01X479QQSG",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "related_articles",
+        "label": "Related Articles",
+        "type": "reference",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": "{\"collection\":\"posts\",\"allowMultiple\":true}",
+        "sort_order": 13,
+        "created_at": "2026-06-18 04:44:06",
+        "searchable": 0,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCGP93QAHQVR8AXCJAMHZWT",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "related_tools",
+        "label": "Related Tools",
+        "type": "reference",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": "{\"collection\":\"tools\",\"allowMultiple\":true}",
+        "sort_order": 14,
+        "created_at": "2026-06-18 04:44:06",
+        "searchable": 0,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCGP93RMMCPSD428TQX8Z5H",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "graph_visible",
+        "label": "Visible in Graph",
+        "type": "boolean",
+        "column_type": "INTEGER",
+        "required": 0,
+        "unique": 0,
+        "default_value": "true",
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 15,
+        "created_at": "2026-06-18 04:44:06",
+        "searchable": 0,
+        "translatable": 1
+      },
+      {
+        "id": "01KVCGP93SHPJZWHF06PNW083K",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "graph_priority",
+        "label": "Graph Priority",
+        "type": "number",
+        "column_type": "REAL",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 16,
+        "created_at": "2026-06-18 04:44:06",
+        "searchable": 0,
+        "translatable": 1
+      },
+      {
+        "id": "schema_field_posts_related_publications",
+        "collection_id": "01KV1EBD4DNXWKZ3K2R5H9M59J",
+        "slug": "related_publications",
+        "label": "Related Publications",
+        "type": "reference",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": "{\"collection\":\"publications\",\"allowMultiple\":true}",
+        "sort_order": 13,
+        "created_at": "2026-06-18 04:44:13",
+        "searchable": 0,
+        "translatable": 1
+      },
+      {
+        "id": "schema_field_tools_related_publications",
+        "collection_id": "seed_collection_tools",
+        "slug": "related_publications",
+        "label": "Related Publications",
+        "type": "reference",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": "{\"collection\":\"publications\",\"allowMultiple\":true}",
+        "sort_order": 19,
+        "created_at": "2026-06-18 04:44:13",
+        "searchable": 0,
+        "translatable": 1
       }
     ],
     "_emdash_taxonomy_defs": [
@@ -1105,7 +1492,7 @@
         "label": "Categories",
         "label_singular": "Category",
         "hierarchical": 1,
-        "collections": "[\"posts\",\"tools\"]",
+        "collections": "[\"posts\",\"tools\",\"publications\"]",
         "created_at": "2026-06-13 21:31:29",
         "locale": "en",
         "translation_group": "taxdef_category"
@@ -1116,7 +1503,7 @@
         "label": "Tags",
         "label_singular": "Tag",
         "hierarchical": 0,
-        "collections": "[\"posts\",\"tools\"]",
+        "collections": "[\"posts\",\"tools\",\"publications\"]",
         "created_at": "2026-06-13 21:31:29",
         "locale": "en",
         "translation_group": "taxdef_tag"
@@ -1128,14 +1515,14 @@
         "name": "primary",
         "label": "Primary",
         "created_at": "2026-06-13T21:31:35.448Z",
-        "updated_at": "2026-06-17 17:28:42",
+        "updated_at": "2026-06-18 04:44:14",
         "locale": "en",
         "translation_group": "01KV1EBE4R508C1WCRPTDZV8YC"
       }
     ],
     "_emdash_menu_items": [
       {
-        "id": "01KVBA1B7CAT9R78JJ8WVXZBQ2",
+        "id": "01KVCGP9402JKAVZ27ET2KC80Q",
         "menu_id": "01KV1EBE4R508C1WCRPTDZV8YC",
         "parent_id": null,
         "sort_order": 0,
@@ -1147,12 +1534,12 @@
         "title_attr": null,
         "target": null,
         "css_classes": null,
-        "created_at": "2026-06-17T17:28:34.796Z",
+        "created_at": "2026-06-18T04:44:06.656Z",
         "locale": "en",
-        "translation_group": "01KVBA1B7CAT9R78JJ8WVXZBQ2"
+        "translation_group": "01KVCGP9402JKAVZ27ET2KC80Q"
       },
       {
-        "id": "01KVBA1B7CJJA3RJSTSPXSBD3F",
+        "id": "01KVCGP940H82W57Y5DKB9Z6ZY",
         "menu_id": "01KV1EBE4R508C1WCRPTDZV8YC",
         "parent_id": null,
         "sort_order": 1,
@@ -1164,12 +1551,12 @@
         "title_attr": null,
         "target": null,
         "css_classes": null,
-        "created_at": "2026-06-17T17:28:34.796Z",
+        "created_at": "2026-06-18T04:44:06.656Z",
         "locale": "en",
-        "translation_group": "01KVBA1B7CJJA3RJSTSPXSBD3F"
+        "translation_group": "01KVCGP940H82W57Y5DKB9Z6ZY"
       },
       {
-        "id": "01KVBA1B7CKS0RBQK36NJ0YZF9",
+        "id": "01KVCGP9403RT2WWV5T7JCDB2C",
         "menu_id": "01KV1EBE4R508C1WCRPTDZV8YC",
         "parent_id": null,
         "sort_order": 2,
@@ -1181,12 +1568,12 @@
         "title_attr": null,
         "target": null,
         "css_classes": null,
-        "created_at": "2026-06-17T17:28:34.796Z",
+        "created_at": "2026-06-18T04:44:06.656Z",
         "locale": "en",
-        "translation_group": "01KVBA1B7CKS0RBQK36NJ0YZF9"
+        "translation_group": "01KVCGP9403RT2WWV5T7JCDB2C"
       },
       {
-        "id": "01KVBA1B7C21MT89YQ3F43JBF7",
+        "id": "01KVCGP940K5FQJRHRN1SH89E0",
         "menu_id": "01KV1EBE4R508C1WCRPTDZV8YC",
         "parent_id": null,
         "sort_order": 3,
@@ -1198,9 +1585,9 @@
         "title_attr": null,
         "target": null,
         "css_classes": null,
-        "created_at": "2026-06-17T17:28:34.796Z",
+        "created_at": "2026-06-18T04:44:06.656Z",
         "locale": "en",
-        "translation_group": "01KVBA1B7C21MT89YQ3F43JBF7"
+        "translation_group": "01KVCGP940K5FQJRHRN1SH89E0"
       }
     ],
     "_emdash_seo": [
@@ -1213,7 +1600,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:28:34"
+        "updated_at": "2026-06-18 04:44:06"
       },
       {
         "collection": "posts",
@@ -1235,7 +1622,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:28:34"
+        "updated_at": "2026-06-18 04:44:06"
       },
       {
         "collection": "pages",
@@ -1246,7 +1633,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:28:34"
+        "updated_at": "2026-06-18 04:44:06"
       },
       {
         "collection": "pages",
@@ -1257,7 +1644,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:28:34"
+        "updated_at": "2026-06-18 04:44:06"
       },
       {
         "collection": "pages",
@@ -1268,7 +1655,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:28:34"
+        "updated_at": "2026-06-18 04:44:06"
       },
       {
         "collection": "pages",
@@ -1279,7 +1666,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:28:34"
+        "updated_at": "2026-06-18 04:44:06"
       },
       {
         "collection": "pages",
@@ -1290,7 +1677,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:28:34"
+        "updated_at": "2026-06-18 04:44:06"
       },
       {
         "collection": "pages",
@@ -1301,7 +1688,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:28:34"
+        "updated_at": "2026-06-18 04:44:06"
       },
       {
         "collection": "tools",
@@ -1312,7 +1699,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-17 17:28:34"
+        "updated_at": "2026-06-18 04:44:06"
       },
       {
         "collection": "tools",
@@ -1323,7 +1710,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 17:15:52",
-        "updated_at": "2026-06-17 17:28:34"
+        "updated_at": "2026-06-18 04:44:06"
       },
       {
         "collection": "tools",
@@ -1334,7 +1721,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 17:15:52",
-        "updated_at": "2026-06-17 17:28:34"
+        "updated_at": "2026-06-18 04:44:06"
       },
       {
         "collection": "pages",
@@ -1345,7 +1732,18 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 17:28:34",
-        "updated_at": "2026-06-17 17:28:34"
+        "updated_at": "2026-06-18 04:44:06"
+      },
+      {
+        "collection": "pages",
+        "content_id": "01KVCGP93WA2M46EQW7FYP5ZCR",
+        "seo_title": "TEMIS publications",
+        "seo_description": "Browse research papers, reports, and publications connected to TEMIS content and graph navigation.",
+        "seo_image": null,
+        "seo_canonical": null,
+        "seo_no_index": 0,
+        "created_at": "2026-06-18 04:44:06",
+        "updated_at": "2026-06-18 04:44:06"
       }
     ],
     "_emdash_migrations": [
@@ -1594,6 +1992,16 @@
         "data": "{\"accent\":\"#006f6a\",\"description\":\"Strategy, governance, and direction-setting for open knowledge movements.\",\"priority\":50}",
         "locale": "en",
         "translation_group": "schema:taxonomy:tag:movement-strategy"
+      },
+      {
+        "id": "schema:taxonomy:category:publications",
+        "name": "category",
+        "slug": "publications",
+        "label": "Publications",
+        "parent_id": null,
+        "data": "{\"accent\":\"#8a1f5c\",\"description\":\"Research papers, reports, and external knowledge objects connected to TEMIS work.\",\"priority\":68}",
+        "locale": "en",
+        "translation_group": "schema:taxonomy:category:publications"
       }
     ],
     "content_taxonomies": [
@@ -1899,7 +2307,7 @@
       },
       {
         "name": "site:searchMissingDescription",
-        "value": "\"Search the published TEMIS static snapshot across essays, tools, people, and pages.\""
+        "value": "\"Search the published TEMIS static snapshot across essays, tools, publications, people, and pages.\""
       },
       {
         "name": "site:pageHeroEyebrow",
@@ -1983,7 +2391,7 @@
       },
       {
         "name": "site:homeTopicsCardDescription",
-        "value": "\"Follow topic routes across essays, tools, and people as the map takes shape.\""
+        "value": "\"Follow topic routes across essays, tools, publications, and people as the map takes shape.\""
       },
       {
         "name": "site:homeTopicsCardEyebrow",
@@ -2047,7 +2455,7 @@
       },
       {
         "name": "site:searchInputPlaceholder",
-        "value": "\"Search essays, tools, people, and pages\""
+        "value": "\"Search essays, tools, publications, people, and pages\""
       },
       {
         "name": "site:searchResultsLabel",
@@ -2158,6 +2566,14 @@
         "data": "{\"title\":\"Tool index\",\"summary\":\"Software, prototypes, and research pipelines connected to open knowledge work.\",\"content\":[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Tools are first-class TEMIS records: they connect authors, articles, repositories, topics, and maintenance signals into the graph.\"}]}]}",
         "author_id": null,
         "created_at": "2026-06-17 17:28:34"
+      },
+      {
+        "id": "01KVCGP93YFHVFDJX6N31QFK3Q",
+        "collection": "pages",
+        "entry_id": "01KVCGP93WA2M46EQW7FYP5ZCR",
+        "data": "{\"title\":\"Publication index\",\"summary\":\"Research papers, reports, and other publications connected to TEMIS essays, tools, people, and topics.\",\"content\":[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Publications are first-class knowledge objects in TEMIS. Editorial posts may summarize or discuss them, tools may implement them, and the graph can connect them to people and topics without treating them as ordinary articles.\"}]}]}",
+        "author_id": null,
+        "created_at": "2026-06-18 04:44:06"
       }
     ]
   },
@@ -2233,7 +2649,8 @@
         "source_title",
         "source_url",
         "content_license",
-        "content_license_url"
+        "content_license_url",
+        "related_publications"
       ],
       "types": {
         "id": "TEXT",
@@ -2263,7 +2680,78 @@
         "source_title": "TEXT",
         "source_url": "TEXT",
         "content_license": "TEXT",
-        "content_license_url": "TEXT"
+        "content_license_url": "TEXT",
+        "related_publications": "TEXT"
+      }
+    },
+    "ec_publications": {
+      "columns": [
+        "id",
+        "slug",
+        "status",
+        "author_id",
+        "primary_byline_id",
+        "created_at",
+        "updated_at",
+        "published_at",
+        "scheduled_at",
+        "deleted_at",
+        "version",
+        "live_revision_id",
+        "draft_revision_id",
+        "locale",
+        "translation_group",
+        "title",
+        "publication_type",
+        "summary",
+        "abstract",
+        "editorial_note",
+        "publication_authors",
+        "venue",
+        "publication_date",
+        "doi",
+        "arxiv_id",
+        "source_url",
+        "pdf_url",
+        "license",
+        "related_articles",
+        "related_tools",
+        "graph_visible",
+        "graph_priority"
+      ],
+      "types": {
+        "id": "TEXT",
+        "slug": "TEXT",
+        "status": "TEXT",
+        "author_id": "TEXT",
+        "primary_byline_id": "TEXT",
+        "created_at": "TEXT",
+        "updated_at": "TEXT",
+        "published_at": "TEXT",
+        "scheduled_at": "TEXT",
+        "deleted_at": "TEXT",
+        "version": "INTEGER",
+        "live_revision_id": "TEXT",
+        "draft_revision_id": "TEXT",
+        "locale": "TEXT",
+        "translation_group": "TEXT",
+        "title": "TEXT",
+        "publication_type": "TEXT",
+        "summary": "TEXT",
+        "abstract": "TEXT",
+        "editorial_note": "JSON",
+        "publication_authors": "TEXT",
+        "venue": "TEXT",
+        "publication_date": "TEXT",
+        "doi": "TEXT",
+        "arxiv_id": "TEXT",
+        "source_url": "TEXT",
+        "pdf_url": "TEXT",
+        "license": "TEXT",
+        "related_articles": "TEXT",
+        "related_tools": "TEXT",
+        "graph_visible": "INTEGER",
+        "graph_priority": "REAL"
       }
     },
     "ec_tools": {
@@ -2304,7 +2792,8 @@
         "screenshot_license",
         "github_data",
         "github_synced_at",
-        "github_sync_error"
+        "github_sync_error",
+        "related_publications"
       ],
       "types": {
         "id": "TEXT",
@@ -2343,7 +2832,8 @@
         "screenshot_license": "TEXT",
         "github_data": "JSON",
         "github_synced_at": "TEXT",
-        "github_sync_error": "TEXT"
+        "github_sync_error": "TEXT",
+        "related_publications": "TEXT"
       }
     },
     "_emdash_collections": {
@@ -2691,5 +3181,5 @@
       }
     }
   },
-  "generatedAt": "2026-06-17T17:42:20.696Z"
+  "generatedAt": "2026-06-18T04:44:44.588Z"
 }

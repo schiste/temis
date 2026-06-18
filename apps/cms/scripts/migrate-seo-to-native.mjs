@@ -32,6 +32,7 @@ import {
 const collectionTables = new Map([
   ["posts", "ec_posts"],
   ["pages", "ec_pages"],
+  ["publications", "ec_publications"],
   ["tools", "ec_tools"],
 ]);
 

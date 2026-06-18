@@ -2,7 +2,7 @@
   "version": "1",
   "meta": {
     "name": "TEMIS Starter",
-    "description": "Starter content model for a static Astro site managed in EmDash, including first-class graphable tools.",
+    "description": "Starter content model for a static Astro site managed in EmDash, including first-class graphable tools and publications.",
     "author": "TEMIS"
   },
   "settings": {
@@ -31,7 +31,7 @@
     "homePeopleCardDescription": "Author pages connect published work to the people and teams behind it.",
     "homePeopleCardEyebrow": "People",
     "homePeopleCardTitle": "Find the authors",
-    "homeTopicsCardDescription": "Follow topic routes across essays, tools, and people as the map takes shape.",
+    "homeTopicsCardDescription": "Follow topic routes across essays, tools, publications, and people as the map takes shape.",
     "homeTopicsCardEyebrow": "Topic graph",
     "homeTopicsCardTitle": "Navigate the commons",
     "blogHeroEyebrow": "Articles",
@@ -67,9 +67,9 @@
     "searchHeroEyebrow": "Search",
     "searchEmptyLabel": "No matching records",
     "searchInputLabel": "Search TEMIS",
-    "searchInputPlaceholder": "Search essays, tools, people, and pages",
+    "searchInputPlaceholder": "Search essays, tools, publications, people, and pages",
     "searchMissingTitle": "Search",
-    "searchMissingDescription": "Search the published TEMIS static snapshot across essays, tools, people, and pages.",
+    "searchMissingDescription": "Search the published TEMIS static snapshot across essays, tools, publications, people, and pages.",
     "searchResultsLabel": "Search results",
     "pageHeroEyebrow": "Page",
     "notFoundEyebrow": "404",
@@ -216,6 +216,145 @@
           "slug": "content_license_url",
           "label": "Content license URL",
           "type": "url"
+        },
+        {
+          "slug": "related_publications",
+          "label": "Related Publications",
+          "type": "reference",
+          "options": {
+            "collection": "publications",
+            "allowMultiple": true
+          }
+        }
+      ]
+    },
+    {
+      "slug": "publications",
+      "label": "Publications",
+      "labelSingular": "Publication",
+      "description": "First-class research papers, reports, and other external publications connected to TEMIS content and graph navigation.",
+      "icon": "book-open",
+      "supports": ["drafts", "revisions", "preview", "seo", "search"],
+      "urlPattern": "/publications/{slug}",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "publication_type",
+          "label": "Publication type",
+          "type": "select",
+          "required": true,
+          "defaultValue": "research_paper",
+          "searchable": true,
+          "validation": {
+            "options": [
+              "research_paper",
+              "preprint",
+              "report",
+              "whitepaper",
+              "book",
+              "dataset_paper"
+            ]
+          }
+        },
+        {
+          "slug": "summary",
+          "label": "TEMIS summary",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "abstract",
+          "label": "Abstract",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "editorial_note",
+          "label": "Editorial note",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "publication_authors",
+          "label": "Publication authors",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "venue",
+          "label": "Venue",
+          "type": "string",
+          "searchable": true
+        },
+        {
+          "slug": "publication_date",
+          "label": "Publication date",
+          "type": "string",
+          "searchable": true
+        },
+        {
+          "slug": "doi",
+          "label": "DOI",
+          "type": "string",
+          "searchable": true
+        },
+        {
+          "slug": "arxiv_id",
+          "label": "arXiv ID",
+          "type": "string",
+          "searchable": true
+        },
+        {
+          "slug": "source_url",
+          "label": "Source URL",
+          "type": "url"
+        },
+        {
+          "slug": "pdf_url",
+          "label": "PDF URL",
+          "type": "url"
+        },
+        {
+          "slug": "license",
+          "label": "License",
+          "type": "string",
+          "searchable": true
+        },
+        {
+          "slug": "related_articles",
+          "label": "Related Articles",
+          "type": "reference",
+          "options": {
+            "collection": "posts",
+            "allowMultiple": true
+          }
+        },
+        {
+          "slug": "related_tools",
+          "label": "Related Tools",
+          "type": "reference",
+          "options": {
+            "collection": "tools",
+            "allowMultiple": true
+          }
+        },
+        {
+          "slug": "graph_visible",
+          "label": "Visible in Graph",
+          "type": "boolean",
+          "defaultValue": true
+        },
+        {
+          "slug": "graph_priority",
+          "label": "Graph Priority",
+          "type": "number"
         }
       ]
     },
@@ -356,6 +495,15 @@
           }
         },
         {
+          "slug": "related_publications",
+          "label": "Related Publications",
+          "type": "reference",
+          "options": {
+            "collection": "publications",
+            "allowMultiple": true
+          }
+        },
+        {
           "slug": "related_people",
           "label": "Related people and roles",
           "type": "text"
@@ -380,14 +528,14 @@
       "label": "Categories",
       "labelSingular": "Category",
       "hierarchical": true,
-      "collections": ["posts", "tools"]
+      "collections": ["posts", "tools", "publications"]
     },
     {
       "name": "tag",
       "label": "Tags",
       "labelSingular": "Tag",
       "hierarchical": false,
-      "collections": ["posts", "tools"]
+      "collections": ["posts", "tools", "publications"]
     }
   ],
   "content": {
@@ -494,6 +642,29 @@
           ],
           "seo_title": "TEMIS tools",
           "seo_description": "Browse TEMIS tool dossiers for open knowledge software, research pipelines, and prototypes."
+        }
+      },
+      {
+        "id": "seed:page:publications",
+        "slug": "publications",
+        "status": "published",
+        "data": {
+          "title": "Publication index",
+          "summary": "Research papers, reports, and other publications connected to TEMIS essays, tools, people, and topics.",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Publications are first-class knowledge objects in TEMIS. Editorial posts may summarize or discuss them, tools may implement them, and the graph can connect them to people and topics without treating them as ordinary articles."
+                }
+              ]
+            }
+          ],
+          "seo_title": "TEMIS publications",
+          "seo_description": "Browse research papers, reports, and publications connected to TEMIS content and graph navigation."
         }
       },
       {

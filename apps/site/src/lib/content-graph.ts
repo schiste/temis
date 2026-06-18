@@ -18,6 +18,9 @@ import {
   entryContentType,
   entryDescription,
   entryExternalUrl,
+  entryPublicationDateLabel,
+  entryPublicationDateTime,
+  entryPublicationTypeLabel,
   entryPublishedDateLabel,
   entryPublishedDateTime,
   entrySlug,
@@ -26,12 +29,15 @@ import {
   formatDateLabel,
   getBylines,
   getPosts,
+  getPublications,
   getSnapshotTable,
   getTools,
+  publicationHref,
   slugify,
   toolHref,
   type BylineEntry,
   type PostEntry,
+  type PublicationEntry,
   type SnapshotRow,
   type ToolEntry,
 } from "./emdash";
@@ -75,7 +81,7 @@ interface ContentTaxonomyEntry extends SnapshotRow {
   term_id?: string | null;
 }
 
-type GraphableEntry = PostEntry | ToolEntry;
+type GraphableEntry = PostEntry | PublicationEntry | ToolEntry;
 
 function isDeleted(row: SnapshotRow) {
   return row.deleted_at !== null && row.deleted_at !== undefined;
@@ -163,6 +169,64 @@ function postNode(post: PostEntry): GraphNavigationNodeInput {
 
 export function postGraphNodeId(post: PostEntry) {
   return `content:${post.id}`;
+}
+
+function publicationNodeType(publication: PublicationEntry) {
+  return cleanText(publication.publication_type) === "research_paper"
+    ? "research_paper"
+    : "publication";
+}
+
+function publicationMeta(publication: PublicationEntry) {
+  const publicationDateTime = entryPublicationDateTime(publication);
+
+  return [
+    graphMeta("Content type", entryPublicationTypeLabel(publication)),
+    graphMeta("Authors", cleanText(publication.publication_authors)),
+    graphMeta("Venue", cleanText(publication.venue)),
+    publicationDateTime
+      ? graphMeta("Published", entryPublicationDateLabel(publication), {
+          datetime: publicationDateTime,
+        })
+      : null,
+    graphMeta("DOI", cleanText(publication.doi), {
+      href: publication.doi
+        ? `https://doi.org/${cleanText(publication.doi).replace(/^https?:\/\/(dx\.)?doi\.org\//i, "")}`
+        : null,
+    }),
+    graphMeta("arXiv", cleanText(publication.arxiv_id), {
+      href: publication.arxiv_id
+        ? `https://arxiv.org/abs/${cleanText(publication.arxiv_id)}`
+        : null,
+    }),
+    graphMeta("Source", entryExternalUrl(publication.source_url), {
+      href: entryExternalUrl(publication.source_url),
+    }),
+    graphMeta("PDF", entryExternalUrl(publication.pdf_url), {
+      href: entryExternalUrl(publication.pdf_url),
+    }),
+    graphMeta("License", cleanText(publication.license)),
+  ].filter(isGraphMetaItem);
+}
+
+function publicationNode(
+  publication: PublicationEntry,
+): GraphNavigationNodeInput {
+  return {
+    description: entryDescription(publication) || entrySummary(publication),
+    href: publicationHref(publication),
+    id: `publication:${publication.id}`,
+    label: entryTitle(publication),
+    meta: publicationMeta(publication),
+    priority: entryPriority(publication, 52),
+    slug: entrySlug(publication),
+    type: publicationNodeType(publication),
+    visible: !isHiddenFromGraph(publication),
+  };
+}
+
+export function publicationGraphNodeId(publication: PublicationEntry) {
+  return `publication:${publication.id}`;
 }
 
 function toolNode(tool: ToolEntry): GraphNavigationNodeInput {
@@ -367,7 +431,9 @@ async function getContentTaxonomies() {
 }
 
 function contentNodeId(collection: string, entry: GraphableEntry) {
-  return collection === "tools" ? `tool:${entry.id}` : `content:${entry.id}`;
+  if (collection === "tools") return `tool:${entry.id}`;
+  if (collection === "publications") return `publication:${entry.id}`;
+  return `content:${entry.id}`;
 }
 
 function createBylineResolver(bylines: BylineEntry[]) {
@@ -396,6 +462,7 @@ function createBylineResolver(bylines: BylineEntry[]) {
 
 function attachBylineEdges(
   posts: PostEntry[],
+  publications: PublicationEntry[],
   tools: ToolEntry[],
   bylines: BylineEntry[],
   contentBylines: ContentBylineEntry[],
@@ -430,14 +497,32 @@ function attachBylineEdges(
     }
   }
 
+  for (const publication of publications) {
+    const publicationId = `publication:${publication.id}`;
+    const byline = resolver.resolve(publication.primary_byline_id);
+    if (byline?.id) {
+      edges.push(edge(publicationId, `author:${byline.id}`, "authored_by", 70));
+    }
+  }
+
   for (const row of contentBylines) {
     const collection = contentTaxonomyCollection(row);
-    if (collection !== "posts" && collection !== "tools") continue;
+    if (
+      collection !== "posts" &&
+      collection !== "publications" &&
+      collection !== "tools"
+    ) {
+      continue;
+    }
     const contentId = contentTaxonomyContentId(row);
     const byline = resolver.resolve(row.byline_id);
     if (!contentId || !byline?.id) continue;
     const nodeId =
-      collection === "tools" ? `tool:${contentId}` : `content:${contentId}`;
+      collection === "tools"
+        ? `tool:${contentId}`
+        : collection === "publications"
+          ? `publication:${contentId}`
+          : `content:${contentId}`;
     edges.push(edge(nodeId, `author:${byline.id}`, "authored_by", 70));
   }
 
@@ -494,8 +579,78 @@ function attachToolEdges(tools: ToolEntry[], posts: PostEntry[]) {
   return edges;
 }
 
+function attachPublicationEdges(
+  posts: PostEntry[],
+  publications: PublicationEntry[],
+  tools: ToolEntry[],
+) {
+  const edges: GraphNavigationEdgeInput[] = [];
+  const postIds = new Set(posts.map((post) => post.id));
+  const publicationIds = new Set(
+    publications.map((publication) => publication.id),
+  );
+  const toolIds = new Set(tools.map((tool) => tool.id));
+
+  for (const post of posts) {
+    for (const publicationId of relatedRecordIds(post.related_publications)) {
+      if (!publicationIds.has(publicationId)) continue;
+      edges.push(
+        edge(
+          `content:${post.id}`,
+          `publication:${publicationId}`,
+          "references_publication",
+          50,
+        ),
+      );
+    }
+  }
+
+  for (const tool of tools) {
+    for (const publicationId of relatedRecordIds(tool.related_publications)) {
+      if (!publicationIds.has(publicationId)) continue;
+      edges.push(
+        edge(
+          `tool:${tool.id}`,
+          `publication:${publicationId}`,
+          "implements_publication",
+          50,
+        ),
+      );
+    }
+  }
+
+  for (const publication of publications) {
+    for (const postId of relatedRecordIds(publication.related_articles)) {
+      if (!postIds.has(postId)) continue;
+      edges.push(
+        edge(
+          `publication:${publication.id}`,
+          `content:${postId}`,
+          "references_publication",
+          50,
+        ),
+      );
+    }
+
+    for (const toolId of relatedRecordIds(publication.related_tools)) {
+      if (!toolIds.has(toolId)) continue;
+      edges.push(
+        edge(
+          `publication:${publication.id}`,
+          `tool:${toolId}`,
+          "implements_publication",
+          50,
+        ),
+      );
+    }
+  }
+
+  return edges;
+}
+
 function authorPublicationCounts(
   posts: PostEntry[],
+  publications: PublicationEntry[],
   tools: ToolEntry[],
   bylines: BylineEntry[],
   contentBylines: ContentBylineEntry[],
@@ -523,15 +678,32 @@ function authorPublicationCounts(
     }
   }
 
+  for (const publication of publications) {
+    addCount(
+      resolver.resolveId(publication.primary_byline_id),
+      `publication:${publication.id}`,
+    );
+  }
+
   for (const row of contentBylines) {
     const collection = contentTaxonomyCollection(row);
-    if (collection !== "posts" && collection !== "tools") continue;
+    if (
+      collection !== "posts" &&
+      collection !== "publications" &&
+      collection !== "tools"
+    ) {
+      continue;
+    }
     const contentId = contentTaxonomyContentId(row);
     const bylineId = resolver.resolveId(row.byline_id);
     if (!contentId || !bylineId) continue;
     addCount(
       bylineId,
-      collection === "tools" ? `tool:${contentId}` : `content:${contentId}`,
+      collection === "tools"
+        ? `tool:${contentId}`
+        : collection === "publications"
+          ? `publication:${contentId}`
+          : `content:${contentId}`,
     );
   }
 
@@ -541,24 +713,34 @@ function authorPublicationCounts(
 }
 
 export async function getContentGraphSnapshot(): Promise<GraphNavigationSnapshot> {
-  const [posts, tools, bylines, contentBylines, terms, assignments] =
-    await Promise.all([
-      getPosts(),
-      getTools(),
-      getBylines(),
-      getSnapshotTable<ContentBylineEntry>("_emdash_content_bylines"),
-      getTaxonomyTerms(),
-      getContentTaxonomies(),
-    ]);
+  const [
+    posts,
+    publications,
+    tools,
+    bylines,
+    contentBylines,
+    terms,
+    assignments,
+  ] = await Promise.all([
+    getPosts(),
+    getPublications(),
+    getTools(),
+    getBylines(),
+    getSnapshotTable<ContentBylineEntry>("_emdash_content_bylines"),
+    getTaxonomyTerms(),
+    getContentTaxonomies(),
+  ]);
 
   const publicationCounts = authorPublicationCounts(
     posts,
+    publications,
     tools,
     bylines,
     contentBylines,
   );
   const nodes: GraphNavigationNodeInput[] = [
     ...posts.map(postNode),
+    ...publications.map(publicationNode),
     ...tools.map(toolNode),
     ...bylines.map((byline) =>
       authorNode(
@@ -570,12 +752,14 @@ export async function getContentGraphSnapshot(): Promise<GraphNavigationSnapshot
   ];
   const entries = new Map<string, GraphableEntry[]>([
     ["posts", posts],
+    ["publications", publications],
     ["tools", tools],
   ]);
   const edges: GraphNavigationEdgeInput[] = [
-    ...attachBylineEdges(posts, tools, bylines, contentBylines),
+    ...attachBylineEdges(posts, publications, tools, bylines, contentBylines),
     ...attachTaxonomyEdges(entries, terms, assignments),
     ...attachToolEdges(tools, posts),
+    ...attachPublicationEdges(posts, publications, tools),
   ];
 
   return createGraphNavigationSnapshot({

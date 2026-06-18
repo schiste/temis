@@ -1,0 +1,161 @@
+---
+import MetadataRow from "@temis/design-system/components/MetadataRow.astro";
+import PageHero from "@temis/design-system/components/PageHero.astro";
+import RichContent from "@temis/design-system/components/RichContent.astro";
+import ContentGraphRail from "../../components/ContentGraphRail.astro";
+import SiteLayout from "../../components/SiteLayout.astro";
+import {
+  getFocusedContentGraphSnapshot,
+  publicationGraphNodeId,
+} from "../../lib/content-graph";
+import {
+  entryDescription,
+  entryExternalUrl,
+  entryPublicationDateLabel,
+  entryPublicationDateTime,
+  entryPublicationTypeLabel,
+  entrySlug,
+  entrySummary,
+  entryTitle,
+  getPublicationBySlug,
+  getPublications,
+  getSiteTexts,
+} from "../../lib/emdash";
+
+export async function getStaticPaths() {
+  const publications = await getPublications();
+  return publications.map((publication) => ({
+    params: { slug: entrySlug(publication) },
+    props: { publication },
+  }));
+}
+
+const { publication } = Astro.props;
+const resolvedPublication =
+  publication ?? (await getPublicationBySlug(Astro.params.slug ?? ""));
+if (!resolvedPublication) {
+  return Astro.redirect("/404");
+}
+
+const title = entryTitle(resolvedPublication);
+const description =
+  entryDescription(resolvedPublication) || entrySummary(resolvedPublication);
+const copy = await getSiteTexts({
+  publicationAbstractHeading: "Abstract",
+  publicationArxivLabel: "arXiv",
+  publicationAuthorsLabel: "Authors",
+  publicationDateLabel: "Published",
+  publicationDoiLabel: "DOI",
+  publicationGraphHeading: "Navigation graph",
+  publicationGraphLabel: "Graph navigation from this publication",
+  publicationHeroEyebrow: "Publication",
+  publicationLicenseLabel: "License",
+  publicationPdfLabel: "PDF",
+  publicationSourceLabel: "Source",
+  publicationTypeLabel: "Type",
+  publicationVenueLabel: "Venue",
+});
+const graph = await getFocusedContentGraphSnapshot(
+  publicationGraphNodeId(resolvedPublication),
+);
+const sourceUrl = entryExternalUrl(resolvedPublication.source_url);
+const pdfUrl = entryExternalUrl(resolvedPublication.pdf_url);
+const doi = resolvedPublication.doi?.trim();
+const arxivId = resolvedPublication.arxiv_id?.trim();
+const publicationDateTime = entryPublicationDateTime(resolvedPublication);
+const metadataItems = [
+  {
+    label: copy.publicationTypeLabel,
+    value: entryPublicationTypeLabel(resolvedPublication),
+  },
+  resolvedPublication.publication_authors
+    ? {
+        label: copy.publicationAuthorsLabel,
+        value: resolvedPublication.publication_authors,
+      }
+    : null,
+  resolvedPublication.venue
+    ? {
+        label: copy.publicationVenueLabel,
+        value: resolvedPublication.venue,
+      }
+    : null,
+  {
+    label: copy.publicationDateLabel,
+    value: entryPublicationDateLabel(resolvedPublication),
+  },
+  doi
+    ? {
+        href: `https://doi.org/${doi.replace(/^https?:\/\/(dx\.)?doi\.org\//i, "")}`,
+        label: copy.publicationDoiLabel,
+        value: doi,
+      }
+    : null,
+  arxivId
+    ? {
+        href: `https://arxiv.org/abs/${arxivId}`,
+        label: copy.publicationArxivLabel,
+        value: arxivId,
+      }
+    : null,
+  sourceUrl
+    ? {
+        href: sourceUrl,
+        label: copy.publicationSourceLabel,
+        value: "Source",
+      }
+    : null,
+  pdfUrl
+    ? {
+        href: pdfUrl,
+        label: copy.publicationPdfLabel,
+        value: "PDF",
+      }
+    : null,
+  resolvedPublication.license
+    ? {
+        label: copy.publicationLicenseLabel,
+        value: resolvedPublication.license,
+      }
+    : null,
+].filter((item): item is { href?: string; label: string; value: string } =>
+  Boolean(item),
+);
+---
+
+<SiteLayout title={title} description={description}>
+  <div class="ds-content-page">
+    <article class="ds-content-main ds-publication-main">
+      <PageHero
+        eyebrow={copy.publicationHeroEyebrow}
+        title={title}
+        description={description}
+      />
+      <MetadataRow items={metadataItems} />
+      {
+        publicationDateTime && (
+          <time class="ds-visually-hidden" datetime={publicationDateTime}>
+            {entryPublicationDateLabel(resolvedPublication)}
+          </time>
+        )
+      }
+      {
+        resolvedPublication.abstract && (
+          <section class="ds-publication-abstract">
+            <h2>{copy.publicationAbstractHeading}</h2>
+            <p>{resolvedPublication.abstract}</p>
+          </section>
+        )
+      }
+      <RichContent
+        value={resolvedPublication.editorial_note}
+        variant="article"
+      />
+    </article>
+    <ContentGraphRail
+      graph={graph}
+      heading={copy.publicationGraphHeading}
+      label={copy.publicationGraphLabel}
+    />
+  </div>
+</SiteLayout>

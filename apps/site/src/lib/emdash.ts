@@ -54,11 +54,35 @@ export interface PostEntry extends SnapshotRow {
   content_license?: string | null;
   content_license_url?: string | null;
   primary_byline_id?: string | null;
+  related_publications?: unknown;
   seo_description?: string;
   seo_title?: string;
   source_title?: string | null;
   source_url?: string | null;
   title: string;
+}
+
+export interface PublicationEntry extends SnapshotRow {
+  abstract?: string | null;
+  arxiv_id?: string | null;
+  doi?: string | null;
+  editorial_note?: unknown;
+  graph_priority?: number | null;
+  graph_visible?: boolean | number | null;
+  license?: string | null;
+  pdf_url?: string | null;
+  primary_byline_id?: string | null;
+  publication_authors?: string | null;
+  publication_date?: string | null;
+  publication_type?: string | null;
+  related_articles?: unknown;
+  related_tools?: unknown;
+  seo_description?: string;
+  seo_title?: string;
+  source_url?: string | null;
+  summary?: string;
+  title: string;
+  venue?: string | null;
 }
 
 export interface ToolEntry extends SnapshotRow {
@@ -76,6 +100,7 @@ export interface ToolEntry extends SnapshotRow {
   privacy_note?: string | null;
   primary_byline_id?: string | null;
   related_articles?: unknown;
+  related_publications?: unknown;
   related_people?: unknown;
   repository_url?: string | null;
   screenshot_alt?: string | null;
@@ -409,6 +434,7 @@ const explicitRoutePageSlugs = new Set([
   "about",
   "blog",
   "people",
+  "publications",
   "search",
   "topics",
   "tools",
@@ -443,6 +469,21 @@ export async function getPostBySlug(slug: string) {
   const normalized = slug.replace(/^\/+|\/+$/g, "");
   const posts = await getPosts();
   return posts.find((post) => publicSlug(post) === normalized) ?? null;
+}
+
+export async function getPublications() {
+  const publications = await getCollection<PublicationEntry>("publications");
+  return publications.sort(byNewest);
+}
+
+export async function getPublicationBySlug(slug: string) {
+  const normalized = slug.replace(/^\/+|\/+$/g, "");
+  const publications = await getPublications();
+  return (
+    publications.find(
+      (publication) => publicSlug(publication) === normalized,
+    ) ?? null
+  );
 }
 
 export async function getTools() {
@@ -494,9 +535,10 @@ export async function getPostsByAuthorSlug(slug: string) {
 }
 
 export async function getSearchDocuments(): Promise<SearchDocument[]> {
-  const [pages, posts, tools, bylines] = await Promise.all([
+  const [pages, posts, publications, tools, bylines] = await Promise.all([
     getPages(),
     getPosts(),
+    getPublications(),
     getTools(),
     getBylines(),
   ]);
@@ -513,6 +555,12 @@ export async function getSearchDocuments(): Promise<SearchDocument[]> {
       href: blogHref(post),
       kind: entryContentType(post),
       title: entryTitle(post),
+    })),
+    ...publications.map((publication) => ({
+      description: entryDescription(publication) || entrySummary(publication),
+      href: publicationHref(publication),
+      kind: entryPublicationTypeLabel(publication),
+      title: entryTitle(publication),
     })),
     ...tools.map((tool) => ({
       description: entryDescription(tool) || entrySummary(tool),
@@ -531,6 +579,7 @@ export async function getSearchDocuments(): Promise<SearchDocument[]> {
 
 const COLLECTION_ROUTE_PREFIX: Record<string, string> = {
   posts: "/blog",
+  publications: "/publications",
   tools: "/tools",
 };
 
@@ -544,6 +593,10 @@ export function collectionHref(
 
 export function blogHref(post: SnapshotRow) {
   return collectionHref("posts", entrySlug(post));
+}
+
+export function publicationHref(publication: SnapshotRow) {
+  return collectionHref("publications", entrySlug(publication));
 }
 
 export function toolHref(tool: SnapshotRow) {
@@ -814,6 +867,40 @@ export function entryContentType(row: PostEntry) {
   };
 
   return contentType ? (labels[contentType] ?? contentType) : "Essay";
+}
+
+export function entryPublicationTypeLabel(row: PublicationEntry) {
+  const publicationType = row.publication_type?.trim();
+  const labels: Record<string, string> = {
+    book: "Book",
+    dataset_paper: "Dataset paper",
+    preprint: "Preprint",
+    report: "Report",
+    research_paper: "Research paper",
+    whitepaper: "Whitepaper",
+  };
+
+  return publicationType
+    ? (labels[publicationType] ?? publicationType.replaceAll("_", " "))
+    : "Publication";
+}
+
+export function entryPublicationDateTime(row: PublicationEntry) {
+  const value = row.publication_date ?? row.published_at;
+  if (!value) return null;
+
+  const rawValue = String(value);
+  if (/^\d{4}$/.test(rawValue)) return rawValue;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(rawValue)) return `${rawValue}T00:00:00Z`;
+  return rawValue.includes("T") ? rawValue : `${rawValue.replace(" ", "T")}Z`;
+}
+
+export function entryPublicationDateLabel(row: PublicationEntry) {
+  const rawDate = String(row.publication_date ?? "").trim();
+  if (/^\d{4}$/.test(rawDate)) return rawDate;
+  return (
+    formatDateLabel(entryPublicationDateTime(row)) ?? (rawDate || "Undated")
+  );
 }
 
 export function entrySummary(row: SnapshotRow) {

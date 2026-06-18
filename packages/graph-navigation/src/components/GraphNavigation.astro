@@ -26,6 +26,8 @@ const showNodeMeta = variant !== "compact";
 const nodeTypeLabels: Record<GraphNavigationNodeType, string> = {
   author: "Author",
   content: "Content",
+  publication: "Publication",
+  research_paper: "Research paper",
   tag: "Tag",
   tool: "Tool",
   topic: "Topic",
@@ -33,6 +35,8 @@ const nodeTypeLabels: Record<GraphNavigationNodeType, string> = {
 const nodeTypeShortLabels: Record<GraphNavigationNodeType, string> = {
   author: "A",
   content: "C",
+  publication: "P",
+  research_paper: "R",
   tag: "#",
   tool: "T",
   topic: "+",
@@ -499,6 +503,14 @@ const headingId = `temis-graph-heading-${hashText(`${heading}:${label}:${laidOut
 
   .temis-graph-nav__node--content {
     --node-accent: var(--ds-color-accent, currentColor);
+  }
+
+  .temis-graph-nav__node--publication,
+  .temis-graph-nav__node--research_paper {
+    --node-accent: var(
+      --ds-color-topic-b,
+      var(--ds-color-accent, currentColor)
+    );
   }
 
   .temis-graph-nav__node--topic {

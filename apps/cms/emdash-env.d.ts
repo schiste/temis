@@ -44,6 +44,40 @@ export interface Post {
   source_url?: string;
   content_license?: string;
   content_license_url?: string;
+  related_publications?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Publication {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  publication_type:
+    | "research_paper"
+    | "preprint"
+    | "report"
+    | "whitepaper"
+    | "book"
+    | "dataset_paper";
+  summary?: string;
+  abstract?: string;
+  editorial_note?: PortableTextBlock[];
+  publication_authors: string;
+  venue?: string;
+  publication_date?: string;
+  doi?: string;
+  arxiv_id?: string;
+  source_url?: string;
+  pdf_url?: string;
+  license?: string;
+  related_articles?: string;
+  related_tools?: string;
+  graph_visible?: boolean;
+  graph_priority?: number;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -92,6 +126,7 @@ export interface Tool {
   screenshot_caption?: string;
   screenshot_license?: string;
   related_articles?: string;
+  related_publications?: string;
   related_people?: string;
   graph_visible?: boolean;
   graph_priority?: number;
@@ -105,6 +140,7 @@ declare module "emdash" {
   interface EmDashCollections {
     pages: Page;
     posts: Post;
+    publications: Publication;
     tools: Tool;
   }
 }

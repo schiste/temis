@@ -1,0 +1,136 @@
+---
+import PageHero from "@temis/design-system/components/PageHero.astro";
+import SiteLayout from "../../components/SiteLayout.astro";
+import {
+  entryDescription,
+  entryPublicationDateLabel,
+  entryPublicationTypeLabel,
+  entrySummary,
+  entryTitle,
+  getPageBySlug,
+  getPublications,
+  getSiteTexts,
+  publicationHref,
+  type PublicationEntry,
+} from "../../lib/emdash";
+
+const page = await getPageBySlug("publications");
+const publications = await getPublications();
+const copy = await getSiteTexts({
+  publicationsArchiveCountLabel: "publications",
+  publicationsArchiveOrderLabel: "Latest first",
+  publicationsArchiveScopeLabel: "Published publication records",
+  publicationsHeroEyebrow: "Publications",
+  publicationsListAuthorsHeading: "Authors",
+  publicationsListDateHeading: "Date",
+  publicationsListIndexHeading: "No.",
+  publicationsListSourceHeading: "Source",
+  publicationsListTitleHeading: "Publication",
+  publicationsListTypeHeading: "Type",
+  publicationsMissingDescription:
+    "Research papers, reports, and other publications connected to TEMIS essays, tools, people, and topics.",
+  publicationsMissingTitle: "Publication index",
+  publicationsNoAuthorsLabel: "Uncredited",
+  publicationsNoRecordsLabel: "No publication records yet.",
+  publicationsNoSourceLabel: "No source",
+});
+const metaTitle = page ? entryTitle(page) : copy.publicationsMissingTitle;
+const metaDescription = page
+  ? entryDescription(page)
+  : copy.publicationsMissingDescription;
+const title = page
+  ? String(page.title ?? metaTitle)
+  : copy.publicationsMissingTitle;
+const description = page
+  ? entrySummary(page) || metaDescription
+  : copy.publicationsMissingDescription;
+const publicationCountLabel = `${publications.length
+  .toString()
+  .padStart(2, "0")} ${
+  publications.length === 1 ? "publication" : copy.publicationsArchiveCountLabel
+}`;
+
+function clean(value: string | null | undefined) {
+  return value?.trim() ?? "";
+}
+
+function sourceLabel(publication: PublicationEntry) {
+  if (clean(publication.doi)) return `DOI ${clean(publication.doi)}`;
+  if (clean(publication.arxiv_id))
+    return `arXiv ${clean(publication.arxiv_id)}`;
+  if (clean(publication.venue)) return clean(publication.venue);
+  return copy.publicationsNoSourceLabel;
+}
+
+function publicationDescription(publication: PublicationEntry) {
+  return entryDescription(publication) || entrySummary(publication);
+}
+---
+
+<SiteLayout title={metaTitle} description={metaDescription}>
+  <div class="ds-archive-page">
+    <PageHero
+      eyebrow={copy.publicationsHeroEyebrow}
+      ledeSize="small"
+      title={title}
+      description={description}
+    />
+
+    <div
+      class="ds-archive-toolbar"
+      aria-label={copy.publicationsArchiveScopeLabel}
+    >
+      <span>{publicationCountLabel}</span>
+      <span>{copy.publicationsArchiveOrderLabel}</span>
+      <span>{copy.publicationsArchiveScopeLabel}</span>
+    </div>
+
+    <section class="ds-publication-index" aria-label={title}>
+      <div class="ds-publication-index__header" aria-hidden="true">
+        <span>{copy.publicationsListIndexHeading}</span>
+        <span>{copy.publicationsListTitleHeading}</span>
+        <span>{copy.publicationsListTypeHeading}</span>
+        <span>{copy.publicationsListDateHeading}</span>
+        <span>{copy.publicationsListAuthorsHeading}</span>
+        <span>{copy.publicationsListSourceHeading}</span>
+      </div>
+      {
+        publications.map((publication, index) => (
+          <article class="ds-publication-index-row">
+            <span class="ds-publication-index-row__index">
+              {(index + 1).toString().padStart(2, "0")}
+            </span>
+            <div class="ds-publication-index-row__identity">
+              <h2>
+                <a href={publicationHref(publication)}>
+                  {entryTitle(publication)}
+                </a>
+              </h2>
+              <p>{publicationDescription(publication)}</p>
+            </div>
+            <span class="ds-publication-index-row__meta ds-publication-index-row__meta--type">
+              {entryPublicationTypeLabel(publication)}
+            </span>
+            <span class="ds-publication-index-row__meta ds-publication-index-row__meta--date">
+              {entryPublicationDateLabel(publication)}
+            </span>
+            <span class="ds-publication-index-row__authors">
+              {clean(publication.publication_authors) ||
+                copy.publicationsNoAuthorsLabel}
+            </span>
+            <span class="ds-publication-index-row__source">
+              {sourceLabel(publication)}
+            </span>
+          </article>
+        ))
+      }
+      {
+        publications.length === 0 && (
+          <p class="ds-publication-index__empty">
+            {copy.publicationsNoRecordsLabel}
+          </p>
+        )
+      }
+    </section>
+  </div>
+</SiteLayout>

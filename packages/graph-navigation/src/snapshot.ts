@@ -14,6 +14,8 @@ import {
 
 const nodeTypes = new Set<GraphNavigationNodeType>([
   "content",
+  "publication",
+  "research_paper",
   "topic",
   "tag",
   "author",
@@ -27,6 +29,8 @@ const edgeTypes = new Set<GraphNavigationEdgeType>([
   "related",
   "mentions_tool",
   "documents_tool",
+  "references_publication",
+  "implements_publication",
 ]);
 
 function isVisible(value: GraphNavigationNodeInput | GraphNavigationEdgeInput) {
