@@ -58,7 +58,7 @@ Authors, users, and people should be modeled as first-class content items where 
 - User accounts for public readers.
 - Public governance flows.
 - Appeals, conflict-of-interest workflows, or moderation queues.
-- Additional public entity systems beyond articles, tools, topics, tags, and people.
+- Additional public entity systems beyond articles, initiatives, tools, topics, tags, and people.
 - Automated discovery systems.
 - Public analytics dashboards.
 - Personalized feeds.
@@ -81,6 +81,7 @@ Authors, users, and people should be modeled as first-class content items where 
 V1 content types:
 
 - Article.
+- Initiative.
 - Tool.
 - Person/author.
 - Category/topic.
@@ -128,6 +129,37 @@ Tool announcement fields, when the article kind is `tool_announcement`:
 Tool announcements remain articles in V1. They may have visual treatment differences later, but they should use the same content model and reading flow as essays unless a concrete editorial need appears.
 
 Tool announcement articles may link to a first-class tool record so the graph can connect the article, tool, authors, topics, and tags.
+
+### Initiative
+
+Purpose: represent high-level project or exploration axes that aggregate all content types around a shared idea.
+
+Expected fields:
+
+- Title.
+- Slug.
+- Short summary.
+- Focus question.
+- Why now.
+- Desired outcome.
+- Scope note.
+- Longer description.
+- Status.
+- Steward.
+- Start date.
+- Related article assignments.
+- Related publication assignments.
+- Related tool assignments.
+- Related person/author assignments with roles.
+- Related category/topic assignments.
+- Related tag assignments.
+- Graph visibility.
+- Graph priority.
+- SEO title.
+- SEO description.
+- Status: draft/published.
+
+Initiatives should function as public dossiers, not private project-management boards. They collect essays, tools, publications, people, topics, and tags around an exploration axis such as shared decision-making. Public initiative pages should expose the editorial brief and the grouped related records, while graph navigation shows the same relationships spatially.
 
 ### Tool
 
@@ -352,6 +384,7 @@ Operational metrics:
 - Category/topic nodes can be managed in EmDash.
 - Graph edges are visually unlabeled in V1.
 - A graph-shaped content navigation data structure exists and can render homepage and topic-page navigation.
+- Initiatives can be created as first-class aggregation records and connected to articles, publications, tools, topics, tags, and people.
 - Tools can be created as first-class graphable records and connected to articles, topics, tags, and people.
 - If an interactive graph plugin is used, it degrades to accessible links when JavaScript is unavailable or the viewport is constrained.
 - Category/topic pages list related content.
