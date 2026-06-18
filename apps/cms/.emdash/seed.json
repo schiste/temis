@@ -312,6 +312,12 @@
           "searchable": true
         },
         {
+          "slug": "source_title",
+          "label": "Source title",
+          "type": "string",
+          "searchable": true
+        },
+        {
           "slug": "source_url",
           "label": "Source URL",
           "type": "url"
@@ -3271,6 +3277,56 @@
           ],
           "seo_title": "Wikipedia at 25: A Wake-Up Call",
           "seo_description": "An essay by Christophe Henner on Wikipedia at 25, AI, readership decline, contributor pipelines, knowledge equity, and Wikimedia strategy."
+        }
+      }
+    ],
+    "publications": [
+      {
+        "id": "seed:publication:hidden-costs-requiring-accounts",
+        "slug": "hidden-costs-requiring-accounts",
+        "status": "published",
+        "data": {
+          "title": "The Hidden Costs of Requiring Accounts: Quasi-Experimental Evidence From Peer Production",
+          "publication_type": "research_paper",
+          "summary": "A quasi-experimental study of 136 wiki communities showing that account requirements deter some low-quality edits, but also reduce a larger volume of higher-quality contributions.",
+          "abstract": "Online communities, like Wikipedia, produce valuable public information goods. Whereas some of these communities require would-be contributors to create accounts, many do not. Does this requirement catalyze cooperation or inhibit participation? Prior research provides divergent predictions but little causal evidence. We conduct an empirical test using longitudinal data from 136 natural experiments where would-be contributors to wikis were suddenly required to log in to contribute. Requiring accounts leads to a small increase in account creation, but reduces both high- and low-quality contributions from registered and unregistered participants. Although the change deters a large portion of low-quality participation, the vast majority of deterred contributions are of higher quality. We conclude that requiring accounts introduces an undertheorized tradeoff for public goods production in interactive communication systems.",
+          "editorial_note": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "TEMIS reads this paper as a warning against treating friction as the main moderation strategy. In a post-AI knowledge environment, communities should use AI to increase their capacity to review, guide, and support new editors: make good edits easier to keep, make bad edits easier to detect and manage, and avoid blocking promising contributors before they learn the norms."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The paper matters because it measures the tradeoff directly: account requirements reduce some low-quality participation, but the larger loss is higher-quality contribution. That pushes TEMIS toward tooling that strengthens mentorship, review queues, edit triage, and newcomer support rather than defaulting to broad entry barriers."
+                }
+              ]
+            }
+          ],
+          "publication_authors": "Benjamin Mako Hill; Aaron Shaw",
+          "venue": "Communication Research 48(6): 771-795 (2021)",
+          "publication_date": "2021",
+          "doi": "10.1177/0093650220910345",
+          "arxiv_id": "2111.10688",
+          "source_title": "arXiv:2111.10688",
+          "source_url": "https://arxiv.org/abs/2111.10688",
+          "pdf_url": "https://arxiv.org/pdf/2111.10688",
+          "license": "arXiv.org non-exclusive license to distribute 1.0",
+          "related_articles": ["seed:post:wikipedia-at-25-a-wake-up-call"],
+          "related_tools": ["seed:tool:sp42", "seed:tool:wiki-economics"],
+          "graph_visible": true,
+          "graph_priority": 64,
+          "seo_title": "The Hidden Costs of Requiring Accounts",
+          "seo_description": "Research on account requirements in peer production, read by TEMIS as a case for AI-supported review and newcomer support."
         }
       }
     ],

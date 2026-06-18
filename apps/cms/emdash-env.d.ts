@@ -71,6 +71,7 @@ export interface Publication {
   publication_date?: string;
   doi?: string;
   arxiv_id?: string;
+  source_title?: string;
   source_url?: string;
   pdf_url?: string;
   license?: string;

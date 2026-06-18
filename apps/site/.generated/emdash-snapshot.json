@@ -48,7 +48,7 @@
         "author_id": null,
         "primary_byline_id": null,
         "created_at": "2026-06-14 10:54:30",
-        "updated_at": "2026-06-18 04:44:14",
+        "updated_at": "2026-06-18 05:25:16",
         "published_at": "2026-06-14 10:54:30",
         "scheduled_at": null,
         "deleted_at": null,
@@ -128,7 +128,7 @@
         "author_id": null,
         "primary_byline_id": null,
         "created_at": "2026-06-17T17:28:34.793Z",
-        "updated_at": "2026-06-18 04:44:14",
+        "updated_at": "2026-06-18 05:25:17",
         "published_at": "2026-06-17T17:28:34.791Z",
         "scheduled_at": null,
         "deleted_at": null,
@@ -148,7 +148,7 @@
         "author_id": null,
         "primary_byline_id": null,
         "created_at": "2026-06-18T04:44:06.652Z",
-        "updated_at": "2026-06-18 04:44:14",
+        "updated_at": "2026-06-18 05:25:17",
         "published_at": "2026-06-18T04:44:06.651Z",
         "scheduled_at": null,
         "deleted_at": null,
@@ -255,6 +255,43 @@
         "content_license": "CC BY-SA 4.0",
         "content_license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
         "related_publications": null
+      }
+    ],
+    "ec_publications": [
+      {
+        "id": "01KVCJJRS98D1775R5V4FGFEW1",
+        "slug": "hidden-costs-requiring-accounts",
+        "status": "published",
+        "author_id": null,
+        "primary_byline_id": null,
+        "created_at": "2026-06-18T05:17:08.778Z",
+        "updated_at": "2026-06-18 05:25:17",
+        "published_at": "2026-06-18T05:17:08.777Z",
+        "scheduled_at": null,
+        "deleted_at": null,
+        "version": 1,
+        "live_revision_id": "01KVCJJRSB3CV3F9244GRPVNEF",
+        "draft_revision_id": null,
+        "locale": "en",
+        "translation_group": "01KVCJJRS98D1775R5V4FGFEW1",
+        "title": "The Hidden Costs of Requiring Accounts: Quasi-Experimental Evidence From Peer Production",
+        "publication_type": "research_paper",
+        "summary": "A quasi-experimental study of 136 wiki communities showing that account requirements deter some low-quality edits, but also reduce a larger volume of higher-quality contributions.",
+        "abstract": "Online communities, like Wikipedia, produce valuable public information goods. Whereas some of these communities require would-be contributors to create accounts, many do not. Does this requirement catalyze cooperation or inhibit participation? Prior research provides divergent predictions but little causal evidence. We conduct an empirical test using longitudinal data from 136 natural experiments where would-be contributors to wikis were suddenly required to log in to contribute. Requiring accounts leads to a small increase in account creation, but reduces both high- and low-quality contributions from registered and unregistered participants. Although the change deters a large portion of low-quality participation, the vast majority of deterred contributions are of higher quality. We conclude that requiring accounts introduces an undertheorized tradeoff for public goods production in interactive communication systems.",
+        "editorial_note": "[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"TEMIS reads this paper as a warning against treating friction as the main moderation strategy. In a post-AI knowledge environment, communities should use AI to increase their capacity to review, guide, and support new editors: make good edits easier to keep, make bad edits easier to detect and manage, and avoid blocking promising contributors before they learn the norms.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"The paper matters because it measures the tradeoff directly: account requirements reduce some low-quality participation, but the larger loss is higher-quality contribution. That pushes TEMIS toward tooling that strengthens mentorship, review queues, edit triage, and newcomer support rather than defaulting to broad entry barriers.\"}]}]",
+        "publication_authors": "Benjamin Mako Hill; Aaron Shaw",
+        "venue": "Communication Research 48(6): 771-795 (2021)",
+        "publication_date": "2021",
+        "doi": "10.1177/0093650220910345",
+        "arxiv_id": "2111.10688",
+        "source_url": "https://arxiv.org/abs/2111.10688",
+        "pdf_url": "https://arxiv.org/pdf/2111.10688",
+        "license": "arXiv.org non-exclusive license to distribute 1.0",
+        "related_articles": "[\"seed:post:wikipedia-at-25-a-wake-up-call\"]",
+        "related_tools": "[\"seed:tool:sp42\",\"seed:tool:wiki-economics\"]",
+        "graph_visible": 1,
+        "graph_priority": 64,
+        "source_title": "arXiv:2111.10688"
       }
     ],
     "ec_tools": [
@@ -390,7 +427,7 @@
         "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\"]",
         "source": "seed",
         "created_at": "2026-06-13 21:31:33",
-        "updated_at": "2026-06-18 04:44:13",
+        "updated_at": "2026-06-18 05:25:09",
         "search_config": "{\"enabled\":true}",
         "has_seo": 1,
         "url_pattern": "/{slug}",
@@ -409,7 +446,7 @@
         "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\",\"scheduling\"]",
         "source": "seed",
         "created_at": "2026-06-13 21:31:34",
-        "updated_at": "2026-06-18 04:44:13",
+        "updated_at": "2026-06-18 05:25:10",
         "search_config": "{\"enabled\":true}",
         "has_seo": 1,
         "url_pattern": "/blog/{slug}",
@@ -428,7 +465,7 @@
         "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\"]",
         "source": "seed",
         "created_at": "2026-06-14 16:04:30",
-        "updated_at": "2026-06-18 04:44:13",
+        "updated_at": "2026-06-18 05:25:11",
         "search_config": "{\"enabled\":true}",
         "has_seo": 1,
         "url_pattern": "/tools/{slug}",
@@ -447,7 +484,7 @@
         "supports": "[\"drafts\",\"revisions\",\"preview\",\"seo\",\"search\"]",
         "source": "seed",
         "created_at": "2026-06-18 04:44:06",
-        "updated_at": "2026-06-18 04:44:13",
+        "updated_at": "2026-06-18 05:25:10",
         "search_config": "{\"enabled\":true}",
         "has_seo": 1,
         "url_pattern": "/publications/{slug}",
@@ -1335,7 +1372,7 @@
         "validation": null,
         "widget": null,
         "options": null,
-        "sort_order": 10,
+        "sort_order": 11,
         "created_at": "2026-06-18 04:44:06",
         "searchable": 0,
         "translatable": 1
@@ -1353,7 +1390,7 @@
         "validation": null,
         "widget": null,
         "options": null,
-        "sort_order": 11,
+        "sort_order": 12,
         "created_at": "2026-06-18 04:44:06",
         "searchable": 0,
         "translatable": 1
@@ -1371,7 +1408,7 @@
         "validation": null,
         "widget": null,
         "options": null,
-        "sort_order": 12,
+        "sort_order": 13,
         "created_at": "2026-06-18 04:44:06",
         "searchable": 1,
         "translatable": 1
@@ -1389,7 +1426,7 @@
         "validation": null,
         "widget": null,
         "options": "{\"collection\":\"posts\",\"allowMultiple\":true}",
-        "sort_order": 13,
+        "sort_order": 14,
         "created_at": "2026-06-18 04:44:06",
         "searchable": 0,
         "translatable": 1
@@ -1407,7 +1444,7 @@
         "validation": null,
         "widget": null,
         "options": "{\"collection\":\"tools\",\"allowMultiple\":true}",
-        "sort_order": 14,
+        "sort_order": 15,
         "created_at": "2026-06-18 04:44:06",
         "searchable": 0,
         "translatable": 1
@@ -1425,7 +1462,7 @@
         "validation": null,
         "widget": null,
         "options": null,
-        "sort_order": 15,
+        "sort_order": 16,
         "created_at": "2026-06-18 04:44:06",
         "searchable": 0,
         "translatable": 1
@@ -1443,7 +1480,7 @@
         "validation": null,
         "widget": null,
         "options": null,
-        "sort_order": 16,
+        "sort_order": 17,
         "created_at": "2026-06-18 04:44:06",
         "searchable": 0,
         "translatable": 1
@@ -1483,6 +1520,24 @@
         "created_at": "2026-06-18 04:44:13",
         "searchable": 0,
         "translatable": 1
+      },
+      {
+        "id": "schema_field_publications_source_title",
+        "collection_id": "01KVCGP93AHZVEW4X1KZ1018GS",
+        "slug": "source_title",
+        "label": "Source title",
+        "type": "string",
+        "column_type": "TEXT",
+        "required": 0,
+        "unique": 0,
+        "default_value": null,
+        "validation": null,
+        "widget": null,
+        "options": null,
+        "sort_order": 10,
+        "created_at": "2026-06-18 05:17:02",
+        "searchable": 1,
+        "translatable": 1
       }
     ],
     "_emdash_taxonomy_defs": [
@@ -1515,14 +1570,14 @@
         "name": "primary",
         "label": "Primary",
         "created_at": "2026-06-13T21:31:35.448Z",
-        "updated_at": "2026-06-18 04:44:14",
+        "updated_at": "2026-06-18 05:25:17",
         "locale": "en",
         "translation_group": "01KV1EBE4R508C1WCRPTDZV8YC"
       }
     ],
     "_emdash_menu_items": [
       {
-        "id": "01KVCGP9402JKAVZ27ET2KC80Q",
+        "id": "01KVCJP7PK5N15HNJ8F21FDWFM",
         "menu_id": "01KV1EBE4R508C1WCRPTDZV8YC",
         "parent_id": null,
         "sort_order": 0,
@@ -1534,12 +1589,12 @@
         "title_attr": null,
         "target": null,
         "css_classes": null,
-        "created_at": "2026-06-18T04:44:06.656Z",
+        "created_at": "2026-06-18T05:19:02.419Z",
         "locale": "en",
-        "translation_group": "01KVCGP9402JKAVZ27ET2KC80Q"
+        "translation_group": "01KVCJP7PK5N15HNJ8F21FDWFM"
       },
       {
-        "id": "01KVCGP940H82W57Y5DKB9Z6ZY",
+        "id": "01KVCJP7V40FB9CE414R06FMRY",
         "menu_id": "01KV1EBE4R508C1WCRPTDZV8YC",
         "parent_id": null,
         "sort_order": 1,
@@ -1551,12 +1606,12 @@
         "title_attr": null,
         "target": null,
         "css_classes": null,
-        "created_at": "2026-06-18T04:44:06.656Z",
+        "created_at": "2026-06-18T05:19:02.500Z",
         "locale": "en",
-        "translation_group": "01KVCGP940H82W57Y5DKB9Z6ZY"
+        "translation_group": "01KVCJP7V40FB9CE414R06FMRY"
       },
       {
-        "id": "01KVCGP9403RT2WWV5T7JCDB2C",
+        "id": "01KVCJP7V5TSK42TEYE9R3D21J",
         "menu_id": "01KV1EBE4R508C1WCRPTDZV8YC",
         "parent_id": null,
         "sort_order": 2,
@@ -1568,12 +1623,12 @@
         "title_attr": null,
         "target": null,
         "css_classes": null,
-        "created_at": "2026-06-18T04:44:06.656Z",
+        "created_at": "2026-06-18T05:19:02.501Z",
         "locale": "en",
-        "translation_group": "01KVCGP9403RT2WWV5T7JCDB2C"
+        "translation_group": "01KVCJP7V5TSK42TEYE9R3D21J"
       },
       {
-        "id": "01KVCGP940K5FQJRHRN1SH89E0",
+        "id": "01KVCJP7V5KVPTZC6TCH2X1K4D",
         "menu_id": "01KV1EBE4R508C1WCRPTDZV8YC",
         "parent_id": null,
         "sort_order": 3,
@@ -1585,9 +1640,9 @@
         "title_attr": null,
         "target": null,
         "css_classes": null,
-        "created_at": "2026-06-18T04:44:06.656Z",
+        "created_at": "2026-06-18T05:19:02.501Z",
         "locale": "en",
-        "translation_group": "01KVCGP940K5FQJRHRN1SH89E0"
+        "translation_group": "01KVCJP7V5KVPTZC6TCH2X1K4D"
       }
     ],
     "_emdash_seo": [
@@ -1600,7 +1655,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 04:44:06"
+        "updated_at": "2026-06-18 05:19:03"
       },
       {
         "collection": "posts",
@@ -1622,7 +1677,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 04:44:06"
+        "updated_at": "2026-06-18 05:19:03"
       },
       {
         "collection": "pages",
@@ -1633,7 +1688,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 04:44:06"
+        "updated_at": "2026-06-18 05:19:03"
       },
       {
         "collection": "pages",
@@ -1644,7 +1699,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 04:44:06"
+        "updated_at": "2026-06-18 05:19:03"
       },
       {
         "collection": "pages",
@@ -1655,7 +1710,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 04:44:06"
+        "updated_at": "2026-06-18 05:19:03"
       },
       {
         "collection": "pages",
@@ -1666,7 +1721,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 04:44:06"
+        "updated_at": "2026-06-18 05:19:03"
       },
       {
         "collection": "pages",
@@ -1677,7 +1732,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 04:44:06"
+        "updated_at": "2026-06-18 05:19:03"
       },
       {
         "collection": "pages",
@@ -1688,7 +1743,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 04:44:06"
+        "updated_at": "2026-06-18 05:19:03"
       },
       {
         "collection": "tools",
@@ -1699,7 +1754,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 05:54:59",
-        "updated_at": "2026-06-18 04:44:06"
+        "updated_at": "2026-06-18 05:19:03"
       },
       {
         "collection": "tools",
@@ -1710,7 +1765,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 17:15:52",
-        "updated_at": "2026-06-18 04:44:06"
+        "updated_at": "2026-06-18 05:19:03"
       },
       {
         "collection": "tools",
@@ -1721,7 +1776,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 17:15:52",
-        "updated_at": "2026-06-18 04:44:06"
+        "updated_at": "2026-06-18 05:19:03"
       },
       {
         "collection": "pages",
@@ -1732,7 +1787,7 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-17 17:28:34",
-        "updated_at": "2026-06-18 04:44:06"
+        "updated_at": "2026-06-18 05:19:03"
       },
       {
         "collection": "pages",
@@ -1743,7 +1798,18 @@
         "seo_canonical": null,
         "seo_no_index": 0,
         "created_at": "2026-06-18 04:44:06",
-        "updated_at": "2026-06-18 04:44:06"
+        "updated_at": "2026-06-18 05:19:03"
+      },
+      {
+        "collection": "publications",
+        "content_id": "01KVCJJRS98D1775R5V4FGFEW1",
+        "seo_title": "The Hidden Costs of Requiring Accounts",
+        "seo_description": "Research on account requirements in peer production, read by TEMIS as a case for AI-supported review and newcomer support.",
+        "seo_image": null,
+        "seo_canonical": null,
+        "seo_no_index": 0,
+        "created_at": "2026-06-18 05:17:08",
+        "updated_at": "2026-06-18 05:19:03"
       }
     ],
     "_emdash_migrations": [
@@ -2002,6 +2068,36 @@
         "data": "{\"accent\":\"#8a1f5c\",\"description\":\"Research papers, reports, and external knowledge objects connected to TEMIS work.\",\"priority\":68}",
         "locale": "en",
         "translation_group": "schema:taxonomy:category:publications"
+      },
+      {
+        "id": "schema:taxonomy:tag:peer-production",
+        "name": "tag",
+        "slug": "peer-production",
+        "label": "Peer production",
+        "parent_id": null,
+        "data": "{\"accent\":\"#4f7f45\",\"description\":\"Open collaboration systems that produce public goods through distributed contribution.\",\"priority\":48}",
+        "locale": "en",
+        "translation_group": "schema:taxonomy:tag:peer-production"
+      },
+      {
+        "id": "schema:taxonomy:tag:new-editors",
+        "name": "tag",
+        "slug": "new-editors",
+        "label": "New editors",
+        "parent_id": null,
+        "data": "{\"accent\":\"#006f6a\",\"description\":\"Onboarding, support, and review pathways for new contributors.\",\"priority\":46}",
+        "locale": "en",
+        "translation_group": "schema:taxonomy:tag:new-editors"
+      },
+      {
+        "id": "schema:taxonomy:tag:community-review",
+        "name": "tag",
+        "slug": "community-review",
+        "label": "Community review",
+        "parent_id": null,
+        "data": "{\"accent\":\"#7a4f00\",\"description\":\"Review, triage, moderation, and support workflows for open communities.\",\"priority\":44}",
+        "locale": "en",
+        "translation_group": "schema:taxonomy:tag:community-review"
       }
     ],
     "content_taxonomies": [
@@ -2114,6 +2210,46 @@
         "collection": "tools",
         "entry_id": "01KVB8VWSBGBJH24W5DG5043MF",
         "taxonomy_id": "schema:taxonomy:tag:knowledge-equity"
+      },
+      {
+        "collection": "publications",
+        "entry_id": "01KVCJJRS98D1775R5V4FGFEW1",
+        "taxonomy_id": "schema:taxonomy:category:publications"
+      },
+      {
+        "collection": "publications",
+        "entry_id": "01KVCJJRS98D1775R5V4FGFEW1",
+        "taxonomy_id": "schema:taxonomy:tag:open-knowledge"
+      },
+      {
+        "collection": "publications",
+        "entry_id": "01KVCJJRS98D1775R5V4FGFEW1",
+        "taxonomy_id": "schema:taxonomy:tag:wikipedia"
+      },
+      {
+        "collection": "publications",
+        "entry_id": "01KVCJJRS98D1775R5V4FGFEW1",
+        "taxonomy_id": "schema:taxonomy:tag:wikimedia"
+      },
+      {
+        "collection": "publications",
+        "entry_id": "01KVCJJRS98D1775R5V4FGFEW1",
+        "taxonomy_id": "schema:taxonomy:tag:ai"
+      },
+      {
+        "collection": "publications",
+        "entry_id": "01KVCJJRS98D1775R5V4FGFEW1",
+        "taxonomy_id": "schema:taxonomy:tag:peer-production"
+      },
+      {
+        "collection": "publications",
+        "entry_id": "01KVCJJRS98D1775R5V4FGFEW1",
+        "taxonomy_id": "schema:taxonomy:tag:new-editors"
+      },
+      {
+        "collection": "publications",
+        "entry_id": "01KVCJJRS98D1775R5V4FGFEW1",
+        "taxonomy_id": "schema:taxonomy:tag:community-review"
       }
     ],
     "options": [
@@ -2574,6 +2710,14 @@
         "data": "{\"title\":\"Publication index\",\"summary\":\"Research papers, reports, and other publications connected to TEMIS essays, tools, people, and topics.\",\"content\":[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"Publications are first-class knowledge objects in TEMIS. Editorial posts may summarize or discuss them, tools may implement them, and the graph can connect them to people and topics without treating them as ordinary articles.\"}]}]}",
         "author_id": null,
         "created_at": "2026-06-18 04:44:06"
+      },
+      {
+        "id": "01KVCJJRSB3CV3F9244GRPVNEF",
+        "collection": "publications",
+        "entry_id": "01KVCJJRS98D1775R5V4FGFEW1",
+        "data": "{\"title\":\"The Hidden Costs of Requiring Accounts: Quasi-Experimental Evidence From Peer Production\",\"publication_type\":\"research_paper\",\"summary\":\"A quasi-experimental study of 136 wiki communities showing that account requirements deter some low-quality edits, but also reduce a larger volume of higher-quality contributions.\",\"abstract\":\"Online communities, like Wikipedia, produce valuable public information goods. Whereas some of these communities require would-be contributors to create accounts, many do not. Does this requirement catalyze cooperation or inhibit participation? Prior research provides divergent predictions but little causal evidence. We conduct an empirical test using longitudinal data from 136 natural experiments where would-be contributors to wikis were suddenly required to log in to contribute. Requiring accounts leads to a small increase in account creation, but reduces both high- and low-quality contributions from registered and unregistered participants. Although the change deters a large portion of low-quality participation, the vast majority of deterred contributions are of higher quality. We conclude that requiring accounts introduces an undertheorized tradeoff for public goods production in interactive communication systems.\",\"editorial_note\":[{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"TEMIS reads this paper as a warning against treating friction as the main moderation strategy. In a post-AI knowledge environment, communities should use AI to increase their capacity to review, guide, and support new editors: make good edits easier to keep, make bad edits easier to detect and manage, and avoid blocking promising contributors before they learn the norms.\"}]},{\"_type\":\"block\",\"style\":\"normal\",\"children\":[{\"_type\":\"span\",\"text\":\"The paper matters because it measures the tradeoff directly: account requirements reduce some low-quality participation, but the larger loss is higher-quality contribution. That pushes TEMIS toward tooling that strengthens mentorship, review queues, edit triage, and newcomer support rather than defaulting to broad entry barriers.\"}]}],\"publication_authors\":\"Benjamin Mako Hill; Aaron Shaw\",\"venue\":\"Communication Research 48(6): 771-795 (2021)\",\"publication_date\":\"2021-11-20\",\"doi\":\"10.1177/0093650220910345\",\"arxiv_id\":\"2111.10688\",\"source_url\":\"https://arxiv.org/abs/2111.10688\",\"pdf_url\":\"https://arxiv.org/pdf/2111.10688\",\"license\":\"arXiv non-exclusive distribution license 1.0\",\"related_articles\":[\"seed:post:wikipedia-at-25-a-wake-up-call\"],\"related_tools\":[\"seed:tool:sp42\",\"seed:tool:wiki-economics\"],\"graph_visible\":1,\"graph_priority\":64,\"source_title\":\"arXiv:2111.10688\"}",
+        "author_id": null,
+        "created_at": "2026-06-18 05:17:08"
       }
     ]
   },
@@ -2717,7 +2861,8 @@
         "related_articles",
         "related_tools",
         "graph_visible",
-        "graph_priority"
+        "graph_priority",
+        "source_title"
       ],
       "types": {
         "id": "TEXT",
@@ -2751,7 +2896,8 @@
         "related_articles": "TEXT",
         "related_tools": "TEXT",
         "graph_visible": "INTEGER",
-        "graph_priority": "REAL"
+        "graph_priority": "REAL",
+        "source_title": "TEXT"
       }
     },
     "ec_tools": {
@@ -3181,5 +3327,5 @@
       }
     }
   },
-  "generatedAt": "2026-06-18T04:44:44.588Z"
+  "generatedAt": "2026-06-18T05:25:54.050Z"
 }

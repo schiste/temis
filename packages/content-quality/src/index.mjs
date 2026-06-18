@@ -376,7 +376,14 @@ export function validateContentQuality(options) {
   }
 
   if (hasText(record.source_url)) {
-    if (!hasText(record.source_title)) {
+    const hasSourceTitle =
+      hasText(record.source_title) ||
+      (collection === "publications" && hasText(record.title));
+    const hasContentLicense =
+      hasText(record.content_license) ||
+      (collection === "publications" && hasText(record.license));
+
+    if (!hasSourceTitle) {
       addIssue(
         issues,
         "error",
@@ -386,7 +393,7 @@ export function validateContentQuality(options) {
       );
     }
 
-    if (!hasText(record.content_license)) {
+    if (!hasContentLicense) {
       addIssue(
         issues,
         "error",

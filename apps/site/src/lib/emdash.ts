@@ -79,6 +79,7 @@ export interface PublicationEntry extends SnapshotRow {
   related_tools?: unknown;
   seo_description?: string;
   seo_title?: string;
+  source_title?: string | null;
   source_url?: string | null;
   summary?: string;
   title: string;

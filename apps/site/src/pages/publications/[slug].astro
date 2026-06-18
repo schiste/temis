@@ -102,7 +102,7 @@ const metadataItems = [
     ? {
         href: sourceUrl,
         label: copy.publicationSourceLabel,
-        value: "Source",
+        value: resolvedPublication.source_title?.trim() || "Source",
       }
     : null,
   pdfUrl
