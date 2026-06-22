@@ -9,6 +9,7 @@ import wasm from "vite-plugin-wasm";
 import cloudflareDeployTriggerPlugin from "@temis/emdash-cloudflare-deploy";
 import contentQualityPlugin from "@temis/emdash-content-quality";
 import editorialBlocksPlugin from "@temis/emdash-editorial-blocks";
+import mediaFieldsPlugin from "@temis/emdash-media-fields";
 
 const isBuildCommand = process.env.TEMIS_CMS_BUILD === "1";
 
@@ -61,6 +62,7 @@ export default defineConfig({
       storage,
       plugins: [
         editorialBlocksPlugin(),
+        mediaFieldsPlugin(),
         contentQualityPlugin(),
         aexeoPlugin({
           collections: [
