@@ -186,23 +186,9 @@
         },
         {
           "slug": "featured_image",
-          "label": "Featured Image",
-          "type": "image"
-        },
-        {
-          "slug": "featured_image_alt",
-          "label": "Featured image alt text",
-          "type": "text"
-        },
-        {
-          "slug": "featured_image_caption",
-          "label": "Featured image caption",
-          "type": "text"
-        },
-        {
-          "slug": "featured_image_license",
-          "label": "Featured image license",
-          "type": "string"
+          "label": "Featured image",
+          "type": "json",
+          "widget": "temis-media-fields:imageWithMeta"
         },
         {
           "slug": "author_name",

@@ -1,0 +1,26 @@
+{
+  "name": "@temis/emdash-media-fields",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT OR Apache-2.0",
+  "type": "module",
+  "description": "EmDash field widget that bundles an image reference with its alt, caption, and license metadata into one control.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./configured": "./src/configured.ts",
+    "./admin": "./src/admin.tsx"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "emdash": "^0.17.2"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "typescript": "^5.7.0"
+  }
+}

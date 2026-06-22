@@ -28,6 +28,7 @@
     "@temis/emdash-cloudflare-deploy": "workspace:*",
     "@temis/emdash-content-quality": "workspace:*",
     "@temis/emdash-editorial-blocks": "workspace:*",
+    "@temis/emdash-media-fields": "workspace:*",
     "astro": "^6.2.2",
     "emdash": "^0.17.2",
     "react": "^19.0.0",
