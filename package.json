@@ -28,6 +28,8 @@
     "cms:content:migrate-seo:production": "node ./apps/cms/scripts/migrate-seo-to-native.mjs --production",
     "cms:content:retire-seo-fields": "node ./apps/cms/scripts/retire-legacy-seo-fields.mjs",
     "cms:content:retire-seo-fields:production": "node ./apps/cms/scripts/retire-legacy-seo-fields.mjs --production",
+    "cms:content:migrate-featured-image": "node ./apps/cms/scripts/migrate-featured-image-to-json.mjs",
+    "cms:content:migrate-featured-image:production": "node ./apps/cms/scripts/migrate-featured-image-to-json.mjs --production",
     "cms:mcp:check": "pnpm --filter @temis/cms mcp:check",
     "cms:mcp:check:auth": "pnpm --filter @temis/cms mcp:check:auth",
     "cms:mcp:check:guard": "pnpm --filter @temis/cms mcp:check:guard",

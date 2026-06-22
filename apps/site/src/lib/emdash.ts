@@ -43,14 +43,19 @@ export interface PageEntry extends SnapshotRow {
   title: string;
 }
 
+export interface FeaturedImage {
+  storageKey?: string;
+  alt?: string;
+  caption?: string;
+  license?: string;
+}
+
 export interface PostEntry extends SnapshotRow {
   author_name?: string;
   content?: unknown;
   content_type?: string | null;
   excerpt?: string;
-  featured_image_alt?: string | null;
-  featured_image_caption?: string | null;
-  featured_image_license?: string | null;
+  featured_image?: FeaturedImage | null;
   graph_priority?: number | null;
   graph_visible?: boolean | number | null;
   content_license?: string | null;
