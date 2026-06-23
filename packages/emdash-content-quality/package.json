@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@temis/content-quality": "workspace:*",
-    "emdash": "^0.17.2"
+    "emdash": "^0.22.0"
   },
   "devDependencies": {
     "typescript": "^5.7.0"

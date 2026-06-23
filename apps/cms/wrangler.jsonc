@@ -1,6 +1,9 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "temis-cms",
+  // EmDash worker entry = Astro fetch handler + scheduled() (driven by the cron
+  // trigger below). Required since EmDash 0.19 removed the request-driven scheduler.
+  "main": "./src/worker.ts",
   "compatibility_date": "2026-04-01",
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
@@ -27,4 +30,7 @@
       "bucket_name": "temis-media",
     },
   ],
+  "triggers": {
+    "crons": ["* * * * *"],
+  },
 }
